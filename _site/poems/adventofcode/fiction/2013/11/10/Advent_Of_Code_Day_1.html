@@ -31,11 +31,11 @@
     <article class="post">
 
         <header class="post-header">
-            <h1 class="post-title">Welcome to Jekyll!</h1>
+            <h1 class="post-title">Advent Of Code 2019 - Day 1</h1>
             <section class="post-meta">
                 <time class="post-date" datetime="2013-11-10">10 Nov 2013</time>
                 
-                    on Thriller, Comedy, and Horror
+                    on Poems, AdventOfCode, and Fiction
                 
             </section>
         </header>
@@ -51,25 +51,115 @@
         <!-- <span class="post-meta">
             <time datetime="2013-11-10">10 Nov 2013</time>
             
-                on Thriller, Comedy, and Horror
+                on Poems, AdventOfCode, and Fiction
             
         </span> -->
 
-        <!-- <h1 class="post-title">Welcome to Jekyll!</h1> -->
+        <!-- <h1 class="post-title">Advent Of Code 2019 - Day 1</h1> -->
 
         <section class="post-content">
-            <p>You’ll find this post in your <code>_posts</code> directory - edit this post and re-build (or run with the <code>-w</code> switch) to see your changes!
-To add new posts, simply add a file in the <code>_posts</code> directory that follows the convention: YYYY-MM-DD-name-of-post.ext.</p>
+            <h2 id="advent-of-code-2019">Advent of Code 2019</h2>
 
-<p>Jekyll also offers powerful support for code snippets:</p>
+<p>2019’s Advent of Code has a twist to it - a poetry-writing contest to be run on <a href="http://old.reddit.com/r/adventofcode">/r/adventofcode</a>.  Each poem has to be accompanied by code snippets or a repository link, of course, so it makes for a fun challenge: to think in the syntax and grammar of code (Mathematica, in my case) and immediately afterwards to think in the syntax and grammar of structured poems.</p>
 
-<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby">def print_hi(name)
-  puts &quot;Hi, #{name}&quot;
-end
-print_hi(&#39;Tom&#39;)
-#=&gt; prints &#39;Hi, Tom&#39; to STDOUT.</code></pre></figure>
+<h2 id="code">Code</h2>
 
-<p>Check out the <a href="http://jekyllrb.com">Jekyll docs</a> for more info on how to get the most out of Jekyll. File all bugs/feature requests at <a href="https://github.com/mojombo/jekyll">Jekyll’s GitHub repo</a>.</p>
+<p>Pretty easy to make it a one-liner in Mathematica; I lost a minute on Part 2 because I forgot that when calculating the fuel from <code>NestWhileList</code>, you need to drop both the first and last elements of the list.</p>
+
+<p>Import:</p>
+
+<figure class="highlight"><pre><code class="language-mathematica" data-lang="mathematica">input = Import[FileNameJoin[{NotebookDirectory[], &quot;Day1Input.txt&quot;}], &quot;List&quot;];</code></pre></figure>
+
+<p>Part 1:</p>
+
+<figure class="highlight"><pre><code class="language-mathematica" data-lang="mathematica">Total[Floor[#/3 - 2] &amp; /@ input]</code></pre></figure>
+
+<p>Part 2:</p>
+
+<figure class="highlight"><pre><code class="language-mathematica" data-lang="mathematica">Total[Table[Total@NestWhileList[Floor[#/3 - 2] &amp;, i, # &gt; 0 &amp;][[2 ;; -2]], {i, input}]]</code></pre></figure>
+
+<h2 id="poem-achilles-zeno-newton-tsiolkovsky">Poem: Achilles, Zeno, Newton, Tsiolkovsky</h2>
+
+<pre><code>In ancient Greece, in olden times,
+The gods once held a race:
+Achilles, swiftest of all men,
+Against a turtle's pace.
+
+Achilles, turning towards the beast,
+said "I'll give you a start.
+I'll stay here at the starting line,
+'Til we're two *stades* apart."
+
+The turtle, slowly, turned his head.
+"My friend, you've lost the bet.
+The gods are laughing up on high.
+And you don't know it yet."
+
+The line was drawn, the flag was dropped,
+And off the turtle went.
+A day went by, Achilles woke,
+And raced out from his tent.
+
+Two stades he ran, and saw the beast
+A mere ten *cubits* yonder.
+And at that speed he crossed the gap,
+Before his mind could wander.
+
+He saw the turtle still ahead,
+Though now, by just two *πόσιν*.
+(The author, here, regretted Greek,
+and wished 'haiku' he'd chosen.)
+
+This race continued, on and on,
+the chasm ever waning.
+Achilles couldn't close the gap,
+but ran on, ever straining.
+
+Then from on high a voice boomed out,
+and all around was laughter.
+The great god Zeno entered in,
+Two others walking after.
+
+"King Achilles, you have lost.
+The turtle is more sprightly.
+For when you get to where he was,
+He's traveled further, slightly!
+
+If all these gaps are added on,
+The terms go on forever.
+You race against infinity:
+A Sisyphean endeavour."
+
+But Newton, with him, intervened.
+"These sums are not so motile.
+You can add up an endless sum,
+And get a finite total."
+
+Achilles, gleeful, ran again,
+and left the turtle trailing.
+In glee, he jumped and tried to fly, 
+but each attempt was failing.
+
+And when the Earth had pulled him back,
+he turned and asked a question.
+"My lords, if men should wish to fly,
+Have you some good suggestion?"
+
+And then Tsiolkovsky rose and spoke,
+the last among the Powers.
+"Lord Newton gave you finities,
+but mercy won't be ours!"
+
+"For logarithms are my crown,
+and gravity my scepter.
+No ship of yours, dear King, will fly
+Unless *my* laws accept her."
+
+And to this day, he reigns supreme.
+His cursed equation rankles.
+Whene'er we reach above, we fly
+with logs tied to our ankles.
+</code></pre>
 
 
         </section>
@@ -96,15 +186,15 @@ print_hi(&#39;Tom&#39;)
             <!-- Share links section -->
             <section class="share">
     <h4>Share this post</h4>
-    <a class="icon-twitter" href="http://twitter.com/share?text=Welcome to Jekyll!&amp;url=http://www.hallofdreams.org/thriller/comedy/horror/2013/11/10/welcome-to-jekyll.html"
+    <a class="icon-twitter" href="http://twitter.com/share?text=Advent Of Code 2019 - Day 1&amp;url=http://www.hallofdreams.org/poems/adventofcode/fiction/2013/11/10/Advent_Of_Code_Day_1.html"
         onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
         <span class="hidden">Twitter</span>
     </a>
-    <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://www.hallofdreams.org/thriller/comedy/horror/2013/11/10/welcome-to-jekyll.html"
+    <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://www.hallofdreams.org/poems/adventofcode/fiction/2013/11/10/Advent_Of_Code_Day_1.html"
         onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
         <span class="hidden">Facebook</span>
     </a>
-    <a class="icon-google-plus" href="https://plus.google.com/share?url=http://www.hallofdreams.org/thriller/comedy/horror/2013/11/10/welcome-to-jekyll.html"
+    <a class="icon-google-plus" href="https://plus.google.com/share?url=http://www.hallofdreams.org/poems/adventofcode/fiction/2013/11/10/Advent_Of_Code_Day_1.html"
        onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
         <span class="hidden">Google+</span>
     </a>

@@ -1,9 +1,9 @@
 name: The Hall of Impossible Dreams
-description: Blogging about stuffs
-meta_description: "Your New Jekyll Site, Blogging about stuffs"
+description: A collection of fiction and code
+meta_description: "The Hall of Impossible Dreams - A collection of fiction and code"
 
 markdown: kramdown
-highlighter: pygments
+highlighter: rogue
 logo: false
 paginate: 15
 baseurl: /
