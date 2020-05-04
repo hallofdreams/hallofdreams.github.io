@@ -1,8 +1,11 @@
 ---
 layout: post
+author: David
 title:  "Advent Of Code 2019 - Day 1"
 date:   2019-12-01 07:42:04
 categories: Poems AdventOfCode Fiction
+
+permalink: /david/advent-of-code-2019-day-1/
 ---
 
 2019's Advent of Code has a twist to it - a poetry-writing contest to be run on [/r/adventofcode](http://old.reddit.com/r/adventofcode).  Each poem has to be accompanied by code snippets or a repository link, of course, so it makes for a fun challenge: to think in the syntax and grammar of code (Mathematica, in my case) and immediately afterwards to think in the syntax and grammar of structured poems.

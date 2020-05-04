@@ -14,3 +14,6 @@ gems: [jekyll-paginate]
 # Details for the RSS feed generator
 url:            'http://www.hallofdreams.org'
 author:         'David'
+
+# Build settings
+permalink: /:categories/:title/

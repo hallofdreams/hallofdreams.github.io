@@ -5,8 +5,8 @@
     <description>A collection of fiction and code</description>
     <link>http://www.hallofdreams.org//</link>
     <atom:link href="http://www.hallofdreams.org//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 04 May 2020 15:48:44 -0400</pubDate>
-    <lastBuildDate>Mon, 04 May 2020 15:48:44 -0400</lastBuildDate>
+    <pubDate>Mon, 04 May 2020 16:18:30 -0400</pubDate>
+    <lastBuildDate>Mon, 04 May 2020 16:18:30 -0400</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
     
       <item>
@@ -114,8 +114,8 @@ with logs tied to our ankles.
 
 </description>
         <pubDate>Sun, 01 Dec 2019 02:42:04 -0500</pubDate>
-        <link>http://www.hallofdreams.org//poems/adventofcode/fiction/2019/12/01/Advent_Of_Code_Day_1.html</link>
-        <guid isPermaLink="true">http://www.hallofdreams.org//poems/adventofcode/fiction/2019/12/01/Advent_Of_Code_Day_1.html</guid>
+        <link>http://www.hallofdreams.org//david/advent-of-code-2019-day-1/</link>
+        <guid isPermaLink="true">http://www.hallofdreams.org//david/advent-of-code-2019-day-1/</guid>
         
         
         <category>Poems</category>
@@ -143,8 +143,8 @@ print_hi(&amp;#39;Tom&amp;#39;)
 
 </description>
         <pubDate>Sun, 10 Nov 2013 05:18:00 -0500</pubDate>
-        <link>http://www.hallofdreams.org//thriller/comedy/horror/2013/11/10/welcome-to-jekyll.html</link>
-        <guid isPermaLink="true">http://www.hallofdreams.org//thriller/comedy/horror/2013/11/10/welcome-to-jekyll.html</guid>
+        <link>http://www.hallofdreams.org//thriller/comedy/horror/welcome-to-jekyll/</link>
+        <guid isPermaLink="true">http://www.hallofdreams.org//thriller/comedy/horror/welcome-to-jekyll/</guid>
         
         
         <category>Thriller</category>
