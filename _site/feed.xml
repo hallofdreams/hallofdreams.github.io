@@ -5,15 +5,13 @@
     <description>A collection of fiction and code</description>
     <link>http://www.hallofdreams.org//</link>
     <atom:link href="http://www.hallofdreams.org//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 04 May 2020 15:46:38 -0400</pubDate>
-    <lastBuildDate>Mon, 04 May 2020 15:46:38 -0400</lastBuildDate>
+    <pubDate>Mon, 04 May 2020 15:48:44 -0400</pubDate>
+    <lastBuildDate>Mon, 04 May 2020 15:48:44 -0400</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
     
       <item>
         <title>Advent Of Code 2019 - Day 1</title>
-        <description>&lt;h2 id=&quot;advent-of-code-2019&quot;&gt;Advent of Code 2019&lt;/h2&gt;
-
-&lt;p&gt;2019’s Advent of Code has a twist to it - a poetry-writing contest to be run on &lt;a href=&quot;http://old.reddit.com/r/adventofcode&quot;&gt;/r/adventofcode&lt;/a&gt;.  Each poem has to be accompanied by code snippets or a repository link, of course, so it makes for a fun challenge: to think in the syntax and grammar of code (Mathematica, in my case) and immediately afterwards to think in the syntax and grammar of structured poems.&lt;/p&gt;
+        <description>&lt;p&gt;2019’s Advent of Code has a twist to it - a poetry-writing contest to be run on &lt;a href=&quot;http://old.reddit.com/r/adventofcode&quot;&gt;/r/adventofcode&lt;/a&gt;.  Each poem has to be accompanied by code snippets or a repository link, of course, so it makes for a fun challenge: to think in the syntax and grammar of code (Mathematica, in my case) and immediately afterwards to think in the syntax and grammar of structured poems.&lt;/p&gt;
 
 &lt;h2 id=&quot;code&quot;&gt;Code&lt;/h2&gt;
 
@@ -115,9 +113,9 @@ with logs tied to our ankles.
 &lt;/code&gt;&lt;/pre&gt;
 
 </description>
-        <pubDate>Sun, 10 Nov 2013 10:18:00 -0500</pubDate>
-        <link>http://www.hallofdreams.org//poems/adventofcode/fiction/2013/11/10/Advent_Of_Code_Day_1.html</link>
-        <guid isPermaLink="true">http://www.hallofdreams.org//poems/adventofcode/fiction/2013/11/10/Advent_Of_Code_Day_1.html</guid>
+        <pubDate>Sun, 01 Dec 2019 02:42:04 -0500</pubDate>
+        <link>http://www.hallofdreams.org//poems/adventofcode/fiction/2019/12/01/Advent_Of_Code_Day_1.html</link>
+        <guid isPermaLink="true">http://www.hallofdreams.org//poems/adventofcode/fiction/2019/12/01/Advent_Of_Code_Day_1.html</guid>
         
         
         <category>Poems</category>
