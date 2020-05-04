@@ -3,10 +3,10 @@
   <channel>
     <title></title>
     <description>Blogging about stuffs</description>
-    <link>blog url//</link>
-    <atom:link href="blog url//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 04 May 2020 14:10:25 -0400</pubDate>
-    <lastBuildDate>Mon, 04 May 2020 14:10:25 -0400</lastBuildDate>
+    <link>http://www.hallofdreams.org//</link>
+    <atom:link href="http://www.hallofdreams.org//feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Mon, 04 May 2020 15:14:10 -0400</pubDate>
+    <lastBuildDate>Mon, 04 May 2020 15:14:10 -0400</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
     
       <item>
@@ -26,8 +26,8 @@ To add new posts, simply add a file in the &lt;code&gt;_posts&lt;/code&gt; direc
 
 </description>
         <pubDate>Sun, 10 Nov 2013 05:18:00 -0500</pubDate>
-        <link>blog url//thriller/comedy/horror/2013/11/10/welcome-to-jekyll.html</link>
-        <guid isPermaLink="true">blog url//thriller/comedy/horror/2013/11/10/welcome-to-jekyll.html</guid>
+        <link>http://www.hallofdreams.org//thriller/comedy/horror/2013/11/10/welcome-to-jekyll.html</link>
+        <guid isPermaLink="true">http://www.hallofdreams.org//thriller/comedy/horror/2013/11/10/welcome-to-jekyll.html</guid>
         
         
         <category>Thriller</category>
