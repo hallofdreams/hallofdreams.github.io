@@ -1,6 +1,6 @@
 ---
 title: Building Blocks of Poetry, Episode 1
-date: 2020-11-19 05:00:00 -0500
+date: 2020-11-19 17:00:00 -0500
 categories: BUILDING_BLOCKS_OF_POETRY
 tags: video, poetry     # TAG names should always be lowercase
 ---
@@ -11,4 +11,4 @@ This is a project I've been working on for a while, in part to make a video talk
 
 The animation was done with [manim](https://github.com/3b1b/manim), by Grant Sanderson of the YouTube channel [3Blue1Brown](https://www.3blue1brown.com/about).
 
-[![Episode 1](assets/img/Ep_1_Thumbnail.png)](https://youtu.be/4KQB7r7rD8I "Episode 1")
+[![Episode 1](/assets/img/Ep_1_Thumbnail.png)](https://youtu.be/4KQB7r7rD8I "Episode 1")
