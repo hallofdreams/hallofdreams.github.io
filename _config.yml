@@ -49,7 +49,7 @@ google_site_verification: rOMa9oYHtFBq7U58IniOX1gggI6noWpOXoWBk-9hItk # change t
 baseurl: ''
 
 # Change to your timezone › http://www.timezoneconverter.com/cgi-bin/findzone/findzone
-timezone: Asia/Shanghai
+timezone: America/New_York
 
 google_analytics:
   id: '183607258'          # Fill with your Google Analytics ID
