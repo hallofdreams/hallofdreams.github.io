@@ -18,28 +18,28 @@ description: >-                        # used by seo meta and the atom feed
 # Replace with the website url, e.g. 'https://username.github.io'
 url: 'https://hallofdreams.org'
 
-author: your_full_name                  # change to your full name
+author: Dave and Felipe                  # change to your full name
 
 avatar: /assets/img/sample/avatar.jpg   # support internet resources
 
 github:
-  username: github_username             # change to your github username
+  username: hallofdreams             # change to your github username
 
 twitter:
-  username: twitter_username            # change to your twitter username
+  username: thecog19            # change to your twitter username
 
 social:
-  name: your_full_name                  # it will shows as the copyright owner in Footer
-  email: example@doamin.com             # change to your email address
+  name: Dave and Felipe                  # it will shows as the copyright owner in Footer
+  email: felipe.suero19@gmail.com             # change to your email address
   links:
     # The first element serves as the copyright owner's link
-    - https://twitter.com/username      # change to your twitter homepage
-    - https://github.com/username       # change to your github homepage
+    - https://twitter.com/thecog19      # change to your twitter homepage
+    - https://github.com/hallofdreams       # change to your github homepage
     # Uncomment below to add more social links
     # - https://www.facebook.com/username
     # - https://www.linkedin.com/in/username
 
-google_site_verification: google_meta_tag_verification # change to your verification string
+google_site_verification: google-site-verification=rOMa9oYHtFBq7U58IniOX1gggI6noWpOXoWBk-9hItk # change to your verification string
 
 #--------------------------
 
