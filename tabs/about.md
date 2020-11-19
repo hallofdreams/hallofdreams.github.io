@@ -13,8 +13,8 @@ This is a joint blog between Dave and Felipe. We have a lot of common interests,
 
 # Dave
 
-Dave is a materials science engineer, published author, part time philosopher, advent of code leaderboard memeber and ethical mad genius. 
+Dave is a materials science engineer, published author, part time philosopher, advent of code leaderboard member and ethical mad genius. 
 
 # Felipe
 
-Is a software developer, site mantiner, machine learning afficionado, pessimist and general philosophical rambler. 
+Is a software developer, site maintainer, machine learning afficionado, pessimist and general philosophical rambler. 
