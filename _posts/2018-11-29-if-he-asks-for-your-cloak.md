@@ -6,13 +6,11 @@ categories: [Fiction, Writing Prompts]
 tags: [fiction, writing-prompts, david]     # TAG names should always be lowercase
 ---
 
-# If He Asks For Your Cloak
-
 *This was originally written for /r/WritingPrompts: ["[WP] Paradox Objects are items time travellers have left in the past that somehow became the very thing that ends up in the traveller's possession to take back in the first place. Rare and indestructible, these artefacts cannot be created deliberately and are consequently highly sought after."](https://old.reddit.com/r/WritingPrompts/comments/a1i01c/wp_paradox_objects_are_items_time_travellers_have/).*  
 
 *I decided to take some liberties with the prompt, and I had to go back and simplify the plot after it got out of hand, but I think I stayed true to the basic idea.  Writing the whole thing in present tense was, ironically, a mistake in hindsight.*
 
-## Part 1
+# Part 1
 
 You can't change the past. It's absolutely impossible. It's not that you can travel back in time to kill your grandfather, only for your hand to be stayed by an irresistible force - it's that if you going back in time would result in you killing your grandfather, the wormhole will simply never form in the first place. As a result, time travel is as much a question of self-control as it is of engineering. Only those with unbending wills and perfect devotion, who can resist the temptation to change what's already happened, could hope to go back in the first place, or to send anything back.
 
@@ -38,7 +36,7 @@ In Latin, I say "Brother, please give me your Cloak".
 
 Without a word, he gives it to me.
 
-## Part 2
+# Part 2
 
 It's three hours later. The sun has set. Though I can't tell what branch, law enforcement has established a perimeter around the Abbey and has moved in, and as I watched from a set of thick bushes on the hill facing the Abbey, I saw several Brothers and the Abbott being quickly escorted from one building to another, wearing Cloaks from their future selves. I hoped there were more survivors, but I didn't stay to look. Those who were able to give back their Cloaks while in mortal peril likely survived. Those who weren't, likely didn't.
 
@@ -72,7 +70,7 @@ It takes a moment for me to realize that I'm still alive. There is a window dire
 
 I pick it up and wrap it around me, making no sudden moves. The blood is still wet and only seconds old, but the hole isn't frayed or worn at all - it's a perfectly circular hole actually sewn into the fabric. The bullet isn't going to tear the Cloak, I realize - the bullet will pass through the hole already there. And that's...well, 'comforting' isn't the right word, but that's at least interesting. The gunman looks at me, somewhere between astonished and enraged that a miracle just extended my life, and points his gun as if to shoot me again. He doesn't. I think he realizes that there's no point. I'm dead already.
 
-## Part 3
+# Part 3
 
 Three hours later, I'm in an interrogation room in the police station. I'd had enough time to wash the blood from the Cloak in the stream before walking back to the Abbey, and I was intercepted a half mile away at what I assume to be the perimeter of the crime scene. I've told the police my story three times over, and though they believe the time travel part, they keep coming back to Anastasia. Where is the child? Who is the child? Why does our Order even have a nursery? The answer is probably simpler than they'd like to hear. A child was left on our doorstep, years ago, with a note saying that he was born in the future and has no present family, and asking us to care for him. I doubted the story, and so did most of the others, but we did take care of him long enough to find an actual family willing to adopt him. Though we didn't advertise this, word of it must have spread in some circles, because a different infant, a few months later, was left on our doorstep, with a very similar note. And so we built a small nursery to take care of these infants for short periods after they arrive. Even if their given dates of birth are false, the statement that they need a good home is most likely true.
 
