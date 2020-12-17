@@ -2,7 +2,7 @@
 title: Building Blocks of Poetry, Episode 1
 date: 2020-11-19 17:00:00 -0500
 categories: [Building Blocks of Poetry]
-tags: [video, poetry]     # TAG names should always be lowercase
+tags: [video, poetry, david]     # TAG names should always be lowercase
 ---
 
 # The Building Blocks of Poetry, Episode 1
