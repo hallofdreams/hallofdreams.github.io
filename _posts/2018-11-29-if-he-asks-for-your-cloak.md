@@ -46,7 +46,7 @@ The gunshots stopped about five minutes before the law arrived, which is why I'm
 
 Open hearing the word "give", I freeze in my tracks, remembering the words of my vow, and I get a sudden sinking feeling. I don't know how I came to the right conclusion - it was too dark to see all that much - but some subtle recollection from memory made me realize that this was the moment. Without turning around and without showing him the bundle in my arms, I kneel on the road, put down Anastasia, take off my Cloak, and say "Let me show you."
 
-And as I hear footsteps close to a few feet behind me, a shining window opens up to one side, and I hear my own voice. "Frater, peto da me Pallium tuum."
+And as I hear footsteps close to a few feet behind me, a shining window opens up to one side, and I hear my own voice. "*Frater, peto da me Pallium tuum.*"
 
 My would-be attacker is stunned, and stares without saying a word as I take off my Cloak and hand it to him, still keeping Anastasia out of sight. For a moment, I thought he was so entranced or bewildered at actually seeing a Paradox Object both be created and slip from his grasp that he wouldn't shoot. Then, she let out a single sob. It was soft, but my past self heard it. I remember. And if he heard it, so did my attacker. It breaks the spell, and as the window closes he walks in front of me and points the gun to the ground, directly in front of me.
 
@@ -62,7 +62,7 @@ The gun still doesn't waver, but he's listening. Evidently, he'd been briefed on
 
 "But if your time machine once bridged the gap between two places and times, it doesn't need to do so again. If your time machine activated in the past, it doesn't need to activate in the future, and if it activated in the future, it doesn't need to have activated in the past. But that means that once a window exists - it doesn't need a time machine at all. Any more than our Cloaks need thread and sewing needles to be made. The hard part isn't technology. Time travel is taking from the future. The hard part is giving it back."
 
-And breathing in, I recite my vow. "Qui petit a me, dabo ei, et volenti mutuari a me, ne avertaribo. I will give to him that asketh of me, and from him who would borrow from me I will not turn away."
+And breathing in, I recite my vow. "*Qui petit a me, dabo ei, et volenti mutuari a me, ne avertaribo*. I will give to him that asketh of me, and from him who would borrow from me I will not turn away."
 
 That does the trick. I don't know what specifically caused his anger - whether he thought I was lying to him, or whether the truth wasn't what he wanted to hear - but he clearly decided that I wasn't going to give him information he could use, and that if I was lying or duped, he could at least search my corpse. Without another word, he aims the gun at my head and fires.
 
@@ -78,4 +78,4 @@ And if they really were born in the future, or somehow have some causality link 
 
 The police say they'll let me out once they ask me a few more questions, but they were kind enough to let Father Lemaître in to give me Extreme Unction. And the blank wall in front of me looks more familiar the longer I look at it.
 
-Qui petit a me, dabo ei. My older self gave me his life. It's almost time for me to give it back.
+*Qui petit a me, dabo ei*. My older self gave me his life. It's almost time for me to give it back.
