@@ -46,7 +46,7 @@ google_site_verification: rOMa9oYHtFBq7U58IniOX1gggI6noWpOXoWBk-9hItk # change t
 
 # Only if your site type is GitHub Project sites and doesn't have a custom domain,
 # change below value to '/projectname'.
-baseurl: ''
+baseurl: '/hallofdreams'
 
 # Change to your timezone › http://www.timezoneconverter.com/cgi-bin/findzone/findzone
 timezone: America/New_York
