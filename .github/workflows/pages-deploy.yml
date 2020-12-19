@@ -65,9 +65,9 @@ jobs:
             JEKYLL_ENV=production bundle exec jekyll b -b "" -d "$SPEC_TEST"
           fi
 
-      #- name: Test Site
-      #  run: |
-      #    bash tools/test.sh "$SPEC_TEST"
+      - name: Test Site
+        run: |
+          bash tools/test.sh "$SPEC_TEST"
 
       - name: Deploy
         run: |
