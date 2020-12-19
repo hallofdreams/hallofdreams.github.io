@@ -67,7 +67,7 @@ jobs:
 
       - name: Test Site
         run: |
-          bash tools/test.sh "$SPEC_TEST"
+          bash tools/test.sh $SPEC_TEST
 
       - name: Deploy
         run: |
