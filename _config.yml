@@ -198,7 +198,9 @@ sitemap_exclude:  # Sitemap will exclude the following items.
 
 # see: <https://github.com/jekyll/jekyll-archives/blob/master/docs/configuration.md>
 jekyll-archives:  
-  enabled: [categories, tags]
+  enabled:
+    - tag
+    - category
   layouts:
     category: category
     tag: tag
