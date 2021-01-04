@@ -30,12 +30,13 @@ Step 0: importing the data to begin with.  I want an array of characters, so the
 
 **Attempt 0.0:**
 
-```
+```rust
 use std::fs;
 fn main() {
 	let str: INPUT_RAW = fs::read_to_string("../../../Day1Input.txt");
 }
----
+```
+```
 error[E0412]: cannot find type `INPUT_RAW` in this scope
 
 let str: INPUT_RAW = fs::read_to_string("../../../Day1Input.txt");
@@ -46,12 +47,13 @@ I suspect I messed up the order of `let`, so let's try that again.
 
 **Attempt 0.1:**
 
-```
+```rust
 use std::fs;
 fn main() {
 	let INPUT_RAW: str = fs::read_to_string("../../../Day1Input.txt");
 }
----
+```
+```
 error[E0308]: mismatched types
 
 let INPUT_RAW: str = fs::read_to_string("../../../Day1Input.txt");
@@ -62,12 +64,13 @@ I think I have the `let` syntax right this time, but apparently `read_to_string(
 
 **Attempt 0.2:**
 
-```
+```rust
 use std::fs;
 fn main() {
 	let INPUT_RAW: String = fs::read_to_string("../../../Day1Input.txt");
 }
----
+```
+```
 error[E0308]: mismatched types
 
 let INPUT_RAW: String = fs::read_to_string("../../../Day1Input.txt");
@@ -82,12 +85,13 @@ Looking further, it seems that `read_to_string()` returns `Result` indicating wh
 
 **Attempt 0.3:**
 
-```
+```rust
 use std::fs;
 fn main() {
 	let input_raw: String = fs::read_to_string("../../Day1Input.txt").unwrap();
 }
----
+```
+```
 warning: variable `INPUT_RAW` should have a snake case name
 
 let INPUT_RAW: String = fs::read_to_string("../../../Day1Input.txt").unwrap();
@@ -99,13 +103,14 @@ A warning is certainly better than an error message; and this looks easy enough 
 
 **Attempt 0.4:**
 
-```
+```rust
 use std::fs;
 fn main() {
 	let input_raw: String = fs::read_to_string("../../Day1Input.txt").unwrap();
 	println!("Raw Input: {}", input_raw);
 }
-
+```
+```
 Finished dev [unoptimized + debuginfo] target(s) in 0.21s
 ```
 
@@ -115,7 +120,7 @@ Step 0 complete.  The file has been imported as a string.
 
 Next step: get a character array that I can index my way through.  [The Rust documentation](https://doc.rust-lang.org/std/primitive.str.html#method.char_indices) says that `char_indices` is exactly the function I'm looking for.  The big difference from my own experience is in what the function returns.  A function like this in Mathematica would return a list of tuples: `[[1,'('], [2, ')'], ...]`, and it'd load the entire file into the variable that way before returning anything.  In Rust, however, the function is an `iterator`; a function which yields tuples one at a time, and which presumably doesn't load the entire file into the variable first.  Since I only need to go through the file once, this is quite convenient.
 
-```
+```rust
 use std::fs;
 fn main() {
 	let input_raw: String = fs::read_to_string("../../Day1Input.txt").unwrap();
@@ -124,12 +129,13 @@ fn main() {
 	
 	for index in paren_indices.into_iter() {
 		match index.1 {
-			'(' => current_pos += 1,
-			')' => current_pos -= 1,
+			"(" => current_pos += 1,
+			")" => current_pos -= 1,
 		};
 	}
 }
----
+```
+```
 error[E0308]: mismatched types
 
 match index.1 {
@@ -143,7 +149,7 @@ That's interesting; it seems that double quotes are implicitly used for `str`, a
 
 **Attempt 1.1:**
 
-```
+```rust
 use std::fs;
 fn main() {
 	let input_raw: String = fs::read_to_string("../../Day1Input.txt").unwrap();
@@ -157,7 +163,8 @@ fn main() {
 		};
 	}
 }
----
+```
+```
 error[E0004]: non-exhaustive patterns: `'\u{0}'..='\''`, `'*'..='\u{d7ff}'` and `'\u{e000}'..='\u{10ffff}'` not covered
 
 match index.1 {
@@ -171,7 +178,7 @@ Unlike Mathematica's `Which[]` statement, this will return an error if there is 
 
 **Attempt 1.2:**
 
-```
+```rust
 use std::fs;
 fn main() {
 	let input_raw: String = fs::read_to_string("../../Day1Input.txt").unwrap();
@@ -192,7 +199,8 @@ fn main() {
 		}
 	}
 }
----
+```
+```
 error[E0308]: mismatched types
 
 part2 = index.0;
@@ -205,7 +213,7 @@ part2 = index.0.try_into().unwrap();
 The no-op worked.  It seems that indexes of slices of something return `usize` rather than `u32` or `u64`, to make sure that code compiles both on 32-bit and 64-bit machines.  Since I know that the input is much smaller than 2^32 bytes, that's fine by me.
 
 **Attempt 1.3:**
-```
+```rust
 use std::fs;
 fn main() {
 	let input_raw: String = fs::read_to_string("../../Day1Input.txt").unwrap();
@@ -226,7 +234,8 @@ fn main() {
 		}
 	}
 }
----
+```
+```
 error[E0600]: cannot apply unary operator `-` to type `usize`
 
 if current_pos == -1 && part2 == 0 {
@@ -240,14 +249,15 @@ Now we're getting way out of my depth.  The idea that `-1` would be treated as a
 Going with `isize`, however, produces the edge case that if there are more than 2 billion parentheses and I were running this on a 32-bit machine, the integer could overflow or underflow.  I can't say I'm overly worried about this, given that my input file is 7 kB, but I'll check the file size anyway and throw an error if it's larger than the largest size we can store with `isize`.
 
 **Attempt 1.4:**
-```
+```rust
 use std::fs;
 fn main() {
 	let file = "../../Day1Input.txt";
 	let metadata = fs::metadata(file).unwrap();
 	assert!(isize::MAX > metadata.len());
 }
----
+```
+```
 error[E0308]: mismatched types
 
 assert!(isize::MAX > metadata.len());
@@ -260,7 +270,7 @@ assert!(isize::MAX > metadata.len().try_into().unwrap());
 Okay, I should have seen that coming.  `try_into()` seems like a useful function to learn how to use, so I'll include it in my imports list and use it.
 
 **Attempt 1.5:**
-```
+```rust
 use std::fs;
 use std::convert::TryInto;
 
@@ -291,7 +301,8 @@ fn main() {
     println!("Part 1: {}", part1);
     println!("Part 2: {}", part2);
 }
----
+```
+```
 warning: value assigned to `part1` is never read
 warning: variable `paren_indices` does not need to be mutable
 ```
@@ -303,7 +314,7 @@ The warning about `part1` not being read is straightforward enough; I'll just ge
 The warning about `paren_indices` is interesting, however; I'd assumed that an iterator would need to be mutable, since it matches different values whenever it's called, but I suppose that's handled 'internall' to the iterator, and the object itself is the same whenever I call it.
 
 **Final Version:**
-```
+```rust
 use std::fs;
 use std::convert::TryInto;
 use std::time::{Instant};
@@ -339,17 +350,20 @@ fn main() {
     println!("Part 2: {}", part2);
     println!("Time: {} us", end);
 }
----
-Finished dev [unoptimized + debuginfo] target(s) in 0.00s
+```
+```
+Finished release [optimized] target(s) in 0.00s
 
 Part 1: 280
 Part 2: 1797
-Time: 491 us
+Time: 39 us
 ```
 
 And the first two stars are acquired!
 
-I didn't feel like I got that far into Rust-specific features or documentation (I didn't once get yelled at by a borrow checker), but since this is day 1 that's probably for the best; too much difficulty in reading.  My Mathematica script for this problem ran (including the import) in 80 milliseconds, and according to `std::time`, this program (including the import) ran in 0.5 milliseconds, which gives me some idea of why in the world low-level programming languages are worth using for anything other than making high-level programming languages.  And my gut feeling is that I could improve this even further; if I understand it correctly, even this program has `input_raw` reading the entire file into a string before doing anything with it, which is the precise thing `char_indices()` is meant to avoid.  Now that I know one way of doing it, I'll look into reading a file into characters through a buffer next time there's a problem that can benefit from doing so.
+I didn't feel like I got that far into Rust-specific features or documentation (I didn't once get yelled at by a borrow checker), but since this is day 1 that's probably for the best; too much difficulty in reading.  My Mathematica script for this problem ran (including the import) in 80,000 microseconds, and according to `std::time`, this program (including the import) ran in 40 microseconds when compiled for release, which gives me some idea of why in the world low-level programming languages are worth using for anything other than making high-level programming languages.
+
+And my gut feeling is that I could improve this even further; if I understand it correctly, even this program has `input_raw` reading the entire file into a string before doing anything with it, and enumeration in advance is the precise thing `char_indices()` is meant to avoid.  I'll look into reading a file into characters through a buffer next time there's a problem which can benefit.
 
 
 
