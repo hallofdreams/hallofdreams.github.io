@@ -33,13 +33,13 @@ Step 0: importing the data to begin with.  I want an array of characters, so the
 ```rust
 use std::fs;
 fn main() {
-	let str: INPUT_RAW = fs::read_to_string("../../../Day1Input.txt");
+	let str: INPUT_RAW = fs::read_to_string("../Inputs/Day1Input.txt");
 }
 ```
 ```
 error[E0412]: cannot find type `INPUT_RAW` in this scope
 
-let str: INPUT_RAW = fs::read_to_string("../../../Day1Input.txt");
+let str: INPUT_RAW = fs::read_to_string("../Inputs/Day1Input.txt");
          ^^^^^^^^^ not found in this scope
 ```
 I suspect I messed up the order of `let`, so let's try that again.
@@ -50,13 +50,13 @@ I suspect I messed up the order of `let`, so let's try that again.
 ```rust
 use std::fs;
 fn main() {
-	let INPUT_RAW: str = fs::read_to_string("../../../Day1Input.txt");
+	let INPUT_RAW: str = fs::read_to_string("../Inputs/Day1Input.txt");
 }
 ```
 ```
 error[E0308]: mismatched types
 
-let INPUT_RAW: str = fs::read_to_string("../../../Day1Input.txt");
+let INPUT_RAW: str = fs::read_to_string("../Inputs/Day1Input.txt");
                ---   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected `str`, found enum `std::result::Result`
 ```
 
@@ -67,13 +67,13 @@ I think I have the `let` syntax right this time, but apparently `read_to_string(
 ```rust
 use std::fs;
 fn main() {
-	let INPUT_RAW: String = fs::read_to_string("../../../Day1Input.txt");
+	let INPUT_RAW: String = fs::read_to_string("../Inputs/Day1Input.txt");
 }
 ```
 ```
 error[E0308]: mismatched types
 
-let INPUT_RAW: String = fs::read_to_string("../../../Day1Input.txt");
+let INPUT_RAW: String = fs::read_to_string("../Inputs/Day1Input.txt");
                ------   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected struct `String`, found enum `std::result::Result`
                |
                expected due to this
@@ -94,7 +94,7 @@ fn main() {
 ```
 warning: variable `INPUT_RAW` should have a snake case name
 
-let INPUT_RAW: String = fs::read_to_string("../../../Day1Input.txt").unwrap();
+let INPUT_RAW: String = fs::read_to_string("../Inputs/Day1Input.txt").unwrap();
     ^^^^^^^^^ help: convert the identifier to snake case: `input_raw`
 
 = note: `#[warn(non_snake_case)]` on by default
@@ -348,7 +348,7 @@ fn main() {
 	
     println!("Part 1: {}", part1);
     println!("Part 2: {}", part2);
-    println!("Time: {} us", end);
+    println!("Time: {} μs", end);
 }
 ```
 ```
@@ -356,14 +356,435 @@ Finished release [optimized] target(s) in 0.00s
 
 Part 1: 280
 Part 2: 1797
-Time: 39 us
+Time: 39 μs
 ```
 
 And the first two stars are acquired!
 
-I didn't feel like I got that far into Rust-specific features or documentation (I didn't once get yelled at by a borrow checker), but since this is day 1 that's probably for the best; too much difficulty in reading.  My Mathematica script for this problem ran (including the import) in 80,000 microseconds, and according to `std::time`, this program (including the import) ran in 40 microseconds when compiled for release, which gives me some idea of why in the world low-level programming languages are worth using for anything other than making high-level programming languages.
+I didn't feel like I got that far into Rust-specific features or documentation (I didn't once get yelled at by a borrow checker), but since this is day 1 that's probably for the best; there will be plenty of time to encounter more varied errors later.  My Mathematica script for this problem ran (including the import) in 80,000 microseconds, and according to `std::time`, this program (including the import) ran in 40 microseconds when compiled for release, which gives me some idea of why in the world low-level programming languages are worth using for anything other than making high-level programming languages.
 
 And my gut feeling is that I could improve this even further; if I understand it correctly, even this program has `input_raw` reading the entire file into a string before doing anything with it, and enumeration in advance is the precise thing `char_indices()` is meant to avoid.  I'll look into reading a file into characters through a buffer next time there's a problem which can benefit.
 
+# [Day 2](https://www.adventofcode.com/2015/day/2)
 
+The problem: you're given a list of dimensions of the form `lxwxh` for an integer length `l`, a width `w`, and a height `h`.
 
+Part 1: Find the total of the surface area plus the area of the smallest side of each rectangular prism .
+
+Part 2: Find the total of the smallest perimeter of any face plus the cubic volume on each rectangular prism.
+
+----
+
+## David
+
+Another very straightforward problem.  Like day 1, the problem can be solved in a single pass through the file, with no need to store anything in memory.  I was going to try `BufReader` to read the file line by line, but reading it, it seems that the file is just too short to be worth the extra overhead.
+
+**Attempt 0.0:**
+```rust
+use std::fs;
+
+fn main() {
+	let file = "../Inputs/Day2Input.txt";
+	let input_raw: String = fs::read_to_string(file).unwrap();
+	let lines = input_raw.split("/n");
+	for line in lines {
+		let mut dims = line.split('x').collect::<Vec<&str>>();
+		println!("{:?}", dims); // To make sure the previous line worked.
+	}
+}
+```
+```
+Finished dev [unoptimized + debuginfo] target(s) in 0.00s
+ Running `target/debug/day_1`
+```
+
+I was not expecting that to work the first time, but so far so good: I have for each line a vector of strings corresponding to the numerical dimensions.  The next step is to turn those strings into unsigned integers.
+
+**Attempt 0.1:**
+```rust
+use std::fs;
+
+fn main() {
+	let file = "../Inputs/Day2Input.txt";
+	let input_raw: String = fs::read_to_string(file).unwrap();
+	let lines = input_raw.lines();
+	for line in lines {
+		let dims = line
+					.split('x')
+					.parse::<usize>
+					.collect::<Vec<_>>();
+		let length = dims.0;
+		println!("Length: {}", length);
+	}
+}
+```
+```
+error[E0609]: no field `parse` on type `std::str::Split<'_, char>`
+
+.parse::<usize>
+^^^^^ unknown field
+```
+
+Okay, pretty sure the error there was that I forgot parentheses; the turbofish notation (`::<...>`) that specifies type is appended to the function name, but does not replace the parens for the arguments or lackthereof.
+
+**Attempt 0.2:**
+```rust
+use std::fs;
+
+fn main() {
+	let file = "../Inputs/Day2Input.txt";
+	let input_raw: String = fs::read_to_string(file).unwrap();
+	let lines = input_raw.lines();
+	for line in lines {
+		let dims = line
+					.split('x')
+					.parse::<usize>()
+					.collect::<Vec<_>>();
+		let length = dims.0;
+		println!("Length: {}", length);
+	}
+}
+```
+```
+error[E0599]: no method named `parse` found for struct `std::str::Split<'_, char>` in the current scope
+
+.parse::<usize>()
+^^^^^ method not found in `std::str::Split<'_, char>`
+```
+
+Okay, it looks like I'm calling `.parse()` on an iterator; I need to map `parse` over the iterator before it'll work, and then I can `collect` the results at the end.
+Oh, and lest I forget, `.parse()` returns a `Result`, not a value, so I need to `unwrap()` it before I continue.
+
+**Attempt 0.3:**
+
+```rust
+use std::fs;
+
+fn main() {
+	let file = "../Inputs/Day2Input.txt";
+	let input_raw: String = fs::read_to_string(file).unwrap();
+	let lines = input_raw.lines();
+	for line in lines {
+		let dims = line
+					.split('x')
+					.map(|n| n.parse::<usize>().unwrap())
+					.collect::<Vec<_>>();
+		let length = dims.0;
+		println!("Length: {}", length);
+	}
+}
+```
+```
+error[E0609]: no field `0` on type `Vec<usize>`
+let first = dims.0;
+                 ^ unknown field
+```
+
+Interesting: it looks like `.0` works for tuples but not `Vec`.  That's an easy fix, at least.
+
+**Attempt 0.4:**
+
+```rust
+use std::fs;
+
+fn main() {
+	let file = "../Inputs/Day2Input.txt";
+	let input_raw: String = fs::read_to_string(file).unwrap();
+	let lines = input_raw.lines();
+	for line in lines {
+		let dims = line
+					.split('x')
+					.map(|n| n.parse::<usize>().unwrap())
+					.collect::<Vec<_>>();
+		let length = dims[0];
+		println!("Length: {}", length);
+	}
+}
+```
+```
+Finished dev [unoptimized + debuginfo] target(s) in 0.27s
+ Running `target/debug/day_1`
+```
+
+It works!  I now can pass through the file, collecting each number in an array as I go; all I have to do is replace the `println!()` argument with the actual requirements of the problem.  First, let me make sure that vector definition works the way I think it does.
+
+**Attempt 1.0:**
+
+```rust
+use std::fs;
+
+fn main() {
+	let file = "../Inputs/Day2Input.txt";
+	let input_raw: String = fs::read_to_string(file).unwrap();
+	let lines = input_raw.lines();
+	for line in lines {
+		let dims = line
+					.split('x')
+					.map(|n| n.parse::<usize>().unwrap())
+					.collect::<Vec<_>>();
+		let l = dims[0];
+		let w = dims[1];
+		let h = dims[2];
+		
+		let areas = vec![l*w, l*h, w*h];
+		let perims = vec![2*l+2*w, 2*l+2*h, 2*w+2*h];
+	}
+}
+```
+```
+Finished dev [unoptimized + debuginfo] target(s) in 0.28s
+```
+
+I'm almost surprised that it's able to infer the type of the vectors from the type of the components, given that you can easily make something larger than a `usize` by adding or multiplying two `usize` integers together; I know that this particular problem isn't going to encounter such difficulties, but it's something to keep in mind.  
+
+Next, I need to find the minimum area, minimum perimeter, and total area.  Like other functions we've seen like `.map()`, `.min()` and `.sum()` both operate on iterators rather than vectors, so we'll need to use `.into_iter()` again.
+
+**Attempt 1.1:**
+```rust
+use std::fs;
+
+fn main() {
+	let file = "../Inputs/Day2Input.txt";
+	let input_raw: String = fs::read_to_string(file).unwrap();
+	let lines = input_raw.lines();
+	
+	let mut part1: usize = 0;
+	let mut part2: usize = 0;
+	for line in lines {
+		let dims = line
+					.split('x')
+					.map(|n| n.parse::<usize>().unwrap())
+					.collect::<Vec<_>>();
+		let l = dims[0];
+		let w = dims[1];
+		let h = dims[2];
+		
+		let areas = vec![l*w, l*h, w*h];
+		let perims = vec![2*l+2*w, 2*l+2*h, 2*w+2*h];
+		
+		let volume: usize = l*w*h;
+		let min_area = areas.into_iter().min();
+		let sum_area = areas.into_iter().sum();
+		let min_perim = perims.into_iter().min();
+		
+		part1 += min_area;
+		part1 += sum_area;
+		part2 += min_perim;
+		part2 += volume;
+	}
+    println!("Part 1: {}", part1);
+    println!("Part 2: {}", part2);
+}
+```
+```
+error[E0277]: cannot add-assign `Option<usize>` to `usize`
+
+part1 += min_area;
+      ^^ no implementation for `usize += Option<usize>`
+```
+
+I know I need `.unwrap()` at minimum (and even that's the lazy way out; I should in practice be doing more detail error checking) for anything that returns a `Result`; I suppose I need to do the same thing for `Option`s.  Since I've created the vectors myself, I know they're not empty, so I don't expect that to cause trouble.  And I only have to do that for `.min()`; `.sum()` returns whatever type it was called on.
+
+**Attempt 1.2:**
+```rust
+use std::fs;
+
+fn main() {
+	let file = "../Inputs/Day2Input.txt";
+	let input_raw: String = fs::read_to_string(file).unwrap();
+	let lines = input_raw.lines();
+	
+	let mut part1: usize = 0;
+	let mut part2: usize = 0;
+	for line in lines {
+		let dims = line
+					.split('x')
+					.map(|n| n.parse::<usize>().unwrap())
+					.collect::<Vec<_>>();
+		let l = dims[0];
+		let w = dims[1];
+		let h = dims[2];
+		
+		let areas = vec![l*w, l*h, w*h];
+		let perims = vec![2*l+2*w, 2*l+2*h, 2*w+2*h];
+		
+		let volume: usize = l*w*h;
+		let min_area = areas.into_iter().min().unwrap();
+		let sum_area = areas.into_iter().sum();
+		let min_perim = perims.into_iter().min().unwrap();
+		
+		part1 += min_area;
+		part1 += sum_area;
+		part2 += min_perim;
+		part2 += volume;
+	}
+    println!("Part 1: {}", part1);
+    println!("Part 2: {}", part2);
+}
+```
+```
+error[E0282]: type annotations needed
+
+let sum_area = areas.into_iter().sum();
+    ^^^^^^^^ consider giving `sum_area` a type
+```
+
+That's unexpected; why was it fine with the types for `.min()` but not `.sum()`?  Looking at [the documentation for min](https://doc.rust-lang.org/core/iter/trait.Iterator.html#method.min) and [the documentation for sum](https://doc.rust-lang.org/core/iter/trait.Iterator.html#method.sum), the only difference I can see is that since I called `.unwrap()` on `.min()`, I got the inside of `Option<Self::Item>` (which was `Self::Item`), but `.sum()` returns `Sum<Self::Item>`.  So, maybe Rust can't infer a type from the inside of a structure.
+
+**Attempt 1.3:**
+```rust
+use std::fs;
+
+fn main() {
+	let file = "../Inputs/Day2Input.txt";
+	let input_raw: String = fs::read_to_string(file).unwrap();
+	let lines = input_raw.lines();
+	
+	let mut part1: usize = 0;
+	let mut part2: usize = 0;
+	for line in lines {
+		let dims = line
+					.split('x')
+					.map(|n| n.parse::<usize>().unwrap())
+					.collect::<Vec<_>>();
+		let l = dims[0];
+		let w = dims[1];
+		let h = dims[2];
+		
+		let areas = vec![l*w, l*h, w*h];
+		let perims = vec![2*l+2*w, 2*l+2*h, 2*w+2*h];
+		
+		let volume: usize = l*w*h;
+		let min_area = areas.into_iter().min().unwrap();
+		let sum_area: usize = areas.into_iter().sum();
+		let min_perim = perims.into_iter().min().unwrap();
+		
+		part1 += min_area;
+		part1 += sum_area;
+		part2 += min_perim;
+		part2 += volume;
+	}
+    println!("Part 1: {}", part1);
+    println!("Part 2: {}", part2);
+}
+```
+```
+error[E0382]: use of moved value: `areas`
+
+25  |         let areas = vec![l*w, l*h, w*h];
+    |             ----- move occurs because `areas` has type `Vec<usize>`, which does not implement the `Copy` trait
+...
+29  |         let min_area = areas.into_iter().min().unwrap();
+    |                              ----------- `areas` moved due to this method call
+30  |         let sum_area: usize = areas.into_iter().sum();
+    |                               ^^^^^ value used here after move
+```
+
+The errors are getting more interesting now.  Apparently `.into_iter()` actually moves the vector it's calling; I had no idea, because I've so far never used it more than once on the same vector.  I can think of two ways around this: find a way to create an iterator which does not move the vector in the process, or find a way to call both `.min()` and `.sum()` on the same iterator.  I'll try the first option first, calling `.iter()` instead of `.into_iter()` to see if that solves it.
+
+**Attempt 1.4:**
+```rust
+use std::fs;
+
+fn main() {
+	let file = "../Inputs/Day2Input.txt";
+	let input_raw: String = fs::read_to_string(file).unwrap();
+	let lines = input_raw.lines();
+	
+	let mut part1: usize = 0;
+	let mut part2: usize = 0;
+	for line in lines {
+		let dims = line
+					.split('x')
+					.map(|n| n.parse::<usize>().unwrap())
+					.collect::<Vec<_>>();
+		let l = dims[0];
+		let w = dims[1];
+		let h = dims[2];
+		
+		let areas = vec![l*w, l*h, w*h];
+		let perims = vec![2*l+2*w, 2*l+2*h, 2*w+2*h];
+		
+		let volume: usize = l*w*h;
+		let min_area = areas.iter().min().unwrap();
+		let sum_area: usize = areas.into_iter().sum();
+		let min_perim = perims.into_iter().min().unwrap();
+		
+		part1 += min_area;
+		part1 += sum_area;
+		part2 += min_perim;
+		part2 += volume;
+	}
+    println!("Part 1: {}", part1);
+    println!("Part 2: {}", part2);
+}
+```
+```
+error[E0505]: cannot move out of `areas` because it is borrowed
+  --> src/main.rs:30:25
+   |
+29 |         let min_area = areas.iter().min().unwrap();
+   |                        ----- borrow of `areas` occurs here
+30 |         let sum_area: usize = areas.into_iter().sum();
+   |                               ^^^^^ move out of `areas` occurs here
+...
+33 |         part1 += min_area;
+   |                  -------- borrow later used here
+```
+
+At long last, I've gotten yelled at by a borrow checker!  So, it's time to read up on [what exactly a borrow checker is, and why it's yelling at me](https://doc.rust-lang.org/reference/expressions/operator-expr.html).  A cursory read seems to say that when I call `.iter()` the first time, it operates on the *references* to the values while `.into_iter()` operates on the values directly. Since I don't explicitly let go of the references in `.iter()`, when the borrow checker sees that `.into_iter()` calls the values that I'm potentially still referencing and moves them, it says that this is not acceptable, and tells me to knock it off.
+
+The easy solution: call `.iter()` both times.  Neither `.min()` nor `.sum()` needs to modify anything, so I have no problem with giving both immutable references to the same thing.  Multiple functions getting immutable references to the same thing appeases the borrow checker; neither one can modify anything, so memory allocation is safe.
+
+**Final Version**
+```rust
+use std::fs;
+use std::time::{Instant};
+
+fn main() {
+	let start = Instant::now();
+	
+	let file = "../Inputs/Day2Input.txt";
+	let input_raw: String = fs::read_to_string(file).unwrap();
+	let lines = input_raw.lines();
+	
+	let mut part1: usize = 0;
+	let mut part2: usize = 0;
+	for line in lines {
+		let dims = line
+					.split('x')
+					.map(|n| n.parse::<usize>().unwrap())
+					.collect::<Vec<_>>();
+		let l = dims[0];
+		let w = dims[1];
+		let h = dims[2];
+		
+		let areas = vec![l*w, l*h, w*h];
+		let perims = vec![2*l+2*w, 2*l+2*h, 2*w+2*h];
+		
+		let volume: usize = l*w*h;
+		let min_area = areas.iter().min().unwrap();
+		let sum_area: usize = areas.iter().sum();
+		let min_perim = perims.iter().min().unwrap();
+		
+		part1 += min_area;
+		part1 += 2*sum_area;
+		part2 += min_perim;
+		part2 += volume;
+	}
+	
+	let end = start.elapsed().as_micros();
+    println!("Part 1: {}", part1);
+    println!("Part 2: {}", part2);
+    println!("Time: {} μs", end);
+}
+```
+```
+Finished release [optimized] target(s) in 0.00s
+ Running `target/release/day_2`
+Part 1: 1606483
+Part 2: 3842356
+Time: 132 μs
+```
+
+And there it is - two more stars acquired.  I'm fully aware that I don't completely understand borrowing, ownership, and the distinction between reference and value just yet, but I think I'm making progress in that direction.  The speedup from Mathematica was not as drastic today; Mathematica runs this in 50,000 μs, so Rust "only" gives a ~500-fold speedup; I don't expect we'll get to speedups of 10,000x or more until we get to the MD5 problems, but it's still remarkable to see this kind of speed in action.

@@ -27,6 +27,13 @@ $prompt-newer: "{{ site.data.label.post.button.next }}";
   border-color: var(--btn-border-color);
 }
 
+// Change default tab width in code blocks.
+// David, 2021-01-05.
+pre {
+    tab-size: 4;
+    -moz-tab-size: 4;
+}
+
 .post-content {
   > ol, > ul, > dl {
     padding-left: 2rem;
