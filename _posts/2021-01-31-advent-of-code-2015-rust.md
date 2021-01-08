@@ -1328,12 +1328,358 @@ So why did it run so much faster?  My guess is that a lot of it came down to the
 
 Coordinates are something which will come up again, and next time they do, I'll figure out how to make a utilities `crate` to put my `Coords` structure in, along with other structures that I'm sure I'll find useful over the course of the month.
 
+# [Day 4](https://www.adventofcode.com/2015/day/4)
 
+The problem: you're given a string, to which you'll append integers `1`, `2`, `3`, ...
 
+**Part 1**: Find the lowest number which, when appended to the string, produces an MD5 hash with five leading zeroes.
 
+**Part 2**: Find the lowest number which, when appended to the string, produces an MD5 hash with six leading zeroes.
 
+----
 
+This one is probably going to be my largest speedup of 2015's Advent of Code: Mathematica's built-in MD5 function was so slow that I didn't use it for future MD5 problems, just this one.  It took 120.07 seconds to get part 2 with the built-in function in Mathematica: I'd like to see a thousand-fold speedup, at least.
 
+## Attempt 0.0
+
+```rust
+use std::fs;
+use md5::{Md5, Digest};
+
+fn main() {
+	let file = "../Inputs/Day4Input.txt";
+	let input_raw: String = fs::read_to_string(file).unwrap();
+	
+	let mut i: u64 = 1;
+	let mut hash = Md5::new()
+		.chain(input_raw)
+		.chain(i.to_string())
+		.finalize();
+	
+	println!("First MD5: {}",hash);
+}
+```
+```
+    Updating crates.io index
+  Downloaded typenum v1.12.0
+  Downloaded generic-array v0.9.0
+  Downloaded digest v0.7.6
+  Downloaded byte-tools v0.2.0
+  Downloaded block-buffer v0.3.3
+  Downloaded arrayref v0.3.6
+  Downloaded md-5 v0.7.0
+  Downloaded 7 crates (91.9 KB) in 0.56s
+   Compiling typenum v1.12.0
+   Compiling byte-tools v0.2.0
+   Compiling arrayref v0.3.6
+   Compiling block-buffer v0.3.3
+   Compiling generic-array v0.9.0
+   Compiling digest v0.7.6
+   Compiling md-5 v0.7.0
+   Compiling day_4 v0.1.0 (/home/david/Programming/Advent of Code/2015/Rust/day_4)
+error[E0599]: no method named `chain` found for struct `Md5` in the current scope
+   |
+10 |         .chain(input_raw)
+   |          ^^^^^ method not found in `Md5`
+   | 
+  ::: /home/david/.cargo/registry/src/github.com-1ecc6299db9ec823/md-5-0.7.0/src/lib.rs:29:1
+   |
+29 | pub struct Md5 {
+   | -------------- doesn't satisfy `Md5: Iterator`
+   |
+   = note: the method `chain` exists but the following trait bounds were not satisfied:
+           `Md5: Iterator`
+           which is required by `&mut Md5: Iterator`
+```
+First issue: there are actually two packages which implement `MD5` in Rust: `md5` and `md-5`.  The latter is part of a wider network of [cryptographic Rust functions and crates](https://github.com/RustCrypto/hashes), so I think that's the one I want, but the confusion isn't great.
+
+More concerningly, though, is the second issue: the syntax (which I copied straight from the documentation) does not work.  Since the documentation lists the `digest()` function as well, perhaps we can get away with concatenating the string inside the digest and doing it that way.
+
+## Attempt 0.1
+```rust
+use std::fs;
+use md5::{Md5, Digest};
+
+fn main() {
+	let file = "../Inputs/Day4Input.txt";
+	let input_raw: String = fs::read_to_string(file).unwrap();
+	
+	let mut i: u64 = 1;
+	let mut hash = Md5::digest(input_raw + i.to_string());
+
+	println!("First MD5: {:x}",hash);
+}
+```
+```
+error[E0308]: mismatched types
+
+let mut hash = Md5::digest(input_raw + i.to_string());
+                                       ^^^^^^^^^^^^^
+                                       |
+                                       expected `&str`, found struct `String`
+                                       help: consider borrowing here: `&i.to_string()`
+
+error[E0308]: mismatched types
+
+let mut hash = Md5::digest(input_raw + i.to_string());
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^ expected `&[u8]`, found struct `String`
+```
+
+This tells me that `digest` expects a vector of 8-bit numbers, which shouldn't be difficult.  It also tells me that `+` works as a concatenation operator if I pass in a reference; good to know for later.  According to the documentation, [`as_bytes`](https://doc.rust-lang.org/std/string/struct.String.html#method.as_bytes) returns a vector of bytes from a `String`, and I can preallocate that vector of bytes.
+
+## Attempt 0.2
+```rust
+use std::fs;
+use md5::{Md5, Digest};
+
+fn main() {
+	let file = "../Inputs/Day4Input.txt";
+	let input_raw: String = fs::read_to_string(file).unwrap();
+	
+	let mut i: u64 = 1;
+	let mut hash = Md5::digest((input_raw + &i.to_string()).as_bytes());
+
+	println!("First MD5: {:x}",hash);
+}
+```
+```
+Finished release [optimized] target(s) in 0.37s
+ Running `target/release/day_4`
+First MD5: 71a54df5b9348fb5e473970ba9e36453
+```
+
+Okay!  That went better than expected.  Time to try a loop.
+
+## Attempt 0.3
+
+```rust
+use std::fs;
+use md5::{Md5, Digest};
+
+fn main() {
+	let file = "../Inputs/Day4Input.txt";
+	let input_raw: String = fs::read_to_string(file).unwrap();
+	
+	let mut i: u64 = 1;
+	
+	while i < 10 {
+	let mut hash = Md5::digest((input_raw + &i.to_string()).as_bytes());
+	println!("MD5 {}: {:x}",i,hash);
+	i += 1;
+	}
+}
+```
+```
+error[E0382]: use of moved value: `input_raw`
+
+let input_raw: String = fs::read_to_string(file).unwrap();
+    --------- move occurs because `input_raw` has type `String`, which does not implement the `Copy` trait
+...
+let mut hash = Md5::digest((input_raw + &i.to_string()).as_bytes());
+                            ^^^^^^^^^ value moved here, in previous iteration of loop
+```
+
+This is what I was worried about; the concatenation operator works, but it borrows the original string.  Fortunately, even though `String` does not implement the `Copy` trait, it does implement the `Clone` trait (I'm unsure of the difference), so I can just use that.
+
+## Attempt 0.4
+```rust
+use std::fs;
+use md5::{Md5, Digest};
+
+fn main() {
+	let file = "../Inputs/Day4Input.txt";
+	let input_raw: String = fs::read_to_string(file).unwrap();
+	
+	let mut i: u64 = 1;
+	
+	while i < 10 {
+		let hash = Md5::digest((input_raw.clone() + &i.to_string()).as_bytes());
+		println!("MD5 {}: {:x}",i,hash);
+		i += 1;
+	};
+}
+```
+```
+Compiling day_4 v0.1.0 (/home/david/Programming/Advent of Code/2015/Rust/day_4)
+ Finished release [optimized] target(s) in 0.38s
+  Running `target/release/day_4`
+MD5 1: 71a54df5b9348fb5e473970ba9e36453
+MD5 2: bb9eb4a19114eb25c0fb75f45688c562
+MD5 3: 997acccc1d4f625dc6e8318725dce7e3
+MD5 4: c1a1c0bd9881ac01e00d24c39b8a37b9
+MD5 5: 96c90020ef3e3ae00d6dfae8031aeb19
+MD5 6: 6bfd2b83794f3b22d35aa5bd17e5e7f0
+MD5 7: 3a45dceb179828a206150e5b9f88bc74
+MD5 8: 7cb64e4f857d76f49e3d55706c122d96
+MD5 9: a8290c156e6003f803d530787cddf969
+```
+
+The code works and I have my MD5 hashes.  Let me try moving the print statement after the while loop, so it only prints once.
+
+## Attempt 1.0
+
+```rust
+use std::fs;
+use md5::{Md5, Digest};
+
+fn main() {
+	let file = "../Inputs/Day4Input.txt";
+	let input_raw: String = fs::read_to_string(file).unwrap();
+	
+	let mut i: u64 = 1;
+	
+	while i < 10 {
+		let hash = Md5::digest((input_raw.clone() + &i.to_string()).as_bytes());
+		println!("MD5 {}: {:x}",i,hash);
+		i += 1;
+	};
+}
+```
+```
+error[E0425]: cannot find value `hash` in this scope
+
+println!("MD5 10: {:x}",hash);
+                        ^^^^ not found in this scope
+```
+
+This is fascinating, and this is one of the many differences between a high-level and low-level language.  Rust apparently assigns a `scope` to every variable, and if a variable is created inside a `while` loop, it can't be referenced outside that `while` loop.  If I did something similar in Mathematica, I could use a `Module[]` to define a local variable, but here I suppose that scopes are everywhere.  I could fix this by defining `hash` before the loop, but that was only ever a debug statement anyway, so I may as well crack on with the problem.
+
+## Attempt 1.1
+```rust
+use std::fs;
+use md5::{Md5, Digest};
+
+fn main() {
+	let file = "../Inputs/Day4Input.txt";
+	let input_raw: String = fs::read_to_string(file).unwrap();
+	
+	let mut i: u64 = 0;
+	let part1: u64 = 0;
+	let part2: u64 = 0;
+		
+	while i < 100000 {
+		i += 1;
+		let mut hash = Md5::digest((input_raw.clone() + &i.to_string()).as_bytes());
+		
+		for j in 0..4 {
+			if hash.pop() != 0 { continue};
+		};
+		if part1 == 0 {
+			part1 = i;
+			break;
+		}
+	};
+	println!("Part 1: {:x}",part1);
+}
+```
+```
+error[E0599]: no method named `pop` found for struct `generic_array::GenericArray<u8, typenum::uint::UInt<typenum::uint::UInt<typenum::uint::UInt<typenum::uint::UInt<typenum::uint::UInt<typenum::uint::UTerm, typenum::bit::B1>, typenum::bit::B0>, typenum::bit::B0>, typenum::bit::B0>, typenum::bit::B0>>` in the current scope
+
+if hash.pop() != 0 {
+       ^^^ method not found in `generic_array::GenericArray<u8, typenum::uint::UInt<typenum::uint::UInt<typenum::uint::UInt<typenum::uint::UInt<typenum::uint::UInt<typenum::uint::UTerm, typenum::bit::B1>, typenum::bit::B0>, typenum::bit::B0>, typenum::bit::B0>, typenum::bit::B0>>`
+```
+
+I tried to be clever and use the built-in `pop()` method for `Vec`, not realizing that what `digest()` returns is not a `Vec` but in fact a `GenericArray`, which is a fixed-length array.  So much for cleverness, I suppose.
+
+## Attempt 1.2
+
+```rust
+use std::fs;
+use md5::{Md5, Digest};
+
+fn main() {
+	let file = "../Inputs/Day4Input.txt";
+	let input_raw: String = fs::read_to_string(file).unwrap();
+	
+	let mut i: u64 = 0;
+	let mut part1: u64 = 0;
+	let mut part2: u64 = 0;
+		
+	'outer while i < 100000 {
+		i += 1;
+		let hash = Md5::digest((input_raw.clone() + &i.to_string()).as_bytes());
+		
+		for j in 1..=5 {
+			if hash[j] != 0 { continue 'outer};
+		};
+		if part1 == 0 {
+			part1 = i;
+			break;
+		}
+	};
+	println!("Part 1: {:x}",part1);
+}
+```
+```
+error: labeled expression must be followed by `:`
+
+      'outer while i < 100000 {
+      ^------ help: add `:` after the label
+      |
+ _____the label
+|
+|         i += 1;
+|         let hash = Md5::digest((input_raw.clone() + &i.to_string()).as_bytes());
+|         
+|
+|         }
+|     };
+|_____^
+|
+   = note: labels are used before loops and blocks, allowing e.g., `break 'label` to them
+```
+
+I'm a bit disappointed that I didn't get a numbered error message for this one; I'm only at 13 unique error codes out of the [422 possible compiler error codes emitted in this version of Rust](https://doc.rust-lang.org/error-index.html), and I'll really need to pick up the pace if I want a decent score by the end of the month.  I realized while fixing the last issue that my `continue` only exited the innermost loop, and so I tried to label the outermost loop to specify the which loop should be jumped to.
+
+I'll fix that, of course, but now I see another problem.  The digest is in `Vec<u8>`, which means that I'm checking pairs of hexadecimal digits rather than individual hexadecimal digits.  While this works fine for part 2 - I could just check three pairs - I'll have to modify it a little bit.  Also, vectors in Rust are 0-indexed, meaning that I have to change that bit too.  But I'm close.
+
+## Final Version
+```rust
+use std::fs;
+use md5::{Md5, Digest};
+use std::time::{Instant};
+
+fn main() {
+	let start = Instant::now();
+	
+	let file = "../Inputs/Day4Input.txt";
+	let mut input_raw: String = fs::read_to_string(file).unwrap();
+	let len = input_raw.len();
+	input_raw.truncate(len - 1); // Normally I filter out the trailing newline, but here it's too annoying.
+	
+	let mut i: u64 = 0;
+	let mut part1: u64 = 0;
+	let mut part2: u64 = 0;
+		
+	'outer: while i < 100000000 {
+		i += 1;
+		let hash = Md5::digest((input_raw.clone() + &i.to_string()).as_bytes());
+		
+		for j in 0..=1 {
+			if hash[j] != 0 { continue 'outer};
+		};
+		if hash[2] < 16 {
+			if part1 == 0 { part1 = i;}
+			if hash[2] == 0 {part2 = i; break;}
+		}
+	};
+	let end = start.elapsed().as_micros();
+	
+	println!("Part 1: {}",part1);
+	println!("Part 2: {}",part2);
+    println!("Time: {} μs", end);
+}
+```
+```
+Part 1: 254575
+Part 2: 1038736
+Time: 199189 μs
+```
+I skipped to the end here, because my remaining troubles were with realizing that `read_to_string()` includes a trailing newline for some reason, and getting a program which ran but returned the wrong answer.  So, stars 7 and 8 acquired!  The program runs in 199 ms, for a speedup of 600x over my Mathematica script, and unlike the previous days where the difference was between milliseconds and microseconds, this time the program went from "takes a noticeable and annoying amount of time to run" to "does not take any appreciable time to run".  
+
+I was hoping for a thousand-fold speedup, but it's hard to see how to improve upon this much; the only easy thing I thought of is to precompute the `input_raw.clone()` into its `as_bytes()` form, but trying that, the runtime only went down to 185 ms.  To get much further, I think I'd need a deeper understanding of Md5 and the way Rust allocates vectors; maybe create a new fixed-length vector every power of 10, and change only the specific elements that need changing whenever `i` increases?  I don't even know if that would work, let alone if that'd be faster.
+
+So, beating ~185 ns per Md5 hash is going to be difficult for these problems, but all in all, I'm happy with that.  I just hope this monotonically increasing program runtime trend doesn't continue.
 
 
 
