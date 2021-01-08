@@ -27,6 +27,10 @@ $prompt-newer: "{{ site.data.label.post.button.next }}";
   border-color: var(--btn-border-color);
 }
 
+pre {
+    tab-size: 4;
+} // Change tab size from 8 to 4.  David, 2021-01-07.
+
 .post-content {
   > ol, > ul, > dl {
     padding-left: 2rem;
