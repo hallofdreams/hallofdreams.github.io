@@ -79,7 +79,7 @@ let INPUT_RAW: String = fs::read_to_string("../Inputs/Day1Input.txt");
 
 Two pieces of information here.  The first is that the type being returned is not any type of string but `std::result::Result`.  I can see that [the documentation for `read_to_string()`](https://doc.rust-lang.org/std/fs/fn.read_to_string.html) is embedded in a function which returns a `Result`, so maybe `read_to_string()` returns a `Result` and won't work inside a function that doesn't return one?  
 
-Looking further, it seems that `read_to_string()` returns `Result` indicating whether or not the function succeeded in importing.  I'm reasonably certain that this file I manually placed in is indeed present (and if it isn't, then the program is gonig to fail regardless), and I don't know whether or not a kernel panic is 'worse' in some sense than throwing a regular error for a program this small.  It seems that `unwrap()` gets the interior of a successful `Result`, so I'll tell Rust to assume that the result is succesful and worry about error catching later.
+Looking further, it seems that `read_to_string()` returns `Result` indicating whether or not the function succeeded in importing.  I'm reasonably certain that this file I manually placed in is indeed present (and if it isn't, then the program is going to fail regardless), and I don't know whether or not a kernel panic is 'worse' in some sense than throwing a regular error for a program this small.  It seems that `unwrap()` gets the interior of a successful `Result`, so I'll tell Rust to assume that the result is succesful and worry about error catching later.
 
 ## Attempt 0.3
 
@@ -1696,7 +1696,7 @@ The problem: you're given a list of strings, each sixteen characters long.
 
 ----
 
-Computationally, the first requirement of part 2 is going to be the most expensive one; I'll have to either check every pair of strings or create a `HashMap` for every string.  I'll probably do the latter; I can initialize the `HashMap` with exactly the size I need (and I'll throw in an `!assert()` to make sure that there aren't any strings longer than 16 characters), and fill it in as I go.  But I'll start with part 1, regardless.
+Computationally, the second requirement of part 2 is going to be the most expensive one; I'll have to either check every pair of strings or create a `HashMap` for every string.  I'll probably do the latter; I can initialize the `HashMap` with exactly the size I need (and I'll throw in an `!assert()` to make sure that there aren't any strings longer than 16 characters), and fill it in as I go.  But I'll start with part 1, regardless.
 
 ## Attempt 0.0
 ```rust
@@ -2110,6 +2110,322 @@ Time: 2398 μs
 Part 2 complete!
 
 Doing this iteratively wasn't nearly as bad as I thought it was going to be, syntax-wise; despite still making multiple mistakes, I'm starting to anticipate errors before the borrow checker warns me about them, rather than just adding or removing `&` at random and hoping for the best.  And the runtime continues to amaze me; my Mathematica code ran in 0.16 seconds, so this is a speedup of 700x.  I still have five or six tabs open to the documentation at all times, but the frequency at which I check them is, slowly, going down.
+
+# Day 6
+
+The problem: for a grid of 1000x1000 lights, you're given a series of instructions to turn a range of lights on, turn them off, or toggle them.
+
+**Part 1:** Implement the instructions, and count how many lights remain on at the end.
+
+**Part 2:** Implement the instructions if lights are no longer binary but have integer-valued brightness, and count the total brightness at the end.
+
+## Attempt 0.0
+
+Looking around online, I see that there is an [`Array2D` crate](https://docs.rs/array2d/0.2.1/array2d/), but I'm unsure what advantages it has over a normal, mutable 2D vector; when in doubt, I'll stick with the baseline Rust code.
+
+```rust
+use std::fs;
+
+fn main() {
+	let file = "../Inputs/Day5Input.txt";
+	let input_raw: String = fs::read_to_string(file).unwrap();
+	
+	let mut first_lights = [[0u1; 1000]; 1000];
+	first_lights[5][6] = 5;
+	println!("Position 5, 6 = {}", first_lights[5][6]);
+}
+```
+```
+Finished release [optimized] target(s) in 0.49s
+ Running `target/release/day_6`
+Position 5, 6 = 5
+```
+
+A `u8` is enough for part 1, and if a `u1` existed, I'd use that instead; the lights can only have a binary value.  I'll switch to `u16` for part 2.
+
+## Attempt 0.1
+```rust
+use std::fs;
+
+fn main() {
+	let file = "../Inputs/Day5Input.txt";
+	let input_raw: String = fs::read_to_string(file).unwrap();
+	
+	let mut first_lights = [[0u8; 1000]; 1000];
+	first_lights[5][6] = 5;
+	
+	let mut sum: u64 = 0;
+	for row in &mut first_lights[..] {
+		for light in &mut row {
+			sum += *light;
+		}
+	}
+	
+	println!("Total brightness = {}", sum);
+}
+```
+```
+error[E0277]: `[u8; 1000]` is not an iterator
+
+for light in &mut row {
+             ^^^^^^^^ borrow the array with `&` or call `.iter()` on it to iterate over it
+= help: the trait `Iterator` is not implemented for `[u8; 1000]`
+= note: arrays are not iterators, but slices like the following are: `&[1, 2, 3]`
+= note: required because of the requirements on the impl of `Iterator` for `&mut [u8; 1000]`
+```
+
+So, it seems that the [slice](https://doc.rust-lang.org/book/ch04-03-slices.html) notation does indeed work, and calling a mutable reference on a slice seems to allow for the in-place modification of the object being sliced.  What I forgot was that I *also* needed a mutable reference to a slice of `row`, because `row` is also a `Vec`.
+
+## Attempt 0.2
+```rust
+use std::fs;
+
+fn main() {
+	let file = "../Inputs/Day5Input.txt";
+	let input_raw: String = fs::read_to_string(file).unwrap();
+	
+	let mut first_lights = [[0u8; 1000]; 1000];
+	first_lights[5][6] = 5;
+	
+	let mut sum: u64 = 0;
+	for row in &mut first_lights[..] {
+		for light in &mut row[..] {
+			sum += *light;
+		}
+	}
+	
+	println!("Total brightness = {}", sum);
+}
+```
+```
+error[E0277]: cannot add-assign `u8` to `u64`
+
+sum += *light;
+    ^^ no implementation for `u64 += u8`
+= help: the trait `AddAssign<u8>` is not implemented for `u64`
+```
+Okay, I forgot about how strict types are in Rust.  Still, I now know a better option than `TryInto`, which was my old go-to.
+
+## Attempt 0.3
+```rust
+use std::fs;
+
+fn main() {
+	let file = "../Inputs/Day5Input.txt";
+	let input_raw: String = fs::read_to_string(file).unwrap();
+	
+	let mut first_lights = [[0u8; 1000]; 1000];
+	first_lights[5][6] = 5;
+	
+	let mut sum: u64 = 0;
+	for row in &mut first_lights[..] {
+		for light in &mut row[..] {
+			sum += (*light as u64);
+		}
+	}
+	
+	println!("Total brightness = {}", sum);
+}
+```
+```
+Finished release [optimized] target(s) in 0.23s
+ Running `target/release/day_6`
+Total brightness = 5
+```
+Slicing works; let's import the actual slice ranges we'll need.
+
+## Attempt 0.4
+```rust
+use std::fs;
+
+fn main() {
+	let file = "../Inputs/Day5Input.txt";
+	let input_raw: String = fs::read_to_string(file).unwrap();
+	
+	let mut first_lights = [[0u16; 1000]; 1000];
+	
+	for line in input_raw.lines() {
+		let mut tokens = line.split(|c| c == ' ' || c == ',');
+		let mut keyword = tokens.next().unwrap();
+		if keyword == "turn" {
+			keyword = tokens.next().unwrap();
+		};
+		let xmin: usize = tokens.next().unwrap().parse().unwrap();
+		let ymin: usize = tokens.next().unwrap().parse().unwrap();
+		tokens.next();
+		let xmax: usize = tokens.next().unwrap().parse().unwrap();
+		let ymax: usize = tokens.next().unwrap().parse().unwrap();
+		
+		println!("{} {} {} {} {}",keyword,xmin,ymin,xmax,ymax)
+	}
+	
+	let mut sum: u64 = 0;
+	for row in &mut first_lights[..] {
+		for light in &mut row[..] {
+			sum += *light as u64;
+		}
+	}
+	
+	println!("Total brightness = {}", sum);
+}
+```
+```
+Finished release [optimized] target(s) in 0.36s
+ Running `target/release/day_6`
+thread 'main' panicked at 'called `Option::unwrap()` on a `None` value', src/main.rs:15:41
+```
+So the very first token failed, before anything at all was printed.  Each line is one of the following three types:
+```
+toggle 258,985 through 663,998
+turn on 601,259 through 831,486
+turn off 914,94 through 941,102
+```
+I'm splitting by either spaces or commas, and I take into account the different possible message lengths...but I'm not taking into account importing from yesterday's input file rather than today's.  Oops.
+
+But this is why Rust's error messages are so useful.  If all I knew was that the program failed at that line, I wouldn't know why - but there's no way that it could have returned `None` on my input after just one space, so I knew exactly where to look.
+
+## Attempt 0.4
+```rust
+use std::fs;
+
+fn main() {
+	let file = "../Inputs/Day6Input.txt";
+	let input_raw: String = fs::read_to_string(file).unwrap();
+	
+	let mut first_lights = [[0u16; 1000]; 1000];
+	
+	for line in input_raw.lines() {
+		let mut tokens = line.split(|c| c == ' ' || c == ',');
+		let mut keyword = tokens.next().unwrap();
+		if keyword == "turn" {
+			keyword = tokens.next().unwrap();
+		};
+		let xmin: usize = tokens.next().unwrap().parse().unwrap();
+		let ymin: usize = tokens.next().unwrap().parse().unwrap();
+		tokens.next();
+		let xmax: usize = tokens.next().unwrap().parse().unwrap();
+		let ymax: usize = tokens.next().unwrap().parse().unwrap();
+		
+		for row in &mut first_lights[xmin..=xmax] {
+			for light in &mut row[ymin..=ymax] {
+				*light = match keyword {
+					"on" => 1,
+					"off" => 0,
+					"toggle" => if *light == 1 {0} else {1}, 
+					_ => 0
+				}
+			}
+		}
+	}
+	
+	let mut sum: u64 = 0;
+	for row in &mut first_lights[..] {
+		for light in &mut row[..] {
+			sum += *light as u64;
+		}
+	}
+	
+	println!("Total brightness = {}", sum);
+}
+```
+```
+Finished release [optimized] target(s) in 0.39s
+ Running `target/release/day_6`
+Total brightness = 569999
+```
+
+Star 1 acquired; now I just rinse and repeat for star 2.
+
+## Final Version
+```rust
+use std::fs;
+use std::time::{Instant};
+
+fn main() {
+	let start = Instant::now();
+
+	let file = "../Inputs/Day6Input.txt";
+	let input_raw: String = fs::read_to_string(file).unwrap();
+	
+	let mut first_lights = [[0u16; 1000]; 1000];
+	let mut second_lights = [[0u16; 1000]; 1000];
+	
+	for line in input_raw.lines() {
+		let mut tokens = line.split(|c| c == ' ' || c == ',');
+		let mut keyword = tokens.next().unwrap();
+		if keyword == "turn" {
+			keyword = tokens.next().unwrap();
+		};
+		let xmin: usize = tokens.next().unwrap().parse().unwrap();
+		let ymin: usize = tokens.next().unwrap().parse().unwrap();
+		tokens.next();
+		let xmax: usize = tokens.next().unwrap().parse().unwrap();
+		let ymax: usize = tokens.next().unwrap().parse().unwrap();
+		
+		for row in &mut first_lights[xmin..=xmax] {
+			for light in &mut row[ymin..=ymax] {
+				*light = match keyword {
+					"on" => 1,
+					"off" => 0,
+					"toggle" => if *light == 1 {0} else {1}, 
+					_ => 0
+				}
+			}
+		}
+		for row in &mut second_lights[xmin..=xmax] {
+			for light in &mut row[ymin..=ymax] {
+				*light = match keyword {
+					"on" => *light + 1,
+					"off" => if *light <= 1 {0} else {*light - 1},
+					"toggle" => *light + 2, 
+					_ => 0
+				}
+			}
+		}
+	}
+	
+	let mut part1: u64 = 0;
+	for row in &mut first_lights[..] {
+		for light in &mut row[..] {
+			part1 += *light as u64;
+		}
+	}
+	let mut part2: u64 = 0;
+	for row in &mut second_lights[..] {
+		for light in &mut row[..] {
+			part2 += *light as u64;
+		}
+	}
+	let end = start.elapsed().as_micros();
+	
+	println!("Part 1: {}", part1);
+	println!("Part 2: {}", part2);
+    println!("Time: {} μs", end);
+}
+```
+```
+Part 1: 569999
+Part 2: 17836115
+Time: 48406 μs
+```
+
+Part 2 complete!  Fairly verbose - I'm sure there's a more elegant way of applying a function to the interior of an array in Rust than the way I'm doing it - but not too bad in terms of readability.  The runtime is not bad, either; there were twenty-three million assignments total for my input, so a total time of 48 μs means that Rust is taking at most 2 nanoseconds per assignment; without parallelizing, it's hard to see how to beat that.  Mathematica took 43 seconds, so a speedup this time of roughly 900x.  Which is about consistent with my other comparisons so far for instances where Mathematica doesn't have a built-in.
+
+You might notice that I have `&mut first_lights`, `&mut second_lights`, and `&mut row` towards the end, in the summation loops.  Those references certainly don't need to be mutable, because I'm not altering the vectors at that point - but for some reason, I get a roughly 2% speed reduction by doing that instead of `&first_lights` etc.  I have no idea why a mutable reference would be faster.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
