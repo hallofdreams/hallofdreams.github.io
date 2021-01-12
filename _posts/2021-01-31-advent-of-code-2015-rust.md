@@ -834,7 +834,7 @@ Finished dev [unoptimized + debuginfo] target(s) in 0.22s
 Current position: -95, -41
 ```
 
-No error messages yet, because this is all stuff we've done before.  Now we need to add the `HashMap`; I'll try turning `x` and `y` into string, concatenating them with a comma in between, and then using the resulting string as a key.  
+No error messages yet, because this is all stuff we've done before.  Now we need to add the `HashMap`; I'll try turning `x` and `y` into a string, concatenating them with a comma in between, and then using the resulting string as a key.  
 
 ## Attempt 0.1
 
@@ -932,7 +932,7 @@ if !santa_1.contains_key(k) {
 
 This is one of the most helpful error messages I've seen yet, as it directly tells me what to do to fix the problem: replace `.contains_key(k)` with `.contains_key(&k)`.  But before I do that, I want to understand *why*.  From the error message, it's clear that `.insert()` expects a reference, not a `String`, but [the documentation for `HashMap`](https://doc.rust-lang.org/beta/std/collections/struct.HashMap.html) doesn't explicitly say this; in fact, it doesn't even say that keys have to be strings, just that keys have to implement the `Eq` and `Hash` traits.  My guess, for now, is that equality is checked by means of references and not string values, but I'm unclear on that.  Still, that gives me enough to finish off the problem.
 
-## Attempt 0.4
+## Attempt 0.3
 
 ```rust
 use std::fs;
@@ -2111,7 +2111,7 @@ Part 2 complete!
 
 Doing this iteratively wasn't nearly as bad as I thought it was going to be, syntax-wise; despite still making multiple mistakes, I'm starting to anticipate errors before the borrow checker warns me about them, rather than just adding or removing `&` at random and hoping for the best.  And the runtime continues to amaze me; my Mathematica code ran in 0.16 seconds, so this is a speedup of 700x.  I still have five or six tabs open to the documentation at all times, but the frequency at which I check them is, slowly, going down.
 
-# Day 6
+# [Day 6](https://www.adventofcode.com/2015/day/6)
 
 The problem: for a grid of 1000x1000 lights, you're given a series of instructions to turn a range of lights on, turn them off, or toggle them.
 
@@ -2284,7 +2284,7 @@ I'm splitting by either spaces or commas, and I take into account the different 
 
 But this is why Rust's error messages are so useful.  If all I knew was that the program failed at that line, I wouldn't know why - but there's no way that it could have returned `None` on my input after just one space, so I knew exactly where to look.
 
-## Attempt 0.4
+## Attempt 0.5
 ```rust
 use std::fs;
 
@@ -2409,26 +2409,536 @@ Part 2: 17836115
 Time: 48406 μs
 ```
 
-Part 2 complete!  Fairly verbose - I'm sure there's a more elegant way of applying a function to the interior of an array in Rust than the way I'm doing it - but not too bad in terms of readability.  The runtime is not bad, either; there were twenty-three million assignments total for my input, so a total time of 48 μs means that Rust is taking at most 2 nanoseconds per assignment; without parallelizing, it's hard to see how to beat that.  Mathematica took 43 seconds, so a speedup this time of roughly 900x.  Which is about consistent with my other comparisons so far for instances where Mathematica doesn't have a built-in.
+Part 2 complete!  Fairly verbose - I'm sure there's a more elegant way of applying a function to the interior of an array in Rust than the way I'm doing it - but not too bad in terms of readability.  The runtime is not bad, either; there were twenty-three million assignments total for each part of my input, so a total time of 48 μs means that Rust is taking just over 1 nanosecond per assignment; without parallelizing, it's hard to see how to beat that.  Mathematica took 43 seconds, so a speedup this time of roughly 900x.  Which is about consistent with my other comparisons so far for instances where Mathematica doesn't have a built-in.
 
 You might notice that I have `&mut first_lights`, `&mut second_lights`, and `&mut row` towards the end, in the summation loops.  Those references certainly don't need to be mutable, because I'm not altering the vectors at that point - but for some reason, I get a roughly 2% speed reduction by doing that instead of `&first_lights` etc.  I have no idea why a mutable reference would be faster.
 
+# [Day 7](https://www.adventofcode.com/2015/day/7)]
 
+The problem: you're given a series of 16-bit bitwise logic gates; some take numerical signals, while others take signals from the outputs of other logic gates.  The gates are in no particular order.
 
+**Part 1:** Implement the instructions, and determine the signal output on wire `a`.
 
+**Part 2:** Override wire `b` with the signal received on wire `a` for the last part, and run the network again.
 
+## Attempt 0.0
 
+This is the first problem where the algorithm really makes a difference; there are multiple ways to approach this problem, and it's not immediately obvious which one in Rust will provide the most efficient solution.  The problem is clearly a [directed acyclic graph](https://en.wikipedia.org/wiki/Directed_acyclic_graph), as each bitwise logic gate feeds into another without loops.  This means that if I could traverse the list in [topological order](https://en.wikipedia.org/wiki/Topological_sorting), I could simply store the value of each logic gate output in a `struct` somewhere, call the value when needed, and not worry about failed calls.
 
+However, sorting the graph in topological order is effectively the same thing as solving the problem in the first place, so instead, I'm going to do this the stupid way: make this a simple recursive function on `a` with a `HashMap` to store dependencies, run it, and hope that the input is small enough that the stack doesn't overflow.  We'll see if Felipe comes up with a better method.
 
+To start with, we'll need a parsing function.  I have no compunction about making a bunch of `if` statements; I'll try after I get it working to trim them back down.
 
+```rust
+use std::fs;
 
+fn main() {
+    let file = "../Inputs/Day7Input.txt";
+	let input_raw: String = fs::read_to_string(file).unwrap();
+	
+	let mut count: u32 = 0;
+	for line in input_raw.lines() {
+		let tokens = line.split(' ');
+		let mut num_1: Option<u16> = None;
+		let mut num_2: Option<u16> = None;
+		let mut wire_1: Option<String> = None;
+		let mut wire_2: Option<String> = None;
+		let mut operator: Option<String> = None;
+		let mut destination: Option<String> = None;
+		let mut is_destination: bool = false;
+		
+		for token in tokens {
+			if token.chars().all(|c| char::is_digit(c, 10)) {
+				if num_1.is_none() && wire_1.is_none() {
+					num_1 = Some(token.parse().unwrap());
+				} else {
+					num_2 = Some(token.parse().unwrap());
+				}
+			} else if token.chars().all(|c| char::is_ascii_lowercase(&c)) {
+				if is_destination {
+					destination = Some(token.to_string());
+				} else if wire_1.is_none() {
+					wire_1 = Some(token.to_string());
+				} else {
+					wire_2 = Some(token.to_string());
+				}
+			} else if token.chars().all(|c| char::is_ascii_uppercase(&c)) {
+				operator = Some(token.to_string());
+			} else if token == "->" {
+				is_destination = true;
+			}
+		}
+		
+		if num_1.is_some() && operator.is_none() {
+			count+=1;
+		}
+	};
+	println!("{} wires with 1 numerical input.", count);
+}
+```
+```
+ Running `target/debug/day_7`
+2 wires with 1 numerical input.
+```
+As a parsing function, this works fine, but it's already very verbose, and I'm not even started the actual code yet.  The main culprit for the verbosity is the sheer number of temporary variables I need each loop; if I could get all of those into one single tuple in a `Struct`, things would go quite a bit smoother from here on out, even if it would add a few extra lines of code right now.
 
+## Attempt 0.1
 
+```rust
+use std::fs;
 
+use std::fs;
+use std::collections::HashMap;
 
+#[derive(Hash, Eq, PartialEq, Default)]
+struct Gate {
+	num_1: Option<u16>,
+	num_2: Option<u16>,
+	wire_1: Option<String>,
+	wire_2: Option<String>,
+	operator: Option<String>
+}
 
+impl New for Gate {
+	fn new () -> Gate {
+		Default::default()
+	}
+}
+```
+```
+error[E0405]: cannot find trait `New` in this scope
 
+impl New for Gate {
+     ^^^ not found in this scope
+```
 
+Apparently, `Default` is a trait, but `New` isn't.  This is leading me to realize that one can define functions for `struct`s without needing a specific trait for them.
+
+## Attempt 0.2
+
+```rust
+use std::fs;
+use std::collections::HashMap;
+
+#[derive(Hash, Eq, PartialEq, Default)]
+struct Gate {
+	num_1: Option<u16>,
+	num_2: Option<u16>,
+	wire_1: Option<String>,
+	wire_2: Option<String>,
+	operator: Option<String>
+}
+
+impl Gate {
+	fn new () -> Gate {
+		Default::default()
+	}
+}
+```
+```
+Finished dev [unoptimized + debuginfo] target(s) in 0.82s
+ Running `target/debug/day_7`
+```
+
+Success, so far: the `struct` works.  Next step is to replace the parsing function with it, replacing most of those local variables.
+
+## Attempt 0.3
+
+```rust
+fn main() {
+    let file = "../Inputs/Day7Input.txt";
+	let input_raw: String = fs::read_to_string(file).unwrap();
+	
+	let mut wires = HashMap::new();
+	for line in input_raw.lines() {
+		let tokens = line.split(' ');
+		let mut is_destination: bool = false;
+		let mut destination: String = "";
+		let mut gate = Gate::new();
+		
+		for token in tokens {
+			if token.chars().all(|c| char::is_digit(c, 10)) {
+				if gate.num_1.is_none() && gate.wire_1.is_none() {
+					gate.num_1 = Some(token.parse().unwrap());
+				} else {
+					gate.num_2 = Some(token.parse().unwrap());
+				}
+			} else if token.chars().all(|c| char::is_ascii_lowercase(&c)) {
+				if is_destination {
+					destination = Some(token.to_string());
+				} else if gate.wire_1.is_none() {
+					gate.wire_1 = Some(token.to_string());
+				} else {
+					gate.wire_2 = Some(token.to_string());
+				}
+			} else if token.chars().all(|c| char::is_ascii_uppercase(&c)) {
+				gate.operator = Some(token.to_string());
+			} else if token == "->" {
+				is_destination = true;
+			}
+		}
+		
+		wires.insert(destination, gate);
+	};
+	count = wires.len() as u32;
+	
+	println!("{} wires collected.", count);
+}
+```
+```
+Finished dev [unoptimized + debuginfo] target(s) in 0.82s
+ Running `target/debug/day_7`
+339 wires collected.
+```
+
+Note that I'm not keeping `destination` in the `Gate` structure; I need that as the key, not the value.
+
+In any case, now that the parsing is all done, it's time to define a recursive function for the actual behavior of the logic gates.
+
+## Attempt 1.0
+
+```rust
+fn eval(dest: String, map: HashMap<String, Gate>) -> u16 {
+	let gate = map.get(dest);
+	return 4
+}
+```
+```
+error[E0308]: mismatched types
+
+let gate = map.get(dest);
+                   ^^^^
+                   |
+                   expected reference, found struct `String`
+                   help: consider borrowing here: `&dest`
+
+= note: expected reference `&_`
+              found struct `String`
+```
+
+Looking up the [documentation for `get`](https://doc.rust-lang.org/beta/std/collections/struct.HashMap.html#method.get_key_value), I see two useful pieces of information.  First, get() does indeed expect a reference.  Second, the value I'm actually getting is not `Gate`, nor `&Gate`, but `Option<&Gate>`, which means I'll also need `unwrap()`.
+
+And third, I have reason to be worried about the arguments to this function, because it's likely going to require combinations of references and borrows that I've never seen before.
+
+## Attempt 1.1
+```rust
+fn eval(dest: String, map: HashMap<String, Gate>) -> u16 {
+	let gate = map.get(dest);
+	return 4
+}
+```
+```
+Finished dev [unoptimized + debuginfo] target(s) in 0.82s
+ Running `target/debug/day_7`
+```
+
+I use `return 4` for the moment, because otherwise the compiler will get mad at me for not returning a `u16` like I say I will.
+
+## Attempt 1.2
+```rust
+fn eval(dest: String, map: HashMap<String, Gate>) -> u16 {
+	let gate = map.get(&dest).unwrap();
+	let arg1: u16 = 
+		if gate.num_1.is_some() {
+			gate.num_1.unwrap()
+		} else {
+			eval(gate.wire_1.unwrap(), map)
+		};
+	return 4
+}
+```
+```
+error[E0507]: cannot move out of `gate.wire_1` which is behind a shared reference
+
+eval(gate.wire_1.unwrap(), map)
+     ^^^^^^^^^^^
+     |
+     move occurs because `gate.wire_1` has type `Option<String>`, which does not implement the `Copy` trait
+     help: consider borrowing the `Option`'s content: `gate.wire_1.as_ref()`
+```
+
+So, I can't keep calling `gate.wire_1` because it's behind a shared reference, but I also can't just call `as_ref()`, because then I'll be sending in `&String` instead of `String` to the `eval()` function.  So I'll need to call `to_string()` on `as_ref()` on `unwrap()` on `wire_1` on `gate` in `eval()`.  Got it.
+
+## Attempt 1.3
+
+```rust
+fn eval(dest: String, map: HashMap<String, Gate>) -> u16 {
+	let gate = map.get(&dest).unwrap();
+	let arg1: u16 = 
+		if gate.num_1.is_some() {
+			gate.num_1.unwrap()
+		} else {
+			eval(gate.wire_1.as_ref().unwrap().to_string(), map)
+		};
+	return 4
+}
+```
+```
+Finished dev [unoptimized + debuginfo] target(s) in 0.37s
+ Running `target/debug/day_7`
+```
+
+## Attempt 1.4
+```rust
+fn eval(dest: String, map: HashMap<String, Gate>) -> u16 {
+	let gate = map.get(&dest).unwrap();
+	let arg1: u16 = 
+		if gate.num_1.is_some() {
+			gate.num_1.unwrap()
+		} else {
+			eval(gate.wire_1.as_ref().unwrap().to_string(), map)
+		};
+	let arg2: Option<u16> = 
+		if gate.num_2.is_some() {
+			Some(gate.num_2.unwrap())
+		} else if gate.wire_2.is_some() {
+			Some(eval(gate.wire_2.as_ref().unwrap().to_string(), map))
+		} else {
+			None
+		};
+	return 4
+}
+```
+```
+error[E0505]: cannot move out of `map` because it is borrowed
+
+20 |     let gate = map.get(&dest).unwrap();
+   |                --- borrow of `map` occurs here
+...
+25 |             eval(gate.wire_1.as_ref().unwrap().to_string(), map)
+   |                                                             ^^^ move out of `map` occurs here
+...
+28 |         if gate.num_2.is_some() {
+   |            ---------- borrow later used here
+
+error[E0382]: use of moved value: `map`
+
+19 | fn eval(dest: String, map: HashMap<String, Gate>) -> u16 {
+   |                       --- move occurs because `map` has type `HashMap<String, Gate>`, which does not implement the `Copy` trait
+...
+25 |             eval(gate.wire_1.as_ref().unwrap().to_string(), map)
+   |                                                             --- value moved here
+...
+31 |             Some(eval(gate.wire_2.as_ref().unwrap().to_string(), map))
+   | 
+```
+
+The compiler is very helpful here: I certainly do not want to `Copy` the `HashMap`; I just want to immutably reference it.  I believe `.get()` works on referenced maps, so this shouldn't be hard.
+
+## Attempt 1.5
+```rust
+fn eval(dest: String, map: &HashMap<String, Gate>) -> u16 {
+	let gate = map.get(&dest).unwrap();
+	let arg1: u16 = 
+		if gate.num_1.is_some() {
+			gate.num_1.unwrap()
+		} else {
+			eval(gate.wire_1.as_ref().unwrap().to_string(), map)
+		};
+	let arg2: Option<u16> = 
+		if gate.num_2.is_some() {
+			Some(gate.num_2.unwrap())
+		} else if gate.wire_2.is_some() {
+			Some(eval(gate.wire_2.as_ref().unwrap().to_string(), map))
+		} else {
+			None
+		};
+	return 4
+}
+```
+```
+Finished dev [unoptimized + debuginfo] target(s) in 0.37s
+ Running `target/debug/day_7`
+```
+Arguments imported: now it's time to replace `return 4` with an actual evaluation function.
+
+## Attempt 2.0
+```rust
+fn eval(dest: String, map: &HashMap<String, Gate>) -> u16 {
+	let gate = map.get(&dest).unwrap();
+	let arg1: u16 = 
+		if gate.num_1.is_some() {
+			gate.num_1.unwrap()
+		} else {
+			eval(gate.wire_1.as_ref().unwrap().to_string(), map)
+		};
+	let arg2: Option<u16> = 
+		if gate.num_2.is_some() {
+			Some(gate.num_2.unwrap())
+		} else if gate.wire_2.is_some() {
+			Some(eval(gate.wire_2.as_ref().unwrap().to_string(), map))
+		} else {
+			None
+		};
+	match gate.operator {
+		None => arg1,
+		Some("NOT") => !arg1,
+		Some("AND") => arg1 & arg2.unwrap(),
+		Some("OR") => arg1 | arg2.unwrap(),
+		Some("RSHIFT") => arg1 >> arg2.unwrap(),
+		Some("LSHIFT") => arg1 << arg2.unwrap(),
+		_ => panic!()
+	}
+}
+```
+```
+error[E0308]: mismatched types
+
+match gate.operator {
+      ------------- this expression has type `Option<String>`
+    None => arg1,
+    Some("NOT") => !arg1,
+         ^^^^^ expected struct `String`, found `&str`
+```
+
+This is the same issue as Attempt 1.2; I should be able to fix it the same way, with `.as_ref().unwrap().to_string()`.
+
+## Attempt 2.1
+
+```rust
+fn eval(dest: String, map: &HashMap<String, Gate>) -> u16 {
+	let gate = map.get(&dest).unwrap();
+	let arg1: u16 = 
+		if gate.num_1.is_some() {
+			gate.num_1.unwrap()
+		} else {
+			eval(gate.wire_1.as_ref().unwrap().to_string(), map)
+		};
+	let arg2: Option<u16> = 
+		if gate.num_2.is_some() {
+			Some(gate.num_2.unwrap())
+		} else if gate.wire_2.is_some() {
+			Some(eval(gate.wire_2.as_ref().unwrap().to_string(), map))
+		} else {
+			None
+		};
+	match gate.operator {
+		None => arg1,
+		Some("NOT".as_ref().unwrap().to_string()) => !arg1,
+		Some("AND".as_ref().unwrap().to_string()) => arg1 & arg2.unwrap(),
+		Some("OR".as_ref().unwrap().to_string()) => arg1 | arg2.unwrap(),
+		Some("RSHIFT".as_ref().unwrap().to_string()) => arg1 >> arg2.unwrap(),
+		Some("LSHIFT".as_ref().unwrap().to_string()) => arg1 << arg2.unwrap(),
+		_ => panic!()
+	}
+}
+```
+```
+error[E0531]: cannot find tuple struct or tuple variant `to_string` in this scope
+
+Some("NOT".as_ref().unwrap().to_string()) => !arg1,
+                             ^^^^^^^^^ not found in this scope
+----
+error[E0023]: this pattern has 4 fields, but the corresponding tuple variant has 1 field
+
+Some("NOT".as_ref().unwrap().to_string()) => !arg1,
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected 1 field, found 4
+```
+
+Before Rust 1.4, [this would have been a big problem](https://stackoverflow.com/questions/48034119/how-can-i-pattern-match-against-an-optionstring); pattern-matching against an `Option<String>` was notoriously tedious.  Fortunately, we now have a built-in method, `.as_deref()`, that converts `Option<T>` to `Option<&T>`, leaving the original `Option` in place.
+
+## Attempt 2.2
+
+```rust
+fn eval(dest: String, map: &HashMap<String, Gate>) -> u16 {
+	let gate = map.get(&dest).unwrap();
+	let arg1: u16 = 
+		if gate.num_1.is_some() {
+			gate.num_1.unwrap()
+		} else {
+			eval(gate.wire_1.as_ref().unwrap().to_string(), map)
+		};
+	let arg2: Option<u16> = 
+		if gate.num_2.is_some() {
+			Some(gate.num_2.unwrap())
+		} else if gate.wire_2.is_some() {
+			Some(eval(gate.wire_2.as_ref().unwrap().to_string(), map))
+		} else {
+			None
+		};
+	match gate.operator {
+		None => arg1,
+		Some("NOT".as_ref().unwrap().to_string()) => !arg1,
+		Some("AND".as_ref().unwrap().to_string()) => arg1 & arg2.unwrap(),
+		Some("OR".as_ref().unwrap().to_string()) => arg1 | arg2.unwrap(),
+		Some("RSHIFT".as_ref().unwrap().to_string()) => arg1 >> arg2.unwrap(),
+		Some("LSHIFT".as_ref().unwrap().to_string()) => arg1 << arg2.unwrap(),
+		_ => panic!()
+	}
+}
+```
+```
+Finished dev [unoptimized + debuginfo] target(s) in 0.37s
+```
+
+The evaluation function now compiles correctly - will it actually run?
+
+## Attempt 2.3
+```rust
+fn main() {
+    let file = "../Inputs/Day7Input.txt";
+	let input_raw: String = fs::read_to_string(file).unwrap();
+	
+	let mut wires = HashMap::new();
+	for line in input_raw.lines() {
+		let tokens = line.split(' ');
+		let mut destination: String = "".to_string();
+		let mut is_destination: bool = false;
+		let mut gate = Gate::new();
+		
+		for token in tokens {
+			if token.chars().all(|c| char::is_digit(c, 10)) {
+				if gate.num_1.is_none() && gate.wire_1.is_none() {
+					gate.num_1 = Some(token.parse().unwrap());
+				} else {
+					gate.num_2 = Some(token.parse().unwrap());
+				}
+			} else if token.chars().all(|c| char::is_ascii_lowercase(&c)) {
+				if is_destination {
+					destination = token.to_string();
+				} else if gate.wire_1.is_none() {
+					gate.wire_1 = Some(token.to_string());
+				} else {
+					gate.wire_2 = Some(token.to_string());
+				}
+			} else if token.chars().all(|c| char::is_ascii_uppercase(&c)) {
+				gate.operator = Some(token.to_string());
+			} else if token == "->" {
+				is_destination = true;
+			}
+		}
+		
+		wires.insert(destination,gate);
+	};
+	let part1: u16 = eval("a".to_string(),&wires);
+	
+	println!("Part 1: {}", part1);
+}
+```
+```
+Compiling day_7 v0.1.0 (/home/david/Programming/Advent of Code/2015/Rust/day_7)
+ Finished release [optimized] target(s) in 0.48s
+  Running `target/release/day_7`
+```
+Answer: yes and no.  Yes, it will run.  But no, it won't *stop* running, not anytime soon.  Because the function is recursive and does not memoize or cache results, it will take exponentially longer for each gate to complete.  There are 339 gates, so we can extrapolate roughly how long it would take to run from running through the first few gates in topological order:
+
+| Gate | Time (μs) |
+| --- | ----------- |
+| 0 | 0 μs |
+| 10 | 1 μs |
+| 20 | 3 μs |
+| 30 | 15 μs |
+| 40 | 98 μs |
+| 50 | 1,015 μs |
+| 60 | 1,576 μs |
+| 70 | 18,094 μs |
+| 80 | 70,983 μs |
+| 90 | 385,225 μs |
+| 100 | 1,628,337 μs |
+| 110 | 10,276,346 μs |
+| 120 | 42,371,850 μs |
+| ... | ... |
+| 339 | 7.9 million years |
 
 
 
