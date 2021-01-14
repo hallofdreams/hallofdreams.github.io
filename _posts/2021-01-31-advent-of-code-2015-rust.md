@@ -2920,7 +2920,7 @@ Compiling day_7 v0.1.0 (/home/david/Programming/Advent of Code/2015/Rust/day_7)
  Finished release [optimized] target(s) in 0.48s
   Running `target/release/day_7`
 ```
-Answer: yes and no.  Yes, it will run.  But no, it won't *stop* running, not anytime soon.  Because the function is recursive and does not memoize or cache results, it will take exponentially longer for each gate to complete.  There are 339 gates, so we can extrapolate roughly how long it would take to run from running through the first few gates in topological order:
+Answer: yes and no.  Yes, it will run.  But no, it won't *stop* running, not anytime soon.  Because the function is recursive and does not memoize or cache results, it will take exponentially longer for each gate to complete.  There are 339 gates, so we can extrapolate roughly how long it would take to complete by running through the first few gates in topological order:
 
 | Gate | Time (μs) |
 | --- | ----------- |
@@ -2939,6 +2939,278 @@ Answer: yes and no.  Yes, it will run.  But no, it won't *stop* running, not any
 | 120 | 42,371,850 μs |
 | ... | ... |
 | 339 | 7.9 million years |
+
+This is suboptimal.  Clearly, we need caching.
+
+As of January 2021, the best memoization crate in Rust is [cached]](https://docs.rs/cached/0.22.0/cached), offering both a macro and a proc-macro method.  So, I'll slap a call to the proc-macro immediately before the `eval()` function and enjoy the benefits of dynamic programming.
+
+## Attempt 3.0
+```rust
+use std::collections::HashMap;
+use cached::proc_macro::cached;
+
+#[cached]
+fn eval(dest: String, map: &HashMap<String, Gate>) -> u16 {
+	...
+}
+```
+```
+error[E0277]: the trait bound `HashMap<String, Gate>: Hash` is not satisfied
+  --> src/main.rs:28:1
+
+#[cached]
+ ^^^^^^^^^ the trait `Hash` is not implemented for `HashMap<String, Gate>`
+
+= note: required because of the requirements on the impl of `Hash` for `&HashMap<String, Gate>`
+= note: required because of the requirements on the impl of `Hash` for `(String, &HashMap<String, Gate>)`
+= note: required by `UnboundCache::<K, V>::new`
+= note: this error originates in an attribute macro (in Nightly builds, run with -Z macro-backtrace for more info)
+```
+
+Of course, things in Rust are rarely that simple.
+
+What happened?  The caching macro tried to cache all of the arguments, and failed because one of the arguments is itself a `HashMap`.  Since we only have one `HashMap` to deal with over the course of part 1, we can use the `cached_key!{}` macro to make sure the key being cached is only the `dest` string.  Note the minor format change - it's no longer `-> u16 {` but `-> u16 = {`.
+
+## Attempt 3.1
+```rust
+use cached::UnboundCache;
+#[macro_use] extern crate cached;
+
+cached_key! {
+	EVAL: UnboundCache<String, u16> = UnboundCache::new();
+	Key = dest;
+	
+	fn eval(dest: String, map: &HashMap<String, Gate>) -> u16 = {
+		...
+	}
+}
+```
+```
+error[E0382]: borrow of moved value: `dest`
+
+23 | / cached_key! {
+24 | |     EVAL: UnboundCache<String, u16> = UnboundCache::new();
+25 | |     Key = dest;
+   | |           ---- value moved here
+26 | |     
+27 | |     fn eval(dest: String, map: &HashMap<String, Gate>) -> u16 = {
+28 | |         let gate = map.get(&dest).unwrap();
+   | |                             ---- borrow occurs due to use in closure
+...  |
+52 | |     }
+53 | | }
+   | | ^
+   | | |
+   | |_value borrowed here after move
+   |   move occurs because `dest` has type `String`, which does not implement the `Copy` trait
+   |
+   = note: this error originates in a macro (in Nightly builds, run with -Z macro-backtrace for more info)
+```
+
+Well, that's a bit annoying.  We can't copy `String`s, but can we clone them?
+
+## Attempt 3.2
+```rust
+```rust
+use cached::UnboundCache;
+#[macro_use] extern crate cached;
+
+cached_key! {
+	EVAL: UnboundCache<String, u16> = UnboundCache::new();
+	Key = dest.clone();
+	
+	fn eval(dest: String, map: &HashMap<String, Gate>) -> u16 = {
+		...
+	}
+}
+```
+```
+error[E0446]: private type `Gate` in public interface
+  --> src/main.rs:23:1
+   |
+9  |   struct Gate {
+   |   - `Gate` declared as private
+...
+23 | / cached_key! {
+24 | |     EVAL: UnboundCache<String, u16> = UnboundCache::new();
+25 | |     Key = dest.clone();
+26 | |     
+...  |
+52 | |     }
+53 | | }
+   | |_^ can't leak private type
+   |
+   = note: this error originates in a macro (in Nightly builds, run with -Z macro-backtrace for more info)
+```
+
+A new compiler error code!  In the interests of both not being safe and not optimizing, I'll take a chance and declare `Gate` as public.
+
+## Attempt 3.3
+```rust
+fn main {
+...
+	let part1: u16 = eval("a".to_string(), &wires);	
+	println!("Part 1: {}", part1);
+...
+}
+```
+```
+Finished dev [unoptimized + debuginfo] target(s) in 0.47s
+ Running `target/debug/day_7`
+Part 1: 3176
+```
+
+Success!  Now two things remain to get part 2 completed: read the value of part 1 into wire `b`, and clear the cache after evaluating part 1.  Clearing the cache should be easy enough: I'll just put in one more parameter indicating which part of the problem we're on so that the part 2 evaluation has a different hash key than part 1, and then put in a few extra `clone()` statements to give Felipe something to optimize.
+
+## Attempt 3.4
+```rust
+fn main {
+...
+	let part1: u16 = eval("a".to_string(), &wires, "1".to_string());
+	let mut new_b_gate: Gate::new();
+	new_b_gate.num_1 = Some(part1);
+	wires.insert("b".to_string(), new_b_gate);
+	let part2: u16 = eval("a".to_string(), &wires, "2".to_string());
+	
+	println!("Part 1: {}", part1);
+	println!("Part 2: {}", part2);
+...
+}
+```
+```
+error[E0214]: parenthesized type parameters may only be used with a `Fn` trait
+
+let mut new_b_gate: Gate::new();
+                          ^^^^^ only `Fn` traits may use parentheses
+
+error[E0223]: ambiguous associated type
+
+let mut new_b_gate: Gate::new();
+                    ^^^^^^^^^^^ help: use fully-qualified syntax: `<Gate as Trait>::new`
+```
+
+What happened here?  I called `Gate::new()` to create a new gate earlier on within `main` and it was fine, even after I redefined `Gate` to be `pub`.  So what gives?
+
+Answer: After a half hour of digging through [the Rust manual's chapter on advanced traits](https://doc.rust-lang.org/book/ch19-03-advanced-traits.html), I concluded that I had, in fact, typed a colon rather than an equals sign.
+
+## Final Version
+```rust
+use std::fs;
+use std::collections::HashMap;
+use std::time::{Instant};
+use cached::proc_macro::cached;
+use cached::UnboundCache;
+
+#[derive(Hash, Eq, PartialEq, Default)]
+pub struct Gate {
+	num_1: Option<u16>,
+	num_2: Option<u16>,
+	wire_1: Option<String>,
+	wire_2: Option<String>,
+	operator: Option<String>
+}
+
+impl Gate {
+	fn new () -> Gate {
+		Default::default()
+	}
+}
+
+#[cached(
+	type = "UnboundCache<String, u16>",
+	create = "{ UnboundCache::new() }",
+	convert = r#"{ format!("{} {}",dest.clone(), part.clone()) }"#
+)]
+fn eval(dest: String, map: &HashMap<String, Gate>, part: String) -> u16 {
+	let gate = map.get(&dest).unwrap();
+	let arg1: u16 = 
+		if gate.num_1.is_some() {
+			gate.num_1.unwrap()
+		} else {
+			eval(gate.wire_1.as_ref().unwrap().to_string(), map, part.clone())
+		};
+	let arg2: Option<u16> = 
+		if gate.num_2.is_some() {
+			Some(gate.num_2.unwrap())
+		} else if gate.wire_2.is_some() {
+			Some(eval(gate.wire_2.as_ref().unwrap().to_string(), map, part.clone()))
+		} else {
+			None
+		};
+	match gate.operator.as_deref() {
+		None => arg1,
+		Some("NOT") => !arg1,
+		Some("AND") => arg1 & arg2.unwrap(),
+		Some("OR") => arg1 | arg2.unwrap(),
+		Some("RSHIFT") => arg1 >> arg2.unwrap(),
+		Some("LSHIFT") => arg1 << arg2.unwrap(),
+		_ => panic!()
+	}
+}
+
+fn main() {
+	let start = Instant::now();
+
+    let file = "../Inputs/Day7Input.txt";
+	let input_raw: String = fs::read_to_string(file).unwrap();
+	
+	let mut wires = HashMap::new();
+	for line in input_raw.lines() {
+		let tokens = line.split(' ');
+		let mut destination: String = "".to_string();
+		let mut is_destination: bool = false;
+		let mut gate = Gate::new();
+		
+		for token in tokens {
+			if token.chars().all(|c| char::is_digit(c, 10)) {
+				if gate.num_1.is_none() && gate.wire_1.is_none() {
+					gate.num_1 = Some(token.parse().unwrap());
+				} else {
+					gate.num_2 = Some(token.parse().unwrap());
+				}
+			} else if token.chars().all(|c| char::is_ascii_lowercase(&c)) {
+				if is_destination {
+					destination = token.to_string();
+				} else if gate.wire_1.is_none() && gate.num_1.is_none() {
+					gate.wire_1 = Some(token.to_string());
+				} else {
+					gate.wire_2 = Some(token.to_string());
+				}
+			} else if token.chars().all(|c| char::is_ascii_uppercase(&c)) {
+				gate.operator = Some(token.to_string());
+			} else if token == "->" {
+				is_destination = true;
+			}
+		}
+		
+		wires.insert(destination,gate);
+	};
+	
+	let part1: u16 = eval("a".to_string(), &wires, "1".to_string());
+	let mut new_b_gate = Gate::new();
+	new_b_gate.num_1 = Some(part1);
+	wires.insert("b".to_string(), new_b_gate);
+	
+	let part2: u16 = eval("a".to_string(), &wires, "2".to_string());
+	let end = start.elapsed().as_micros();
+	
+	println!("Part 1: {}", part1);
+	println!("Part 2: {}", part2);
+	println!("Time: {} μs", end);
+}
+```
+```
+Part 1: 3176
+Part 2: 14710
+Time: 360 μs
+```
+
+Stars 13 and 14 acquired!
+
+This was certainly the most difficult problem to do in Rust so far, and has a fairly small improvement from a naive solution in Mathematica: only a 100x speedup, from 31 ms to 360 μs.  Still, the `cached` crate provides a powerful tool for memoization and dynamic programming in the problems to come.
+
+
+
 
 
 
