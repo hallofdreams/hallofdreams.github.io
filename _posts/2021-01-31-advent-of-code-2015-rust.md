@@ -3209,6 +3209,146 @@ Stars 13 and 14 acquired!
 
 This was certainly the most difficult problem to do in Rust so far, and has a fairly small improvement from a naive solution in Mathematica: only a 100x speedup, from 31 ms to 360 μs.  Still, the `cached` crate provides a powerful tool for memoization and dynamic programming in the problems to come.
 
+# [Day 8](https://www.adventofcode.com/2015/day/8)
+
+The problem: you're given a series of ASCII characters, consisting of letters, numbers, backslashes, and quotation marks.  Some of the backslashes are escape sequences, escaping a either another backslash, a quote, or a hexadecimal character code.
+
+**Part 1:** What's the number of characters in the string literals (the input) minus the number of characters in memory for the values of the strings?  In other words, how many characters are saved by encoding vs. representing literally?
+
+**Part 2:** What's the number of characters required to re-encode the string literals, minus the number of characters in the original string literals (the input)?
+
+This summation does not do the problem justice: click the above link to see the full explanation.
+
+## Attempt 0.0
+
+This will likely be the shortest code to get from 'not working' to 'working', though the optimization's going to be interesting.  A basic code doesn't require that anything new or particularly clever with Rust from what I've already done, because the problem gives us a *lot* of constraints about what kind of input could possibly be given.  Any backslash is going to be followed either by another backslash, by a quotation mark, or by an 'x', itself followed by two hexadecimal digit characters.  There just aren't that many possibilities to cover.
+
+So, I'll jump right away to the first major error I got.
+
+```rust
+use std::fs;
+
+fn main() {
+	let file = "../Inputs/Day8Input.txt";
+	let input_raw: String = fs::read_to_string(file).unwrap();
+	let mut stringcode: u32 = 0;
+	let mut part1: u32 = 0;
+	let mut part2: u32 = 0;
+	
+	for line in input_raw.lines() {
+		let mut tokens = line.chars();
+		
+		while let Some(c) = tokens.next() {
+			if c == '\\' {
+				let Some(d) = tokens.next();
+				if d == '\\' || d == '\"'  {
+					stringcode += 2;
+					part1 += 1;
+					part2 += 4;
+				} else if d == 'x' {
+					tokens.next();
+					tokens.next();
+					stringcode += 4;
+					part1 += 1;
+					part2 += 5;
+				} else {
+					panic!();
+				}
+			} else if c == '\"' {
+				stringcode += 1;
+				part2 += 3;
+			} else {
+				stringcode += 1;
+				part1 += 1;
+				part2 += 1;
+			}
+		}
+	}
+
+	println!("Part 1: {}", stringcode-part1);
+	println!("Part 2: {}", part2-stringcode);
+}
+```
+```
+error[E0005]: refutable pattern in local binding: `None` not covered
+
+let Some(d) = tokens.next();
+    ^^^^^^^ pattern `None` not covered
+
+= note: `let` bindings require an "irrefutable pattern", like a `struct` or an `enum` with only one variant
+= note: for more information, visit https://doc.rust-lang.org/book/ch18-02-refutability.html
+= note: the matched value is of type `Option<char>`
+help: you might want to use `if let` to ignore the variant that isn't matched
+
+if let Some(d) = tokens.next() { /* */ }
+```
+Some design choices here.  I'm using `if` instead of `match` for the moment for ease of comprehension, but performance aside, it doesn't make too much difference.  More interesting is that, instead of going through the characters with `for c in tokens {}`, I'm using a while loop; I'm doing this because a `for` loop mutably borrows the iterator it's looping over for the duration of the loop, and thus I couldn't jump ahead by several characters the way I can with `while let Some(c) = tokens.next()`.
+
+The issue, of course, is that I didn't account for the possibility that `tokens.next()` returns `None`.  I could do `if let`, like the error message suggests, but since I know that a backslash can never end a line in this input, I'll just use `unwrap()` instead.
+
+## Final Version
+```rust
+use std::fs;
+use std::time::{Instant};
+
+fn main() {
+	let start = Instant::now();
+	
+	let file = "../Inputs/Day8Input.txt";
+	let input_raw: String = fs::read_to_string(file).unwrap();
+	
+	let mut stringcode: u32 = 0;
+	let mut part1: u32 = 0;
+	let mut part2: u32 = 0;
+	
+	for line in input_raw.lines() {
+		let mut tokens = line.chars();
+		
+		while let Some(c) = tokens.next() {
+			if c == '\\' {
+				let d = tokens.next();
+				if d.unwrap() == '\\' || d.unwrap() == '\"'  {
+					stringcode += 2;
+					part1 += 1;
+					part2 += 4;
+				} else if d.unwrap() == 'x' {
+					tokens.next();
+					tokens.next();
+					stringcode += 4;
+					part1 += 1;
+					part2 += 5;
+				} else {
+					panic!()
+				}
+			} else if c == '\"' {
+				stringcode += 1;
+				part2 += 3;
+			} else {
+				stringcode += 1;
+				part1 += 1;
+				part2 += 1;
+			}
+		}
+	}
+	let end = start.elapsed().as_micros();
+
+	println!("Part 1: {}", stringcode-part1);
+	println!("Part 2: {}", part2-stringcode);
+	println!("Time: {} μs", end);
+}
+```
+```
+Finished release [optimized] target(s) in 0.00s
+ Running `target/release/day_8`
+Part 1: 1342
+Part 2: 2074
+Time: 38 μs
+```
+And there it is; two more stars acquired.  It's hard to optimize for speed much past 40 μs on my machine, especially when counting the file import, but as Felipe is about to demonstrate, it is certainly possible to get a more elegant solution than this.
+
+
+
+
 
 
 
