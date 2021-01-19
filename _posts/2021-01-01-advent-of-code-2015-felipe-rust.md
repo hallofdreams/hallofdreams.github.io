@@ -145,3 +145,47 @@ If we include the file opening... things are less good. It adds almost 90 micros
 <section on file opening goes here>
   
 # [Day 2](https://www.adventofcode.com/2015/day/2)
+
+Day 2 is the last day I completed in 2015. So from here on out its all new to me. (Well, that's not totally true, I've discussed most problems in AoC with Dave at some point or another.) The problem itself is fairly basic, its one of the fundamental asks in software: take a list of things, and perform mathematical operations on them. Thinking about the problem at a base level, we're going to want some kind of `for...each` loop that looks at each entry, and then does math on it. Looking at the input, it looks like none of the math involves anything more complex than numbers of length 2, so we're likely not looking at any crazy math optimizations to speed things up. I do make note of the limited subset of inputs though, it feels like we might wind up doing something tricky with that. 
+
+A barebones soluton looks something like this. 
+
+```rust
+use std::time::{Instant};
+use std::fs;
+    
+
+fn main(){
+        let start = Instant::now();
+        let file ="../input.txt";
+        let input_string: String = fs::read_to_string(file).unwrap();
+        let lines = input_string.lines();
+        let lines2 = input_string.lines();
+
+        let mut day_2 = 0;
+        let mut day_1 = 0;
+        for string in lines {
+            let mut dimensions = string.split('x')
+            .map(|n| n.parse::<usize>().unwrap())
+            .collect::<Vec<_>>();
+
+            dimensions.sort();
+            let length = dimensions[0];
+            let width = dimensions[1];
+            let height = dimensions[2];
+
+            let volume: usize = length*width*height;
+            let smallest_perimiter: usize = length*2 + width*2;
+            let surface_area: usize = (length*width*2) + (length*height*2) + (height*width*2);
+            day_1 += surface_area + length*width;
+
+            day_2 += volume + smallest_perimiter;
+        }
+        print!("day 2: {}", day_2);
+        print!("\n day 1: {}", day_1);
+        let end = start.elapsed().as_micros();
+        print!("\n execution time in microseconds {}", end);
+}
+```
+
+Note that this is optimzied from my first pass solution which used two loops. It made sense to roll part 1 into part 2. The only slightly tricky optimization I do in this first pass is sorting the list of dimensions, so that length and width are always the smallest. It avoids us having to do extra computations and take the minimum, or having a bunch of if statements to replicate the sort. Since the list is only length three, it should be relatively quick. 
