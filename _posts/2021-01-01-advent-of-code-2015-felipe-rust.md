@@ -156,12 +156,13 @@ use std::fs;
     
 
 fn main(){
-        let start = Instant::now();
+        
         let file ="../input.txt";
         let input_string: String = fs::read_to_string(file).unwrap();
         let lines = input_string.lines();
         let lines2 = input_string.lines();
 
+        let start = Instant::now();
         let mut day_2 = 0;
         let mut day_1 = 0;
         for string in lines {
