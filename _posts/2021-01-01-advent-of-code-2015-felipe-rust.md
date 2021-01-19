@@ -204,7 +204,7 @@ let mut dimensions = string.split('x')
 
 This block in particular looked supicious to me. Reading the file as a string wasn't a big lift for rust, after all, strings are just collections of bytes, but parsing the bytes into groups and ensuring you translate any multi-byte characters correctly (like emojis) does take up some headroom. Further, we then had to perform a split operation and convert stings to integers, which I was convinced was a major time sink. 
 
-What then, if we just took our string, which is a byte array, and parsed it by hand. Usually you need a lot of saftey around these operations because you could have any arbitrary input, but we control our input here, we know its going to be only numbers, and the "x" character. No emojis, chinese characters, umlauts or escaped characters. I was convinced this wouldn't *actually* save time, given that rust is already very efficient, and that inbuilt methods tend to be pretty good. Still I was looking for an excuse to get into the weeds (or the bytes in this case), and I figured a simple solution wouldn't take that long. 
+What then, if we just took our string, which is a byte array, and parsed it by hand. Usually you need a lot of saftey around these operations because you could have any arbitrary input, but we control our input here, we know its going to be only numbers, and the "x" character. No emojis, chinese characters, umlauts or escaped characters. If we did not control our input, this would be a recipie for disaster. I was convinced this wouldn't *actually* save time, given that rust is already very efficient, and that inbuilt methods tend to be pretty good. Still I was looking for an excuse to get into the weeds (or the bytes in this case), and I figured a simple solution wouldn't take that long. 
 
 ```rust 
 use std::time::{Instant};
@@ -264,3 +264,83 @@ fn main(){
         print!("\n execution time in microseconds {}", end);
 }
 ```
+Getting there was slightly more involved than I expected. Basically the byte representation of each number is simply its byte value minus 48 (good to know for those annoying algorithm problems that sometimes show up in intervews!), and we knew no number was going to be longer than 2 characters in length, so we could handle both cases with relative ease. Our delimiter character is an "x" which in bytecode is represented by the number 120, and since we're reading line by line, we have to parse the last number, which won't end with an "x" after we've calcuated the first two. 
+
+To whit, we scan the bytes, and if they're numbers we put them in a "number array" which is our representation of the number, if it's an "x" we interpret this array to form a number and shove it into the dimensions array, and when we reach the end of the line we wrap up the last number. 
+
+Another consideration is we have to recast our sum to be u64 or we'll overflow the variable and wind up with incorrect numbers. 
+
+Other than that, the code is exactly the same as our first pass. 
+
+Obviously, adding all this overhead should have cost us time, right? We're initalizing arrays, pushing values, merging bytes, this feels like it should be less efficient. Somehow, it isn't. Our runtime for this code was 300 microseconds, to the 330 microseconds of the first appreoach, an almost 10% speedup. Saftey costs time, and by stripping it out we increased the perfomance of our code! 
+
+From here, it made natural sense to just skip the conversion to a string at all. Rust can very capably read the whole file from end to end as bytes (since strings are just byte arrays), and we can parse the whole string of bytes, saving us the need to split by lines, or even use any inbuilt character parsing. 
+
+```rust
+use std::time::{Instant};
+use std::io::prelude::*;
+use std::fs::File;
+
+fn file_reader(path:&str) -> Vec<u8>{
+    let f = File::open(path);
+    let mut buffer = Vec::new();
+    let mut file:File;
+    match f {
+        Ok(v) => file = v,
+        Err(e) => panic!("error: {:?}", e),
+    }
+
+    // read the whole file
+    let res = file.read_to_end(&mut buffer);
+    match res {
+        Ok(_) => return buffer,
+        Err(e) => panic!("error: {:?}", e),
+    }
+}
+
+fn main(){
+        let start = Instant::now();
+        let file ="../input.txt";
+        let byte_buffer = file_reader(file);
+
+        let mut day_2 = 0;
+        let mut day_1 = 0;
+        let mut dimensions = vec![];
+        let mut num = vec![];
+        for byte in byte_buffer {
+            
+            if byte == 120u8 || byte == 10u8 {
+                let mut final_num = 0;
+                for b in num.iter(){
+                    final_num = final_num * 10u8 + b;
+                }
+                dimensions.push(final_num);
+                num = vec![];
+            }else{
+                num.push(byte-48);
+            }
+              
+            if byte == 10u8 {
+                dimensions.sort();
+                let length = dimensions[0] as u64;
+                let width = dimensions[1] as u64;
+                let height = dimensions[2] as u64;
+
+                let volume: u64 = length*width*height;
+                let smallest_perimiter: u64 = length*2 + width*2;
+
+                day_2 += volume + smallest_perimiter;
+                let surface_area: u64 = (length*width*2) + (length*height*2) + (height*width*2);
+                day_1 += surface_area + length*width;
+                dimensions = vec![]
+            }
+        }
+        print!("day 1: {} day 2: {}", day_1, day_2);
+        let end = start.elapsed().as_micros();
+        print!("\n execution time in microseconds {}", end);
+}
+```
+
+The primary change is that instead of reading each line, we scan for the line break character, "\n" represented by the number 10. This lets us know we've hit the end of a line and can do the requisite math. The logic for checking for x's and putting our numbers together remains the same, and the cleanup logic just moves into the block that looks for the linebreak character. 
+
+To me, this is much easier to read than our second pass. 
