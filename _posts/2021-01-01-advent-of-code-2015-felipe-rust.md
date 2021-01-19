@@ -188,4 +188,79 @@ fn main(){
 }
 ```
 
-Note that this is optimzied from my first pass solution which used two loops. It made sense to roll part 1 into part 2. The only slightly tricky optimization I do in this first pass is sorting the list of dimensions, so that length and width are always the smallest. It avoids us having to do extra computations and take the minimum, or having a bunch of if statements to replicate the sort. Since the list is only length three, it should be relatively quick. 
+Note that this is optimzied from my first pass solution which used two loops. It made sense to roll part 1 into part 2. The only slightly tricky optimization I do in this first pass is sorting the list of dimensions, so that length and width are always the smallest. It avoids us having to do extra computations and take the minimum, or having a bunch of if statements to replicate the sort. Since the list is only length three, it should be relatively quick. After the fact Dave and I compared our code and found that sorting was about as time consuming as taking the minimum twice, which is what his code does. 
+
+I looked at this, and I was pretty satisifed with my solution. It ran in 331 seconds (not counting the file time), and produced the correct answers. Certainly much faster than almost any interpreted language, and a fairly neat solution. 
+
+A brief digression on timing here. You may have noticed Dave consistently gets better times than I do. We did a little testing, it turns out that `cargo run --release` has different perfomance profiles on different OS. I'm running on Windows, Dave is running on linux, and my solutions run much faster on his machine than mine, despite similar hardware profiles. I tested on a really crummy linux box, and it was about 100% faster to run than on Windows. Out of curiosity we also tested on a Mac and found it ran even slower, so it's evident that for some reason rust is much more performant on linux. We're planning to talk about this further in a later post after we run some tests. 
+
+Returning to the problem at hand, I wondered though, if this being rust, we couldn't get into the weeds, and do something to speed things up. 
+
+```rust 
+let mut dimensions = string.split('x')
+            .map(|n| n.parse::<usize>().unwrap())
+            .collect::<Vec<_>>();
+```
+
+This block in particular looked supicious to me. Reading the file as a string wasn't a big lift for rust, after all, strings are just collections of bytes, but parsing the bytes into groups and ensuring you translate any multi-byte characters correctly (like emojis) does take up some headroom. Further, we then had to perform a split operation and convert stings to integers, which I was convinced was a major time sink. 
+
+What then, if we just took our string, which is a byte array, and parsed it by hand. Usually you need a lot of saftey around these operations because you could have any arbitrary input, but we control our input here, we know its going to be only numbers, and the "x" character. No emojis, chinese characters, umlauts or escaped characters. I was convinced this wouldn't *actually* save time, given that rust is already very efficient, and that inbuilt methods tend to be pretty good. Still I was looking for an excuse to get into the weeds (or the bytes in this case), and I figured a simple solution wouldn't take that long. 
+
+```rust 
+use std::time::{Instant};
+use std::fs;
+    
+
+fn main(){
+        let file ="../input.txt";
+        let input_string: String = fs::read_to_string(file).unwrap();
+        let lines = input_string.lines();
+        let lines2 = input_string.lines();
+
+        
+        let mut day_2 = 0;
+        let mut day_1 = 0;
+        let start = Instant::now();
+        for string in lines {
+            let byte_dimensions = string.as_bytes();
+            let mut dimensions = vec![];
+            let mut num = vec![];
+            
+            for byte in byte_dimensions {
+  
+                if(*byte == 120u8){
+                    let mut final_num = 0;
+                    for b in num.iter(){
+                        final_num = final_num * 10u8 + b;
+                    }
+                    dimensions.push(final_num);
+                    num = vec![];
+                }else{
+                    num.push(*byte-48);
+                }
+                
+            }
+            let mut final_num = 0;
+            for b in num.iter(){
+                final_num = final_num * 10u8 + b;
+            }
+            dimensions.push(final_num);
+            num = vec![];
+
+            dimensions.sort();
+            let length = dimensions[0] as u64;
+            let width = dimensions[1] as u64;
+            let height = dimensions[2] as u64;
+
+            let volume: u64 = length*width*height;
+            let smallest_perimiter: u64 = length*2 + width*2;
+
+            day_2 += volume + smallest_perimiter;
+            let surface_area: u64 = (length*width*2) + (length*height*2) + (height*width*2);
+            day_1 += surface_area + length*width;
+        }
+        print!("day 1: {} day 2: {}", day_1, day_2);
+        let end = start.elapsed().as_micros();
+        print!("\n execution time in microseconds {}", end);
+}
+```
