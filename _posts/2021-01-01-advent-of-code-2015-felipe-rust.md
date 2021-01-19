@@ -343,4 +343,10 @@ fn main(){
 
 The primary change is that instead of reading each line, we scan for the line break character, "\n" represented by the number 10. This lets us know we've hit the end of a line and can do the requisite math. The logic for checking for x's and putting our numbers together remains the same, and the cleanup logic just moves into the block that looks for the linebreak character. 
 
-To me, this is much easier to read than our second pass. 
+To me, this is much easier to read than our second pass. Its also faster, it runs in 263 microseconds, almost 20% faster than our original solution. It also opens the file a full microsecond faster, which suggests there's not much of a time gain to be made in the file opening bit, at least not unless we really want to get our hands dirty...
+
+There is a lesson to take away here, from the point of view of our desire to write the fastest code possible: more often than not, inbuilt methods include a lot of security precautions we don't need at all. If we can control our input, writing our own parsing will more often than not be faster. 
+
+This is not the last time we'll be seeing bytes, or byte arrays. 
+
+Join us next time where we try to use datastructures in ways they were never intended. 
