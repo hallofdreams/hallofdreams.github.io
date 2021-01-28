@@ -445,3 +445,111 @@ fn main(){
         print!("\n execution time in microseconds {}", end);
 }
 ```
+ Our run time is something like 698 microseconds, which is pretty good. But we can do better. 
+ 
+ A small immediate improvement that comes to mind is not doing `keys.len` at the end, since that's essentially iterating over the existing dict. Instead we can check if the key is in use when we go to write, and if it is not, we increment our counter by 1. Something like this: 
+ 
+ ```
+ use std::time::{Instant};
+use std::fs;
+use std::collections::HashMap;
+use std::collections::hash_map::Entry;
+
+fn main(){
+       
+        let file ="../input.txt";
+        let input_string: String = fs::read_to_string(file).unwrap();
+
+        let start = Instant::now();
+  
+        let mut santa_1_x = 0;
+        let mut santa_2_x = 0;
+        let mut santa_3_x = 0;
+        let mut santa_1_y = 0;
+        let mut santa_2_y = 0;
+        let mut santa_3_y = 0;
+
+        let mut curr_turn = 0;
+
+        let mut visited_santa_1 = HashMap::new();
+        let mut visited_other_santas = HashMap::new();
+
+        visited_santa_1.insert((0,0), true);
+        visited_other_santas.insert((0,0), true);
+
+        let mut p1 = 0;
+        let mut p2 = 0;
+
+        for c in input_string.chars() { 
+            if(c == '^'){
+                santa_1_x += 1;
+                if(curr_turn % 2 == 0){
+                    santa_2_x += 1;
+                }else{
+                    santa_3_x += 1;
+                }
+            }
+            else if(c == 'v'){
+                santa_1_x -= 1;
+                if(curr_turn % 2 == 0){
+                    santa_2_x -= 1
+                }else{
+                    santa_3_x -= 1
+                }
+            }
+            else if(c == '>'){
+                santa_1_y += 1;
+                if(curr_turn % 2 == 0){
+                    santa_2_y += 1
+                }else{
+                    santa_3_y += 1
+                }
+            }
+            else if(c == '<'){
+                santa_1_y -= 1;
+                if(curr_turn % 2 == 0){
+                    santa_2_y -= 1
+                }else{
+                    santa_3_y -= 1
+                }
+            }
+            
+            match visited_santa_1.entry((santa_1_x, santa_1_y)) {
+                Entry::Occupied(_) => (),
+                Entry::Vacant(v) => {
+                                    v.insert(true);
+                                    p1 += 1
+                }
+            }
+            if(curr_turn % 2 == 0){
+                match visited_other_santas.entry((santa_2_x, santa_2_y)) {
+                    Entry::Occupied(_) => (),
+                    Entry::Vacant(v) => {
+                                        v.insert(true);
+                                        p2 += 1
+                    }
+                };
+                match visited_other_santas.entry((santa_3_x, santa_3_y)){
+                    Entry::Occupied(_) => (),
+                    Entry::Vacant(v) => {
+                                        v.insert(true);
+                                        p2 += 1
+                    }
+                };
+            }
+            curr_turn += 1;
+        }
+        print!("\n day 1: {}", p1);
+        print!("\n day 2: {}", p2);
+        let end = start.elapsed().as_micros();
+        print!("\n execution time in microseconds {}", end);
+}
+```
+
+Which gives us a runtime of... 670 microseconds. A 20 microsecond improvement. Not as good as we'd like, but not terrible. Iterating over the map in memory was obviously not that time consuming. 
+
+Lets examine the problem-space and see if we can come up with any more ideas. 
+
+For one, we know we're dealing with a fixed dataset that has a maximum number of 80
+ 
+ 
