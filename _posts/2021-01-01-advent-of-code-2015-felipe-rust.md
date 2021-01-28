@@ -550,6 +550,107 @@ Which gives us a runtime of... 670 microseconds. A 20 microsecond improvement. N
 
 Lets examine the problem-space and see if we can come up with any more ideas. 
 
-For one, we know we're dealing with a fixed dataset that has a maximum number of 80
- 
- 
+For one, we know we're dealing with a fixed dataset that has a maximum number of 8192 moves. This means our physical grid is really no larger than 8192x8192, even assuming all the moves are in one direction. The movement is also not random. Mapping out the moves we get an image that looks like this: 
+
+[insert image here]
+
+This is *not* a random walking path. Generall walking paths in small iterations cluster around a central node, and migrate slightly from side to side as a new random center is determined. If there were a flat 25% chance of going a specific direction, we would have a much tighter knot, and none of these long spawning paths going off into the distance. If this were a much broader dataset, we could consdier doing some kind of memoization of move patterns, or limited compression... but we only have 8000ish moves. Which makes that unlikely to be fruitful. In fact, the more I considered optimizations, the more i realized, there's no way to avoid scanning the memory space once, and doing it more than once is probably inneficient. I had however, one last idea. What if we could improve on the map? I considered a [Trie](https://en.wikipedia.org/wiki/Trie), but the insertion time seemed generally worse or equal to a map. Since we only had 2000ish dict entries, we are probably not running into a lot of bucket rebalancing. 
+
+Alright, fine, what if we used an Array? Instead of having a tuple key, we could turn the coordinate tuple into an integer key, access the array directly by index (O(1)) and writing directly (O(1)). Sure our array would have to be big. Massive in fact to make it work, but memory is not a real concern. Arrays aren't *meant* to be used as HashMap substitutes, but maybe it'll be faster than our match statements? We certainly won't be rebalancing buckets. 
+
+```rust
+use std::time::{Instant};
+use std::fs;
+
+fn main(){
+       
+        let file ="../input.txt";
+        let input_string: String = fs::read_to_string(file).unwrap();
+
+        let start = Instant::now();
+  
+        let mut santa_1_x = 4000;
+        let mut santa_2_x = 4000;
+        let mut santa_3_x = 4000;
+        let mut santa_1_y = 4000;
+        let mut santa_2_y = 4000;
+        let mut santa_3_y = 4000;
+
+        let mut curr_turn = 0;
+
+
+        let mut visited_santa_1: [u8; 8000*8000] = [0; 8000*8000];
+        let mut visited_other_santas: [u8; 8000*8000] = [0; 8000*8000];
+
+        visited_santa_1[santa_1_x*8000 + santa_1_y ] = 1;
+        visited_other_santas[santa_2_x*8000 + santa_2_y ] = 1;
+
+        let mut p1 = 1;
+        let mut p2 = 1;
+
+        for c in input_string.chars() { 
+            if(c == '^'){
+                santa_1_x += 1;
+                if(curr_turn % 2 == 0){
+                    santa_2_x += 1;
+                }else{
+                    santa_3_x += 1;
+                }
+            }
+            else if(c == 'v'){
+                santa_1_x -= 1;
+                if(curr_turn % 2 == 0){
+                    santa_2_x -= 1
+                }else{
+                    santa_3_x -= 1
+                }
+            }
+            else if(c == '>'){
+                santa_1_y += 1;
+                if(curr_turn % 2 == 0){
+                    santa_2_y += 1
+                }else{
+                    santa_3_y += 1
+                }
+            }
+            else if(c == '<'){
+                santa_1_y -= 1;
+                if(curr_turn % 2 == 0){
+                    santa_2_y -= 1
+                }else{
+                    santa_3_y -= 1
+                }
+            }
+
+            if visited_santa_1[santa_1_x*8000 + santa_1_y ] != 1{
+                visited_santa_1[santa_1_x*8000 + santa_1_y ] = 1;
+                p1 += 1;
+            }
+            
+            if(curr_turn % 2 == 0){
+                if visited_other_santas[santa_2_x*8000 + santa_2_y ] != 1{
+                    visited_other_santas[santa_2_x*8000 + santa_2_y ] = 1;
+                    p2 += 1;
+                }
+            }else{
+                if visited_other_santas[santa_3_x*8000 + santa_3_y ] != 1{
+                    visited_other_santas[santa_3_x*8000 + santa_3_y ] = 1;
+                    p2 += 1;
+                }
+            }
+            curr_turn += 1;
+        }
+        print!("\n day 1: {}", p1);
+        print!("\n day 2: {}", p2);
+        let end = start.elapsed().as_micros();
+        print!("\n execution time in microseconds {}", end);
+}
+```
+
+Some arrays, set to be 64000000 entries in size. That's 64 million. We'll populate it all with zeroes, and it will be principally full of zeroes. Our poor mans hashing algorithm to index into the array will be 8000(x_coord) + y+coord, and we'll move our coordinate space so all values inside it are positive. (Roughly, we should have built a bigger space to make *sure* we weren't dipping into the negatives, but being an intial test, this will do. 
+
+`thread 'main' has overflowed its stack`
+
+Alright, we did it. We can pack up and go home. I beat Dave to the error of errors. 
+
+Arrays in rust are contigous in memory, and we asked a little too much from our available memory space. Theoretically we should be using the rust [Box](https://doc.rust-lang.org/std/boxed/struct.Box.html) to allocate our memory into the heap instead. Or we could try using a Vec. A Vec is *like* an array, but it allocates its memory in the heap and it's not of fixed size. (If "heap" and "stack" are mystery words to you, I highly recommend [this bit](https://doc.rust-lang.org/1.22.0/book/first-edition/the-stack-and-the-heap.html) of the rust book) That's all a bunch of overhead I wanted to skip, but it looks like there's no getting around it. Lets try it with a vector. 
