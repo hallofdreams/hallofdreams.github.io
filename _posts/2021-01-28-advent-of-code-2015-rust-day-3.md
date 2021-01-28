@@ -862,7 +862,7 @@ Arrays in rust are contiguous in memory, and we asked a little too much from our
 
 ## Preallocated Vectors
 
-```
+```rust
 use std::time::{Instant};
 use std::fs;
 
