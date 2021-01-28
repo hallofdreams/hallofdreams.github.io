@@ -354,16 +354,16 @@ Join us next time where we try to use datastructures in ways they were never int
 
 I promised we'd use datastructures wrong today, and while I didn't go *quite* as far as I planned to on that front, we still do some interesting things. 
 
-The problem, as you already know is about santas visiting houses and keeping track of which houses have been visited. If you've ever done software interviews, you've run into a variation of this problem... letter counting. The way the problem is usually phrased as "Write a program, that given an arbitrary string, will return which letter appears the most frequently." It doesn't *sound* anything like this problem, but its foundationally the same. It requires you to iterate over a string and keep a ledger of some kind tracking the results of each character in the string. If you're *not* super familiar with software, you probably imagined you have to build a map using a 2D array, and keep track of the position of the santa, and flatten that... but you really don't.
+The problem, as you already know is about Santa visiting houses and keeping track of which houses have been visited. If you've ever done software interviews, you've run into a variation of this problem... letter counting. The way the problem is usually phrased as "Write a program, that given an arbitrary string, will return which letter appears the most frequently." It doesn't *sound* anything like this problem, but its foundationally the same. It requires you to iterate over a string and keep a ledger of some kind tracking the results of each character in the string. If you're *not* super familiar with software, you probably imagined you have to build a map using a 2D array, and keep track of the position of the Santa, and flatten that... but you really don't.
 
 What matters here is 
 
-1. Tracking the location of santa 
+1. Tracking the location of Santa 
 2. Tracking houses that have been visited
 
-You *can* do that by drawing a map, but its a miserable exercise. You can also accoplish that by having a coordinate pair that tells you where santa is, and a HashMap that keeps track of visited coordinates. The arguments in favor of the HashMap are many, namely we'll be looking at a really fast read and write time (O(1) write, read and insert times, except if we have to rebalance the buckets, which shouldn't happen frequently). 
+You *can* do that by drawing a map, but its a miserable exercise. You can also acomplish that by having a coordinate pair that tells you where Santa is, and a HashMap that keeps track of visited coordinates. The arguments in favor of the HashMap are many, namely we'll be looking at a really fast read and write time (O(1) write, read and insert times, except if we have to rebalance the buckets, which shouldn't happen frequently). 
 
-Visualizing what this code will look like, we can imagine we'll make a HashMap to store the coordinates we've visted, we'll have a pair of coordinates to know where santa is, and we'll have an iterator that will parse the string of moves. P2 just requires us to alternate between two santas, which we can do by tracking if our current move is odd or even. We could have a bool we flip, or increment a counter, or anything really as long as it consistently swaps moves. 
+Visualizing what this code will look like, we can imagine we'll make a HashMap to store the coordinates we've visited, we'll have a pair of coordinates to know where Santa is, and we'll have an iterator that will parse the string of moves. P2 just requires us to alternate between two Santas, which we can do by tracking if our current move is odd or even. We could have a bool we flip, or increment a counter, or anything really as long as it consistently swaps moves. 
 
 Thus our V1 of the code looks something like this 
 
@@ -554,9 +554,9 @@ For one, we know we're dealing with a fixed dataset that has a maximum number of
 
 [insert image here]
 
-This is *not* a random walking path. Generall walking paths in small iterations cluster around a central node, and migrate slightly from side to side as a new random center is determined. If there were a flat 25% chance of going a specific direction, we would have a much tighter knot, and none of these long spawning paths going off into the distance. If this were a much broader dataset, we could consdier doing some kind of memoization of move patterns, or limited compression... but we only have 8000ish moves. Which makes that unlikely to be fruitful. In fact, the more I considered optimizations, the more i realized, there's no way to avoid scanning the memory space once, and doing it more than once is probably inneficient. I had however, one last idea. What if we could improve on the map? I considered a [Trie](https://en.wikipedia.org/wiki/Trie), but the insertion time seemed generally worse or equal to a map. Since we only had 2000ish dict entries, we are probably not running into a lot of bucket rebalancing. 
+This is *not* a random walking path. Generally walking paths in small iterations cluster around a central node, and migrate slightly from side to side as a new random center is determined. If there were a flat 25% chance of going a specific direction, we would have a much tighter knot, and none of these long spawning paths going off into the distance. If this were a much broader dataset, we could consider doing some kind of memoization of move patterns, or limited compression... but we only have 8000ish moves. Which makes that unlikely to be fruitful. In fact, the more I considered optimizations, the more i realized, there's no way to avoid scanning the memory space once, and doing it more than once is probably inefficient. I had however, one last idea. What if we could improve on the map? I considered a [Trie](https://en.wikipedia.org/wiki/Trie), but the insertion time seemed generally worse or equal to a map. Since we only had 2000ish dict entries, we are probably not running into a lot of bucket rebalancing. 
 
-Alright, fine, what if we used an Array? Instead of having a tuple key, we could turn the coordinate tuple into an integer key, access the array directly by index (O(1)) and writing directly (O(1)). Sure our array would have to be big. Massive in fact to make it work, but memory is not a real concern. Arrays aren't *meant* to be used as HashMap substitutes, but maybe it'll be faster than our match statements? We certainly won't be rebalancing buckets. 
+Alright, fine, what if we used an Array? Instead of having a tuple key, we could turn the coordinate tuple into an integer key, access the array directly by index (O(1)) and writing directly (O(1)). Sure our array would have to be big. Massive in fact to make it work, but memory is not a real concern. Arrays aren't *meant* to be used as HashMap substitutes, but maybe it'll be faster than our match statements?  
 
 ```rust
 use std::time::{Instant};
@@ -647,13 +647,13 @@ fn main(){
 }
 ```
 
-Some arrays, set to be 64000000 entries in size. That's 64 million. We'll populate it all with zeroes, and it will be principally full of zeroes. Our poor mans hashing algorithm to index into the array will be 8000(x_coord) + y+coord, and we'll move our coordinate space so all values inside it are positive. (Roughly, we should have built a bigger space to make *sure* we weren't dipping into the negatives, but being an intial test, this will do. 
+Some arrays, set to be 64000000 entries in size. That's 64 million. We'll populate it all with zeroes, and it will be principally full of zeroes. Our poor mans hashing algorithm to index into the array will be 8000(x_coord) + y+coord, and we'll move our coordinate space so all values inside it are positive. (Roughly, we should have built a bigger space to make *sure* we weren't dipping into the negatives, but being an initial test, this will do. 
 
 `thread 'main' has overflowed its stack`
 
 Alright, we did it. We can pack up and go home. I beat Dave to the error of errors. 
 
-Arrays in rust are contigous in memory, and we asked a little too much from our available memory space. Theoretically we should be using the rust [Box](https://doc.rust-lang.org/std/boxed/struct.Box.html) to allocate our memory into the heap instead. Or we could try using a Vec. A Vec is *like* an array, but it allocates its memory in the heap and it's not of fixed size. (If "heap" and "stack" are mystery words to you, I highly recommend [this bit](https://doc.rust-lang.org/1.22.0/book/first-edition/the-stack-and-the-heap.html) of the rust book) That's all a bunch of overhead I wanted to skip, but it looks like there's no getting around it. Lets try it with a vector. 
+Arrays in rust are contiguous in memory, and we asked a little too much from our available memory space. Theoretically we should be using the rust [Box](https://doc.rust-lang.org/std/boxed/struct.Box.html) to allocate our memory into the heap instead. Or we could try using a Vec. A Vec is *like* an array, but it allocates its memory in the heap instead of the stack and it's not of fixed size. (If "heap" and "stack" are mystery words to you, I highly recommend [this bit](https://doc.rust-lang.org/1.22.0/book/first-edition/the-stack-and-the-heap.html) of the rust book) That's all a bunch of overhead I wanted to skip, but it looks like there's no getting around it. Lets try it with a vector. 
 
 ```
 use std::time::{Instant};
@@ -744,8 +744,8 @@ fn main(){
 }
 ```
 
-This does not crash, but the results are dissapointing. Our massive fixed size vector is worst than a map (which we kind of expected). The runtime for this is about 1000 microseconds, 300 more than our first solution. Unsurprisingly, almost 770 of those microseconds are in initalizing the vecors. If we compare the runtime not counting initalizationg, the vector solution is actually almost 400 microseconds faster! 
+This does not crash, but the results are disappointing. Our massive fixed size vector is worst than a map (which we kind of expected). The runtime for this is about 1000 microseconds, 300 more than our first solution. Unsurprisingly, almost 770 of those microseconds are in initializing the vecors. If we compare the runtime not counting the time it takes to creat the vectors, the vector solution is actually almost 400 microseconds faster (we also skipped initalizating the HashMaps for fairness)! 
 
-What does this mean? If we had a fixed dimension for the santa traveling, and a much larger dataset, then it seems likely the array based solution would be *faster*. Its a reminder to always consider your problemspace, and analyze the specific data you're working with, since that will dictate what solutions work best. Everything is a tradeoff, and when you're chasing speed (as we are), you can make other tradeoffs (like making sacrifices in memory) 
+What does this mean? If we had a fixed dimension for the Santa traveling, and a much larger dataset, then it seems likely the array based solution would be *faster*. Its a reminder to always consider what your problem space actually is, and analyze the specific data you're working with, since that will dictate what solutions work best. Everything is a tradeoff, and when you're chasing speed (as we are), you can make other tradeoffs (like making sacrifices in memory) 
 
 Join us next time while we try to do things in parallel. 
