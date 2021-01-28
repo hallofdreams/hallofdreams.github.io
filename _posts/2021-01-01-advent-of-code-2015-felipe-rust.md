@@ -349,3 +349,99 @@ There is a lesson to take away here, from the point of view of our desire to wri
 This is not the last time we'll be seeing bytes, or byte arrays. 
 
 Join us next time where we try to use datastructures in ways they were never intended. 
+
+# [Day 3](https://www.adventofcode.com/2015/day/2)
+
+I promised we'd use datastructures wrong today, and while I didn't go *quite* as far as I planned to on that front, we still do some interesting things. 
+
+The problem, as you already know is about santas visiting houses and keeping track of which houses have been visited. If you've ever done software interviews, you've run into a variation of this problem... letter counting. The way the problem is usually phrased as "Write a program, that given an arbitrary string, will return which letter appears the most frequently." It doesn't *sound* anything like this problem, but its foundationally the same. It requires you to iterate over a string and keep a ledger of some kind tracking the results of each character in the string. If you're *not* super familiar with software, you probably imagined you have to build a map using a 2D array, and keep track of the position of the santa, and flatten that... but you really don't.
+
+What matters here is 
+
+1. Tracking the location of santa 
+2. Tracking houses that have been visited
+
+You *can* do that by drawing a map, but its a miserable exercise. You can also accoplish that by having a coordinate pair that tells you where santa is, and a HashMap that keeps track of visited coordinates. The arguments in favor of the HashMap are many, namely we'll be looking at a really fast read and write time (O(1) write, read and insert times, except if we have to rebalance the buckets, which shouldn't happen frequently). 
+
+Visualizing what this code will look like, we can imagine we'll make a HashMap to store the coordinates we've visted, we'll have a pair of coordinates to know where santa is, and we'll have an iterator that will parse the string of moves. P2 just requires us to alternate between two santas, which we can do by tracking if our current move is odd or even. We could have a bool we flip, or increment a counter, or anything really as long as it consistently swaps moves. 
+
+Thus our V1 of the code looks something like this 
+
+```rust 
+use std::time::{Instant};
+use std::fs;
+use std::collections::HashMap;
+
+fn main(){
+       
+        let file ="../input.txt";
+        let input_string: String = fs::read_to_string(file).unwrap();
+
+        let start = Instant::now();
+  
+        let mut santa_1_x = 0;
+        let mut santa_2_x = 0;
+        let mut santa_3_x = 0;
+        let mut santa_1_y = 0;
+        let mut santa_2_y = 0;
+        let mut santa_3_y = 0;
+
+        let mut curr_turn = 0;
+
+        let mut visited_santa_1 = HashMap::new();
+        let mut visited_other_santas = HashMap::new();
+
+        visited_santa_1.insert((0,0), true);
+        visited_other_santas.insert((0,0), true);
+
+        for c in input_string.chars() { 
+            if(c == '^'){
+                santa_1_x += 1;
+                if(curr_turn % 2 == 0){
+                    santa_2_x += 1;
+                }else{
+                    santa_3_x += 1;
+                }
+            }
+            else if(c == 'v'){
+                santa_1_x -= 1;
+                if(curr_turn % 2 == 0){
+                    santa_2_x -= 1
+                }else{
+                    santa_3_x -= 1
+                }
+            }
+            else if(c == '>'){
+                santa_1_y += 1;
+                if(curr_turn % 2 == 0){
+                    santa_2_y += 1
+                }else{
+                    santa_3_y += 1
+                }
+            }
+            else if(c == '<'){
+                santa_1_y -= 1;
+                if(curr_turn % 2 == 0){
+                    santa_2_y -= 1
+                }else{
+                    santa_3_y -= 1
+                }
+            }
+            
+            visited_santa_1.insert((santa_1_x, santa_1_y), true);
+            if(curr_turn % 2 == 0){
+                visited_other_santas.entry((santa_2_x, santa_2_y)).or_insert(true);
+            }else{
+                visited_other_santas.entry((santa_3_x, santa_3_y)).or_insert(true);
+            }
+            curr_turn += 1;
+        }
+
+        let p1 = visited_santa_1.keys().len();
+        let p2 = visited_other_santas.keys().len();
+        print!("\n day 1: {}", p1);
+        print!("\n day 2: {}", p2);
+        let end = start.elapsed().as_micros();
+        print!("\n execution time in microseconds {}", end);
+}
+```
