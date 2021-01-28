@@ -654,3 +654,98 @@ Some arrays, set to be 64000000 entries in size. That's 64 million. We'll popula
 Alright, we did it. We can pack up and go home. I beat Dave to the error of errors. 
 
 Arrays in rust are contigous in memory, and we asked a little too much from our available memory space. Theoretically we should be using the rust [Box](https://doc.rust-lang.org/std/boxed/struct.Box.html) to allocate our memory into the heap instead. Or we could try using a Vec. A Vec is *like* an array, but it allocates its memory in the heap and it's not of fixed size. (If "heap" and "stack" are mystery words to you, I highly recommend [this bit](https://doc.rust-lang.org/1.22.0/book/first-edition/the-stack-and-the-heap.html) of the rust book) That's all a bunch of overhead I wanted to skip, but it looks like there's no getting around it. Lets try it with a vector. 
+
+```
+use std::time::{Instant};
+use std::fs;
+
+fn main(){
+       
+        let file ="../input.txt";
+        let input_string: String = fs::read_to_string(file).unwrap();
+
+        let start = Instant::now();
+  
+        let mut santa_1_x = 4000;
+        let mut santa_2_x = 4000;
+        let mut santa_3_x = 4000;
+        let mut santa_1_y = 4000;
+        let mut santa_2_y = 4000;
+        let mut santa_3_y = 4000;
+
+        let mut curr_turn = 0;
+
+
+        let mut visited_santa_1 = vec![0; 8000*8000];
+        let mut visited_other_santas = vec![0; 8000*8000];
+
+        visited_santa_1[santa_1_x*8000 + santa_1_y ] = 1;
+        visited_other_santas[santa_2_x*8000 + santa_2_y ] = 1;
+
+        let mut p1 = 1;
+        let mut p2 = 1;
+
+        for c in input_string.chars() { 
+            if(c == '^'){
+                santa_1_x += 1;
+                if(curr_turn % 2 == 0){
+                    santa_2_x += 1;
+                }else{
+                    santa_3_x += 1;
+                }
+            }
+            else if(c == 'v'){
+                santa_1_x -= 1;
+                if(curr_turn % 2 == 0){
+                    santa_2_x -= 1
+                }else{
+                    santa_3_x -= 1
+                }
+            }
+            else if(c == '>'){
+                santa_1_y += 1;
+                if(curr_turn % 2 == 0){
+                    santa_2_y += 1
+                }else{
+                    santa_3_y += 1
+                }
+            }
+            else if(c == '<'){
+                santa_1_y -= 1;
+                if(curr_turn % 2 == 0){
+                    santa_2_y -= 1
+                }else{
+                    santa_3_y -= 1
+                }
+            }
+
+            if visited_santa_1[santa_1_x*8000 + santa_1_y ] != 1{
+                visited_santa_1[santa_1_x*8000 + santa_1_y ] = 1;
+                p1 += 1;
+            }
+            
+            if(curr_turn % 2 == 0){
+                if visited_other_santas[santa_2_x*8000 + santa_2_y ] != 1{
+                    visited_other_santas[santa_2_x*8000 + santa_2_y ] = 1;
+                    p2 += 1;
+                }
+            }else{
+                if visited_other_santas[santa_3_x*8000 + santa_3_y ] != 1{
+                    visited_other_santas[santa_3_x*8000 + santa_3_y ] = 1;
+                    p2 += 1;
+                }
+            }
+            curr_turn += 1;
+        }
+        print!("\n day 1: {}", p1);
+        print!("\n day 2: {}", p2);
+        let end = start.elapsed().as_micros();
+        print!("\n execution time in microseconds {}", end);
+}
+```
+
+This does not crash, but the results are dissapointing. Our massive fixed size vector is worst than a map (which we kind of expected). The runtime for this is about 1000 microseconds, 300 more than our first solution. Unsurprisingly, almost 770 of those microseconds are in initalizing the vecors. If we compare the runtime not counting initalizationg, the vector solution is actually almost 400 microseconds faster! 
+
+What does this mean? If we had a fixed dimension for the santa traveling, and a much larger dataset, then it seems likely the array based solution would be *faster*. Its a reminder to always consider your problemspace, and analyze the specific data you're working with, since that will dictate what solutions work best. Everything is a tradeoff, and when you're chasing speed (as we are), you can make other tradeoffs (like making sacrifices in memory) 
+
+Join us next time while we try to do things in parallel. 
