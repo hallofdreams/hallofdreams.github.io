@@ -415,7 +415,7 @@ Without going any further, two things are clear
 
 Still, that was by no means a waste of time. We learned a little about hashing algorithms, and about reading dense mathy looking things. We can now confidently use the md5 crate without it being a black box. 
 
-***EDIT:** Felipe missed a trick here.  Stopping at iteration 61 would allow us to shortcut through three unnecessary steps, for a speedup of ~4.5%.  The key is in the [https://en.wikipedia.org/wiki/MD5#Pseudocode](Wikipedia pseudocode) for MD5 (specifically, the very end of the `for i from 0 to 63` loop), and the fact that for this specific problem we only need the first quarter of the 512 bit chunk that's being calculated.  The shortcut implementation is left to the reader. -David*
+***EDIT:** Felipe missed a trick here.  Stopping at iteration 61 would allow us to shortcut through three unnecessary steps, for a speedup of ~4.5%.  The key is in the [Wikipedia pseudocode](https://en.wikipedia.org/wiki/MD5#Pseudocode) for MD5 (specifically, the very end of the `for i from 0 to 63` loop), and the fact that for this specific problem we only need the first quarter of the 512 bit chunk that's being calculated.  The shortcut implementation is left to the reader. -David*
 
 ## First Attempt
 
