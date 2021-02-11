@@ -1000,4 +1000,4 @@ This may *seem* like a lot, but its very possible to do, especially tackling one
 
 Now, with this code under our belt, what does performance time look like? 138350 microseconds. Not bad, that's a 4x speedup. Now I cheated a little bit, and tried various permutations of threads and ranges. It turns out the optimal time is when you have a number of threads equal to what your cpu can handle and your range is such that you'll find your answer having to spawn threads only once. This was trivial to figure out via trial and error, but I suspect in future problems, we're going to need a more robust approach to that solution. 
 
-Tune in next time, for some password generation (which we will not be able to serialize)
+Tune in next time, for some password generation (which we will not be able to parallelize).
