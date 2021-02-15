@@ -32,16 +32,16 @@ For many linguists, Latin is the canonical, go-to example of a dead language.  [
 
 For many speakers of Latin, the assertion "Latin is a dead language" is the canonical, go-to example of why linguists don't know what they're talking about.  Reading through the aforementioned search results, you find articles such as ["Look, Latin Is Not Useless, Neither Is It Dead"](https://lithub.com/look-latin-is-not-useless-neither-is-it-dead/), or ["Why Latin Isn't Dead"](http://www.ocscholar.org/humanities/114-why-latin-isn-t-dead.html).  AncientLanguage.com [answers the question "When Did Latin Die?"](https://ancientlanguage.com/when-did-latin-die/) with "never" and ["Is Latin a Dead Language?"](https://ancientlanguage.com/latin-dead-language/) with "no". [Babble.com's article](https://www.babbel.com/en/magazine/fact-vs-fiction-is-latin-a-dead-language) concedes that it is "Technically Dead" in one header, but immediately clarifies "But It's Also Sort Of Alive" in the next.  [/r/Latin](https://old.reddit.com/r/latin/comments/2caeaf/what_is_your_response_to_someone_saying_latin_is/) declares that if Latin is dead, they're all necromancers (which lines up with every horror movie which has ever featured ominous Latin chanting), or will flippantly respond that the language is not dead but simply Roman around.
 
-And these aren't just baseless claims.  On the religious side, Latin is the [official language](http://www.vatican.va/latin/latin_catechism.html) of the largest organized religion in the world, and [more than five hundred Masses](https://www.latinmassdir.org/) are said in Latin every week in the United States.  On the academic side, [classicalstudies.org lists almost a hundred Classics Departments](https://classicalstudies.org/education/graduate-programs-north-america) offering graduate programs in North America for academics, and for hobbyists there are numerous [online communities](https://old.reddit.com/r/latin/), [long-running podcasts](https://quomododicitur.com/), and [YouTube channels](https://www.youtube.com/ScorpioMartianus) devoted to or entirely in Latin.  Not to mention every horror movie which has ever featured ominous Latin chanting.
+And these aren't just baseless claims.  On the religious side, Latin is the [official language](http://www.vatican.va/latin/latin_catechism.html) of the largest organized religion in the world, and [more than five hundred Masses](https://www.latinmassdir.org/) are said in Latin every week in the United States.  On the academic side, [classicalstudies.org lists almost a hundred Classics Departments](https://classicalstudies.org/education/graduate-programs-north-america) offering graduate programs in North America for academics, and for hobbyists there are numerous [online communities](https://old.reddit.com/r/latin/), [long-running podcasts](https://quomododicitur.com/), and [YouTube channels](https://www.youtube.com/ScorpioMartianus) devoted to or entirely in Latin.
 
 ![](/assets/img/DeathOfPoetry_LatinATM.jpeg)
 *Can a language truly be dead if it has an ATM?*
 
 But intuitively, there has to be *some* validity to the declarations that the language is dead, despite all of the religious, academic, and casual devotees.  Latin is clearly in a very different position from [Linear A](https://en.wikipedia.org/wiki/Linear_A), which as of 2021 no one on Earth can even decipher, let alone speak.  But it's just as clearly in a very different position from English, the de facto *lingua franca* of most of the world.  The difference can't just be the relatively small number of speakers; [the Icelandic language](https://en.wikipedia.org/wiki/Icelandic_language) only has around three hundred thousand native speakers compared to English's three hundred million, but Icelandic is completely alive, or at the very least more than 0.1% as alive as English.  It's possible that Latin actually has more speakers worldwide than Icelandic does (depending on how you count), but it's still in a different category.  Dead or not dead, there's something Icelandic is that Latin isn't.
 
-And the difference can't even be the fact that English and Icelandic have native speakers while Latin has none.  Four hundred years ago, Latin still had no native speakers, but was in a very different position.  If you were in Europe in the 17th century, and you wanted to understand or contribute to any form of science, you *had* to know Latin; ditto to get into any university.  Isaac Newton was an Englishman, but he called his most important book *Principia Mathematica* and not *Principles of Mathematics* because otherwise, most natural philosophers outside of England itself would not have been able to read it.
+And the difference can't even be the fact that English and Icelandic have native speakers while Latin has none.  Four hundred years ago, Latin still had no native speakers, but its situation was not at all the same as today.  If you were in Europe in the 17th century, and you wanted to understand or contribute to any form of science, you *had* to know Latin; ditto to get into any university or seminary.  Isaac Newton may have been an Englishman, but he called his most important book *Principia Mathematica* and not *Principles of Mathematics* because otherwise, most natural philosophers outside of England itself would not have been able to read it.
 
-That's the biggest qualitative difference: in the 17th century, there was a broad category of things which were not themselves Latin-related, but which could only be done if one knew the language.  In the 21st century, there isn't.  Catholics in 2021 can attend Mass in Latin, but they can just as easily attend Mass in English - even the link from earlier to the Catechism of the Church in Latin [has its URL in English](http://www.vatican.va/latin/latin_catechism.html).  You can buy a copy of *Catus Petasus*, but it's easier to find it by the original title of *Cat in the Hat*.  Ultimately, you can learn the language, but you're ultimately learning the language either a) for its own sake, or b) for necromancy.  And there are only so many people interested in either one.
+That's the biggest qualitative difference: in the 17th century, there was a broad category of things which were not themselves Latin-related, but which could only be done if one knew the language.  In the 21st century, there isn't.  Catholics in 2021 can attend Mass in Latin, but they can just as easily attend Mass in English - even the link from earlier to the Catechism of the Church in Latin [has its URL in English](http://www.vatican.va/latin/latin_catechism.html).  You can buy a copy of *Catus Petasus*, but it's easier to find it by the original title of *Cat in the Hat*.  Ultimately, you can learn the language, but you're ultimately learning the language either a) for its own sake, or b) for necromancy.  Anything else, you can do with a different language.
 
 ## Part III: 
 
@@ -49,11 +49,42 @@ That's the biggest qualitative difference: in the 17th century, there was a broa
 
 A lot of reasonable objections to the assertion that poetry is dead is going to proceed along the same lines.  EventBrite in 2021 [lists over a thousand poetry slam events](https://www.eventbrite.com/d/online/free--events/poetry-slam/) in various locations; [the Poetry Foundation website](https://poetryfoundation.org) has around a million page views a day.  The national ["AP English Literature And Composition](https://apstudents.collegeboard.org/courses/ap-english-literature-and-composition) course has three of its nine core units centered on poetry, and over three hundred thousand students in the US take it every year.  Superhero cartoon franchises have [multiple](https://www.imdb.com/title/tt0519646/?ref_=fn_tt_tt_9) [episodes](https://www.imdb.com/title/tt0618136/) named after a William Blake poem, TVTropes has an [entire category of haiku summaries](https://tvtropes.org/pmwiki/namespace_index.php?ns=Haiku), and a [programming competition decided to host a poetry challenge in parallel for the sheer fun of it](https://old.reddit.com/r/adventofcode/wiki/poems4progs).  There's clearly a decent amount of poetry still being read, heard, and written in the English language.  So why call it dead?
 
-The most well-known English translation of [Goethe's German play *Faust*](https://www.gutenberg.org/ebooks/14591) was translated by Bayard Taylor in the 1850s, who spent most of his preface talking about why he translated the play into verse and not into prose, like most of the seventeen existing translations of his day had done.  The core of his reasoning was that "Poetry is not simply a fashion of expression: it is the form of expression absolutely required by a certain class of ideas."  According to Taylor, it is impossible to understand the concepts and emotions Goethe was trying to get across merely by reading a literal prosaic translation, no matter how accurate.  And Charles O. Hartman, in his 2015 *Verse: An Introduction to Prosody* says that this is exactly what distinguishes verse from prose:
+## Part IV: The Unnoticed Hands of Time
 
-> Considered from one odd angle, a poem is a miracle of bandwidth . The poet imagines a whole speaking, gesticulating person, complete with a tone of voice and a situation, and compresses that living being into a stream of data only a few bits wide: a few dozen letters and punctuation marks. This stream (after traveling for a day or for hundreds of years, a mile or thousands of miles) reaches a reader who, perhaps without being aware of the process, from this impoverished text imaginatively reconstitutes the voice and the speaker, as alive again as at creation. What we call poetic techniques are methods of supporting this marvel of recovery.
+> *Inter marmoreas Leonorae pendula colles*  
+> *Fortunata nimis Machina dicit horas.*  
+> *Quas MANIBUS premit illa duas insensa papillas*  
+> *Cur mihi sit DIGITO tangere, amata, nefas?*  
+> 
+> -- Percy Shelley, "In Horologium"
 
-## Part IV: Golden with Wastage of Gold
+A while back, while reading late at night, I stumbled upon an obscure Percy Shelley poem in an anthology which in English would be titled something like "About the Clock": only four lines long, but in Latin, and in oddly phrased poetic Latin to boot.  There was no translation provided, and a quick Google search turned up no English translations at all, anywhere on the Internet.  So, I got out my Latin book and after twenty minutes painstakingly rendered the first half as:
+
+> Between the mountains, the exceedingly fortunate machine hanging down  
+> Tells the marble-like hours to Leonora.  
+
+This was an accurate, literal rendition of the first two lines of the poem, but it told me nothing; knowing what it said didn't give me any clue as to what it *meant*.  So, I messaged Felipe (who was unphased by an unexplained Latin message at half past midnight), and between my Latin book and his fluency in Spanish, we translated the second half over another twenty minutes.  Starting, of course, with the puns. `pendula` is used as a verb meaning `hanging down`, but given the context it also calls to mind an old-fashioned pendulum clock.  `digito` is used the way we'd use the phrase "by a hair's breadth" (to represent two things extremely close together), but its literal meaning of `finger` goes well with the previous line talking about the clocks's hands (`manibus`).  And suddenly, it clicked: this is a dirty poem!  The literal translation, tweaked in light of this, started to make sense.
+
+> That \[the machine\] presses hands, unnoticed, to two breasts -  
+> Why is to touch a hair’s breadth away, beloved, a sin to me?
+
+What was Shelley saying?  He'd probably seen (or thought of) a pretty girl wearing a French watch on a locket, and being 17, was of the perfect age to get very jealous of the watch.  So he wrote a poem saying as much.  And, buried as "In Horologium" was (it was only published decades after his death), nobody [except one 1872 anthology writer](https://books.google.com/books?id=Ai_n49Ie0RUC&pg=PA548&lpg=PA548#v=onepage&q&f=false) even bothered speculating about it.  It was immensely satisfying, both to be the first ones to appreciate it in probably a very long time, and to to realize that the thing we were appreciating was silly teenaged humor.
+
+And that's exactly the point - it was satisfying *because we were the only ones to do it*.  It's that gap, those forty minutes of painstaking translation before the "aha!" moment, that marks the difference between a dead language and a living one.  There's a world of emotional connotation that we just don't have, and that we can only reconstruct after the fact.
+
+> The luckiest clock to ever tell the time  
+> Adorns the marble mountains of Lenore.  
+> *Its* hands caress, and always you ignore –  
+> Why is it such a sin, beloved, for mine?  
+
+But that translation lacks the puns with 'pendula' and 'digito', and even aside from the puns, it falls nearly as flat as the literal translation does.  It gets the message across, but it has no weight to it; you're certainly not going to see it passed from person to person.  A poem with a literal translation just isn't going to be sufficiently 'alive' to capture the humor in the original.  The *actual* translation, in 2021, would be a different form of art altogether:
+
+![](/assets/img/DeathOfPoetry_Locket.png)
+
+And a year, that meme will be dead too.
+
+
+## Part V: Golden with Wastage of Gold
 
 > *Old King Cole*  
 > *Was a merry old soul*  
@@ -154,14 +185,20 @@ Whether or not this is a good thing is hard to say.
 > 
 > -- GK Chesterton, "[Variations on an Air](https://en.wikisource.org/wiki/Variations_on_an_Air)"
 
-## Part V:
+## Part VI:
 
 So eventually, any artistic genre reaches something of a steady state.  It's still possible in this steady state to make something new and original, but it becomes harder and harder, and artists or authors who want to do something new have to either work increasingly hard to do it, or find a new genre to work in, and the creators who remain tend to fill their niche with a tried-and-true formula.  Formulaic work can keep a genre going for a very long time, but it becomes a delicate balance of getting enough readers or viewers to whom the formula is new to replace the readers and viewers who have moved on.  If that balance gets disrupted -- if the new readers don't see the appeal, or current readers start moving on faster, or the people writing the formula try to alter it for the worse -- then the whole genre can collapse, and other genres or mediums can take its place.
 
 In which case,
 
+## Part VII: 
 
-## Part VI:
+The most well-known English translation of [Goethe's German play *Faust*](https://www.gutenberg.org/ebooks/14591) was translated by Bayard Taylor in the 1850s, who spent most of his preface talking about why he translated the play into verse and not into prose, like most of the seventeen existing translations of his day had done.  The core of his reasoning was that "Poetry is not simply a fashion of expression: it is the form of expression absolutely required by a certain class of ideas."  According to Taylor, it is impossible to understand the concepts and emotions Goethe was trying to get across merely by reading a literal prosaic translation, no matter how accurate.  And Charles O. Hartman, in his 2015 *Verse: An Introduction to Prosody* says that this is exactly what distinguishes verse from prose:
+
+> Considered from one odd angle, a poem is a miracle of bandwidth . The poet imagines a whole speaking, gesticulating person, complete with a tone of voice and a situation, and compresses that living being into a stream of data only a few bits wide: a few dozen letters and punctuation marks. This stream (after traveling for a day or for hundreds of years, a mile or thousands of miles) reaches a reader who, perhaps without being aware of the process, from this impoverished text imaginatively reconstitutes the voice and the speaker, as alive again as at creation. What we call poetic techniques are methods of supporting this marvel of recovery.
+
+
+## Part VIII:
 
 > *I've studied now Philosophy*  
 > *And Jurisprudence, Medicine,—*  
