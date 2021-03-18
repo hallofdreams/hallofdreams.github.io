@@ -6,6 +6,19 @@ categories: [Essays]
 tags: [essay, poetry, david]     # TAG names should always be lowercase
 ---
 
+## Outline [not to be included in final version]:
+
+* Part I: Introductory sentence.  Poetry is dead, and this essay is all about discovering why, how, and when.
+* Part II: Latin is a 'dead language'.  It's not necessary for anything except itself; its other applications and utilities can be gotten elsewhere.  Current levels of interest in Latin don't make it a living language.
+* Part III: Here's why poetry fits the same mould that Latin does.  It's weird for us to even think about poetry as being 'necessary' for anything; here are examples of people who thought it once was.
+* Part IV: Here's how poetry changed over the centuries, gradually becoming more abstract and requiring more from the audience.  Poetry, like any art form, assumes some amount of common ground; increase that amount too much, make the poetry too abstruse, and as a popular medium poetry will wither away.  A look at poetry journals will confirm this.
+* Part V: "In Horologium" example, showing *why* the distinction matters; being thrown in the deep end with a foreign language isn't a good way to appreciate it.  Anyone expecting modern 'poetry' to be anything like pre-1916 poetry will have a tough time jumping into that 'common ground' necessary to enjoy and not just intellectually appreciate it.  This goes both directions.
+* Part VI: What survives now from the old poetic tradition has split into various groups, including most forms of music and things like 'slam poetry', in addition to what's found in journals.  This is much like how Latin fractured into the Romantic languages; had we called all of the resulting languages 'Latin', we'd have lost something.
+* Part VII: Talk about my experience with *Faust*, and how even reading the English translation was like reading "IN HOROLOGIUM", complete with that buffer time before the lightbulb went off.
+* Part VIII: Talk about haiku, and why you can't just write a poem in the old styles and publish it and have it read, even if it's good.  It's the wrong 'genre'.  Talk about /u/poem\_for\_your\_sprog, and how his work is almost all light verse.
+* Part IX: Rubiyat, Cyberiad.  Talk about translation of poetry.  If it can be done at all, it will a) not be easy to get right, b) be very easy to get wrong, and c) require somebody 'fluent' in both and a capable independent writer of newer forms.
+* Part X: Conclusion.
+
 ## Part I: Art, Gone to Decay
 
 > *Through thy battlements, Newstead, the hollow winds whistle:*  
@@ -13,7 +26,7 @@ tags: [essay, poetry, david]     # TAG names should always be lowercase
 > *In thy once smiling garden, the hemlock and thistle*  
 > *Have choak'd up the rose, which late bloom'd in the way.*  
 > 
-> -- Lord Byron, "On Leaving Newstead Abbey"
+> -- Lord Byron, "[On Leaving Newstead Abbey](https://en.wikisource.org/wiki/The_Works_of_Lord_Byron_(ed._Coleridge,_Prothero)/Poetry/Volume_1/On_Leaving_Newstead_Abbey)"
 
 Poetry is dead.
 
@@ -21,9 +34,19 @@ Any essay whose opening paragraph consists of a three-word sentence stating a no
 
 Or at any rate, poetry *was* about all those things.  Because, as I mentioned before, it's dead now.
 
-## Part II: Ars Longa, Vita Brevis
+## Part II: Vita Brevis, Ars Brevis
 
+> *Ennius arte carens animosique Accius oris*  
+> *casurum nullo tempore nomen habent.*  
+> *Varronem primamque ratem quae nesciet aetas,*  
+> *aureaque Aesonio terga petita duci?*  
 > 
+> *And Ennius, with simple speech, and Accius, with stormy tongue,*  
+> *Possess them both a name no time can ever overthrow.*  
+> *Will any age forget the Fleece, and leave Aeson unsung?*  
+> *Or the first ship to sail the seas?  Can time erase Varro?*  
+> 
+> -- Ovid, "[Ars Amatoria](https://www.sacred-texts.com/cla/ovid/lboo/)"
 
 For many linguists, Latin is the canonical, go-to example of a dead language.  [Wikipedia](https://en.wikipedia.org/wiki/Extinct_language) lists it as the first example of a 'dead' (as opposed to 'extinct') language, citing the [Oxford Dictionary](http://www.oxfordreference.com/view/10.1093/acref/9780199202720.001.0001/acref-9780199202720-e-799?rskey=GN3YxZ&result=801), which says the same thing.  [Global Language Services](https://www.globallanguageservices.co.uk/difference-extinct-language-dead-language/) says that "Latin is probably the most widely known dead language", and just a simple Google search for the phrase "dead language" will turn up 'Latin' as the very first result.
 
@@ -37,54 +60,50 @@ And these aren't just baseless claims.  On the religious side, Latin is the [off
 ![](/assets/img/DeathOfPoetry_LatinATM.jpeg)
 *Can a language truly be dead if it has an ATM?*
 
-But intuitively, there has to be *some* validity to the declarations that the language is dead, despite all of the religious, academic, and casual devotees.  Latin is clearly in a very different position from [Linear A](https://en.wikipedia.org/wiki/Linear_A), which as of 2021 no one on Earth can even decipher, let alone speak.  But it's just as clearly in a very different position from English, the de facto *lingua franca* of most of the world.  The difference can't just be the relatively small number of speakers; [the Icelandic language](https://en.wikipedia.org/wiki/Icelandic_language) only has around three hundred thousand native speakers compared to English's three hundred million, but Icelandic is completely alive, or at the very least more than 0.1% as alive as English.  It's possible that Latin actually has more speakers worldwide than Icelandic does (depending on how you count), but it's still in a different category.  Dead or not dead, there's something Icelandic is that Latin isn't.
+But intuitively, there has to be *some* validity to the declarations that the language is dead, despite all of the religious, academic, and casual devotees.  Latin is clearly in a qualitatively better position than [Linear A](https://en.wikipedia.org/wiki/Linear_A), which as of 2021 no one on Earth can even decipher, let alone speak.  But it's just as clearly in a qualitatively worse position than English, the de facto *lingua franca* of most of the world.  The difference can't just be the relatively small number of speakers; [the Icelandic language](https://en.wikipedia.org/wiki/Icelandic_language) only has around three hundred thousand native speakers compared to English's three hundred million, but Icelandic is completely alive, or at the very least more than 0.1% as alive as English.  It's possible that Latin actually has more speakers worldwide than Icelandic does (depending on how you count), but it's still in a different category.  Dead or not dead, there's something Icelandic is that Latin isn't.
 
 And the difference can't even be the fact that English and Icelandic have native speakers while Latin has none.  Four hundred years ago, Latin still had no native speakers, but its situation was not at all the same as today.  If you were in Europe in the 17th century, and you wanted to understand or contribute to any form of science, you *had* to know Latin; ditto to get into any university or seminary.  Isaac Newton may have been an Englishman, but he called his most important book *Principia Mathematica* and not *Principles of Mathematics* because otherwise, most natural philosophers outside of England itself would not have been able to read it.
 
 That's the biggest qualitative difference: in the 17th century, there was a broad category of things which were not themselves Latin-related, but which could only be done if one knew the language.  In the 21st century, there isn't.  Catholics in 2021 can attend Mass in Latin, but they can just as easily attend Mass in English - even the link from earlier to the Catechism of the Church in Latin [has its URL in English](http://www.vatican.va/latin/latin_catechism.html).  You can buy a copy of *Catus Petasus*, but it's easier to find it by the original title of *Cat in the Hat*.  Ultimately, you can learn the language, but you're ultimately learning the language either a) for its own sake, or b) for necromancy.  Anything else, you can do with a different language.
 
-## Part III: 
+## Part III: Thy Voice Shall Go Through Him
 
+> *Thou shalt blind his bright eyes though he wrestle,*  
+> *Thou shalt chain his light limbs though he strive;*  
+> *In his lips all thy serpents shall nestle,*  
+> *In his hands all thy cruelties thrive.*  
+> *In the daytime thy voice shall go through him,*  
+> *In his dreams he shall feel thee and ache;*  
+> *Thou shalt kindle by night and subdue him*  
+> *Asleep and awake.*  
 > 
+> -- Algernon Charles Swinburne, "Dolores"
 
-A lot of reasonable objections to the assertion that poetry is dead is going to proceed along the same lines.  EventBrite in 2021 [lists over a thousand poetry slam events](https://www.eventbrite.com/d/online/free--events/poetry-slam/) in various locations; [the Poetry Foundation website](https://poetryfoundation.org) has around a million page views a day.  The national ["AP English Literature And Composition](https://apstudents.collegeboard.org/courses/ap-english-literature-and-composition) course has three of its nine core units centered on poetry, and over three hundred thousand students in the US take it every year.  Superhero cartoon franchises have [multiple](https://www.imdb.com/title/tt0519646/?ref_=fn_tt_tt_9) [episodes](https://www.imdb.com/title/tt0618136/) named after a William Blake poem, TVTropes has an [entire category of haiku summaries](https://tvtropes.org/pmwiki/namespace_index.php?ns=Haiku), and a [programming competition decided to host a poetry challenge in parallel for the sheer fun of it](https://old.reddit.com/r/adventofcode/wiki/poems4progs).  There's clearly a decent amount of poetry still being read, heard, and written in the English language.  So why call it dead?
+A lot of reasonable objections to the assertion that poetry is dead is going to proceed along the same lines.  EventBrite in 2021 [lists over a thousand poetry slam events](https://www.eventbrite.com/d/online/free--events/poetry-slam/) in various locations; [the Poetry Foundation website](https://poetryfoundation.org) has around a million page views a day.  The national ["AP English Literature And Composition](https://apstudents.collegeboard.org/courses/ap-english-literature-and-composition) course has three of its nine core units centered on poetry, and over three hundred thousand students in the US take it every year.  Superhero cartoon franchises have [multiple](https://www.imdb.com/title/tt0519646/?ref_=fn_tt_tt_9) [episodes](https://www.imdb.com/title/tt0618136/) named after the same William Blake poem, TVTropes has an [entire category of haiku summaries](https://tvtropes.org/pmwiki/namespace_index.php?ns=Haiku), and a [programming competition in 2019 decided to host a poetry challenge in parallel for the sheer fun of it](https://old.reddit.com/r/adventofcode/wiki/poems4progs).  There's clearly a decent amount of poetry still being read, heard, and written in the English language.  So why call it dead?
 
-## Part IV: The Unnoticed Hands of Time
+The most well-known English translation of [Goethe's German play *Faust*](https://www.gutenberg.org/ebooks/14591) was translated by Bayard Taylor in the 1850s, and he spent most of his preface talking about why he translated the play into verse and not into prose, like most of the existing translations of his day had done.  The core of his reasoning was that "Poetry is not simply a fashion of expression: it is the form of expression absolutely required by a certain class of ideas."  According to Taylor, it was impossible to truly understand the concepts and emotions Goethe was trying to get across merely by reading a prosaic translation, no matter how accurate.
 
-> *Inter marmoreas Leonorae pendula colles*  
-> *Fortunata nimis Machina dicit horas.*  
-> *Quas MANIBUS premit illa duas insensa papillas*  
-> *Cur mihi sit DIGITO tangere, amata, nefas?*  
-> 
-> -- Percy Shelley, "In Horologium"
+Wait.  A whole *class of ideas* can only be expressed through poetry?  Poetry is that fundamental to human communication?
 
-A while back, while reading late at night, I stumbled upon an obscure Percy Shelley poem in an anthology which in English would be titled something like "About the Clock": only four lines long, but in Latin, and in oddly phrased poetic Latin to boot.  There was no translation provided, and a quick Google search turned up no English translations at all, anywhere on the Internet.  So, I got out my Latin book and after twenty minutes painstakingly rendered the first half as:
+Percy Shelley went a step further in [a set of essays about poetry](https://archive.org/stream/essayslettersfro01shelrich#page/56/mode/2up) written a few decades earlier earlier, saying that poets (in terms of lasting impact on the world) fundamentally stand above "scupltors, painters, and musicians" in the same way that a harp stands above a guitar in lasting beauty, and that even people like great political or religious figures who *do* have more fame than poets don't really deserve it.  It summarizes its main point on the importance of poems and poetry by saying that "Poets are the unacknowledged legislators of the world".
 
-> Between the mountains, the exceedingly fortunate machine hanging down  
-> Tells the marble-like hours to Leonora.  
+But okay, we've already acknowledged that poets love hyperbole and exaggeration for effect, and Taylor and Shelley were both poets.  Of course they'd be inclined to hype up the importance of their own fields.  What did non-poets used to think about it?
 
-This was an accurate, literal rendition of the first two lines of the poem, but it told me nothing; knowing what it said didn't give me any clue as to what it *meant*.  So, I messaged Felipe (who was unphased by an unexplained Latin message at half past midnight), and between my Latin book and his fluency in Spanish, we translated the second half over another twenty minutes.  Starting, of course, with the puns. `pendula` is used as a verb meaning `hanging down`, but given the context it also calls to mind an old-fashioned pendulum clock.  `digito` is used the way we'd use the phrase "by a hair's breadth" (to represent two things extremely close together), but its literal meaning of `finger` goes well with the previous line talking about the clocks's hands (`manibus`).  And suddenly, it clicked: this is a dirty poem!  The literal translation, tweaked in light of this, started to make sense.
+Back in the 70s, Clyde Hyder [wrote a very interesting book about the poet Charles Swinburne](https://books.google.com/books?id=o0HBm1VonCMC), and spends a large part detailing the history of Swinburne's most famous book, *Poems and Ballads*, and the most famous poem in it, "Dolores".  In 1866, Swinburne had already produced several controversial books, and had been received harshly by the poetry columns in such papers such as *Gentleman's Magazine* and *Fortnightly Review*.  As such, he was already on thin ice, and when he finished *Poems and Ballads* his publisher, J. Bertrand Payne, decided to withrdaw it, after hearing that *The Times* and *The Edinburgh Review* were going to attack the book.  Still, Swinburne was undeterred, and switched to a more shady publisher named John Hotten (who was much more agreeable to controversial subject matter), and in August of 1866 his publisher released *Poems and Ballads*.
 
-> That \[the machine\] presses hands, unnoticed, to two breasts -  
-> Why is to touch a hair’s breadth away, beloved, a sin to me?
+The critical response was swift and severe.  The first Saturday after the book came out, John Morley (writing anonymously for the *Saturday Review*) called the book Swinburne's way of "grovelling down among the nameless shameless abominations which inspire him" and "glorify\[ing\] all the bestial delights that the subtleness of Greek depravity was able to contrive", concluding that the book's only redeeming virtues were the quality of its verse and that the Greek metaphors were going to be unintelligible to a great many people, which would hopefully cause them to not buy or read it.  That same day, Robert Buchanan (writing anonymously for the *Athenaeum*) called it "unclean for the sake of uncleanness" and "a poet degraded from his high estate, and utterly and miserably lost to the Muses".  And also on that same day, an anonymous author reviewer writing for the *London Review* called the book "conscious revelling in the actual sense of evil", described "Dolores" as "a mere deification of incontinence", and is glad that Swinburne seems to have gotten inspiration from France so that Great Britain could wash her hands clean of the whole matter.
 
-What was Shelley saying?  He'd probably seen (or thought of) a pretty girl wearing a French watch on a locket, and being 17, was of the perfect age to get very jealous of the watch.  So he wrote a poem saying as much.  And, buried as "In Horologium" was (it was only published decades after his death), nobody [except one 1872 anthology writer](https://books.google.com/books?id=Ai_n49Ie0RUC&pg=PA548&lpg=PA548#v=onepage&q&f=false) even bothered speculating about it.  It was immensely satisfying, both to be the first ones to appreciate it in probably a very long time, and to to realize that the thing we were appreciating was silly teenaged humor.
+This continued throughout the year; Buchanan wrote another critical piece for the *Spectator* a few months later, and Henry Morley (no relation, so far as I can tell) wrote a piece for the *Examiner* around the same time supporting the work.  Swinburne came out to defend his poems himself in an independently published pamphlet in November, saying that that his were young mans' poems, not suitable for the teenaged girls these squeamish reviewers evidently were; the *Pall Mall Gazette* and the *Quarterly Review* didn't find this explanation satisfying enough, and *Punch* in November summarized the general sentiment among English critics by saying that Swinburne ought to "change his name to what is evidently its true form - SWINE-BORN".  
 
-And that's exactly the point - it was satisfying *because we were the only ones to do it*.  It's that gap, those forty minutes of painstaking translation before the "aha!" moment, that marks the difference between a dead language and a living one.  There's a world of emotional connotation that we just don't have, and that we can only reconstruct after the fact.
+When the controversy reached the United States in November, Swinburne's friend William Rossetti wrote a piece defending Swinburne for the *North American Review*, but after seeing JR Lowell's very critical judgement on Swinburne decided to publish his defense as a book instead.  The *New York Times* condemed the book as possesing the lowest lewdness, while John Morley's review from August was reprinted in the *Eclectic Magazine* and the anonymous *London Review* critique was shown in *Littel's Living Age*.  It wasn't all negative, though; *The Nation* and *Galaxy* both contained measured but positive reviews of the book, and back in England *Fraser's Magazine*, which had been very critical of Swinburne's two earlier books in 1865, came out in his favor.  Over the next few years, the immediate controversy died down; even John Morley (who Swinburne eventually figured out wrote that first critical piece) wrote a piece praising an unrelated essay, but the damage had been done in other areas and with other people; Robert Buchanan actually ended up suing the *Examiner* for publishing a Swinburne poem libelling him, which Swinburne only wrote in retaliation to a poem attacing *him* he thought Buchanan wrote, but was actually written by the Earl of Southesk.  It wasn't until the early 1900s that the literary world generally held Swinburne in favor.
 
-> The luckiest clock to ever tell the time  
-> Adorns the marble mountains of Lenore.  
-> *Its* hands caress, and always you ignore –  
-> Why is it such a sin, beloved, for mine?  
+When I first read this history, what surprised me wasn't the notion that an artist might produce a controversial work and experience both critical backlash and publisher cancellation in response.  What surprised me was the sheer number of newspapers that had poetry columns!  The *Athaenaeum* was specifically a poetry journal, to be sure, and a few like the *London Review* were at least literary magazines, but many of the others were general-interest publications covering a wide variety of topics which thought this one poem worth covering.  And these weren't short columns, either - the three initial Saturday critiques of the poem alone averaged twenty-five hundred words, which even for newspapers would have been a significant investment of space.  Poets and critics believing their work to be deeply important is one thing, but this was widespread interest in and controversy about poetry that stretched to multiple countries, and which presumably every single publication involved thought its audience would be willing to pay to read.
 
-But that translation lacks the puns with 'pendula' and 'digito', and even aside from the puns, it falls nearly as flat as the literal translation does.  It gets the message across, but it has no weight to it; you're certainly not going to see it passed from person to person.  A poem with a literal translation just isn't going to be sufficiently 'alive' to capture the humor in the original.  The *actual* translation, in 2021, would be a different form of art altogether:
+Like Latin, poetry has its hobbyists and writers and academic studies and journals.  Most English-speaking readers would recognize a limerick as such, and a great number know that haikus require five syllables, then seven, then five.  But like Latin, there is clearly *some* qualitative difference between the scope of poetry now and the scope a hundred and fifty years ago, because no poem published now would attract anywhere near this much attention.  Other art forms certainly could receive that much criticism in popular venues - 2500 words pales in comparison to [MauLer's review of *The Last Jedi*](https://www.youtube.com/watch?v=vw7pcCj0ORk&list=PLBBJXQJJavX2VueOEqGSaBNsGaHZREWEr), which at five hours and change was twice as long as the movie itself - but a poem will not.  Poems can attract ire and editors can issue retractions, but it's all within literary circles; [Anders Carlson-Wee's 2018 poem "How-To"](https://www.thenation.com/article/archive/how-to/) was eventually pulled back by its publisher, *The Nation*, after a "social media storm", but searching Google Trends for the author's name results in half the analysis fields saying "your search doesn't have enough data to show here", so the social media reaction was at most a tempest in a teacup.
 
-![](/assets/img/DeathOfPoetry_Locket.png)
+It's hard to even imagine poems written in 2021, good or bad, being as widely viewed or cared about as an average movie.  And yet, at one time, they were.  What changed?
 
-And a year, that meme will be dead too.
-
-
-## Part V: Golden with Wastage of Gold
+## Part IV: Golden with Wastage of Gold
 
 > *Old King Cole*  
 > *Was a merry old soul*  
@@ -95,6 +114,8 @@ And a year, that meme will be dead too.
 
 It's not always true that art forms always progress from simple to complex; [TVTropes has certainly collected enough examples](https://tvtropes.org/pmwiki/pmwiki.php/Main/UnbuiltTrope) to prove that the earliest take on a motif or story can be complex and nuanced in its own right.  But it is true that the first artist to use a trope has no previous examples of it to build on, and the second artist does.  The second artist, in fact, *must* build on it, or alter it, or start somewhat differently, because unless you're Pierre Menhard writing [*Don Quioxte*](https://en.wikipedia.org/wiki/Pierre_Menard,_Author_of_the_Quixote) you can't write an story identical to one that's already well-known and be received as anything but a plagiarist.  And the more times a trope is used, the further from the baseline idea an artist needs to go to be counted as 'original', if originality is the goal.
 
+> After W.B. Yeats:  
+> 
 > *Of an old King in a story*  
 > *From the grey sea-folk I have heard*  
 > *Whose heart was no more broken*  
@@ -119,6 +140,8 @@ The same is true for audiences.  When [Superman lifted a car over his head in 19
 
 And having prior work isn't only a restriction on creativity, either; it can just as easily enable work that couldn't have been written otherwise.  An audience in 2000 wouldn't be impressed by a superhero whose only distinguishing feature was being strong enough to lift cars, but an audience in 1938 wouldn't know what to make of M. Night Shyamalan's film *Unbreakable*.  The fact that the film was in color and the crispness of the picture and music would have been quite impressive, but much of the plot and dialogue would have made little sense; M. Night Shyamalan assumed that his audience would have the shared cultural experience of sixty years of comic books and superheroes, and wrote accordingly.  The question of "how would people with superpowers act in a world like ours, instead of a comic book world?" isn't a terribly interesting question to ask if there aren't well-known comic book worlds to compare it with.
 
+> After Swinburne:  
+> 
 > *In the time of old sin without sadness*  
 > *And golden with wastage of gold*  
 > *Like the gods that grow old in their gladness*  
@@ -132,6 +155,8 @@ But if new works have to build on the old, then what stops all art from becoming
 
 For some authors, complexity is the entire point.  Scott Alexander's [*Unsong*](http://unsongbook.com) is a book in a fictional setting in which obscure and unlikely coincidences and references are fundamental to the laws of physics, and which by necessity is filled with jokes that span a dozen dead languages, and as much obscure etymology and history as it does plot or dialogue.  This was the entire point; the author in response to a question said that it was written in part ["as the beginning of a rabbit hole that can be followed arbitrarily far, without a predetermined end, until eventually it even goes out of the text itself"](https://slatestarscratchpad.tumblr.com/post/139818927946/shlevy-im-enjoying-unsong-quite-a-bit-but-i).  Anybody who wanted to go a step further in that direction, and build off that work, would have to be even more well-read and even more persuasive and engaging, or else lose just about all of the potential audience in a maze of metaphor.
 
+> After Lord Tennyson:  
+> 
 > *Cole, that unwearied prince of Colchester,*  
 > *Growing more gay with age and with long days*  
 > *Deeper in laughter and desire of life*  
@@ -148,10 +173,12 @@ For some authors, complexity is the entire point.  Scott Alexander's [*Unsong*](
 > *Of mirth and music; till the heathen came*  
 > *And the King slept beside the northern sea.*  
 
-[Patrick Hannahan's *Gigamesh*](https://books.google.com/books?id=jMvpf5K1qD0C&pg=PA28&lpg=PA28#v=onepage&q&f=false) takes that last step further, being a response to and one-upping of James Joyce's *Ulysses* with its detail and layered references.  There are more than ninety-seven different meanings to the fact that the title does not contain the letter 'L', the length of each of the thousand words in Chapter I form the first thousand digits of π, the letters of each word in Chapter II forms a musical composition for a song based on three different tellings of the Faust legend, the pattern of commas in Chapter VI forms the map of Rome, and these references and riddles and codes pile on and on during each successive chapter until ultimately, *Gigamesh* is so dense that it can't possibly exist.  And it doesn't.
+[Patrick Hannahan's *Gigamesh*](https://books.google.com/books?id=jMvpf5K1qD0C&pg=PA28&lpg=PA28#v=onepage&q&f=false) takes that last step further, being a response to and one-upping of James Joyce's famously complex *Ulysses* with its detail and layered references.  There are more than ninety-seven different meanings to the fact that the title does not contain the letter 'L', the length of each of the thousand words in Chapter I form the first thousand digits of π, the letters of each word in Chapter II forms a musical composition for a song based on three different tellings of the Faust legend, the pattern of commas in Chapter VI forms the map of Rome, and these references and riddles and codes pile on and on during each successive chapter until ultimately, *Gigamesh* is so dense that it can't possibly exist.  Which, of course, it doesn't.  Whatever limit there is on how much information can be packed into one space, *Gigamesh* is far beyond that limit.  There's only so far you can actually go.
 
 Genres or mediums can go on getting more intricate and involved for a while, so long as existing audiences find it worthwhile to stay and new audiences find it worthwhile to learn and catch up, but not forever.  There's always a limit to how much an audience can get from a work of art, and how much meaning an author can express.  Similarly, there's always a limit on the use of tropes: too esoteric, or too meta, or too otherwise detached from the original patterns, and audiences can no longer understand how the new work connects to the old.   And the closer to those limits an author or a genre gets, the harder it is to appeal to a fresh audience, and the less comprehensible it will be to the uninitiated reader.
 
+> After Robert Browning:  
+> 
 > *Who smoke-snorts toasts o' My Lady Nicotine,*  
 > *Kicks stuffing out of Pussyfoot, bids his trio*  
 > *Stick up their Stradivarii (that's the plural*  
@@ -162,8 +189,12 @@ Genres or mediums can go on getting more intricate and involved for a while, so 
 > *Must I bawl lessons from a horn-book, howl,*  
 > *Cat-call the cat-gut "fiddles"? Fiddlesticks!*
 
-Whether or not this is a good thing is hard to say.  
+In 1913, Ezra Pound laid the groundwork for the English poetic movement which would later be called "Imagism" with an essay "[A Few Don'ts by an Imagiste](https://www.poetryfoundation.org/poetrymagazine/articles/58900/a-few-donts-by-an-imagiste)".  In the essay, he railed against the stagnation he saw as happening in poetry, and set as a new standard a number of artistic choices which would come to define 20th century poetry.  One such choice was free verse (poetry without either rhyme or metre), though he advocated for poets to know the intricacies of rhyme and metre even if they never used them.  Another choice was that of eschewing all abstract imagery in favor of the concrete; talking about "the dim lands of peace" didn't heighten the reader's understanding of "peace", but dulled the reader's understanding of "the dim lands".  Rhyme and metre were a set of training wheels, suitable for gaining an understanding of language and of poetry, but too constraining to use indefinitely.  English poetry had ridden with these training wheels for four hundred years, and was long past ready to take them off.
 
+This advice caught on quickly; by the 1950s, Imagism's various descendants had become the dominant force in poetry in the English-speaking world.  Pick up any English poetry journal published in the fifty year period between 1970 and 2020, and virtually all of the poems will be in something like free verse.  And since free verse almost by definition rejects standard patterns and constraints, the far more subtle patterns possible to include with free verse will by nature by far more difficult for the layman to read and appreciate.  And so, those modern poetry journals can publish any number of controversial poems without the controversy ever reaching the mainstream - one writes a poem in a journal for the sake of writing a poem in a journal, to be read by other poets, and not to be read by the public.
+
+> After Walt Whitman:  
+> 
 > *Me clairvoyant,*  
 > *Me conscious of you, old camarado,*  
 > *Needing no telescope, lorgnette, field-glass, opera-glass, myopic pince-nez,*  
@@ -185,25 +216,167 @@ Whether or not this is a good thing is hard to say.
 > 
 > -- GK Chesterton, "[Variations on an Air](https://en.wikisource.org/wiki/Variations_on_an_Air)"
 
-## Part VI:
+## Part V: The Unfelt Hands of Time
 
-So eventually, any artistic genre reaches something of a steady state.  It's still possible in this steady state to make something new and original, but it becomes harder and harder, and artists or authors who want to do something new have to either work increasingly hard to do it, or find a new genre to work in, and the creators who remain tend to fill their niche with a tried-and-true formula.  Formulaic work can keep a genre going for a very long time, but it becomes a delicate balance of getting enough readers or viewers to whom the formula is new to replace the readers and viewers who have moved on.  If that balance gets disrupted -- if the new readers don't see the appeal, or current readers start moving on faster, or the people writing the formula try to alter it for the worse -- then the whole genre can collapse, and other genres or mediums can take its place.
+> *Inter marmoreas Leonorae pendula colles*  
+> *Fortunata nimis Machina dicit horas.*  
+> *Quas MANIBUS premit illa duas insensa papillas*  
+> *Cur mihi sit DIGITO tangere, amata, nefas?*  
+> 
+> -- Percy Shelley, "In Horologium"
 
-In which case,
+A while back, while reading late at night, I stumbled upon an obscure Percy Shelley poem in an anthology which in English would be titled something like "About the Clock": only four lines long, but in Latin, and in oddly phrased poetic Latin to boot.  There was no translation provided, and a quick Google search turned up no English translations at all, anywhere on the Internet.  So, I got out [Whitaker's Latin](http://archives.nd.edu/whitaker/words.htm) and after twenty minutes painstakingly rendered the first half as:
 
-## Part VII: 
+> Between the mountains, the exceedingly fortunate machine hanging down  
+> Tells the marble-like hours to Leonora.  
 
-The most well-known English translation of [Goethe's German play *Faust*](https://www.gutenberg.org/ebooks/14591) was translated by Bayard Taylor in the 1850s, who spent most of his preface talking about why he translated the play into verse and not into prose, like most of the seventeen existing translations of his day had done.  The core of his reasoning was that "Poetry is not simply a fashion of expression: it is the form of expression absolutely required by a certain class of ideas."  According to Taylor, it is impossible to understand the concepts and emotions Goethe was trying to get across merely by reading a literal prosaic translation, no matter how accurate.  And Charles O. Hartman, in his 2015 *Verse: An Introduction to Prosody* says that this is exactly what distinguishes verse from prose:
+This was an accurate, literal rendition of the first two lines of the poem, but it told me nothing; knowing what it said didn't give me any clue as to what it *meant*.  So, I messaged Felipe (unphased by an unexplained Latin message at half past midnight), and between my Latin book and his fluency in Spanish, we translated the second half over another twenty minutes.  Starting, of course, with the puns. `pendula` is used as a verb meaning `hanging down`, but given the context it also calls to mind an old-fashioned pendulum clock.  `digito` is used the way we'd use the phrase "by a hair's breadth" (to represent two things extremely close together), but its literal meaning of `finger` goes well with the previous line talking about the clocks's hands (`manibus`).  And suddenly, it clicked: this is a dirty poem!  The literal translation of the next two lines, tweaked in light of this, started to make sense.
 
-> Considered from one odd angle, a poem is a miracle of bandwidth . The poet imagines a whole speaking, gesticulating person, complete with a tone of voice and a situation, and compresses that living being into a stream of data only a few bits wide: a few dozen letters and punctuation marks. This stream (after traveling for a day or for hundreds of years, a mile or thousands of miles) reaches a reader who, perhaps without being aware of the process, from this impoverished text imaginatively reconstitutes the voice and the speaker, as alive again as at creation. What we call poetic techniques are methods of supporting this marvel of recovery.
+> That \[the machine\] presses hands, unnoticed, to two breasts -  
+> Why is to touch a hair’s breadth away, beloved, a sin to me?
 
+What was Shelley saying?  He'd probably seen (or thought of) a pretty girl wearing a French watch on a locket, and being 17, was of the perfect age to get very jealous of the watch.  So he wrote a poem saying as much.  And, buried as "In Horologium" was (it was only published decades after his death), nobody [except one 1872 anthology writer](https://books.google.com/books?id=Ai_n49Ie0RUC&pg=PA548&lpg=PA548#v=onepage&q&f=false) even bothered speculating about it.  It was immensely satisfying, both to be the first ones to appreciate it in probably a very long time, and to to realize that the thing we were appreciating was silly teenaged humor.
 
-## Part VIII:
+And that's exactly the point - it was satisfying *because we were the only ones to do it*.  It's that gap, those forty minutes of painstaking translation before the "aha!" moment, that marks the difference between a dead language and a living one.  We had to go far outside of our 
 
-> *I've studied now Philosophy*  
-> *And Jurisprudence, Medicine,—*  
-> *And even, alas! Theology,—*  
-> *From end to end, with labor keen;*  
-> *And here, poor fool! with all my lore*  
-> *I stand, no wiser than before:*
-> -- Goethe, *Faust Part 1*
+> The luckiest clock to ever tell the time  
+> Adorns the marble mountains of Lenore.  
+> *Its* hands caress, and always you ignore –  
+> Why is it such a sin, beloved, for mine?  
+
+But that translation lacks the puns with 'pendula' and 'digito', and even aside from the puns, it falls nearly as flat as the literal translation does.  It gets the message across, but it has no weight to it; you're certainly not going to see it passed from person to person.  A poem with a literal translation just isn't going to be sufficiently 'alive' to capture the humor in the original.  The *actual* translation, in 2021, would be a different form of art altogether:
+
+![](/assets/img/DeathOfPoetry_Locket.png)
+
+And a year, that meme will be dead too.
+
+## Part VI: In What Furnace Was Thy Brain?
+
+> *And what shoulder, and what art,*  
+> *Could twist the sinews of thy heart?*  
+> *And when thy heart began to beat,*  
+> *What dread hand? and what dread feet?*  
+> 
+> -- William Blake, "[The Tyger](https://en.wikisource.org/wiki/The_Tyger_(1794))"
+
+There's a glaring omission in my analogy comparing poetry to Latin: Latin didn't simply die out, but changed.  All of the [Romance languages](https://en.wikipedia.org/wiki/Romance_languages) (Spanish, French, Italian, Portugese, Romanian, and a host of minor languages) directly descend from Latin, and even the European languages which don't, such as English, have a copious supply of words and phrases derived from the language.  Fr. Foster, probably the greatest Latinist of the early 21st century, was fond of saying that [if one knows Latin, one can learn French or Spanish in a weekend](https://frcoulter.com/latin/foster/foster2.html), and though he was exaggerating, his point was pretty clear.  Latin's children and more distant relations live on, throughout the world - why call it dead?
+
+But, Felipe is fluent in Spanish, and it still took him some time to parse through "In Horologium".  Had he tried to read it *assuming it was Spanish*, he'd have come away with the conclusion that Shelley barely knew Spanish at all and wrote a bunch of vaguely comprehensible gibberish.  Without knowing that the poem was in a dead language related to his living one, there would have been no possibility that he'd appreciate it or enjoy it to any degree - it would have seemed, at best, like defective Spanish.
+
+Likewise, poetry has various offshoots and descendants, some more alive than others.  Certainly music is alive and well in the English-speaking world; there are a countless number of genres and subgenres and variations on style, and tens of thousands of bands making new music.  Wikipedia spends nearly a thousand words to explain the notion of [musicians 'selling out'](https://en.wikipedia.org/wiki/Selling_out#Music)...and another [five thousand words in the now-archived Talk Page](https://en.wikipedia.org/wiki/Talk:Selling_out/Archive_1) to debate precisely which musicians should be included in that list.  The conventions of rhyme and metre vary significantly from genre to genre, and all are different than the conventions of traditional poetry, but it's clear that *something* of poetry exists in art forms which are very alive.
+
+But the problem is the same as Latin.  Someone familiar with modern music who read a sonnet *as if it were meant to be sung aloud with instruments* would come away with the conclusion that the sonnet is at best a defective song.  The rhythms of poetry emerge from the patterns of stressed and unstressed syllables in the words themselves, while in music the stresses in the syllables are secondary to the rhythm of the instruments.  Trying to sing a typical English poem to musical accompaniment will sound as awkward as trying to read a set of lyrics aloud - one can appreciate one art form, or the other, or both, but interpreting one art form through the conventions of the other is a recipe for incomprehension.
+
+And that's a word at the heart of both poetry and music: convention.  Too loose, and an audience doesn't know how to understand the work.  Too tight, and there's no room for innovation.  Audiences pick up conventions implicitly and never give them a conscious thought, or [debate them explicitly to great detail](https://knowyourmeme.com/editorials/white-papers/is-a-hot-dog-a-sandwich), but trying to understand art with no conventions at all, and no understood common ground between artist and audience, is like looking for faces in passing clouds.
+
+## Part VII: And Here, Poor Fool, For All My Lore
+
+> *The words you've bandied are sufficient;*  
+> *'Tis deeds that I prefer to see:*  
+> *In compliments you're both proficient,*  
+> *But might, the while, more useful be.*  
+> 
+> *What need to talk of Inspiration?*  
+> *'Tis no companion of Delay.*  
+> *If Poetry be your vocation,*  
+> *Let Poetry your will obey!*  
+> 
+> *Full well you know what here is wanting;*  
+> *The crowd for strongest drink is panting,*  
+> *And such, forthwith, I'd have you brew.*  
+> *What's left undone to-day, To-morrow will not do.*  
+> 
+> -- Goethe, *Faust Part 1* (tr. by Taylor)
+
+The most well-known English translation of [Goethe's German play *Faust*](https://www.gutenberg.org/ebooks/14591) was translated by Bayard Taylor in the 1850s, who spent most of his preface talking about why he translated the play into verse and not into prose, like most of the seventeen existing translations of his day had done.  The core of his reasoning was that "Poetry is not simply a fashion of expression: it is the form of expression absolutely required by a certain class of ideas."  According to Taylor, it is impossible to understand the concepts and emotions Goethe was trying to get across merely by reading a literal prosaic translation, no matter how accurate.  
+
+It couldn't be just any kind of poem, either.  Goethe himself, asked about the possibility of translating his work, said that the kind of rhythm and metre needed to accurately convey the story he was trying to tell varied considerably depending on which language his work was going to be translated in.  French was going to be an uphill battle, but as English and German were a close relation, he was more optimistic, and could definitively rule out some styles - translating his flowery and sincere "Roman Elegies" into English in the comedic style of "Don Juan" would have an "atrocious effect".  But when asked about for particulars, all he could say was:  
+
+> The rhythm is an unconscious result of the poetic mood. If one should stop to consider it mechanically, when about to write a poem, one would become bewildered and accomplish nothing of real poetical value.
+
+If Goethe and Taylor were at all serious, then taking apart every word of every stanza, and picking the perfect phrase to not just convey the meaning but convey the verse, was always going to be an immense challenge...and after nearly two decades of work, Taylor succeeded.  When I first tried to read *Faust*, I didn't understand it; the constantly shifting rhyme scheme was jarring, the word choices were confusing, and it didn't seem to have any structure or patterns.  I couldn't understand why other people thought it was so great, and more importantly, it never occurred to me that I was missing a piece of context that others had.  I just wrote it off, and assumed it was overhyped.  
+
+Then one day, on YouTube, I stumbled upon the 2000 Peter Stein production [(original video sadly removed, but a partial playlist is still around)](https://www.youtube.com/watch?v=oGjomauQgFc&list=RDQM9DDjyCP0wmk&start_radio=1) of *Faust* performed, in German, as a stageplay and as true to the original as possible.  (So true, in fact, that various German critics [reputedly panned it](https://www.nytimes.com/2000/08/06/theater/germany-s-classic-of-classics-all-21-hours.html) for being "too much Goethe, too little Stein).  I don't speak German and the video had no subtitles, so on a whim, I put Taylor's translation on one screen, the play on the other, and tried to follow along.  Stage directions and scene transitions helped greatly, certain names and proper nouns common to both English helped, and over the course of an hour, I was able to follow along in broad strokes, and avoid getting bored the way I had the first time.  
+
+Then, midway through scene II at just over an hour in, something clicked, and I *got it*.  I don't know what changed, but I could almost feel the flow of the actors' speeches, and the wildly varying rhyme scheme in Taylor's translation all just fit together, and felt *right*.  I'd been trying to read it as a poem, and not speak it as a stageplay; the verses were at some middle ground halfway between speech and song, and in only trying the latter I'd missed the subtleties.  Reading the translation was no longer a chore at all, and after six hours of reading and watching I found that I could even speak impromptu stanzas in that same rhyme and metre on the fly; they weren't terribly good, but for a few moments it was as if I wasn't reading English or listening to German, but reading and hearing and speaking some new language with the words of the former and cadence of the latter, invented just for the play.  And if I had to translate that language into normal speech, I'd say it couldn't be done.
+
+## Part VIII: Must Springtime Fade?
+
+> *None is travelling*  
+> *Here along this way but I,*  
+> *This autumn evening.*  
+> 
+> -- Basho, "[About Fifty Haiku](http://oaks.nvg.org/basho.html)"
+
+I'd say that accurately translating Goethe and Taylor into English speech couldn't be done, but more counterintuitively, I'd also say that translating it into English *poetry* couldn't be done either...even though it already has been.  Goethe was concerned about translating his more serious Elegies into comic verse; he knew that comic verse couldn't convey what he meant.  What I argue is that *all* poetic forms in English, such that they are, are now comic verse.
+
+The English haiku is very different than the Japanese haiku, despite being structurally similar (17 'syllables' in both in a 5-7-5 pattern, though Japanese units of metre are slightly different than our syllables), due to more esoteric.  A haiku in Japanese, traditionally, has to include a `kigo` (a word or phrase which implies the season the poem takes place in), a `kireji` (a word that brings a natural end to a line, the equivalent to a `caesura` in Western poetry), and critically, the `kireji` is supposed to be an image of nature.  These were important enough that the Japanese actually had a different word, `senryu`, for poems which had the structure but were not about nature, and which didn't include a reference to the season.
+
+But it would sound *weird* if one were to write an English haiku about nature in most contexts for the general public, with no jokes or hidden ironies.  Fundamentally, the haiku in English is a primarily light verse, with a light-hearted topic matter, often including a meta reference to the limitations of the syllable count, or finding a bulky five-syllable word like 'refrigerator' to take up an entire line on its own.  The style and structure of a poem is more than just how many syllables go in a line and which rhyme goes where; the tone and topic matter are just as important to the expectations of the audience. The `kireji` is not just absent, it'd actively go against the style of an English haiku.
+
+This shift is not limited to haikus.  For a few years, a Tumblr user naked Erik Didriksen [wrote a series of "Pop Sonnets"](http://www.popsonnet.com/), taking modern pop music and translating them, roughly, into Shakespearean sonnets, down to every requirement of rhyme and syllabic stress.  And as a blog, it *worked*...because they were funny.  The notion of taking a stuffy art form like a sonnet and putting modern words to it, of reading "Monster Mash" written in iambic pentameter, was inherently silly; [Erik in an interview](https://www.folger.edu/shakespeare-unlimited/pop-sonnets) described the fun of mixing archaic language with modern slang: "with all the thees and thous preceding it, you get a laugh from the sudden, unexpected modern turn of phrase".  And so the Tumblr account was quite popular during its run; if there was a Tumblr running in parallel writing weekly sonnets as sincere as Shakespeare's originally were, I never saw it.
+
+(This is not to say that Shakepseare's work was all serious, not by any stretch - but only the less serious aspects still survive.)
+
+And the most popular English poet on the Internet in 2021 is probably [/u/poem\_for\_your\_sprog](https://old.reddit.com/user/poem_for_your_sprog), who also holds the distinction of posting just about all of his work in public fora which are *not* about poetry - which is one of my earlier criteria for an art style being alive.  He's averaged a poem a day for almost a decade now with a devoted following, and perusing his archives will show perhaps nineteen poems out of twenty as being short and light-hearted, well-written in a variety of metres to get a chuckle out of passing readers.  He writes with all varieties of meters (including the odd sonnet here and there), and the average Internet reader can understand it and smile...but he can't write a poem that's sincere without losing the audience altogether.  There are expectations every poet in every context is bound to, and to break them generally goes as well as a goldfish breaking its containment and making it out into the open air.
+
+But If /u/poem\_for\_your\_sprog made the mistake of listening to me and believing me when I say that 'poetry is dead', he'd never write that [one](https://old.reddit.com/r/AskReddit/comments/goj2sh/what_do_you_do_when_you_start_to_miss_somebody/frgsgp9/?context=3) [poem](https://old.reddit.com/r/AskReddit/comments/bj4hfq/medical_workers_of_reddit_what_were_the_most/em5vsum/?context=3) [in](https://old.reddit.com/r/AskReddit/comments/4fsds1/adults_from_reddit_what_do_you_regret_most_from/d2bmumz/?context=3) [twenty](https://old.reddit.com/r/AskReddit/comments/ia1ev6/what_small_thing_brightens_your_day/g1jsibd/?context=3), and Reddit would be just a bit dimmer for it.  By any of my definitions of a 'living' art form or a 'living' language, his work would have the spark of 'life' in it: the ability to express thoughts that couldn't be conveyed otherwise.  And perhaps the other nineteen out of twenty, the 'normal' poems, are precisely *why* he can write the twentieth.  Perhaps, as poetry shifted lighter and lighter, sincere poetry needed to cloak itself in humor, as a sort of protective mimicry in order to survive.
+
+If that's possible, perhaps translation isn't impossible either.
+
+## Part IX: Bards in Fealty to Apollo
+
+> *Oft of one wide expanse had I been told*  
+> *That deep-brow'd Homer ruled as his demesne;*  
+> *Yet did I never breathe its pure serene*  
+> *Till I heard Chapman speak out loud and bold:*  
+> 
+> -- John Keats, ["On First Looking Into Chapman's Homer"](https://www.poetryfoundation.org/poems/44481/on-first-looking-into-chapmans-homer)
+
+So, the big question is...can it be done?  If poetry in all its traditional forms is dead, can it be "translated" into forms of art still very much alive?
+
+I truly don't know.  There have been a number of impressive translations of poetry from one language to another or one form to another, over the years.  Speaking just about translations to English, Taylor brought Goethe's *Faust* in from German, and Chapman brought [Homer's *Iliad* and *Odyssey*](https://archive.org/details/iliadandodyssey00homegoog?ref=ol&view=theater) in from Greek (to the delight of poet John Keats).  FitzGerald's translation of [Omar Khayyam's *Rubaiyat*](https://www.gutenberg.org/files/246/246-h/246-h.htm) from Persian was at one point one of the most popular books of poetry in the English language, and Michael Kandell's translation of poems from [Stanislaw Lem's Polish sci-fi novel *The Cyberiad*](http://www.art.net/Studios/Hackers/hopkins/Don/lem/WonderfulPoems.html) are singularly impressive works of constrained writing in their own right:
+
+> “Have it compose a poem — a poem about a haircut! But lofty, noble, tragic, timeless, full of love, treachery, retribution, quiet heroism in the face of certain doom! Six lines, cleverly rhymed, and every word beginning with the letter *s*!!”  
+> “And why not throw in a full exposition of the general theory of nonlinear automata while you’re at it?” growled Trurl. “You can’t give it such idiotic—”  
+> But he didn’t finish. A melodious voice filled the hall with the following:  
+> 
+> *Seduced, shaggy Samson snored.*  
+> *She scissored short. Sorely shorn,*  
+> *Soon shackled slave, Samson sighed,*  
+> *Silently scheming,*  
+> *Sightlessly seeking*  
+> *Some savage, spectacular suicide.*  
+
+But not all of these were as literal as Taylor's *Faust*.  While Lem's original poem in *The Cyberiad* was equally constrained, [the original constraints and original poem were entirely different](http://stephenfrug.blogspot.com/2005/11/poem-of-day-updated.html), even down to a different letter (Lem's original had only words starting with 'c').  As [another blogger](benedante.blogspot.com/2012/11/the-haircut-poem-or-what-is-translation.html) put it, Kandell's version was "not really a translation at all, although it was Lem who created the situation within which this exercise had meaning".
+
+And FitzGerald took similarly large liberties with *Rubaiyat*.  Where a literal translation from Persian of quatrain 33 might go:
+
+> *The heavenly vault is a girdle (cast) from my weary body.*  
+> *Jihun' is a water-course worn by my filtered tears.*  
+> *Hell is a spark from my useless worries.*  
+> *Paradise is a moment of time when I am tranquil.*  
+
+FitzGerald translated it as:
+
+> *Heav'n but the Vision of fulfilled Desire,*  
+> *And Hell the Shadow from a Soul on fire,*  
+> *Cast on the Darkness into which Ourselves,*  
+> *So late emerged from, shall so soon expire.*  
+
+(Clement Wood, in his invaluable [1936 *Complete Rhyming Dictonary and Poet's Craft Book*](https://books.google.com/books/about/The_Complete_Rhyming_Dictionary_Revised.html?id=GVl2QgAACAAJ), somewhat amusingly described this line as "Oriental impassivity and superiority to things earthly have been replaced by a viewpoint accurate enough to have come out of Freud, and acceptable as concentrated truth to many of us", a description which may have aged faster than the poem itself.)  
+
+## Part X: Your Descendant, Departing
+
+If the most celebrated translations of poems from other languages into English run the whole gamut from "accurate enough to act as subtitles" to "captures the literal meaning with a different rhyme scheme" to "same general topic matter" to "completely different meaning, but the same *kind* of poem", then somewhere in modern artistic forms there *must* be space to translate some of the great works of the past, and convey it in a way that's understandable and alive.  Jokes about Snapchat memes aside, I truly don't know what a 'translation' would really look like, or what kind of medium it would even be made in; a lot of fans of older poetry would likely laugh at the very idea of it, and those fans wouldn't be wrong to be skeptical.  It would require authors as skilled as the original poets, and as fluent in their own media as they would be in classic poetry, and even still the whole thing would be far easier to get disastrously wrong than right.  It'd require picking the right medium, and picking a poem whose topic really is timeless, and above all just *caring* as much as the poet did.  
+
+I suspect that a 'translation' done right will be hard to identify as a 'translation' at all.  But children diverge from their parents, and their children diverge further, and in the end only the thinnest of threads connects ancestor and progeny - better to venerate the fallen and treasure that thread than sever it altogether.  
+
+Poetry is dead.  Long live its heirs.
+
+> *Shades of heroes, farewell! your descendant departing*  
+> *⁠From the seat of his ancestors, bids you adieu!*  
+> *Abroad, or at home, your remembrance imparting*  
+> *⁠New courage, he'll think upon glory and you.*  
+> 
+> -- Lord Byron, "[On Leaving Newstead Abbey](https://en.wikisource.org/wiki/The_Works_of_Lord_Byron_(ed._Coleridge,_Prothero)/Poetry/Volume_1/On_Leaving_Newstead_Abbey)"
