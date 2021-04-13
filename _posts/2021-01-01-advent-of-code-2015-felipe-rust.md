@@ -754,8 +754,6 @@ Join us next time while we try to do things in parallel.
 # [Day 4](https://www.adventofcode.com/2015/day/4)
 
 
-# [Day 3](https://www.adventofcode.com/2015/day/4)
-
 #### Understanding MD5
 
 I promised we'd do things in parallel today, and we shall, but first, lets try to solve the base problem. Essentially what we're being asked to do is compute a large amount of static content that is not depenendent on previous content. Specifically we're looking at md5 hashes, which is a one way transformation applied to a specific string. We don't need to understand the algorithm fully since we have a crate to implement it for us... but we probably should at least look at it. Because sometimes we can find shortcuts for our specific use-case. 
@@ -1001,3 +999,114 @@ This may *seem* like a lot, but its very possible to do, especially tackling one
 Now, with this code under our belt, what does performance time look like? 138350 microseconds. Not bad, that's a 4x speedup. Now I cheated a little bit, and tried various permutations of threads and ranges. It turns out the optimal time is when you have a number of threads equal to what your cpu can handle and your range is such that you'll find your answer having to spawn threads only once. This was trivial to figure out via trial and error, but I suspect in future problems, we're going to need a more robust approach to that solution. 
 
 Tune in next time, for some password generation (which we will not be able to parallelize).
+
+# [Day 5](https://www.adventofcode.com/2015/day/5)
+
+Day 5 is... boring. There's no other word for it. Its a fairly straightforward problem, and it takes someone more clever than I to come up with an exciting optimization. (I'm sure someone has). Dave and I spent a couple hours speculating about potential avenues to optimize, but it turns out its quite hard to improve on doing things in a single pass. 
+
+
+But enough  bellyaching, lets look at the problem. Day 5 asks us to parse a long list of stings, and count how many of them are naughty, and how many are nice. Instinctually by now, we should know we're going to iterate over the list and do operations on the strings. Scanning the rules: 
+
+```
+t contains at least three vowels (aeiou only), like aei, xazegov, or aeiouaeiouaeiou.
+It contains at least one letter that appears twice in a row, like xx, abcdde (dd), or aabbccdd (aa, bb, cc, or dd).
+It does not contain the strings ab, cd, pq, or xy, even if they are part of one of the other requirements.
+```
+
+It looks like those can all be done in one pass of the string. We can count how many vowels we have as we go through the string, we can keep track of the previous letter, and see if it makes a forbidden string, or a double. So far we have a time of O(n). 
+
+The rules for part 2 are different, but can also probably be done in one pass. To whit: 
+
+```
+It contains a pair of any two letters that appears at least twice in the string without overlapping, like xyxy (xy) or aabcdefgaa (aa), but not like aaa (aa, but it overlaps).
+It contains at least one letter which repeats with exactly one letter between them, like xyx, abcdefeghi (efe), or even aaa.
+```
+
+The second rule seems straight forward enough. We can keep track of the current letter, and the letter two letters behind. If those two letters ever  match, we have what I'm calling a tryptich. The first rule is a little trickier. If we don't care about memory complexity, we can just keep a dict of every pair of letters in the in the string. If we're feeling lazy, we can iterate over the string a second time with `word.matches(pair).count() > 1;`. Unless its a matter of life and death, I'm happy to be lazy. Dave does it in a much clever way, but given that we get roughly comparable run times, I don't think it ultimately matters. 
+
+Ultimately, we get a very readable, functional block of code: 
+
+```rust
+use std::time::{Instant};
+use std::fs;
+
+fn main(){
+       
+        let file ="../input.txt";
+        let mut input: String = fs::read_to_string(file).unwrap();
+        let words = input.lines();
+        let start = Instant::now();
+
+        let mut p1: u32 = 0;
+        let mut p2: u32 = 0;
+        
+        for word in words {
+            let mut vowel_count = 0 ;
+            let mut prev_char = ' ';
+            let mut two_behind = ' ';
+            let mut has_pair = false;
+            let mut has_pair_match = false;
+            let mut p1_checked = false;
+            let mut p2_checked = false;
+            let mut has_tryptic = false;
+            let mut illegal_p1 = false;
+            for c in word.chars() {
+                if is_illegal(word){
+                    illegal_p1 = true;
+                    p1_checked = true;
+                }
+                if c == prev_char {
+                    has_pair = true;
+                }
+                if is_vowel(&c){
+                    vowel_count += 1;
+                }
+                if has_non_overlapping_pair(word, &[prev_char, c].iter().collect::<String>()){
+                    has_pair_match = true
+                }
+                if is_tryptic([two_behind, prev_char, c].to_vec()){
+                    has_tryptic = true
+                }
+
+                if vowel_count >= 3 && has_pair && !p1_checked {
+                    p1 += 1;
+                    p1_checked = true;
+                }
+
+                if has_tryptic && has_pair_match && !p2_checked {
+                    p2 += 1;
+                    p2_checked = true
+                }
+
+                if p1_checked && p2_checked {
+                    break;
+                }
+
+                two_behind = prev_char;
+                prev_char = c;
+            }
+        }
+        println!("P1: {}", p1);
+        println!("P2: {}", p2);
+        let end = start.elapsed().as_micros();
+        println!("\n execution time in microseconds {}", end);
+}
+
+fn is_vowel(c: &char) -> bool {
+    return matches!(*c, 'a' | 'e' | 'i' | 'o' | 'u');
+}
+
+fn is_tryptic(arr: Vec<char>) -> bool {
+    return arr[0] == arr[2]
+}
+
+fn has_non_overlapping_pair(word: &str, pair: &str) -> bool {
+    return word.matches(pair).count() > 1;
+}
+
+fn is_illegal(word: &str) -> bool {
+    return word.contains("ab") || word.contains("cd") || word.contains("pq") || word.contains("xy")
+}
+```
+
+Nothing super inspiring, but it does teach us one lesson: sometimes the most straightforward path is the best path. We discussed doing things with caching and file reading, but ultimately all approaches seem to require iterating over the list at least once... if we're going to do that, we may as well just solve the problem as we do it. There's no real way to get around actually *reading* the data. 
