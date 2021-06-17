@@ -576,6 +576,11 @@ fn main() {
     println!("Time: {} μs", end);
 }
 ```
+```
+Part 1: 569999
+Part 2: 17836115
+Time: 13263 μs
+```
 Essentially, without getting too far into the weeds, this is a solution that works by not caring at all about the larger enveloping grid. Since we only track specific lights, we can expand our search area as new instructions arrive. The instructions define the boundaries. Which is nice. 
 
 Each instruction is a rectangle, and we put those in an array. We take those instructions and with some optimizations apply those until we get a final, non bounded grid. 
