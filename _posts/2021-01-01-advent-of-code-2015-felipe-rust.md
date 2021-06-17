@@ -1252,8 +1252,147 @@ Its extremely likely an r-tree would  have worked for our use case, but its arou
 
 Remember our conversation about sparse matrices, before I went down into data-structure land and talked way too much about rectangles? It turns out we were on to something. 
 
+I'm gonna throw a big block of code in here, and then talk about it. I also want to point out that other than helping refine some of the code, this was fundamentally Dave's work, in an effort, I'm sure, to get me to stop trying to implement R-Trees. 
+
+```rust
+use std::fs;
+use std::time::{Instant};
+use std::collections::HashMap;
+
+#[derive(Debug, Eq, Hash, PartialEq)]
+struct Rectangle<'a> {
+	xmin: i64,
+	ymin: i64,
+	xmax: i64,
+	ymax: i64,
+	light: &'a str
+}
+
+
+fn main() {
+	let start = Instant::now();
+
+	let file = "../Inputs/Day6Input.txt";
+	let input_raw: String = fs::read_to_string(file).unwrap();
+	
+	let mut rectangles: Vec<Rectangle> = Vec::new();
+	
+	let mut x_range = vec![];
+	let mut y_range = vec![];
+	
+	for line in input_raw.lines() {
+		let mut tokens = line.split(|c| c == ' ' || c == ',');
+		let mut keyword = tokens.next().unwrap();
+		if keyword == "turn" {
+			keyword = tokens.next().unwrap();
+		};
+		let xmin: i64 = tokens.next().unwrap().parse().unwrap();
+		let ymin: i64 = tokens.next().unwrap().parse().unwrap();
+		tokens.next();
+		let xmax: i64 = tokens.next().unwrap().parse::<i64>().unwrap() + 1; // Plus one is critical!
+		let ymax: i64 = tokens.next().unwrap().parse::<i64>().unwrap() + 1;
+		let light: &str = keyword;
+		
+		x_range.push(xmin);
+		x_range.push(xmax);
+		y_range.push(ymin);
+		y_range.push(ymax);
+		
+		rectangles.push(Rectangle{xmin,ymin,xmax,ymax,light});
+	}
+	
+	x_range.sort();
+	x_range.dedup();
+	y_range.sort();
+	y_range.dedup();
+	
+	let mut x_diff = Vec::with_capacity(x_range.len());
+	let mut x_hash = HashMap::new();
+	
+	for i in 0..(x_range.len()) {
+		if i < x_range.len() - 1 {
+			x_diff.push(x_range[i+1] - x_range[i]);
+		} else {
+			x_diff.push(1);
+		}
+		x_hash.insert(x_range[i],i as usize);
+	};
+	
+	let mut y_diff = Vec::with_capacity(y_range.len());
+	let mut y_hash = HashMap::new();
+	
+	for i in 0..(y_range.len()) {
+		if i < y_range.len() - 1 {
+			y_diff.push(y_range[i+1] - y_range[i]);
+		} else {
+			y_diff.push(1);
+		}
+		y_hash.insert(y_range[i],i as usize);
+	};
+	
+	let mut first_lights = vec![vec![0i64; y_range.len()]; x_range.len()];
+	let mut second_lights = vec![vec![0i64; y_range.len()]; x_range.len()];
+	
+	for r in rectangles {
+	
+		let xmin = *(x_hash.get(&r.xmin).unwrap());
+		let xmax = *(x_hash.get(&r.xmax).unwrap());
+		let ymin = *(y_hash.get(&r.ymin).unwrap());
+		let ymax = *(y_hash.get(&r.ymax).unwrap());
+	
+		for row in &mut first_lights[xmin..xmax] {
+			for val in &mut row[ymin..ymax] {
+				*val = match r.light {
+					"on" => 1,
+					"off" => 0,
+					"toggle" => if *val == 1 {0} else {1}, 
+					_ => 0
+				}
+			}
+		}
+		
+		for row in &mut second_lights[xmin..xmax] {
+			for val in &mut row[ymin..ymax] {
+				*val = match r.light {
+					"on" => *val + 1,
+					"off" => if *val <= 1 {0} else {*val - 1},
+					"toggle" => *val + 2, 
+					_ => 0
+				}
+			}
+		}
+	}
+	
+	let mut part1 = 0;
+	let mut part2 = 0;
+	
+	for i in 0..x_range.len() {
+		for j in 0..y_range.len() {
+			part1 += first_lights[i][j] * x_diff[i] * y_diff[j];
+			part2 += second_lights[i][j] * x_diff[i] * y_diff[j];
+		}
+	}
+	
+	let end = start.elapsed().as_micros();
+	
+	println!("Part 1: {}",part1);
+    println!("Part 2: {}",part2);
+    println!("Time: {} μs", end);
+}
+```
+Essentially, without getting too far into the weeds, this is a solution that works by not caring at all about the larger enveloping grid. Since we only track specific lights, we can expand our search area as new instructions arrive. The instructions define the boundaries. Which is nice. 
+
+Each instruction is a rectangle, and we put those in an array. We take those instructions and with some optimizations apply those until we get a final, non bounded grid. 
+
+A little fancy math, and we get a space and time complexity that looks like this. 
+![Some Math](/assets/img/Rust_AoC_2015_Day_6_8_space.png)
+
+Specifically, this is not better in the worst case scenario but works very well with the specific AoC input. We experimented with a larger grid, a million by a million and it works better than the brute force, (in fact the brute force would take a long time to solve it), however it doesn't scale with the number of instructions the way we would have liked. A thousand rectangles takes 1.5 seconds. Ten thousand made my machine scream until we stopped it. It works, its a better solution, but I remain convinced its not the *best* solution. 
+
 ## Throwing the towel 
 
-At this point, we decided we'd had enough. There is probably a more clever super-optimal solution that works for the billion sized grid, but its not something we're going to uncover today, or possibly ever. Part of solving a problem like this is knowing when to walk away and come back to it when you know more. If we were determined beyond reason to solve this, this is the point where we'd look for someone who's an expert in the field to talk to, but we're alright putting it to bed for now. 
+At this point, we decided we'd had enough. There is probably a more clever super-optimal solution that works for a million instructions in a billion by a billion grid, but its not something we're going to uncover today, or possibly ever. Part of solving a problem like this is knowing when to walk away and come back to it when you know more. If we were determined beyond reason to solve this, this is the point where we'd look for someone who's an expert in the field to talk to, but we're alright putting it to bed for now. 
 
 Of course, if you, reader, come upon a way to solve this with rectangles and r-trees, we'd be thrilled to hear from you. 
+
+This raises a question, of course. I just spent an inordinate amount of words telling you about how we failed to find the best solution. How all we did was "good enough". About how we gave up, because the solutions we were looking at were too hard. Why? Because there's value in failure too. I feel like every blog I read talks about some super cool success, and that's great, its important to celebrate wins, but a lot of development is not that. A lot of writing code is bashing your head against the wall trying various angles, and having none of them work out. Googling concepts you don't understand and realizing the descriptions are vague and doing more googling. Following your gut only to discover that it doesn't know what its talking about. I wanted to give a glimpse of that. Show the dead ends and back alleys that you run into. Because ultimately, writing code is about a lot more than *writing code*. Its about failing forward.  
