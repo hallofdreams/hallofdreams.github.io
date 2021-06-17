@@ -261,6 +261,8 @@ Would Grandpa have made it that difficult?
 
 On a hunch, I took the number, and took the square root.  I subtracted one and rounded down, and added one and rounded up.  Then I multiplied them together.
 
+It was the same number, down to the last digit. A pair of twin primes. No need for the number field sieve, or the quadratic sieve, or any number theory at all. I laughed out loud. Good old Grandpa.
+
 > Alice,
 > 
 > By the time you read this, this message will be very old indeed.  I write this to you on a summer afternoon in nineteen ninety-nine, and my lovely grandchildren are sound asleep in the next room.  They've been running around all day at the park, and deserve a nice nap.  You might know them.  You might have met them, once or twice.  
