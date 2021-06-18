@@ -369,7 +369,7 @@ Ok, so the first problem you have to solve to fix this using rectangles is "how 
 
 Alright, fine, lets look at all the possible cases then. To help with this Dave whipped up a visualization in Mathematica. It boils down to four potential overlap cases:
 
-![solutions](/assets/img/Rust_AoC_2015_Day_6_5_rec_test.jpg)
+![solutions](/assets/img/Rust_AoC_2015_Day_6_5_rec_test.png)
 
 One way to think about it is to look at the overlap of line segments, but again, there's a lot of cases to consider there. I went as far as coding out a monster function to do this, when Dave proposed something much simpler. (It only took us 1200 words to get to the first line of code this time. By the time we reach day 25 I hope to have had a blog with no actual code.) 
 
