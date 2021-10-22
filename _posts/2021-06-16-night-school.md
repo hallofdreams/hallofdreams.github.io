@@ -82,20 +82,20 @@ I nodded, and he vanished.  *Well*, I thought to myself, *how bad could it be?* 
 
 ## Part 2
 
-> Sieve the twos and sieve the threes -
-> The Sieve of Eratosthenes!
-> When the multiples sublime
-> The numbers which remain are prime!
+> Sieve the twos and sieve the threes -  
+> The Sieve of Eratosthenes!  
+> When the multiples sublime  
+> The numbers which remain are prime!  
 >
-> Add `log p` as you advance -
-> Such is the Sieve of Pomerance!
-> The largest sums which you have found
-> Give numbers which are smooth and round!
+> Add `log p` as you advance -  
+> Such is the Sieve of Pomerance!  
+> The largest sums which you have found  
+> Give numbers which are smooth and round!  
 >
-> Mark out a gigantic square.
-> Add `log`s at random everywhere.
-> This brief account you must forgive
-> Of Pollard's Number Field Sieve!
+> Mark out a gigantic square.  
+> Add `log`s at random everywhere.  
+> This brief account you must forgive  
+> Of Pollard's Number Field Sieve!  
 >
 > -- John M. Pollard, "A Tale of Two Sieves"
 
