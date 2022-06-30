@@ -283,7 +283,7 @@ I truly don't know.  There have been a number of impressive translations of poet
 > *Sightlessly seeking*  
 > *Some savage, spectacular suicide.*  
 
-But not all of these were as literal as Taylor's *Faust*.  While Lem's original poem in *The Cyberiad* was equally constrained, [the original constraints and subject matter were entirely different](http://stephenfrug.blogspot.com/2005/11/poem-of-day-updated.html), even down to a different letter (Lem's original had only words starting with 'c').  As [another blogger](benedante.blogspot.com/2012/11/the-haircut-poem-or-what-is-translation.html) put it, Kandell's version was "not really a translation at all, although it was Lem who created the situation within which this exercise had meaning".
+But not all of these were as literal as Taylor's *Faust*.  While Lem's original poem in *The Cyberiad* was equally constrained, [the original constraints and subject matter were entirely different](http://stephenfrug.blogspot.com/2005/11/poem-of-day-updated.html), even down to a different letter (Lem's original had only words starting with 'c').  As [another blogger](http://benedante.blogspot.com/2012/11/the-haircut-poem-or-what-is-translation.html) put it, Kandell's version was "not really a translation at all, although it was Lem who created the situation within which this exercise had meaning".
 
 And FitzGerald took similarly large liberties with *Rubaiyat*.  Where a literal translation from Persian of quatrain 33 might go:
 
