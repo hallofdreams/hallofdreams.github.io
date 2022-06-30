@@ -252,9 +252,9 @@ The English haiku is very different than the Japanese haiku, despite being struc
 
 But it would sound *weird* if one were to write an English haiku about nature in most contexts for the general public, with no jokes or hidden ironies.  Fundamentally, the haiku in English is a primarily light verse, with a light-hearted topic matter, often including a meta reference to the limitations of the syllable count, or finding a bulky five-syllable word like 'refrigerator' to take up an entire line on its own.  The style and structure of a poem is more than just how many syllables go in a line and which rhyme goes where; the tone and topic matter are just as important to the expectations of the audience. The `kireji` is not just absent, it'd actively go against the style of an English haiku.  At most, you might see these requirements included as a joke, as in a random [Reddit Minecraft newsletter](https://old.reddit.com/r/HermitCraft/comments/on30tb/the_rhermitcraft_beacon_20210719/):
 
-> Mumbo posts thumbnail.
-> One hundred duplicate posts
-> Blossom like spring leaves.
+> Mumbo posts thumbnail.  
+> One hundred duplicate posts  
+> Blossom like spring leaves.  
 
 Haikus aren't alone in this stylistic requirement.  For a few years, a Tumblr user named Erik Didriksen [wrote a series of "Pop Sonnets"](http://www.popsonnet.com/), taking modern pop music and translating them, roughly, into Shakespearean sonnets, down to every requirement of rhyme and syllabic stress.  And as a blog, it *worked*...because they were funny.  The notion of taking a stuffy art form like a sonnet and putting modern words to it, of reading "Monster Mash" written in iambic pentameter, was inherently silly; [Erik in an interview](https://www.folger.edu/shakespeare-unlimited/pop-sonnets) described the fun of mixing archaic language with modern slang: "with all the thees and thous preceding it, you get a laugh from the sudden, unexpected modern turn of phrase".  And so the Tumblr account was quite popular during its run; by comparison, a [year-long run of daily non-comedic sonnets on Twitter](https://twitter.com/JesseLucasSaga/status/1474856617887903751) produced [some](https://twitter.com/JesseLucasSaga/status/1542012721750630400) [decent](https://twitter.com/JesseLucasSaga/status/1540568275867750400) [poems](https://twitter.com/JesseLucasSaga/status/1522068927253147649), but nothing so memorable, and certainly nothing so popular, as Pop Sonnets.
 
