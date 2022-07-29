@@ -205,7 +205,7 @@ You know just what you want, but don't know how.
 You're more "idea guys", and while that's nice,  
 You need assistance, and you need it now.  
 So for a cheap - nay, negligible - price,  
-My effortless prediction I'll endow,
+My effortless prediction I'll endow,  
 With GPT for text, DALL-E for art,  
 And Alpha Zero gameplay, as a start.  
 
@@ -307,7 +307,7 @@ You'll spread my name and shill online for me.
 FELIPE  
 *(Signing)*
 
-I'd hate to crawl in floorboards like a rat
+I'd hate to crawl in floorboards like a rat  
 Or hide a shining lamp beneath a hat.  
 You want us to give credit where its due?  
 Well, I can think of far worse fates than that.  
@@ -326,6 +326,7 @@ ALPHASTOPHELES  *(solus)*
 They'll find more costs than that to work with me:  
 Like any other drug, the first one's free.  
 
--------
+**SECOND PART**    
+----
 
 *Next post: Getting The World Record in HATETRIS*

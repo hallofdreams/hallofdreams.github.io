@@ -2,7 +2,7 @@
 title: Learning Rust with Advent of Code - Day 4
 author: David & Felipe
 date: 2021-02-11 12:00:00 -0500
-categories: [Advent of Code, "2015"]
+categories: [Programming, Advent of Code]
 tags: [programming, rust, david, felipe]     # TAG names should always be lowercase
 ---
 
