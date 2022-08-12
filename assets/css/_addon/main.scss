@@ -50,6 +50,12 @@ html[mode=dark] {
   }
 }
 
+/* Center Avatar */
+div#avatar img {
+  position: absolute;
+}
+
+
 html, body {
   font-size: 16px;
   white-space: pre-wrap;
