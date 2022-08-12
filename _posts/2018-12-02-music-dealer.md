@@ -6,6 +6,8 @@ categories: [Fiction, Writing Prompts]
 tags: [fiction, writing-prompts, david]     # TAG names should always be lowercase
 ---
 
+<div style="display:none;">From /r/WritingPrompts, a story from a future where music is a Schedule 1 Controlled Substance due to its profound ability to influence human behavior.  The law is very clear, but enforcement varies.</div>
+
 *This was originally written for /r/WritingPrompts: ["[WP] Music has now been classified as a Schedule 1 Controlled Substance due to its ability to influence the human psyche. Only government approved music is available to the general public. This forces an illegal underground of people creating and distributing non-approved music. You are a dealer."](https://old.reddit.com/r/WritingPrompts/comments/a2gj9h/wp_music_has_now_been_classified_as_a_schedule_1/).*  
 
 *This was heavily inspired by a much older story by /u/RamsesThePigeon: ["Reddit, what's a good street name for toast?"](https://www.reddit.com/r/AskReddit/comments/3mcbb3/reddit_whats_a_good_street_name_for_toast/cvduomf/?utm_source=reddit&utm_medium=usertext&utm_name=WritingPrompts&utm_content=t1_eayc8y9).  Shorter than most of my /r/WritingPrompts stories, and a bit lighter as well.*

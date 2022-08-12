@@ -5,6 +5,7 @@ date: 2021-06-17 12:00:00 -0500
 categories: [Advent of Code, "2015"]
 tags: [programming, rust, david, felipe]     # TAG names should always be lowercase
 ---
+<div style="display:none;">2015 Day 6: Turn regions of a 1000x1000 grid of lights off and on again, and count how many are on at the end.  After optimizing our brute-force, we explore other potential improvements and speedups.</div>
 
 # [Day 6](https://www.adventofcode.com/2015/day/6)
 

@@ -5,6 +5,7 @@ date: 2021-04-13 12:00:00 -0500
 categories: [Programming, Advent of Code]
 tags: [programming, rust, david, felipe]     # TAG names should always be lowercase
 ---
+<div style="display:none;">2015 Day 5: Count the number of strings, from a given list, which fit a number of strange syntax / character requirements.  We don't find big optimizations, but at 2.4 milliseconds, we don't need to.</div>
 
 # [Day 5](https://www.adventofcode.com/2015/day/5)
 

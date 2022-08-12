@@ -5,6 +5,7 @@ date: 2018-12-04 18:00:00 -0500
 categories: [Fiction, Writing Prompts]
 tags: [fiction, writing-prompts, david]     # TAG names should always be lowercase
 ---
+<div style="display:none;">From /r/WritingPrompts, a story about a detective with the ability to find lost things, whose internal radar has rescued children and discovered buried treasure, helping a nun who has lost her faith.</div>
 
 *This was originally written for /r/WritingPrompts: ["[WP] You have the ability to find lost things, hiking in on them with an internal radar. You've helped find lost children, helped archaeologists find lost ruins, museums find lost works of art. One day a nun approaches you and asks for help; she has lost her faith."](https://old.reddit.com/r/WritingPrompts/comments/a30lc5/wp_you_have_the_ability_to_find_lost_things/).*  
 

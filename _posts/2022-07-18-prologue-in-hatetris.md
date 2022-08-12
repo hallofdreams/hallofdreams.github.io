@@ -5,6 +5,7 @@ date: 2022-07-29 00:00:00 -0500
 categories: [Poetry]
 tags: [hatetris, poetry, david]     # TAG names should always be lowercase
 ---
+<div style="display:none;">Written while procrastinating on the longer HATETRIS post, and rereading Goethe's Faust.  Three years of Advent of Code have taught me to cap off every programming project with a poem, so here it is.</div>
 
 *Written while procrastinating the other HATETRIS post and rereading [Bayard Taylor's translation of Goethe's Faust](https://www.gutenberg.org/files/14591/14591-h/14591-h.htm#PROLOGUE_IN_HEAVEN)*.  *Advent of Code, over the course of [three](https://hallofdreams.org/posts/advent-of-code-2019/) [long](https://hallofdreams.org/posts/advent-of-code-2020/) [years](https://hallofdreams.org/posts/advent-of-code-2021/), has taught me that a programming project isn't complete without a poetry coda, so here it is.*
 

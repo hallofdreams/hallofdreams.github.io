@@ -5,6 +5,7 @@ date: 2019-04-19 09:00:00 -0500
 categories: [Fiction]
 tags: [fiction, david]     # TAG names should always be lowercase
 ---
+<div style="display:none;">From /r/HFY, a story of a quiet Montana town on a chilly night two days before Easter, and their strange guest, who made a very long journey to visit them and find out the true reason for the season.</div>
 
 *This was originally written for [/r/HFY](https://old.reddit.com/r/HFY).  I'd been trying to write a story like this for HFY for years, but had never gotten far - writing it from an alien's perspective just didn't seem to work.  So, I finally decided to try writing it from a different point of view.*
 
@@ -68,7 +69,7 @@ What part of the world was the Holy Itzcali Empire from if this guy didn’t rec
 
 “Of course.  Your faith is admirably close to the truth.  So for two thousand years, like us, you have found people who carry the evils of the world within them and must be sacrificed for the forgiveness of all, beginning with this man, the first instance of evil incarnate that you identified.”
 
-Ok, I’d heard a lot today, but even I couldn’t let blasphemy like that slide.  “Of course not!” I half-shouted.  “You can’t say that sort of thing in a church!  That man is God Almighty!  He was the best man who ever lived!”
+Ok, I’d heard a lot today, and as somebody up late drinking on Holy Thursday I couldn't claim to be a *great* Christian, but even I couldn’t let blasphemy like that slide.  “Of course not!” I half-shouted.  “You can’t say that sort of thing in a church!  That man is God Almighty!  He was the best man who ever lived!”
 
 “I...I don’t understand.  You call this Good Friday because it’s the day you killed a good man, not an evil one?”
 

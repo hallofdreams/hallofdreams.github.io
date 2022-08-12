@@ -6,6 +6,8 @@ categories: [Fiction]
 tags: [fiction, david]     # TAG names should always be lowercase
 ---
 
+<div style="display:none;">From /r/HFY, a sci-fi story and a GKC poem.  Old is the elf, and wise, men say, / His hair grows green as ours grows grey / He mocks the stars with myriad hands / High as that swinging forest stands.</div>
+
 *This was originally written for /r/HFY, as the beginning of my quest to find a hypothetical scenario so absurd that it doesn't have an apropos GK Chesterton quote.*
 
 # His Hair Grows Green as Ours Grows Grey

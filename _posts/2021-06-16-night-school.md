@@ -6,6 +6,8 @@ categories: [Fiction, Writing Prompts]
 tags: [fiction, writing-prompts, david]     # TAG names should always be lowercase
 ---
 
+<div style="display:none;">From /r/WritingPrompts, a story of a mathematical ghost that won't leave, a girl who doesn't like him too much, an RSA-encrypted message that can't be decoded, and number theory that death can't end.</div>
+
 *This was originally written for /r/WritingPrompts: ["[WP] The ghost likes to quiz you with math questions. Lately, it's all been about really advanced number theory, like it's grooming you to crack RSA encryption."](https://old.reddit.com/r/WritingPrompts/comments/o13095/wp_the_ghost_likes_to_quiz_you_with_math/).*  
 
 *With a prompt like that, how could I resist?*

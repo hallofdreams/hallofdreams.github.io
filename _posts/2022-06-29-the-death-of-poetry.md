@@ -5,6 +5,7 @@ date: 2022-06-29 00:00:00 -0500
 categories: [Essays]
 tags: [essay, poetry, david]     # TAG names should always be lowercase
 ---
+<div style="display:none;">From the Rubaiyat of Omar Khayyam: The Moving Finger writes, and having writ / Moves on, nor all thy piety and wit / Shall lure it back to cancel half a line / Nor all thy tears erase one word of it.</div>
 
 ## Part I: Art, Gone to Decay
 
@@ -76,7 +77,7 @@ It's hard to even imagine poems written in 2022, good or bad, being as widely vi
 > *and he called for his bowl*  
 > *and he called for his fiddlers three.*  
 
-It's not always true that art forms always progress from simple to complex; [TVTropes has certainly collected enough examples](https://tvtropes.org/pmwiki/pmwiki.php/Main/UnbuiltTrope) to prove that the earliest take on a motif or story can be complex and nuanced in its own right.  But it is true that the first artist to use a trope has no previous examples of it to build on, and the second artist does.  The second artist, in fact, *must* build on it, or alter it, or start somewhat differently, because unless you're Pierre Menhard writing [*Don Quioxte*](https://en.wikipedia.org/wiki/Pierre_Menard,_Author_of_the_Quixote) you can't write an story identical to one that's already well-known and be received as anything but a plagiarist.  And the more times a trope is used, the further from the baseline idea an artist needs to go to be counted as 'original', if originality is the goal.
+It's not always true that art forms always progress from simple to complex; [TVTropes has certainly collected enough examples](https://tvtropes.org/pmwiki/pmwiki.php/Main/UnbuiltTrope) to prove that the earliest take on a motif or story can be complex and nuanced in its own right.  But it is true that the first artist to use a trope has no previous examples of it to build on, and the second artist does.  The second artist, in fact, *must* build on it, or alter it, or start somewhat differently, because unless you're Pierre Menhrd writing [*Don Quioxte*](https://en.wikipedia.org/wiki/Pierre_Menard,_Author_of_the_Quixote) you can't write an story identical to one that's already well-known and be received as anything but a plagiarist.  And the more times a trope is used, the further from the baseline idea an artist needs to go to be counted as 'original', if originality is the goal.
 
 > After W.B. Yeats:  
 > 
