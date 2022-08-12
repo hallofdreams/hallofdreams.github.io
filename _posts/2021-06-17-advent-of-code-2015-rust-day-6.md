@@ -1,5 +1,5 @@
 ---
-title: Learning Rust via 2015 Advent of Code - Day 6
+title: Learning Rust with Advent of Code - Day 6
 author: David & Felipe
 date: 2021-06-17 12:00:00 -0500
 categories: [Advent of Code, "2015"]

@@ -282,7 +282,7 @@ Sixty-seven points!  A pittance
 For that permanent admittance.  
 With my help you'll go the distance:  
 Known worldwide (with my assistance),  
-Stiting in the High Score Heaven  
+Sitting in the High Score Heaven  
 With a score of sixty-seven.  
 
 You'll have the chance to publish all your dreams,  
