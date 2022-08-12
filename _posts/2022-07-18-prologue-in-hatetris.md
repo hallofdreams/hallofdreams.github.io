@@ -329,4 +329,4 @@ Like any other drug, the first one's free.
 **SECOND PART**    
 ----
 
-*Next post: Getting The World Record in HATETRIS*
+*Next post: [Getting The World Record in HATETRIS](https://hallofdreams.org/posts/hatetris/)*
