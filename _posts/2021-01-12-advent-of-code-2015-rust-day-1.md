@@ -5,6 +5,7 @@ date: 2021-01-12 12:00:00 -0500
 categories: [Programming, Advent of Code]
 tags: [programming, rust, david, felipe]     # TAG names should always be lowercase
 ---
+<div style="display:none;">2015 Day 1: The simplest problem of the year, done by complete beginners inexperienced with Rust's syntax, types, and error-handling.  Features a 2000x speedup over an equivalent Mathematica program.</div>
 
 The goal: learn Rust via the error messages, by working through 2015's Advent of Code problems, one at a time.
 

@@ -5,6 +5,7 @@ date: 2021-06-08 18:00:00 -0500
 categories: [Fiction, Writing Prompts]
 tags: [fiction, writing-prompts, david]     # TAG names should always be lowercase
 ---
+<div style="display:none;">From /r/WritingPrompts, a bizarre short story from a bizarre prompt about every different country having its own personal Sun.  Surprisingly, this story includes a wholly relevant GK Chesterton poem.</div>
 
 *This was originally written for /r/WritingPrompts: ["[WP] Every country has their own sun (based on a belief by my friends' mother)"](https://old.reddit.com/r/WritingPrompts/comments/nv0ocz/wp_every_country_has_their_own_sun_based_on_a/).*  
 

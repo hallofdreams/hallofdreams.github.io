@@ -5,6 +5,7 @@ date: 2018-12-16 18:00:00 -0500
 categories: [Fiction, Writing Prompts]
 tags: [fiction, writing-prompts, david]     # TAG names should always be lowercase
 ---
+<div style="display:none;">From /r/WritingPrompts, a story written only because of a typo in the original prompt.  The author of the prompt deleted it as soon as he saw the typo once I posted this story, and I can't blame him.</div>
 
 *This was originally written for /r/WritingPrompts: ["[WP] After the aliens invaded retired sergeant Frank Rogers decided to go on one last mission. A trip to the store to get as much booze as possible. Go out in a blaze of drunken glory! Then he saw a bus of abandoned students and his mission perimeters changed. He sighs...'One Last Mission'"](https://old.reddit.com/r/WritingPrompts/comments/a6uy13/wp_after_the_aliens_invaded_retired_sergeant/).*  
 

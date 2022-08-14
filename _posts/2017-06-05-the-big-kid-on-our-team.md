@@ -6,6 +6,8 @@ categories: [Fiction]
 tags: [fiction, david]     # TAG names should always be lowercase
 ---
 
+<div style="display:none;">From /r/HFY, a slice of life in a future where aliens and humans have made it through First Contact and share the same Internet.  Includes small doses of Latin, kickball, and co-op multiplayer games.</div>
+
 *This was originally written for [/r/HFY](https://old.reddit.com/r/HFY/comments/6fezf4/oc_the_big_kid_on_our_team_or_liberi_magni_in/).  Including a literal translation of 'u mad bro' was a touch I liked, but butchering the title's grammar, I'm not so proud of.  If I were writing this story now, I'd write the entire thing in Latin, and it would take me ten years and I'd never publish it.*
 
 # The Big Kid On Our Team, or Liberi Magni in Gregis Nostris

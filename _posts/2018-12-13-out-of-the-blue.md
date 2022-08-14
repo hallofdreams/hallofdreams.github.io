@@ -5,6 +5,7 @@ date: 2018-12-13 18:00:00 -0500
 categories: [Fiction, Writing Prompts]
 tags: [fiction, writing-prompts, fanfiction, david]     # TAG names should always be lowercase
 ---
+<div style="display:none;">From /r/WritingPrompts, a crossover between Stargate SG-1 and the Star Wars Prequel Trilogy.  Written half to fulfill the prompt and half to give me an excuse to rewatch a dozen episodes of Stargate.</div>
 
 *This was originally written for /r/WritingPrompts: ["[EU] The Jedi thought it to be an ancient artifact. Out of the blue, the chevrons light up, followed by a mighty kawoosh. SG1 have arrived."](https://old.reddit.com/r/WritingPrompts/comments/a5sp5x/eu_the_jedi_thought_it_to_be_an_ancient_artifact/).*  
 
@@ -54,7 +55,7 @@ Their leader sighed.  "Then I don't suppose you'd mind giving us the Eye, as a l
 
 Their leader looked impatient, but upon being nudged by -- "Daniel", was it? -- shook his head and stepped towards me.  "We don't mean any harm, but we need to hold on to these for now, just in case.  Just as you do, with your lightsaber-looking thing."
 
-I felt anger and wounded pride swell in me for a moment, before focusing and cancelling it out.  Did this man think I was an imposter?  Some holo actor, playing at being a Jedi?  I might be an apprentice, but I was still a **Jedi**.  Without a word, I drew my lightsaber, flicked it on, and stepped into guard.
+I felt anger and wounded pride swell in me for a moment, before focusing and cancelling it out.  Did this man think I was an imposter?  Some holo actor, playing at being a knight?  I might be an apprentice, but I was still a **Jedi**.  Without a word, I drew my lightsaber, flicked it on, and stepped into guard.
 
 I didn't forsee their reaction.  I've traveled an awful lot during the course of this war.  I've seen worlds that had never seen a Jedi, filled with people who stared at my lightsaber with awe and fascination.  I've seen people with only ancient legends of the Sith to go on, who cowered in fear.  I've seen many citizens of the Republic who looked at it as a symbol of hope.  I've seen enemies of the Republic look at it as a worthy challenge.  But these four?  They merely gawked, as if they'd seen a nerf suddenly stand up on its hind legs.
 

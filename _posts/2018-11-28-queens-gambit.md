@@ -5,6 +5,7 @@ date: 2018-11-28 18:00:00 -0500
 categories: [Fiction, Writing Prompts]
 tags: [fiction, writing-prompts, david]     # TAG names should always be lowercase
 ---
+<div style="display:none;">From /r/WritingPrompts, a short story from a soon-deleted prompt, inspired by Andrew D. Pontious' text adventure "Rematch" and the legendary chess match between Paul Morphy and the Duke of Brunswick.</div>
 
 *This was originally written for /r/WritingPrompts: ["[WP] You're a teenager hanging with some friends, but you keep getting deja Vu. At first you shrug it off, but you keep getting a sense that you've lived this before, so much in fact you start being able to sense things before they happen. Then you see something life changing and have to react, fast."](https://www.reddit.com/r/WritingPrompts/comments/a1crgr/wp_youre_a_teenager_hanging_with_some_friends_but/).*  
 

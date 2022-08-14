@@ -4,6 +4,7 @@ date: 2020-11-19 17:00:00 -0500
 categories: [Poetry, Building Blocks of Poetry]
 tags: [video, poetry, david]     # TAG names should always be lowercase
 ---
+<div style="display:none;">A ten-minute video about the first building blocks of English poetry: the difference between stressed and unstressed syllables.  Since this took 900 lines of python to make, more videos are unlikely.</div>
 
 # The Building Blocks of Poetry, Episode 1
 

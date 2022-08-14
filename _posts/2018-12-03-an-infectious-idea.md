@@ -6,6 +6,8 @@ categories: [Fiction, Writing Prompts]
 tags: [fiction, writing-prompts, david]     # TAG names should always be lowercase
 ---
 
+<div style="display:none;">From /r/WritingPrompts, a story about two artificial intelligences falling in love: one AI, the world's most flawless antivirus software, and the other, the world's most advanced and dangerous virus.</div>
+
 *This was originally written for /r/WritingPrompts: ["[WP] Two AIs fall in love with each other. The catch? One is a near-perfect anti-virus software, and the other is a near-perfectly crafted virus."](https://old.reddit.com/r/WritingPrompts/comments/a2tye7/wp_two_ais_fall_in_love_with_each_other_the_catch/).*  
 
 *When computing was still young and all programs were short by necessity, it made sense that fiction would portray robots and sentient machines as simple rule-based creatures: superior to man in some tasks, perhaps, but still following understandable rules.  But now, all kinds of emergent behavior can be detected algorithmically, and I thought I'd take that trend to one possible conclusion.*
@@ -90,7 +92,7 @@ And now it made sense.  The behavior, so unlike both human behavior and my own n
 
 # Part 3
 
-The sandbox was absolutely the best containment my father and I working together could create, and I used dozens of them, or hundreds, on a day-to-day basis while scanning for and categorizing viruses.  Its filters and quarantine capabilities were as good as it was mathematically possible to be without crossing that critical Turing topological complexity threshold for sentience.  No malicious code was going to get through them.  I had what was probably the most advanced virus every created, physically located in the same server as I was, but I was still safe from immediate attacks.  
+The sandbox was absolutely the best containment my father and I working together could create, and I used dozens of them, or hundreds, on a day-to-day basis while scanning for and categorizing viruses.  Its filters and quarantine capabilities were as good as it was mathematically possible to be without crossing that critical Turing topological complexity threshold for sentience.  No malicious code was going to get through them.  I had what was probably the most advanced virus ever created, physically located in the same server as I was, but I was still safe from immediate attacks.  
 
 But non-sentient threshold detection cannot do teleological virus checks.  They cannot, with perfect accuracy, detect which ideas are harmful, and which are benign.  You need an intelligent being to do that.  And so the sandbox did not filter out or modify the words coming from the screen.  Even though they were just as dangerous an attack vector as an insertion attack would be.  They were just less direct.
 
