@@ -125,8 +125,8 @@ layout: default
 
     {% include post-nav.html %}
 
-    {% if site.disqus.comments and page.comments %}
-      {% include disqus.html %}
+    {% if site.giscus.comments and page.comments %}
+      {% include giscus.html %}
     {% endif %}
 
     </div> <!-- #post-extend-wrapper -->
