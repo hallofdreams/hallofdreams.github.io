@@ -67,7 +67,7 @@ google_analytics:
 #  shortname: ''    # Fill with your Disqus shortname. › https://help.disqus.com/en/articles/1717111-what-s-a-shortname
 
 
-giscus: 
+giscus:
   comments: true
 
 # Prefer color scheme setting, available values:
