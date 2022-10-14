@@ -9,7 +9,7 @@ tags: [hatetris, poetry, david]     # TAG names should always be lowercase
 
 *Written while procrastinating the other HATETRIS post and rereading [Bayard Taylor's translation of Goethe's Faust](https://www.gutenberg.org/files/14591/14591-h/14591-h.htm#PROLOGUE_IN_HEAVEN)*.  *Advent of Code, over the course of [three](https://hallofdreams.org/posts/advent-of-code-2019/) [long](https://hallofdreams.org/posts/advent-of-code-2020/) [years](https://hallofdreams.org/posts/advent-of-code-2021/), has taught me that a programming project isn't complete without a poetry coda, so in the grand tradition of Blegdamsvej, here's mine.*
 
-**PROLOGUE IN THE HIGH SCORE HEAVEN**    
+**PROLOGUE IN THE [HIGH SCORE HEAVEN](https://qntm.org/hatetris)**    
 ----
 **THE HEAVENLY HOST, THE NERD, ALPHASTOPHELES**    
 
@@ -105,7 +105,7 @@ Bah!  Those two?  They're script-kiddies at best,
 And have no expert knowledge.  Not impressed.    
 They won't find any loop or clear the screen    
 With any kind of human-tuned routine.    
-The record stands at sixty-six today    
+[The record stands at sixty-six today](https://qntm.org/hatetris#komment61238cbbd3612)   
 (The kind of number any devil picks)    
 And if you gave those two a year to play,    
 The record would remain at sixty-six.    
