@@ -18,7 +18,7 @@ CotD has an excellent format and tests all aspects of skill in Trackmania: **dis
 
 Winning CotD means that you have mastered multiple aspects of the game.  But we want to go quite a bit further than that.
 
-Our goal is to create a program that can, with only the same resources as a human player and no human input, win the qualifier and every individual round of Division 1 of Trackmania's Cup of the Day.
+Our goal is to create a program that can, without , win the qualifier and every individual round of Division 1 of Trackmania's Cup of the Day.
 
 ## The Motive
 
@@ -26,11 +26,11 @@ Machine learning, as of 2024, is dominated by techniques which require absolutel
 
 But not everything we might want to learn has endless amounts of training data available, and not everyone who might want to learn it has endless amounts of computing power at hand.  Like the HATETRIS project, we want to see if state-of-the-art machine learning techniques can be implemented by amateurs on a single computer to achieve nontrivial goals.  But unlike the HATETRIS project, we want to try this in an area where we can't download or generate unlimited amounts of data.
 
-Trackmania Nations Forever (the predecessor to Trackmania 2020, released in 2008) has a [TAS tool called TMInterface](https://donadigo.com/tminterface/), which allows for custom speed modification (playing the game dozens of times faster or slower than normal), save states, input playback, and much more besides.  It's a fantastic tool, and has led to a boom in TMNF TAS runs...but it's not what we have in mind, and it's why we're not playing on TMNF.  We want a program that can not just *play* the game like a human could: we want a program that can *learn* the game like a human can.  Fifteen minutes to get a world-class time on a new map, playing at one second per second.  And we want to do it on one desktop PC.
+Trackmania Nations Forever (the predecessor to Trackmania 2020, released in 2008) has a [TAS tool called TMInterface](https://donadigo.com/tminterface/), which allows for custom speed modification (playing the game dozens of times faster or slower than normal), save states, input playback, and much more besides.  It's a fantastic tool, and has led to a boom in TMNF TAS runs...but it's not what we have in mind, and it's why we're not playing on TMNF.  We want a program that can not just *play* the game like a human can: we want a program that can *learn* the game like a human can.  Fifteen minutes to get a world-class time on a brand-new map, playing at one second per second.  And we want to do it on one desktop PC.
 
 ## The Players
 
-It wouldn't be a proper race if we were the only competitors.  As of the start of 2024, there are seven people or groups who have made - and published - programs that can play Trackmania autonomously.  Numerous others - [Lelaurance on TM2020](https://old.reddit.com/r/TrackMania/comments/12p7268/can_you_beat_trackmania_ai/) and [Louis De Oliveira on TMNF](https://github.com/LouisDeOliveira/TMAI) and [ooshkar on TM2020](https://www.youtube.com/watch?v=55ZZJe543b0) - have reported progress, but have not published enough for us to tell exactly how far they've gotten.  So, as we stand on the starting line, let's see how much of a head start each of the other racers have:
+It wouldn't be a proper race if we were the only competitors.  As of the start of 2024, there are eight people or groups who have made - and published - programs that can play Trackmania autonomously.  Numerous others - [Lelaurance on TM2020](https://old.reddit.com/r/TrackMania/comments/12p7268/can_you_beat_trackmania_ai/) and [Louis De Oliveira on TMNF](https://github.com/LouisDeOliveira/TMAI) and [ooshkar on TM2020](https://www.youtube.com/watch?v=55ZZJe543b0), to name three - have reported some amount of progress, but have not published enough for us to know exactly what they've done or how far they've gotten by doing it.  So, as we stand on the starting line, let's see how much of a head start each of the other racers have.
 
 ### Rottaca
 
@@ -39,7 +39,7 @@ It wouldn't be a proper race if we were the only competitors.  As of the start o
 
 The earliest attempt we know of at a self-driving car in Trackmania was from 2017, by a German software developer named Andreas Rottach (going by Rottaca), [who published the code on GitHub](https://github.com/rottaca/SelfDrivingConvNet).  The idea was **supervised learning**: take examples of cars driving well, take screenshots throughout the game, label the screenshots with the keys (left, right, or neither) which were being hit at that moment, and train the network to hit the appropriate key when given the appropriate screenshot.
 
-With a dataset of 100,000 images - equivalent to roughly an hour's worth of driving at thirty frames per second - and with no concept of momentum or even any ability to use the brakes, it's not surprising that the car eventually flipped out of the track and crashed during the test run.  Still, the program was clearly able to distinguish between left turns, right turns, and straightaways.  The architecture Rottaca used - a **convolutional neural network** - was good enough to learn at least some of the important features of the game, just by looking at static pictures of gameplay.
+With a dataset of 100,000 images - equivalent to roughly a few hours' worth of driving at ten frames per second - and with no concept of momentum or even any ability to use the brakes, it's not surprising that the car eventually flipped out of the track and crashed during the test run.  Still, the program was clearly able to distinguish between left turns, right turns, and straightaways.  The architecture Rottaca used - a **convolutional neural network** - was good enough to learn at least some of the important features of the game, just by looking at static pictures of gameplay.
 
 ### TMRL
 
@@ -68,7 +68,7 @@ The first was Laurens Neinders, from the University of Twente in the Netherlands
 Nienders concluded that this was due to the difference in the information available.  Sophy had information about the **track curvature** of the upcoming 6 seconds of track, based on the current speed.  TMRL, however, only had distance measurements from the LIDAR.  While the TMRL program could plan for the next turn, it could not plan two turns ahead, and this fundamentally limited the program to mere safe driving, avoiding walls and crashes, but never optimizing.
 
 ![](/assets/img/Trackmania/Neinders_Fig8+9.png)
-*The LIDAR environment in TMRL, vs. the distance curvature measurement in Sophy, from [Neinder's paper](https://essay.utwente.nl/96153/1/Neinders_BA_EEMCS.pdf).*
+*The LIDAR environment in TMRL, vs. the distance curvature measurement in Sophy, fromseven [Neinder's paper](https://essay.utwente.nl/96153/1/Neinders_BA_EEMCS.pdf).*
 
 So, he implemented that same track curvature lookahead in Trackmania.  By driving a track and using LIDAR measurements to find the track edges, he created a pair of Bezier curves representing the two borders of the track, and then trained the neural network to take a segment of that curve as the input for the car.
 
@@ -115,13 +115,29 @@ Results so far have been mixed.  With knowledge of the reference trajectories, t
 
 But, even though the training has thus far consistently plateaued on all the various attempts at and tweaks of training, PedroAI proved that the concept of a generalized Trackmania-playing program *can* work.  A neural network *can* play better than randomly across more than a hundred tracks.  His program is the best covered thus far, and as of the start of 2024 remains by far the best generalized Trackmania-playing program.
 
+### Bluemax666
+
+However, there are three people or groups who have shown the potential of how well a program can do on an *individual* track.
+
+The earliest, in 2019, was a French programmer named [Bluemax666](https://www.youtube.com/@bluemax6668/videos), who was inspired by a [2017 project in Python](https://github.com/sentdex/pygta5) to play the game [Grand Theft Auto V](https://www.youtube.com/playlist?list=PLQVvvaa0QuDeETZEOy4VdocT7TOjfSA8a).  He started the way many did: a [simple program](https://github.com/Bluemax666/Trackmania_simple_AI) that could only accelerate and not brake, using a black-and-white bitmap of a small section of the screen, and converting manual keystrokes to virtual joystick inputs.  But that's not where he stopped.
+
+A year later, [he released a new program](https://www.youtube.com/watch?v=yZFY5ZJtgyM), with very different implementations to what everyone else had done.  Instead of processing the image with LIDAR or with convolutions, he processed it with a technique known as **Variational Auto-Encoding**.  Resizing the screenshots to be 64x64 allowed him to not only store the images in color, but also to provide the last eight frames into a neural network, rather than just the most recent frame by itself; this got a program almost to a gold medal on a three-lap endurance track, stymied only by a bad reward value.  By 2021, he had moved to TM2020, [where his program could come within 0.3 seconds](https://www.youtube.com/watch?v=766gs_-pELc) of the world record on a training map, without access to any game information besides the screen and the car speed - no information about gear, about surfaces, tire contact, acceleration, or even where on the map it was.
+
+![](/assets/img/Trackmania/Bluemax_LatentVariables.png)
+*A view of the latent variables and the reconstructed screen from Bluemax666's ["Trackmania AI after 48 hours of training on ice (Reinforcement learning)"](https://www.youtube.com/watch?v=766gs_-pELc).*
+
+While others before and since used the Soft Actor-Critic model, nobody else has done it quite the same way.  [Variational Auto-encoding](https://en.wikipedia.org/wiki/Variational_autoencoder) in particular is a fascinating method that takes input (in this case, a screenshot of the game), reduces that input to a small handful of variables, called "latent variables", and then tries to use those variables to reconstruct the original input as closely as possible.  The better the reconstruction, the more accurate those variables are at representing the important features of the input.  If the rconstruction was perfect, that means the latent variables capture everything important about the original image, and a neural network with those latent variables as inputs will have all the information that the full image could possibly give them, for a tiny fraction of the processing time.
+
+![](/assets/img/Trackmania/VAE_Basic.png)
+*A basic overview of a variational auto-encoder, taken from [the Wikipedia article here](https://en.wikipedia.org/wiki/Variational_autoencoder).*
+
+Bluemax666 eventually set aside the project, having established what was (in 2021) the best results in Trackmania machine learning for both TM2 and (in limited test tracks) TM2020; results that were competitive with human amateurs.  Over the next two years, two others would take the next step forward, getting results not just competitive with human amateurs, but better altogether.
+
 ### Yosh
 
-However, there are two groups who have shown the potential of how well a program can do on an *individual* track.
+Of all the people to have attempted Trackmania machine learning over the years, Yosh has been the single most persistent.  Back in May of 2020, he started out with the most basic autonomous Trackmana program: [pure randomness](https://www.youtube.com/watch?v=wuGiJR1wlQQ).  Three thousand cars bounced around a custom Kacky-type map at random, hitting random keys and going in random trajectories.  But the resulting montage and flood of airborne cars wasn't the goal - the goal was to test out a method of controlling the car from a program.  And so, a month later, he released the [first of many videos on the subject, titled "AI plays Trackmania"](https://www.youtube.com/watch?v=_oNK08LvZ-g).
 
-Of all the people to have attempted Trackmania machine learning over the years, Yosh has been the single most persistent.  Back in May of 2020, he started out with the most basic machine learning program: [pure randomness](https://www.youtube.com/watch?v=wuGiJR1wlQQ), with three thousand cars bounced around a custom Kacky-type map at random, hitting random keys and going random trajectories.  But the resulting montage and flood of airborne cars wasn't the goal - the goal was to test out a method of controlling the car from a program - and as we found out (see the next blog post), this is no mean feat.  And so, a month later, he released the [first of many videos on the subject, titled "AI plays Trackmania"](https://www.youtube.com/watch?v=_oNK08LvZ-g).
-
-Yosh has tried almost everything that everybody else has.  His first attempt had a simple bilayer neural network, but subsequent attempts used a [the genetic algorithm **(NEAT)**](https://www.youtube.com/watch?v=a8Bo2DHrrow) (like AndrejGobeX) and [Deep Q-learning](https://www.youtube.com/watch?v=SX08NT55YhA) (like PedroAI) and [Soft Actor-Critic](https://www.youtube.com/watch?v=Dw3BZ6O_8LY) (like TMRL); the program uses a system like LIDAR, but with more information about the upcoming curvature of the map (as proposed by Laurens Neinders); the program even started off not allowed to brake, like Rottaca's all the way back in 2017.  Aside from image recognition, he has tried a bewildering variety of techniques and strategies, and along the way has come up with an idea that showed a great deal of promise for future attempts.
+Yosh has tried almost everything that everybody else has.  His first attempt had a simple bilayer neural network, but subsequent attempts used a [the genetic algorithm **(NEAT)**](https://www.youtube.com/watch?v=a8Bo2DHrrow) (like AndrejGobeX) and [Deep Q-learning](https://www.youtube.com/watch?v=SX08NT55YhA) (like PedroAI) and [Soft Actor-Critic](https://www.youtube.com/watch?v=Dw3BZ6O_8LY) (like Bluemax666 and TMRL); the program uses a system like LIDAR, but with more information about the upcoming curvature of the map (as proposed by Laurens Neinders); the program even started off not allowed to brake, like Rottaca's all the way back in 2017.  Aside from image recognition, he has tried a bewildering variety of techniques and strategies, and along the way has come up with an idea that showed a great deal of promise for future attempts.
 
 ![](/assets/img/Trackmania/Yosh_reward.png)
 *Yosh's network looks at the vast reward rising in the distance, and contemplates how best to get the carrot and avoid the stick.  From ["Training an unbeatable AI in Trackmania](https://www.youtube.com/watch?v=Dw3BZ6O_8LY).*
@@ -143,9 +159,9 @@ The Linesight project, on Trackmania Nations Forever, is at the start of 2024 th
 With that kind of generality, the Linesight developers did not want to merely run their program on custom-built tutorial tracks.  They wanted a *challenge*.  And the challenge that presented itself was [ESL-Hockolicious](https://tmnf.exchange/trackshow/414041), a map created in 2008 that has since become [one of the most hunted maps in all of TMNF](https://www.youtube.com/watch?v=3NbcEcO5oyg).  One minute long, ludicrously optimized, with a variety of tricks, turns, and jumps: anybody, whether human or machine, who got a good time on this map, would need a broad understanding of tech maps and low-speed maneuvering in Trackmania.  So, how well did the program do?
 
 ![](/assets/img/Trackmania/Linesight_Hockolicious_Progress.png)
-*The Linesight program's progress over eighty hours of training on Hockolicious.  From [" Trackmania AI Learns To Drift and Beat Pros ? | Hockolicious"](https://www.youtube.com/watch?v=9juZgQc4D7U).*
+*The Linesight program's progress over eighty hours of training on Hockolicious.  From ["Trackmania AI Learns To Drift and Beat Pros ? | Hockolicious"](https://www.youtube.com/watch?v=9juZgQc4D7U).*
 
-After eighty hours of training, the program achieved a time of 54.06.  This placed it at what would be (in the no-shorctuts category) a tie for 20th place on the global leaderboard - out of millions of attempts by thousands of players, in a map far from trivial to start with.  The Linesight project proved that reinforcement learning can get nearly professional-level performance on real maps.  And, as we enter the scene in 2024, that is the state-of-the-art.
+After eighty hours of training (training at 9x speed, so roughly a month of equivalent playing for a human player), the program achieved a time of 54.06, a time not achieved by human players until the map was six years old.  This placed it at what would be (in the no-shorctuts category) a tie for 20th place on the global leaderboard - out of millions of attempts by thousands of skilled racers, in a map far from trivial to set a good time in.  The Linesight project proved that reinforcement learning can get nearly professional-level performance on real maps.  And, as we enter the scene in 2024, that is the state-of-the-art.
 
 ### Us 
 
