@@ -18,7 +18,7 @@ CotD has an excellent format and tests all aspects of skill in Trackmania: **dis
 
 Winning CotD means that you have mastered multiple aspects of the game.  But we want to go quite a bit further than that.
 
-Our goal is to create a program that can, without , win the qualifier and every individual round of Division 1 of Trackmania's Cup of the Day.
+Our goal is to create a program that can, with no prior experience on the map, win the qualifier and every individual round of Division 1 of Trackmania's Cup of the Day.
 
 ## The Motive
 
@@ -131,7 +131,7 @@ While others before and since used the Soft Actor-Critic model, nobody else has 
 ![](/assets/img/Trackmania/VAE_Basic.png)
 *A basic overview of a variational auto-encoder, taken from [the Wikipedia article here](https://en.wikipedia.org/wiki/Variational_autoencoder).*
 
-Bluemax666 eventually set aside the project, having established what was (in 2021) the best results in Trackmania machine learning for both TM2 and (in limited test tracks) TM2020; results that were competitive with human amateurs.  Over the next two years, two others would take the next step forward, getting results not just competitive with human amateurs, but better altogether.
+Bluemax666 eventually set aside the project, having achieved what was (in 2021) the best results in Trackmania machine learning for both TM2 and (in limited test tracks) TM2020; results that were competitive with human amateurs.  Over the next two years, two others would take the next step forward, getting results not just competitive with human amateurs, but better altogether.
 
 ### Yosh
 
