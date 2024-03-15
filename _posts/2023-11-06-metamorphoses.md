@@ -58,9 +58,9 @@ I took the first handful of lines from each of the fifteen books in the epic, an
 
 **Latin:** *Iamque deus posita fallacis imagine tauri se confessus erat Dictaeaque rura tenebat, cum pater ignarus Cadmo perquirere raptam imperat et poenam, si non invenerit, addit exilium, facto pius et scleratus eodem.*
 
-**Purely Literal Word Order:** And now the god, having cast off the false image of a bull, had confessed himself, and Crete's lands held.  With the father unknowing, to search everywhere for the kidnapped [girl] he commanded, and to the punishment, if he did not find [her], he added exile, making himself pious and cursed by the same action.
+**Purely Literal Word Order:** And now the god, having cast off the false image of a bull, had confessed himself, and Crete's lands held.  With the father unknowing, Cadmus to search everywhere for the kidnapped he commanded, and to the punishment, if he did not find, he added exile, making himself pious and cursed by the same action.
 
-**English:** And now the god, having cast off the false image of a bull, 
+**English:** And now the god, having cast off the false image of a bull, had revealed himself, and held Crete's lands.  [Europa's] father, not knowing this, ordered Cadmus to search everywhere for the kidnapped [girl], and decreed exile to be the punishment of failure; he thus made himself pious and impious by the same action.
 
 ## Book IV
 
