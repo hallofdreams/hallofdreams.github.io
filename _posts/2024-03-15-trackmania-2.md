@@ -89,7 +89,7 @@ Alright, back to the drawing board.  Download Windows, put it on a USB, format t
 
 Of course, `ssh`ing doesn’t work the way you’d expect, and installing Windows Subsystem for Linux (WSL) is the *opposite* of what we wanted to do.  We wanted to use the native Windows features.  We are not going to give an exhaustive rundown here of installing OpenSSH on Windows, because there are many excellent tutorials on it.  What we *will* tell you is that by default, if the account you want to ssh in is an administrator, there is a *special* file in the OpenSSH directory that you need to modify to point at your `ssh` keys, which is different from the one standard users use, they are `administrators_authorized_keys` and `authorized_keys` respectively.  Oh, and that if you open any of your `ssh` key files with the wrong program and save them, you will break them in a way that is nearly undetectable until you restore them from backup. 
 
-Fortunately all the port forwarding we’d done in the past still worked. 
+And for once, a small blessing: all the port forwarding we’d done in the past still worked. 
 
 Of course, once *that’s* set up, you still need to figure out how to remote desktop in.  Did you know that if you have remote desktop set up, the only permitted auth is a **password**, and not an ssh key?  That you have to set up a ssh tunnel and then connect to the RDP session?  Oh, and that if the RDP session ends, running programs do too, so you need a second user if you want to be able to run a program in the background while someone connects and disconnects?  Fortunately, you can set up two accounts and solve things that way.  Unfortunately, sharing files between them is tricky, but solvable.  That’s what we did: we made a new administrator account named Fictor and had it as a permanently running account so we could (theoretically) perpetually train our network.  With Fictor and Sominum both living on our Windows account, we were all set to really begin work.  Sure, [shadowing another user](https://gitlab.com/Remmina/Remmina/-/issues/2774) didn’t work, but small potatoes when we had the ability to screen share over Discord.  It wasn’t going to be easy, but people write programs to interact with running GUIs all the time, so that portion will at least be easy. Indeed ChatGPT once again suggested the approach would be simple: 
 
@@ -143,13 +143,13 @@ Why did we need plugins?  Because, without plugins, the only data we could give 
 
 Running an OCR program on the screen itself to get some of those numbers was going to be slow, fraught with inaccuracy, and inefficient - [though it *has* been done before for Trackmania](https://antonin.cool/trackmania-ia-deeplearning-python-opencv-self-driving/).  But a plugin could give our program those numbers directly.  All we needed was OpenPlanet, because once we had it, we could install any other mod we wanted.  And fortunately, [OpenPlanet could be run on Linux](https://openplanet.dev/docs/help/linux); but following the directions and calling `wine`, we quickly encountered a litany of several hundred nearly-identical errors:
 
-> 0030:err:setupapi:create_dest_file failed to create L"C:\\windows\\explorer.exe" (error=80)
-> 0030:err:setupapi:create_dest_file failed to create L"C:\\windows\\hh.exe" (error=80)
-> 0030:err:setupapi:create_dest_file failed to create L"C:\\windows\\notepad.exe" (error=80)
-> 0030:err:setupapi:create_dest_file failed to create L"C:\\windows\\regedit.exe" (error=80)
-> 0030:err:setupapi:create_dest_file failed to create L"C:\\windows\\system32\\explorer.exe" (error=80)
-> 0030:err:setupapi:create_dest_file failed to create L"C:\\windows\\system32\\iexplore.exe" (error=80)
-> 0030:err:setupapi:create_dest_file failed to create L"C:\\windows\\system32\\notepad.exe" (error=80)
+> 0030:err:setupapi:create_dest_file failed to create L"C:\\windows\\explorer.exe" (error=80)   
+> 0030:err:setupapi:create_dest_file failed to create L"C:\\windows\\hh.exe" (error=80)   
+> 0030:err:setupapi:create_dest_file failed to create L"C:\\windows\\notepad.exe" (error=80)   
+> 0030:err:setupapi:create_dest_file failed to create L"C:\\windows\\regedit.exe" (error=80)   
+> 0030:err:setupapi:create_dest_file failed to create L"C:\\windows\\system32\\explorer.exe" (error=80)   
+> 0030:err:setupapi:create_dest_file failed to create L"C:\\windows\\system32\\iexplore.exe" (error=80)   
+> 0030:err:setupapi:create_dest_file failed to create L"C:\\windows\\system32\\notepad.exe" (error=80)   
 > ...
 
 That’s obviously a permissions issue; easy enough to fix by calling `wine` with `sudo`.  Sure enough, OpenPlanet installed with no errors.
@@ -238,6 +238,6 @@ It’s disheartening sometimes, working on a project where you’ve sketched out
 
 Those are all probably insoluble problems. We can’t make open source projects support all ways in which they can be used.  Python libraries will always have four different ways of being installed, each version of Linux will be insidiously different from the next.  Those are things that will always be that way.  What we **can** do is talk about the difficulties of setup, chronicling the fixes in ways that hopefully don’t just disappear off the face of the internet when a single Reddit account is deleted.  We can ensure that when someone goes to start writing `FirstCoolProject.py` and, a month later, is deep into writing `ThisCantBeRight.docx`, that brave explorer can see that he's not alone: the vast majority of projects start with banging one's head into a wall of errors and setup issues. 
 
-All these problems are things one can get good at solving.  We’ve gotten good at solving them, even when its a frustrating nightmare.  Learning when to pivot vs. when to dig down is always a challenge, but the more times you start a project and have to do something wonky, the more adept you become at making it work, even if its not perfect.  Setting up projects can be extremely daunting, but it must be done in order to actually get to the “good” parts.  You just need to do the bare minimum to get it working for you, you can solve for others later.  Make sure you take good notes, because you will either be referencing them all the time, or wishing all the time that you had notes to reference.
+All these problems are things one can get good at solving.  We’ve gotten good at solving them, even when its a frustrating nightmare.  Learning when to pivot vs. when to dig down is always a challenge, but the more times you start a project and have to do something wonky, the more adept you become at making it work, even if it's not perfect.  Setting up projects can be extremely daunting, but it must be done in order to actually get to the “good” parts.  You just need to do the bare minimum to get it working for you; you can solve for others later.  Make sure you take good notes, because you will either be referencing them all the time, or wishing all the time that you had notes to reference.
 
 Perhaps the best lesson is this: you just need it to work.  On your machine.  For now.  It doesn’t need to be perfect, just good enough to let you do what you actually want to do. 

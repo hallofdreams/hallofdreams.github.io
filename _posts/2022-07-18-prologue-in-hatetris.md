@@ -182,8 +182,8 @@ And different problems come when I reject them.
 You’ve never followed through with your creations,  
 While I’ve finished a bunch, but never kept them.  
 
-Six or seven groups of people  
-I’ve DM’d for, map and meeple;  
+Six or seven bold explorers  
+I’ve DM’d, shown joys and horrors;  
 Six or seven threads on fora,  
 I have entertained with lore.  Ah!  
 All the time and thought invested,  
