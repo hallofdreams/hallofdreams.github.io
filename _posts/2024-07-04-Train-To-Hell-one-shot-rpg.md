@@ -424,7 +424,6 @@ There’s a final optional list of Traitor Agendas, recommended if you’ve play
 
 <li>Sacrifice Souls to the Dark One.
 
-<p>
 If you can perform the right ritual in the Vault, then He That Crawls will bless you with unearthly power.  You need the others to get there, but once you do, all bets are off. 
 </li>
 </ul>
@@ -442,7 +441,6 @@ If you can perform the right ritual in the Vault, then He That Crawls will bless
 
 <li>Help the suffering, however you can. 
 
-</p>
 Your soul is not in peril, so getting to the Vault is probably less of a priority for you, though the Desperados might count as “the suffering”? 
 </li>
 </ul>
