@@ -401,66 +401,54 @@ There’s a final optional list of Traitor Agendas, recommended if you’ve play
 
 <table>
   <tr>
-   <td>1
-   </td>
-   <td><strong>Deal With the Devil: </strong>You have made a deal with Satan: your soul isn’t even <em>on</em> this train.  You’ve been in Hell for what feels like an eternity - though it hasn’t been one, yet.  Your soul will be freed if, and only if, you cause the party to fail at the last possible second.  The Prince of Lies wants to see the hope in their eyes before it’s snatched away…
-   </td>
+    <td>1</td>
+    <td>
+      <strong>Deal With the Devil: </strong>You have made a deal with Satan: your soul isn’t even <em>on</em> this train. You’ve been in Hell for what feels like an eternity - though it hasn’t been one, yet. Your soul will be freed if, and only if, you cause the party to fail at the last possible second. The Prince of Lies wants to see the hope in their eyes before it’s snatched away…
+    </td>
   </tr>
   <tr>
-   <td>2
-   </td>
-   <td><strong>Unreasonable Vengeance: </strong>You’re not here for your soul.  That was forfeit the moment you set foot on the train.  You’re here for one thing and one thing only: to kill the Conductor, and end the <em>Styxliner</em>, once and for all. To do that, you need these Desperados to lure him out.  One surefire way is to trip the security alarm on the Vault, which is connected to the Conductors Carriage.  
-   </td>
+    <td>2</td>
+    <td>
+      <strong>Unreasonable Vengeance: </strong>You’re not here for your soul. That was forfeit the moment you set foot on the train. You’re here for one thing and one thing only: to kill the Conductor, and end the <em>Styxliner</em>, once and for all. To do that, you need these Desperados to lure him out. One surefire way is to trip the security alarm on the Vault, which is connected to the Conductor's Carriage.
+    </td>
   </tr>
   <tr>
-   <td>3
-   </td>
-   <td><strong>Cultist of the Dark Gods: </strong>You worship something strange, something ancient and beyond the ken of mortal minds.  It demands of you three precepts:
-<ul>
-
-<li>Never lie.
-
-<li>Consume objects of power. 
-
-<li>Sacrifice Souls to the Dark One.
-
-If you can perform the right ritual in the Vault, then He That Crawls will bless you with unearthly power.  You need the others to get there, but once you do, all bets are off. 
-</li>
-</ul>
-   </td>
+    <td>3</td>
+    <td>
+      <strong>Cultist of the Dark Gods: </strong>You worship something strange, something ancient and beyond the ken of mortal minds. It demands of you three precepts:
+      <ul>
+        <li>Never lie.</li>
+        <li>Consume objects of power.</li>
+        <li>Sacrifice Souls to the Dark One.</li>
+      </ul>
+      If you can perform the right ritual in the Vault, then He That Crawls will bless you with unearthly power. You need the others to get there, but once you do, all bets are off.
+    </td>
   </tr>
   <tr>
-   <td>4
-   </td>
-   <td><strong>Angel of God: </strong>You are here, sent by God himself to free the Archangel Gabriel, who is trapped somewhere on this train, disguised as a devil.  Question all the devils you find, and unless you’re completely sure none of them are Gabriel in disguise, ensure they are not harmed.  As an Angel you: 
-<ul>
-
-<li>May not reveal your identity (If questioned, claim an innocuous Agenda like Curious).
-
-<li>May not engage in violence against a human.
-
-<li>Help the suffering, however you can. 
-
-Your soul is not in peril, so getting to the Vault is probably less of a priority for you, though the Desperados might count as “the suffering”? 
-</li>
-</ul>
-   </td>
+    <td>4</td>
+    <td>
+      <strong>Angel of God: </strong>You are here, sent by God himself to free the Archangel Gabriel, who is trapped somewhere on this train, disguised as a devil. Question all the devils you find, and unless you’re completely sure none of them are Gabriel in disguise, ensure they are not harmed. As an Angel you:
+      <ul>
+        <li>May not reveal your identity (If questioned, claim an innocuous Agenda like Curious).</li>
+        <li>May not engage in violence against a human.</li>
+        <li>Help the suffering, however you can.</li>
+      </ul>
+      Your soul is not in peril, so getting to the Vault is probably less of a priority for you, though the Desperados might count as “the suffering”?
+    </td>
   </tr>
   <tr>
-   <td>5
-   </td>
-   <td><strong>Bringer of Fire: </strong>A reasonable person might seek vengeance against a specific demon or person, and might rationally focus goals and balance priorities.  Not you.  You are here to burn it all down.  You can’t do that if you die, so stay alive, and try to keep the help alive as best you can, but destroy this train, carriage by carriage. No retreat, only a path of ruin to the Vault, and then on to the Engine itself. 
-   </td>
+    <td>5</td>
+    <td>
+      <strong>Bringer of Fire: </strong>A reasonable person might seek vengeance against a specific demon or person, and might rationally focus goals and balance priorities. Not you. You are here to burn it all down. You can’t do that if you die, so stay alive, and try to keep the help alive as best you can, but destroy this train, carriage by carriage. No retreat, only a path of ruin to the Vault, and then on to the Engine itself.
+    </td>
   </tr>
   <tr>
-   <td>6
-   </td>
-   <td><strong>Thrillseeker: </strong>You do not have a normal response to danger.  You always want to up the stakes, for your own thrills.  If a situation is dangerous, find a way to make it more so.  Provoke that demon.  Set off the trap.  See why the priest is so scared of the black box. Make sure you survive, but if others get hurt, who cares? 
-   </td>
+    <td>6</td>
+    <td>
+      <strong>Thrillseeker: </strong>You do not have a normal response to danger. You always want to up the stakes, for your own thrills. If a situation is dangerous, find a way to make it more so. Provoke that demon. Set off the trap. See why the priest is so scared of the black box. Make sure you survive, but if others get hurt, who cares?
+    </td>
   </tr>
 </table>
-
-test
 
 ## Running the Game
 
