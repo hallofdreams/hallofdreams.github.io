@@ -1071,13 +1071,6 @@ Humans really don’t need last names, and the players will more likely remember
   </tr>
 </table>
 
-
-
-### Nicknames
-
-To make someone more memorable than “Daniel”
-
-
 ### What is this junk?
 
 Sometimes you need a little inspiration, here’s some weird stuff with no special utility but that the Desperados can try to use anyway. 
