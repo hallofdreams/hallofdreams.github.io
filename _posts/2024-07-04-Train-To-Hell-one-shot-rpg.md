@@ -15,7 +15,7 @@ tags: [roleplaying, rpg, game, felipe]     # TAG names should always be lowercas
 
 ### The Game
 
-Train To Hell is a one-shot RPG designed to be played in one session of 2-4 hours by a group of 4-6 people, with one of them taking the role of Game Master (or narrator) and the rest of the players taking on the roles of Desperados, robbing a train.  Not just any train, but the** _Styxliner_**:** **Satan's personal soul-freight, bound straight to the lowest levels of Hell.  On that train are the Desperados’ souls, locked up in the Vault Carriage.  They have one chance, and one chance only, to get their souls back. 
+Train To Hell is a one-shot RPG designed to be played in one session of 2-4 hours by a group of 4-6 people, with one of them taking the role of Game Master (or narrator) and the rest of the players taking on the roles of Desperados, robbing a train.  Not just any train, but the **_Styxliner_**: Satan's personal soul-freight, bound straight to the lowest levels of Hell.  On that train are the Desperados’ souls, locked up in the Vault Carriage.  They have one chance, and one chance only, to get their souls back. 
 
 
 ### Resources. 
