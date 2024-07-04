@@ -442,7 +442,7 @@ If you can perform the right ritual in the Vault, then He That Crawls will bless
 
 <li>Help the suffering, however you can. 
 
-<p>
+</p>
 Your soul is not in peril, so getting to the Vault is probably less of a priority for you, though the Desperados might count as “the suffering”? 
 </li>
 </ul>
@@ -462,7 +462,7 @@ Your soul is not in peril, so getting to the Vault is probably less of a priorit
   </tr>
 </table>
 
-
+test
 
 ## Running the Game
 
