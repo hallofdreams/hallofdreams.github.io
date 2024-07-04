@@ -259,8 +259,8 @@ Capital Sins are an optional system, not one you have to use. The GM ultimately 
 
 Agendas are an optional system, acting as a secondary objective for the Desperados . These are meant to create competing goals and sow a little bit of discord. Ideally they are handed out in secret. If the GM wishes, it can be fun to assign the goals to the players who are most likely to enjoy and indulge in the chaos, but handing them out at random works. As a reminder, if the players don’t get to their souls and free them, completing an Agenda is meaningless. There are three categories of Agenda, from Innocuous to Disruptive, if you want to randomize, roll 1d3 and then 1d6, though having more than one or maybe two disruptive Agendas can lead to more chaos than you might desire. 
 
-There is no mechanical incentive to complete an Agenda.  It is purely a character motivation. If the GM feels like a mechanical motivation is needed, allow a player to restore one Humanity or carry one forward into the next scene on achieving the Agenda. Remember, it only counts if it's somehow to the detriment of themselves or their team.  \
- \
+There is no mechanical incentive to complete an Agenda.  It is purely a character motivation. If the GM feels like a mechanical motivation is needed, allow a player to restore one Humanity or carry one forward into the next scene on achieving the Agenda. Remember, it only counts if it's somehow to the detriment of themselves or their team.  
+ 
 There’s a final optional list of Traitor Agendas, recommended if you’ve played a couple times and want to have one or more of the characters be adversarial in nature.  Use at your own peril, as Traitor Agendas are generally pretty harmful to the party and may impart a slightly different tone on the game. 
 
 
@@ -396,7 +396,7 @@ There’s a final optional list of Traitor Agendas, recommended if you’ve play
 
 
 
-### 							Traitorous 
+### Traitorous 
 
 
 <table>
@@ -457,7 +457,7 @@ Your soul is not in peril, so getting to the Vault is probably less of a priorit
   <tr>
    <td>6
    </td>
-   <td><strong>Thrillseeker: </strong>You do not have a normal response to danger.  You always want to up the stakes, for your own thrills.  If a situation is dangerous, find a way to make it more so.  Provoke that demon.  Set off the trap.  See why the priest is so scared of the black box. Make sure <em>you</em> survive, but if others get hurt, who cares? 
+   <td><strong>Thrillseeker: </strong>You do not have a normal response to danger.  You always want to up the stakes, for your own thrills.  If a situation is dangerous, find a way to make it more so.  Provoke that demon.  Set off the trap.  See why the priest is so scared of the black box. Make sure you survive, but if others get hurt, who cares? 
    </td>
   </tr>
 </table>
