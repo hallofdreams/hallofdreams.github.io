@@ -67,9 +67,7 @@ Powers that are [Passive] apply whenever the conditions are met.  [Active] power
 ### The Gunslinger
 
 Grit: 3 
-
 Soul : 2
-
 Brains: 1
 
 The Gunslinger is fast as a viper and much more deadly.  He got his reputation killing men, and for that, his soul is forfeit.  But he’s got one last bullet in his gun, one last chance to save his soul.  He’s not much about _thinkin’_ but he’s got that sixth sense you develop when you’ve spilled so much blood that you can smell when someone means you harm. 
@@ -80,8 +78,8 @@ The Gunslinger is fast as a viper and much more deadly.  He got his reputation k
 
 * **The Bandit** - The bandit killed and robbed, because he had a gun, and his victims did not.  Because his draw was faster, and more deadly.  Because he could deal in death, and they could not. Justice, fairness, all those were alien concepts to him.  There were only the quick and the dead. The quick feasted on the dead.  He wore a mask, so no-one could identify him.  That mask, the symbol of his slaughter, still accompanies him now, on this last job. 
     * **The Mask** - When you activate the mask, for the rest of the scene conceal your identity in whichever way makes the most sense.  It could be invisibility, or a demon thinking you’re a higher tier demon, or something else entirely.  The mask hides your identity and replaces it with something fearsome or hidden.  Once the scene ends, the mask becomes just a piece of cloth.
-* **The Deadeye **- The Deadeye was known for one thing, and one thing only: killing men in a single shot.  Being the quickest gun around.  A gun that spat death before his rivals could even reach for their weapons.  Accuracy and an unrivaled lethality.  The trail of bodies behind him attested to his fearsome prowess, but those bodies, carelessly stacked demand a blood price.  His soul.  Gun in hand, the Deadeye has one last shot… and he never misses. 
-    * **The Gun **- When you activate the gun, point it at someone and fire.  This is your last shot, and you never miss.  The target dies.  No protection, no questions asked.  With that final shot, your last bullet is spent, and The Gun is just a worthless toy. 
+* **The Deadeye** - The Deadeye was known for one thing, and one thing only: killing men in a single shot.  Being the quickest gun around.  A gun that spat death before his rivals could even reach for their weapons.  Accuracy and an unrivaled lethality.  The trail of bodies behind him attested to his fearsome prowess, but those bodies, carelessly stacked demand a blood price.  His soul.  Gun in hand, the Deadeye has one last shot… and he never misses. 
+    * **The Gun** - When you activate the gun, point it at someone and fire.  This is your last shot, and you never miss.  The target dies.  No protection, no questions asked.  With that final shot, your last bullet is spent, and The Gun is just a worthless toy. 
 
 **Powers**
 
@@ -100,9 +98,7 @@ The Gunslinger is fast as a viper and much more deadly.  He got his reputation k
 ### The Holy Man
 
 Grit: 1 
-
 Soul : 3
-
 Brains: 2
 
 The Holy Man is a spiritual leader.  A counselor, a protector, a sword against the devil… and a sinner.  Sins made worse by his pledges.  He knows the paths of angels and understands how to speak with devils and men;  he has book learning, but has never had the rough life that makes one strong of body. 
@@ -111,26 +107,24 @@ The Holy Man is a spiritual leader.  A counselor, a protector, a sword against t
 
 
 
-* **The Priest - **The Priest lost his soul on behalf of one of his parishioners, he made a great sacrifice to protect others, giving up the single most precious thing he could.  Now he’s a man of God on the train to Hell.  And what better place for someone in his line of work?
+* **The Priest -** The Priest lost his soul on behalf of one of his parishioners, he made a great sacrifice to protect others, giving up the single most precious thing he could.  Now he’s a man of God on the train to Hell.  And what better place for someone in his line of work?
     * **Holy Talisman**.- When you raise the holy talisman to protect others from evil, for the rest of the scene, the evil may do them no harm.  This does not protect you. When the scene ends, the power is spent, the talisman vanishes, gone, to another soul in need.  
 * **The Shaman**- The Shaman is not a man of God, but a man of Gods.  A priest of an ancient religion ignored by others, neglected by outsiders and even those who should be its adherents, ancient traditions long forgotten by most men and most cultures.  He attempted a powerful ritual, and whatever it was he wanted, he got it, but the price he paid was his soul. 
-    * **A Remnant - **An object of power, a fragment of a dead God, a shackle that once held a monster… whatever it is, exactly, it is an object of powerful binding.  When you use it to bind a powerful being, it is bound.  What exactly that means and the terms of the binding are between you and the GM.  Once the binding is complete, the Remnant shatters.  
+    * **A Remnant -** An object of power, a fragment of a dead God, a shackle that once held a monster… whatever it is, exactly, it is an object of powerful binding.  When you use it to bind a powerful being, it is bound.  What exactly that means and the terms of the binding are between you and the GM.  Once the binding is complete, the Remnant shatters.  
 
 **Powers**
 
 
 
 * **Beacon of Light** [Passive] - When you engage against demons, or try to protect the weak, you may carry one roll forward, but the demons will mark you as a Holy Man and know you are their enemy. 
-* **Divination **[Active] - Once per scene, roll with Soul.  Ask two yes or no questions.  On success, the GM will answer them truthfully, on failure, he will tell one lie and one truth.  On critical success, one of your allies may carry one forward so long as their action relates to a question you asked. 
+* **Divination** [Active] - Once per scene, roll with Soul.  Ask two yes or no questions.  On success, the GM will answer them truthfully, on failure, he will tell one lie and one truth.  On critical success, one of your allies may carry one forward so long as their action relates to a question you asked. 
 * **Sacred Knowledge** [One Shot] - You have holy, divinely granted knowledge about the nature of the Train and Devils within it.  You may define a rule the Train must follow, so long as it does not betray the goals of the Train.  E.g. you could say “all Devils on the Train may not lie”, but you could not say “The Train will help us reach the Vault”.  Negotiate it with the GM.
 
 
 ### `The Lawman
 
 Grit: 2
-
 Soul : 1
-
 Brains: 3
 
 The Lawman was a keeper of the law: a sheriff, or judge, a person who had the power of justice by his side… but can anyone rightfully take the lives of others?  Imprison them?  Strip them of property and freedom and not incur the taint of sin?  The law is that those who have sinned shall suffer, and the Lawman has sinned.
@@ -139,10 +133,10 @@ The Lawman was a keeper of the law: a sheriff, or judge, a person who had the po
 
 
 
-* **Order- **Maybe he believed in what he was doing. Maybe he didn’t. The fact is, order Is harsh, order is unfair, and by definition, the order imposed by men must be at the expense of others. By being privy to this, by being a leader of those who would abuse their power, or who would kill and imprison to maintain an order not backed by justice, the Lawman unwittingly lost his soul. Now, he must break the Order of God in order to save himself. 
-    * **Badge of Office - **It once represented the Order that The Lawman was meant to uphold, and it still holds a sliver of that power. When you use the Badge to Command others to obey, you can compel them to do as you say, and by your authority they will.  Once the command is over, the power is spent, and those you commanded may be back to remind you of _your_ place in the order of things. 
-* **Corruption - **Those that have power, may come to abuse it. Which is the pit the Lawman fell into. For bribes he turned his eyes away from murder and theft. Out of fear he imprisoned good men and let evil ones walk free. He did not protect the weak and the needy, he punished them for his own sake. For that his soul is forfeit. But the Sinner knows the ways of the Devil and perhaps he might still find a way out…
-    * **Keys of Injustice - **These keys once bound good men and freed bad ones. They still hold the power to open doors best left closed. When you use the keys, you may open any sealed object, be it a door, or vault or chest, a lockbox or a locket. When you do, the keys jingle once, and turn to rust. 
+* **Order-** Maybe he believed in what he was doing. Maybe he didn’t. The fact is, order Is harsh, order is unfair, and by definition, the order imposed by men must be at the expense of others. By being privy to this, by being a leader of those who would abuse their power, or who would kill and imprison to maintain an order not backed by justice, the Lawman unwittingly lost his soul. Now, he must break the Order of God in order to save himself. 
+    * **Badge of Office -** It once represented the Order that The Lawman was meant to uphold, and it still holds a sliver of that power. When you use the Badge to Command others to obey, you can compel them to do as you say, and by your authority they will.  Once the command is over, the power is spent, and those you commanded may be back to remind you of _your_ place in the order of things. 
+* **Corruption -** Those that have power, may come to abuse it. Which is the pit the Lawman fell into. For bribes he turned his eyes away from murder and theft. Out of fear he imprisoned good men and let evil ones walk free. He did not protect the weak and the needy, he punished them for his own sake. For that his soul is forfeit. But the Sinner knows the ways of the Devil and perhaps he might still find a way out…
+    * **Keys of Injustice -** These keys once bound good men and freed bad ones. They still hold the power to open doors best left closed. When you use the keys, you may open any sealed object, be it a door, or vault or chest, a lockbox or a locket. When you do, the keys jingle once, and turn to rust. 
 
 **Powers**
 
@@ -154,15 +148,13 @@ The Lawman was a keeper of the law: a sheriff, or judge, a person who had the po
     * You hinder whatever the strongest threat in the carriage is, the first Desperado to act against it carries one roll forward.
     * You ascertain a glimpse of what must be done to access the next carriage, the GM gives you a vague hint that is _technically_ correct. 
     * Your transgression remains unnoticed. 
-* **The Guilty Shall Not Go Unpunished **[One Shot] - Declare the heinous crime an NPC has committed.  Everyone on the train now knows this crime has been committed, and who the perpetrator is...whether or not the crime happened at all.  While not everyone may be in a position to act against him right now, that NPC will suddenly find his allies thin on the ground, and if the tables are turned, may even find former allies turned into enemies. 
+* **The Guilty Shall Not Go Unpunished** [One Shot] - Declare the heinous crime an NPC has committed.  Everyone on the train now knows this crime has been committed, and who the perpetrator is...whether or not the crime happened at all.  While not everyone may be in a position to act against him right now, that NPC will suddenly find his allies thin on the ground, and if the tables are turned, may even find former allies turned into enemies. 
 
 
 ### The Vagabond 
 
 Grit: 2
-
 Soul : 3
-
 Brains: 1
 
 The Vagabond has no home, no people, no place.  He’s a wanderer, surviving because he can feel the flow of the world and the pulse of the universe, has a strong back and strong legs to carry him where he needs to go, with hunger and fear his constant companions.  All to preserve his freedom from the laws and expectations of society.  Now he must hop one final train, to reclaim the only thing that ever mattered. 
@@ -171,10 +163,10 @@ The Vagabond has no home, no people, no place.  He’s a wanderer, surviving bec
 
 
 
-* **The Drifter - **He never had a place to call home, and the road is a harsh mistress.  The drifter went from town to town, avoiding being drafted into chain gangs, stealing what he needed, and doing worse when the circumstances called for it.  Until necessity forced his hand, and the last thing he lost was his Soul. 
-    * **The Knapsack **- A drifter is never without something for an emergency.  One time only, you can reach into your knapsack and pull out exactly what you need.  When you use this item to solve the current problem it works flawlessly, and you can carry one forward any time you use it for the rest of the scene.  The item breaks at the end of the scene, it was always a second-hand cast-off version of the original and it's a miracle it worked at all.  The Knapsack is gone like it never existed. 
-* **The Lost - **Lost his memory, lost his way.  The Lost doesn’t even know why his soul is on the train to hell… but he knows he’s going to get it back. 
-    * **Mystery Talisman - **It could do anything, be anything.  When you hold it, you feel like you’re close to a breakthrough.  Like you might be able to remember something. When in crisis, you may call upon its powers, and bring a Desperado back from the brink of death. When a player is about to lose his last Health, Soul or Humanity (resource), you can expend the Talisman. The player instead keeps that resource at 1.  You may use this on yourself.  Regardless, the talisman grows brittle and shatters. 
+* **The Drifter -** He never had a place to call home, and the road is a harsh mistress.  The drifter went from town to town, avoiding being drafted into chain gangs, stealing what he needed, and doing worse when the circumstances called for it.  Until necessity forced his hand, and the last thing he lost was his Soul. 
+    * **The Knapsack** - A drifter is never without something for an emergency.  One time only, you can reach into your knapsack and pull out exactly what you need.  When you use this item to solve the current problem it works flawlessly, and you can carry one forward any time you use it for the rest of the scene.  The item breaks at the end of the scene, it was always a second-hand cast-off version of the original and it's a miracle it worked at all.  The Knapsack is gone like it never existed. 
+* **The Lost -** Lost his memory, lost his way.  The Lost doesn’t even know why his soul is on the train to hell… but he knows he’s going to get it back. 
+    * **Mystery Talisman -** It could do anything, be anything.  When you hold it, you feel like you’re close to a breakthrough.  Like you might be able to remember something. When in crisis, you may call upon its powers, and bring a Desperado back from the brink of death. When a player is about to lose his last Health, Soul or Humanity (resource), you can expend the Talisman. The player instead keeps that resource at 1.  You may use this on yourself.  Regardless, the talisman grows brittle and shatters. 
 
 **Powers**
 
@@ -192,9 +184,7 @@ The Vagabond has no home, no people, no place.  He’s a wanderer, surviving bec
 ### The Gambler
 
 Grit: 1
-
 Soul : 2
-
 Brains: 3
 
 You've got to know when to hold 'em / Know when to fold 'em / Know when to walk away / And know when to run / You never count your money/ When you're sittin' at the table / There'll be time enough for countin' / When the dealin's done (The Gambler, Kenny Rogers)
@@ -203,25 +193,24 @@ You've got to know when to hold 'em / Know when to fold 'em / Know when to walk 
 
 
 
-* **The Player: **There is no greater thrill than to roll the dice with fate, to put it all on the line and win. The player made his living on games on fate, until he played a too-dangerous game with the Devil himself, and no one beats the Prince of Lies.  Now he must risk it all on one last turn of pitch-and-toss and meet with Triumph - or Disaster.
-    * **The Lucky Dice **- Only the Gambler can make the bizarrely unlikely happen.  When the GM describes something as one in a million chance, or vanishingly unlikely, or it's something that should not be possible to get without incredible luck (like guessing a vault combination on the first try, or exactly winning a roulette roll, or figuring out a devils true name without any hints), you may declare that the Gambler uses his lucky dice, and simply makes the one in a million shot.  The dice then lose their power and turn to ash in the gambler's hands. ** **
-* **The Conman: **Luck is for losers.  The Conman knows that you make your own luck, at the expense of others.  Only fools and knaves allow dice to determine their fortune. The Conman has spent his life fleecing others, until he paid the price for his deception.  Now the con needs to pull the greatest scam of his life if he’s to recover his soul… 
-    * **The Cup and Shell Game - **The Conman has made a ‘living’ taking from others by sleight of hand and trickery.  When an NPC has something you want, you may declare that actually, theirs is a fake, and you have stolen the original. It was beneath the cup all along. If the NPC thinks to look, the item has vanished.  This is not limited to the physical: you could even steal a fact or a concept.  Whatever it is you’ve stolen, the cup and shell are now gone. 
+* **The Player:** There is no greater thrill than to roll the dice with fate, to put it all on the line and win. The player made his living on games on fate, until he played a too-dangerous game with the Devil himself, and no one beats the Prince of Lies.  Now he must risk it all on one last turn of pitch-and-toss and meet with Triumph - or Disaster.
+    * **The Lucky Dice** - Only the Gambler can make the bizarrely unlikely happen.  When the GM describes something as one in a million chance, or vanishingly unlikely, or it's something that should not be possible to get without incredible luck (like guessing a vault combination on the first try, or exactly winning a roulette roll, or figuring out a devils true name without any hints), you may declare that the Gambler uses his lucky dice, and simply makes the one in a million shot.  The dice then lose their power and turn to ash in the gambler's hands. ** **
+* **The Conman:** Luck is for losers.  The Conman knows that you make your own luck, at the expense of others.  Only fools and knaves allow dice to determine their fortune. The Conman has spent his life fleecing others, until he paid the price for his deception.  Now the con needs to pull the greatest scam of his life if he’s to recover his soul… 
+    * **The Cup and Shell Game -** The Conman has made a ‘living’ taking from others by sleight of hand and trickery.  When an NPC has something you want, you may declare that actually, theirs is a fake, and you have stolen the original. It was beneath the cup all along. If the NPC thinks to look, the item has vanished.  This is not limited to the physical: you could even steal a fact or a concept.  Whatever it is you’ve stolen, the cup and shell are now gone. 
 
 **Powers**
 
 
 
-* **Flim-flam **[Passive] - When you speak with conviction and absolutely no backing of fact and logic, carry one roll forward, and those who listen are compelled to believe your words. When they realize you are lying, expect consequences. 
-* **Gamble **[Active] - Once per scene, instead of rolling an ability check, you may choose  to GAMBLE. Roll 1d6, on a 4+ you succeed critically.  Otherwise you fail horrifically, in some way that is detrimental to everyone.  Add one to this roll if what you’re doing relies on luck or chance in some way.  
+* **Flim-flam** [Passive] - When you speak with conviction and absolutely no backing of fact and logic, carry one roll forward, and those who listen are compelled to believe your words. When they realize you are lying, expect consequences. 
+* **Gamble** [Active] - Once per scene, instead of rolling an ability check, you may choose  to GAMBLE. Roll 1d6, on a 4+ you succeed critically.  Otherwise you fail horrifically, in some way that is detrimental to everyone.  Add one to this roll if what you’re doing relies on luck or chance in some way.  
 * **The Ultimate Bet** [One Shot] - When another player fails a roll, you may turn that failure into a critical success, and they carry one forward for the rest of the scene. 
 
 
 ### The Prospector
 
-Grit: 3  \
+Grit: 3  
 Brain: 2
-
 Soul: 1 
 
 The mountains are full of gold, and fools who seek the gold.  It takes a man with determination and grit to wander into those mountains, far from the hand of God to find the gold hidden deep in the earth, guarded by mudslides, bandits and the cold bite of winter.  Why, in a place like that, a man might even lose his soul. 
@@ -230,41 +219,40 @@ The mountains are full of gold, and fools who seek the gold.  It takes a man wit
 
 
 
-* **The Honest Prospector **- With a family to feed, sometimes one has to do things that strain one's morals, that push one's boundaries.  In these hills, there is no law but the law men make.  A man only answers to himself and God, and God has found him wanting.  He must now chase something more precious than gold… his very soul. 
+* **The Honest Prospector**- With a family to feed, sometimes one has to do things that strain one's morals, that push one's boundaries.  In these hills, there is no law but the law men make.  A man only answers to himself and God, and God has found him wanting.  He must now chase something more precious than gold… his very soul. 
     * **TNT** - Just a good ol bundle of American made dynamite: the furious fire of technology wrapped up in a convenient package.  In any scene you may choose to BLOW IT UP.  Whatever happens, destruction and mayhem are sure to follow.  The GM will narrate, but it will probably be loud, fiery and lethal.
-* **Goldmad - **The gold in these hills has driven many a man mad with the promise of wealth, glittering beneath the earth.  Driven by this furious greed, the Goldmad Prospector divested himself of any humanity, doing what needed to be done to secure the bounty of the mountain.  But for that kind of wealth, a price must always be paid.  Recovering from his madness, he found that the price he’d paid had been too high. 
+* **Goldmad -** The gold in these hills has driven many a man mad with the promise of wealth, glittering beneath the earth.  Driven by this furious greed, the Goldmad Prospector divested himself of any humanity, doing what needed to be done to secure the bounty of the mountain.  But for that kind of wealth, a price must always be paid.  Recovering from his madness, he found that the price he’d paid had been too high. 
     * **Gold Nugget** - When you choose to trade the gold nugget, whoever you offer it to will think it is the most valuable and precious thing in the world, and will be willing to part with anything to get it.  Once it is traded, this nugget loses its luster, and the victim of your trade may wish to renegotiate the bargain. 
 
 **Powers**
 
 
 
-* **Rugged Like The Mountains **[Passive] - When you roll to stand against something much stronger than yourself, you carry one forward. You cannot be moved if you do not desire it.  Guileful enemies will know this, and try to shake your desire. 
+* **Rugged Like The Mountains** [Passive] - When you roll to stand against something much stronger than yourself, you carry one forward. You cannot be moved if you do not desire it.  Guileful enemies will know this, and try to shake your desire. 
     * _...qui posuit animam meam ad vitam, et non dedit commoveri pedes meos..._
-* **There’s gold in them there hills **[Active] - Once per scene roll with Brain, carrying one forward if you obtained something of value in the last scene. On success, you may ask two, on failure one, on critical success, you may carry one forward to obtain something valuable and ask two.  
+* **There’s gold in them there hills** [Active] - Once per scene roll with Brain, carrying one forward if you obtained something of value in the last scene. On success, you may ask two, on failure one, on critical success, you may carry one forward to obtain something valuable and ask two.  
     * What is the most valuable thing here?
     * What is the most dangerous thing here? 
     * What is the safest path through here? 
     * Who stands to profit? 
     * Where is the hidden treasure in this room? 
-* **Strike the Earth **[One Shot] - With one powerful blow, you bring a pickaxe swinging down. There is nothing on this train that can resist the power of your blow.  No door you won't shatter, no vault that won’t crumble, no demon that won’t break or flee.  You could even shatter a law or precept, such is the strength of your power. 
+* **Strike the Earth** [One Shot] - With one powerful blow, you bring a pickaxe swinging down. There is nothing on this train that can resist the power of your blow.  No door you won't shatter, no vault that won’t crumble, no demon that won’t break or flee.  You could even shatter a law or precept, such is the strength of your power. 
 
 
 ## Capital Sins
 
 Capital Sins are an optional system, not one you have to use. The GM ultimately decides. Each player picks or rolls a Capital Sin. Multiple Desperados may share a single Capital Sin. When a Desperado acts in a way that embodies their chosen Capital Sin, to their detriment, they may _recover_ one point of the Sin resource, or carry one forward on their next roll, whatever they prefer. Each of these may only happen once per game, though they may keep indulging their vice if they so desire. 
 
-**Sins **
+**Sins**
 
 
-
-* **Pride **is not only the reckless confidence of the Gunslinger thinking he’s invincible, but also the scorn of the Priest, who thinks himself better than the rabble he tends to, or the brutality of the chain-ganger, who thinks he's above the other sinners he's brutalizing.
-* **Envy **is the jealousy of a settler who covets the thriving ranch of his neighbor, the bitterness of a saloon girl watching her rival dance with the wealthiest patron, or the resentment of a deputy eyeing the sheriff's star.
-* **Wrath **is the fiery temper of a cowboy seeking vengeance for a wrong, real or imagined, the rage of a wife taking up arms against her cheating husband, or the reckless destruction of land and property to “punish” wrongdoers.
-* **Sloth **is the laziness of a prospector who refuses to work his claim, the indolence of a sheriff neglecting his duties while criminals run rampant, or the apathy of a doctor who turns a blind eye to the suffering of the town's poor.
-* **Greed **is the insatiable hunger of a gold miner or banker, willing to cheat, steal, or kill to amass wealth, the shopkeeper who inflates prices to exploit desperate customers, or the land baron who drives families off their homesteads for more land.
-* **Gluttony **is the reckless indulgence of a saloon owner, who consumes his own supply, even at the cost of his business, the drunkenness of a gambler who wastes his winnings on liquor and vice, or the selfishness of a rancher hoarding supplies during a drought.
-* **Lust **is the uncontrollable desire of a drifter, leading to the seduction and betrayal of innocents in every town he passes through, the infidelity of a married man sneaking off to the brothel, or the obsessive passion of a lover willing to destroy lives to possess her beloved.
+* **Pride** is not only the reckless confidence of the Gunslinger thinking he’s invincible, but also the scorn of the Priest, who thinks himself better than the rabble he tends to, or the brutality of the chain-ganger, who thinks he's above the other sinners he's brutalizing.
+* **Envy** is the jealousy of a settler who covets the thriving ranch of his neighbor, the bitterness of a saloon girl watching her rival dance with the wealthiest patron, or the resentment of a deputy eyeing the sheriff's star.
+* **Wrath** is the fiery temper of a cowboy seeking vengeance for a wrong, real or imagined, the rage of a wife taking up arms against her cheating husband, or the reckless destruction of land and property to “punish” wrongdoers.
+* **Sloth** is the laziness of a prospector who refuses to work his claim, the indolence of a sheriff neglecting his duties while criminals run rampant, or the apathy of a doctor who turns a blind eye to the suffering of the town's poor.
+* **Greed** is the insatiable hunger of a gold miner or banker, willing to cheat, steal, or kill to amass wealth, the shopkeeper who inflates prices to exploit desperate customers, or the land baron who drives families off their homesteads for more land.
+* **Gluttony** is the reckless indulgence of a saloon owner, who consumes his own supply, even at the cost of his business, the drunkenness of a gambler who wastes his winnings on liquor and vice, or the selfishness of a rancher hoarding supplies during a drought.
+* **Lust** is the uncontrollable desire of a drifter, leading to the seduction and betrayal of innocents in every town he passes through, the infidelity of a married man sneaking off to the brothel, or the obsessive passion of a lover willing to destroy lives to possess her beloved.
 
 
 ## Agendas
@@ -519,9 +507,9 @@ Completely cribbed from Powered by the Apocalypse, I renamed Agendas to Goals be
 
 
 
-* **Keep things interesting and exciting **- This is why everyone is here, playing, right now, because they want an interesting game where fun things happen. Don’t do yourself or your players a disservice by making things too easy, but also don’t kill off the Desperados in the first Carriage. Living Desperados tend to make for a more fun game than dead ones. Though if someone dies early having them be a ghost is an interesting take.  
-* **Offer chances at redemption - **This is a game about lost souls finding redemption at the last possible moment. Fill the game with tough choices, opportunities to sacrifice, NPCs who are desperate and need the PCs, highlight that helping others comes at a cost. Nothing is free, everything is a bargain of some sort, and there are Devils waiting to make your life easier if you’ll just pay a small price… 
-* **Play to see what happens - **The game takes place on a train, but don’t rail-road the players. Let them make poor decisions, blow things up, fight the Conductor, make bad deals, make great deals, steal everything not nailed down, and generally make a mess of things. If you knew how things were going to turn out… Why play at all? Let the players surprise you, let the NPCs surprise you. Roll those dice, and have the Desperados live or die by them. 
+* **Keep things interesting and exciting**- This is why everyone is here, playing, right now, because they want an interesting game where fun things happen. Don’t do yourself or your players a disservice by making things too easy, but also don’t kill off the Desperados in the first Carriage. Living Desperados tend to make for a more fun game than dead ones. Though if someone dies early having them be a ghost is an interesting take.  
+* **Offer chances at redemption -** This is a game about lost souls finding redemption at the last possible moment. Fill the game with tough choices, opportunities to sacrifice, NPCs who are desperate and need the PCs, highlight that helping others comes at a cost. Nothing is free, everything is a bargain of some sort, and there are Devils waiting to make your life easier if you’ll just pay a small price… 
+* **Play to see what happens -** The game takes place on a train, but don’t rail-road the players. Let them make poor decisions, blow things up, fight the Conductor, make bad deals, make great deals, steal everything not nailed down, and generally make a mess of things. If you knew how things were going to turn out… Why play at all? Let the players surprise you, let the NPCs surprise you. Roll those dice, and have the Desperados live or die by them. 
 
 
 ### Principles
@@ -532,15 +520,15 @@ These are the things you should be doing in service of your goals. Consider thes
 
 * **Be the player’s #1 fan.** You _want_ them to have a romp, to succeed, you want this grab bag of bad people with haunted pasts to come together and find redemption, to see the depths they were at and the heights they can reach. 
 * **Ham it up**. Do the scary monster voices. Have the demons offer bargains. Highlight how cartoonishly evil they are, and how everyone seems fine with it. Have the recurring villain laugh maniacally as he tries to cut the tether leading to the next carriage. Have the pitiful lost soul be an orphan who’s adoptive parents got killed by bandits and who then starved to death. The players will key off your energy, so have fun with it. 
-* **Address the Desperados, not the Players - **Let the players slip into the masks of the Desperados they’re playing. Address the question to Joe “Four-fingers”, and ask what he wants to do. The more you do this, the more tangible the fantasy becomes. Add a sprinkling of character voices, and for the next however-long, the players will feel like they’re the Desperados on their way to Hell. 
+* **Address the Desperados, not the Players -** Let the players slip into the masks of the Desperados they’re playing. Address the question to Joe “Four-fingers”, and ask what he wants to do. The more you do this, the more tangible the fantasy becomes. Add a sprinkling of character voices, and for the next however-long, the players will feel like they’re the Desperados on their way to Hell. 
 * **Tempt the Sinner.** One of the driving motifs is that the Desperados are sinners, they’ve done wrong, they’ve done bad things. They might have to do other questionable things to save their souls… but they can define themselves now, they can choose to do good, they can be selfless and generous. Give them the opportunities to do that. Tempt them and see them rise to the challenge. 
-* **Everyone has an agenda. **Everyone on the train, from the most powerless lost, to the human who somehow wound up lost in the Casino Carriage, to the most powerful demon on the train, the Conductor, has something they want, something they’re fighting for, and something they’re afraid of. That should be reflected in the carriage, and it gives the Desperados the leverage they need. 
-* **Keep it weird. **This is a dreamlike train from hell, where in one room you have fountains of blood and weeping eyeless angels, in another you have a feast prepared by a tiny angry chef, and in another you have a tree that shows you your deepest fears. Highlight that surreal dream-like atmosphere any time you can. Roll the inconsistencies that will happen into that 
-* **The Train is the Enemy **- It too has an agenda, and the weirdness of the train should get more intense, more malicious the closer the Desperados are to their goal. It should tempt them. It should weird them out. It should play on their fears and insecurities, and it should make it as hard for the Desperados as it can. 
+* **Everyone has an agenda.** Everyone on the train, from the most powerless lost, to the human who somehow wound up lost in the Casino Carriage, to the most powerful demon on the train, the Conductor, has something they want, something they’re fighting for, and something they’re afraid of. That should be reflected in the carriage, and it gives the Desperados the leverage they need. 
+* **Keep it weird.** This is a dreamlike train from hell, where in one room you have fountains of blood and weeping eyeless angels, in another you have a feast prepared by a tiny angry chef, and in another you have a tree that shows you your deepest fears. Highlight that surreal dream-like atmosphere any time you can. Roll the inconsistencies that will happen into that 
+* **The Train is the Enemy**- It too has an agenda, and the weirdness of the train should get more intense, more malicious the closer the Desperados are to their goal. It should tempt them. It should weird them out. It should play on their fears and insecurities, and it should make it as hard for the Desperados as it can. 
 * **Drain their Resources, Give out Treasure -** Natively, there is only one way for players to recover resources, and it only happens on a critical success. If you use capital sins, Sin can be recovered slightly more easily, but Health, Sin and Humanity are meant to be drained, a point at the time. Offer very limited ways to recover these resources, and instead err on the side of giving out weird artifacts, cool devices, hell bound spells, large guns, and odd things they’ll need to find an use for. 
-* **Haunt the Desperados - **The Desperados have done bad things, and those things should come back to haunt them. Have the people the Gambler conned show up, haunted spirits, to relate how that was the turning point where their life went off the rails. Have the ghostly voice that’s been following the Desperados be the wrath of all the unfairly jailed convicts the Lawman incarcerated. Let the Desperados remember why they’re on this train in the first place. 
-* **Treat the train like a stolen car. **- You haven’t put a deposit down on the train, or the NPCs in it. Have them make stupid but characterful decisions that get them killed, or maimed. Have them make bad deals they think are good, have them activate the trap, blow up the wagon, destroy the priceless cask of wine, if it makes sense. Wreck it all. 
-* **Throw out anything that doesn’t work. - **It's what it says on the tin. This is your game. You know your players much better than I, some anonymous dude on the internet. Is your party all satanists who think the devil is rad as hell and improperly portrayed by the media? Have the train run by an Archangel and change all the motifs. Do your players not give a hoot about redemption, but are super keen on the Weird West? Throw out the purgatory metaphor and just focus on the weird train they’re running a heist on. There’s no wrong way to run this game, so long as you all have fun. 
+* **Haunt the Desperados -** The Desperados have done bad things, and those things should come back to haunt them. Have the people the Gambler conned show up, haunted spirits, to relate how that was the turning point where their life went off the rails. Have the ghostly voice that’s been following the Desperados be the wrath of all the unfairly jailed convicts the Lawman incarcerated. Let the Desperados remember why they’re on this train in the first place. 
+* **Treat the train like a stolen car.**- You haven’t put a deposit down on the train, or the NPCs in it. Have them make stupid but characterful decisions that get them killed, or maimed. Have them make bad deals they think are good, have them activate the trap, blow up the wagon, destroy the priceless cask of wine, if it makes sense. Wreck it all. 
+* **Throw out anything that doesn’t work. -** It's what it says on the tin. This is your game. You know your players much better than I, some anonymous dude on the internet. Is your party all satanists who think the devil is rad as hell and improperly portrayed by the media? Have the train run by an Archangel and change all the motifs. Do your players not give a hoot about redemption, but are super keen on the Weird West? Throw out the purgatory metaphor and just focus on the weird train they’re running a heist on. There’s no wrong way to run this game, so long as you all have fun. 
 
 
 ### Character Death
@@ -550,7 +538,7 @@ Ideally, try to avoid killing any Desperado before the vault, unless they are _r
 
 ### On Demon Pacts
 
-It is extremely likely the players will form a pact with a demon, out of necessity or otherwise. It is very tempting to just screw the players, and if they were too foolish, it's fine to do so, but just removing a player from the game is no fun. Try to make their life hard without killing them, and try to ensure what they get is interesting or a challenge in some way. Sure if a player trades his left hand for wealth, you _should_ just give them a massive pile of gold and ask them how they plan to transport it, but otherwise, try to expand their options. In general whatever they trade should be inconvenient but not crippling. It's better to say “Your Desperado can only talk in three word sentences now, and if he breaks this rule the last word he says becomes a loud shriek everyone in the car can hear'' than it is to say “Your Desperado can no longer talk.” make it something fun to work around. Some thoughts on things the players might trade: 
+It is extremely likely the desperados will form a pact with a demon, out of necessity or otherwise. It is very tempting to just screw the desperados, and if they were too foolish, it's fine to do so, but just removing a player from the game is no fun. Try to make their life hard without killing them, and try to ensure what they get is interesting or a challenge in some way. Sure if a desperado trades his left hand for wealth, you _should_ just give them a massive pile of gold and ask them how they plan to transport it, but otherwise, try to expand their options. In general whatever they trade should be inconvenient but not crippling. It's better to say “Your Desperado can only talk in three word sentences now, and if he breaks this rule the last word he says becomes a loud shriek everyone in the car can hear'' than it is to say “Your Desperado can no longer talk.” make it something fun to work around. Some thoughts on things the players might trade: 
 
 
 
@@ -561,7 +549,7 @@ It is extremely likely the players will form a pact with a demon, out of necessi
 * Innocents: people they’ve saved, souls they’ve rescued, demons they’ve befriended, or critters they’ve brought along especially if they’re not actually _useful_ 
 * Treasure/Artifacts/Tools: Anything they have that is useful, or that they’ve grown attached to, be it Jerry the Talking Skull or The Grimoire of Wishes.
 
-Of course they should get things _in return: _
+Of course they should get things _in return:_
 
 
 
@@ -577,17 +565,17 @@ Of course they should get things _in return: _
 
 ### The Lost, Demons, Humans and Others
 
-**Demons **are the denizens of hell, at the service of the Devil, the Conductor or whatever greater demon is in charge at the time. They have their own goals, agendas, ambitions and desires. Some of them are very human, scarily so, others are more strange, alien and incomprehensible. They always want _something_ and should be willing to betray and destroy each other for profit. The Desperados should always be able to pit them against each other, try to trick them and make deals with them. 
+**Demons** are the denizens of hell, at the service of the Devil, the Conductor or whatever greater demon is in charge at the time. They have their own goals, agendas, ambitions and desires. Some of them are very human, scarily so, others are more strange, alien and incomprehensible. They always want _something_ and should be willing to betray and destroy each other for profit. The Desperados should always be able to pit them against each other, try to trick them and make deals with them. 
 
 **The Lost** are human passengers of the train who have lost their humanity and can no longer resist the influence of the Conductor and the Train and obey its wishes unflinchingly. They’re not telepathically bound to the train or anything, and they can be tricked and deceived. They tend to defer to greater authority out of a fear of being punished, don’t possess a ton of curiosity and are generally considered by demons to be infinite disposable assets. You should treat them the same way, though let the Desperados manipulate them if they’re clever. Groups of Lost should have poor morale, and be generally easy to manipulate or cow into behaving. 
 
-**Humans **are humans. The only humans that can be on the train are those that have some amount of Sin upon them, and generally come in three varieties: prisoners, who should be pitiful, need help and who are generally liabilities and might turn against the players (though they may have hidden treasure, or knowledge), the oblivious which are humans who are aware they are _on_ a train, but refuse to acknowledge that this is a train bound to hell or that anything at all strange might be happening here. They cannot be forced to see reason, and the best way for the Desperados to ally with them is to agree that everything is normal and manipulate them from there. The third are the willing cooperators. Humans who have made pacts with Demons and are on here as a consequence, working with the demons and masquerading as potential allies, just waiting to betray the Desperados for their own ends. They can also be demons in disguise. 
+**Humans** are humans. The only humans that can be on the train are those that have some amount of Sin upon them, and generally come in three varieties: prisoners, who should be pitiful, need help and who are generally liabilities and might turn against the players (though they may have hidden treasure, or knowledge), the oblivious which are humans who are aware they are _on_ a train, but refuse to acknowledge that this is a train bound to hell or that anything at all strange might be happening here. They cannot be forced to see reason, and the best way for the Desperados to ally with them is to agree that everything is normal and manipulate them from there. The third are the willing cooperators. Humans who have made pacts with Demons and are on here as a consequence, working with the demons and masquerading as potential allies, just waiting to betray the Desperados for their own ends. They can also be demons in disguise. 
 
 **Ghosts** are the restless spirits of the dead. They are usually hyper fixated on something (scorpions. Revenge. Eating their last meal), and they have limited ability to act upon the world, but in turn cannot be acted against. Ghosts can possess things, manipulate objects, make noise and generally be a nuisance. A really powerful ghost might be able to take a physical shape in pursuit of a specific goal for a short time. In general ghosts should be a complication for the Desperados to make a scene more challenging. Ghosts often have secret knowledge that they’ll share with those who help them move on, or know the locations of valuable objects, or can grant minor pact powers. 
 
 **Angels** are weird, alien beings, automata at the service of God that do _not_ belong on this train. They are extremely powerful and bound to very specific rules. In general Angels may subtly aid the Desperados when they’re in extreme duress, if they can, and should otherwise act as ways of seriously complicating things. 
 
-**Others: **The Old Ones, Sentient Items, Animal Spirits, shapeshifters, skinwalkers, all these can show up if you think they’d be interesting. Do with these ideas what you will. 
+**Others:** The Old Ones, Sentient Items, Animal Spirits, shapeshifters, skinwalkers, all these can show up if you think they’d be interesting. Do with these ideas what you will. 
 
 
 ### The Endgame
