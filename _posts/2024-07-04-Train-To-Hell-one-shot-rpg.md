@@ -1,11 +1,11 @@
 ---
-title: Train To Hell - A one shot RPG
+title: Train To Hell - A One-Shot RPG
 author: Felipe
 date: 2024-04-06 12:00:00 -0500
 categories: [RPGs]
 tags: [roleplaying, rpg, game, felipe]     # TAG names should always be lowercase
 ---
-<div style="display:none;">The Stryxliner is a train bound to hell carrying the damned. The players play Desperados, ready to risk it all to recover their souls. A one-shot RPG to be played in 2 to 4 hours with minimal prep. </div>
+<div style="display:none;">The Stryxliner is a train bound to Hell carrying the damned.  The players play Desperados, ready to risk it all to recover their souls.  A one-shot RPG to be played in 2 to 4 hours with minimal prep. </div>
 
 
 
