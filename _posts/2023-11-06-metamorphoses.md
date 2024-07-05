@@ -10,7 +10,7 @@ tags: [essay, latin, david]     # TAG names should always be lowercase
 
 # The Radical Idea
 
-Scott Alexander, at [Astral Codex Ten](https://www.astralcodexten.substack.com) recently posted an [interesting list of crazy ideas he wishes someone would try](https://www.astralcodexten.com/p/quests-and-requests).  The fourth crazy idea in particular caught my attention: it was a crazy idea about language learning.
+Scott Alexander, at [Astral Codex Ten](https://www.astralcodexten.substack.com), recently posted an [interesting list of crazy ideas he wishes someone would try](https://www.astralcodexten.com/p/quests-and-requests).  The fourth crazy idea in particular caught my attention: it was a crazy idea about language learning.
 
 > [I]magine this - I'm going to use Japanese here because it's the only language I could even remotely try to use as an example without making a total fool of myself, and I'll thank you for not correcting the inevitable errors. The course is a novel. Could be any novel, but I imagine for cutesiness reasons you'd want to use a classic from the culture you're studying, like *The Tale of Genji* or *Death Note*.
 >
