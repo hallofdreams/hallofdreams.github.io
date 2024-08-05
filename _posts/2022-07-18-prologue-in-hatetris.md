@@ -4,6 +4,7 @@ author: David
 date: 2022-07-29 00:00:00 -0500
 categories: [Poetry]
 tags: [hatetris, poetry, david]     # TAG names should always be lowercase
+series: HATETRIS
 ---
 <div style="display:none;">Written while procrastinating on the longer HATETRIS post, and rereading Goethe's Faust.  Three years of Advent of Code have taught me to cap off every programming project with a poem, so here it is.</div>
 

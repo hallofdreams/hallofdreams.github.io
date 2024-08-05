@@ -13,7 +13,7 @@ This is a joint blog between Dave and Felipe. We have a lot of common interests,
 
 # Dave
 
-Dave is a materials science engineer, published author, part time philosopher, advent of code leaderboard member and ethical mad genius. 
+Dave is a non-materialist materials science engineer, published author, part time philosopher, and Advent of Code leaderboard part-time member.
 
 # Felipe
 
