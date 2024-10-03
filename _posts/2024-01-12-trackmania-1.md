@@ -2,7 +2,7 @@
 title: Trackmania I - The History of Machine Learning in Trackmania
 author: David & Felipe
 date: 2024-01-12 12:00:00 -0500
-categories: [Programming]
+categories: [Programming, Trackmania]
 tags: [trackmania, rust, programming, david, felipe] 	# TAG names should always be lowercase
 series: Trackmania
 ---
