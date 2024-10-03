@@ -30,7 +30,7 @@ Each player starts with three Health, three Humanity, and three Sin. If any of t
 
 ### The Stats
 
-Each Desperado has three stats assigned a score of 1,2 or 3:
+Each Desperado has three stats assigned a score of 1, 2, or 3:
 
 **Grit** represents all the physicality and athleticism of the Desperado; for the Gunslinger, this might be superhuman reaction speed, like a viper; for a Prospector, it might be more the ability to bend iron bars with his bare hands.  Roll Grit whenever something physical needs to be done. 
 
@@ -38,7 +38,7 @@ Each Desperado has three stats assigned a score of 1,2 or 3:
 
 **Brains** represents how dang smart someone is, and also represents common sense and general experience. A lawyer with a lot of book learning trying to decipher a contract would use Brains, but so would a gambler using his previous experience to figure out the right play when playing cards for his soul. 
 
-**When you need to use these stats, you roll a number of dice equal to your stat.**  If any of the dice come up** 5 or 6**, you succeed.  If you have two or more successes, you succeed in some impressive and notable way.  If you roll no successes, you probably still get what you wanted, but the GM may demand a cost, add a complication, or make you fail in some way that drives the plot forward.  Only roll if the outcome is interesting.  If the task is particularly daunting, you may be asked to subtract dice before rolling: this is called difficulty.  The most difficulty a task can impose is 2. If that would bring you to 0 dice, you must roll two and succeed on both to pass. If it would bring you to a negative number, it is simply impossible for a character of your skill, and you cannot roll.  Of course, some things will be flat out impossible, and for those, you cannot roll. 
+**When you need to use these stats, you roll a number of dice equal to your stat.**  If any of the dice come up **5 or 6**, you succeed.  If you have two or more successes, you succeed in some impressive and notable way.  If you roll no successes, you probably still get what you wanted, but the GM may demand a cost, add a complication, or make you fail in some way that drives the plot forward.  Only roll if the outcome is interesting.  If the task is particularly daunting, you may be asked to subtract dice before rolling: this is called difficulty.  The most difficulty a task can impose is 2. If that would bring you to 0 dice, you must roll two and succeed on both to pass. If it would bring you to a negative number, it is simply impossible for a character of your skill, and you cannot roll.  Of course, some things will be flat out impossible, and for those, you cannot roll. 
 
 A basic difficulty task might be shooting a demon, opening a lock, or reading a book quickly. 
 

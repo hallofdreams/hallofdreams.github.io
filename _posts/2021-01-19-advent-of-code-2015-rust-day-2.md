@@ -4,6 +4,7 @@ author: David & Felipe
 date: 2021-01-19 12:00:00 -0500
 categories: [Programming, Advent of Code]
 tags: [programming, rust, david, felipe]     # TAG names should always be lowercase
+series: Advent of Code in Rust
 ---
 <div style="display:none;">2015 Day 2: An arithmetic problem involving the dimensions of presents, wrapping paper, and bows; an easy problem made trickier by not knowing how to convert strings or how to appease borrow chekers.</div>
 

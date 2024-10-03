@@ -2,8 +2,9 @@
 title: Trackmania II - Trackmania Nightmares
 author: David & Felipe
 date: 2024-03-15 12:00:00 -0500
-categories: [Programming]
+categories: [Programming, Trackmania]
 tags: [trackmania, rust, programming, david, felipe]     # TAG names should always be lowercase
+series: Trackmania
 ---
 <div style="display:none;">Trackmania: the world's most competitive racing game.  A series of nightmares before the dream could begin: packet losses, Linux to Windows to Linux, VNC and screen-sharing, OpenPlanet and plugins...</div>
 

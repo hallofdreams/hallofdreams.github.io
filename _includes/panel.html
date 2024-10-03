@@ -10,6 +10,8 @@
 
   <div class="access">
 
+  {% comment %}
+
   {% include update-list.html %}
   
   {% if update_list.size > 0 %}
@@ -46,6 +48,8 @@
     </div>
   {% endif %}
   </div> <!-- .access -->
+
+  {% endcomment %}
 
   {% if page.layout == 'post' and site.toc and page.toc %}
   <div id="toc-wrapper" class="pl-0 pr-4 mb-5">

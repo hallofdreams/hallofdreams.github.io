@@ -17,15 +17,15 @@ series: HATETRIS
 
 [ARCHANGEL ATYPICAL](https://qntm.org/hatetris#komment2579)
 
-The sun-orb’s motions are simplistic:    
-Its course is fated through the stars.    
-And HATETRIS, as deterministic,    
-Possesses patterns; now they’re ours.    
+The motions of the sun are fated:   
+Its course predestined through the stars.    
+And studying what HATETRIS hated    
+Revealed its patterns; now they’re ours.    
 
 To make it yield to line eleven,    
 Fill up the board, and force its hand.    
-A little glimpse of [TETRIS heaven](https://www.youtube.com/watch?v=Alw5hs0chj0);    
-The game is difficult, and grand.    
+A little glimpse of [Tetris heaven](https://www.youtube.com/watch?v=Alw5hs0chj0)     
+Despite the hate the game had planned.  
 
 [ARCHANGEL KNEWJADE](https://gist.github.com/knewjade/586c9d82bd53f13afa8bcb7a65f8bd5a)
 
@@ -53,10 +53,10 @@ Before the hatred of thy game.
 
 THE THREE
 
-Though we have partly comprehended,    
-And thought of strategies by hand,    
-Thy HATETRIS, elegant and splendid;    
-Endures as difficult, and grand.    
+Thus on each side we raise the towers  
+Machine and man have co-created,  
+Yet programmed intuition cowers  
+Before the hate thy game has hated.  
 
 ALPHASTOPHELES  
 *(entering)*
@@ -106,10 +106,12 @@ Bah!  Those two?  They're script-kiddies at best,
 And have no expert knowledge.  Not impressed.    
 They won't find any loop or clear the screen    
 With any kind of human-tuned routine.    
+
 [The record stands at sixty-six today](https://qntm.org/hatetris#komment61238cbbd3612)   
 (The kind of number any devil picks)    
 And if you gave those two a year to play,    
 The record would remain at sixty-six.    
+
 But ahh - I see!  They'd try a neural net (me)!    
 Well, I will gladly tempt them, if you'll let me.    
 
@@ -181,7 +183,7 @@ FELIPE
 I’m well aware: I have the same temptations,  
 And different problems come when I reject them.  
 You’ve never followed through with your creations,  
-While I’ve finished a bunch, but never kept them.  
+While I have finished lots, but never kept them.  
 
 Six or seven bold explorers  
 I’ve DM’d, shown joys and horrors;  
@@ -330,5 +332,3 @@ Like any other drug, the first one's free.
 
 **SECOND PART**    
 ----
-
-*Next post: [Getting The World Record in HATETRIS](https://hallofdreams.org/posts/hatetris/)*

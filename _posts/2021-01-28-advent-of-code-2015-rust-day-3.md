@@ -4,6 +4,7 @@ author: David & Felipe
 date: 2021-01-28 12:00:00 -0500
 categories: [Programming, Advent of Code]
 tags: [programming, rust, david, felipe]     # TAG names should always be lowercase
+series: Advent of Code in Rust
 ---
 <div style="display:none;">2015 Day 3: Follow cardinal directions to travel through a 2D grid with either one or two agents, and count all the grid positions visited at least once.  Includes forays into structs and add-assign.</div>
 

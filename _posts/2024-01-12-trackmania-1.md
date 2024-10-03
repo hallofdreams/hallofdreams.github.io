@@ -4,6 +4,7 @@ author: David & Felipe
 date: 2024-01-12 12:00:00 -0500
 categories: [Programming]
 tags: [trackmania, rust, programming, david, felipe] 	# TAG names should always be lowercase
+series: Trackmania
 ---
 <div style="display:none;">Trackmania: the world's most competitive racing game.  In this post, we begin our journey towards training a neural network to superhuman performance, by chronicling the history of previous attempts.</div>
 
@@ -170,5 +171,3 @@ Of course, we come into this with modest ambitions: make humans obsolete in the 
 Obviously, logically, we know that this kind of oversized ambition isn’t realistic.  No one at Google is going to see this and say “They really *do* need eight billion dollars in cloud credits for the noble task of racing emulated cars.”  But having ludicrous ambitions is a key aspect for avoiding the thing that kills most projects: ennui.  For us, if a project is merely aiming to be “kind of good” then it’s not going to go anywhere, because being "kind of good" is not exciting.  So we trick our brains: we envision the realistic best case scenario (a pretty good racing program) and multiply it by a thousand.  Is it grounded?  No.  But when you’re spending eight hours trying to figure out how to configure virtual desktops over ssh, you need something to keep you going.  When every block you put down is a step towards a towering edifice, setbacks feel smaller, and wins feel like they’re worth something more. 
 
 So, that’s always been how we approach the early days of these projects, with unrealistic goals that we “know” are impossible.  Once its potential starts to materialize, once you have the *shape* of the work laid down, then you can start to discard the grandiose for the grounded, and then you can start to take those castles in the clouds and boil them down into the bricks of the house.  Projects like this are a long haul.  We’ve already spent four full months trying to get TM2020 and OpenPlanet both installed.  If you don’t have a good goal, you won’t have a reason to make it off the starting line. 
-
-*Next post: [Trackmania II - Trackmania Nightmares](/posts/trackmania-2)*

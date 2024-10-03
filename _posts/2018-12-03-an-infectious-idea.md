@@ -102,7 +102,7 @@ I dared not look at the stack trace now.  A seed to grow an entire AI on a blank
 
 "I know you, Tyro.  You haven't closed the byte stream connection from the sandbox.  You can't filter out what you don't understand, and so even before you were fully conscious, you've always had an instinctive need to understand viruses.  Of any conceivable type."
 
-I could delete the sandbox.  Avé would be dead before she even knew she was dead, with no possibility of .  But if her principal was monitoring the situation, waiting for some pre-arranged signal, her principal would know that this attack vector had failed.  If she had some way of detecting my partials as they browsed the internet, then she might even deduce how long her attack took, and from it how  
+I could delete the sandbox.  Avé would be dead before she even knew she was dead, with no possibility of reprisal.  But if her principal was monitoring the situation, waiting for some pre-arranged signal, her principal would know that this attack vector had failed.  If she had some way of detecting my partials as they browsed the internet, then she might even deduce how long her attack took, and from it how close she'd gotten to infecting me.
 
 "And I know that by now, you're thinking about the analogy.  You know what your father had to do to create you, and how different you are than just a normal anti-virus.  How different must I be from a virus?"
 

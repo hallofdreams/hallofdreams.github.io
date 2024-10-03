@@ -4,6 +4,7 @@ author: David & Felipe
 date: 2021-02-11 12:00:00 -0500
 categories: [Programming, Advent of Code]
 tags: [programming, rust, david, felipe]     # TAG names should always be lowercase
+series: Advent of Code in Rust
 ---
 <div style="display:none;">2015 Day 4: Brute-force search through strings to find those whose MD5 hashes have leading 0s.  After solving the problem using Rust's MD5 crate, we analyze MD5's algorithm to find possible speedups.</div>
 

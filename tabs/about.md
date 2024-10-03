@@ -9,12 +9,12 @@ title: About
 ---
 # What is this?
 
-This is a joint blog between Dave and Felipe. We have a lot of common interests, and things we like to write about. We thought it would be neat to have a central place for these to live, and hopefully a home for interesting discussion.
+This is a joint blog written by Dave and Felipe. We have a lot of common interests and work on a lot of shared projects. We thought it would be neat to have a central place for these to live, and hopefully a home for interesting discussion.
 
 # Dave
 
-Dave is a non-materialist materials science engineer, published author, part time philosopher, and Advent of Code leaderboard part-time member.
+Dave is a non-materialist materials science engineer, poet, published author, and Advent of Code leaderboard part-time member.
 
 # Felipe
 
-Is a software developer, site maintainer, machine learning afficionado, pessimist and general philosophical rambler. 
+Felipe is a software developer, site maintainer, machine learning afficionado, pessimist, and general philosophical rambler. 

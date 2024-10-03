@@ -20,16 +20,16 @@ layout: default
         <div>
           Posted
           {% include timeago.html date=page.date tooltip=true %}
-          by
           <span class="author">
           {% if page.author %}
-            {{ page.author }}
+            by {{ page.author }}
           {% else %}
-            {{ site.author }}
+            by {{ site.author }}
           {% endif %}
           </span>
         </div>
 
+        {% comment %}
         <!-- lastmod -->
         {% if page.lastmod %}
         <div>
@@ -37,6 +37,7 @@ layout: default
           {% include timeago.html date=page.lastmod class="lastmod" tooltip=true %}
         </div>
         {% endif %}
+        {% endcomment %}
 
         <!-- page views -->
         {% if site.google_analytics.pv.enabled %}
@@ -47,6 +48,22 @@ layout: default
         {% endif %}
 
       </div> <!-- .post-meta -->
+
+      <!-- Series links -->
+      {% if page.series %}
+      <div class="post-content">
+        <h3>Series Navigation</h3>
+        {% assign posts = site.posts | where: "series", page.series | sort: 'date' %}
+        {% for post in posts %}
+          {% if post.title == page.title %}
+          <li><b>{{ post.title }}</b></li>
+          {% else %}
+          <li><a href="{{ post.url }}">{{ post.title }}</a></li>
+          {% endif %}
+        {% endfor %}
+      </div>
+      <hr>
+      {% endif %}
 
       <div class="post-content">
         {%- capture img_placehodler -%}
@@ -65,6 +82,22 @@ layout: default
           {{ content }}
         {% endif %}
       </div>
+
+      <!-- Series links -->
+      {% if page.series %}
+      <div class="post-content">
+        <h3>Series</h3>
+        {% assign posts = site.posts | where: "series", page.series | sort: 'date' %}
+        {% for post in posts %}
+          {% if post.title == page.title %}
+          <li><b>{{ post.title }}</b></li>
+          {% else %}
+          <li><a href="{{ post.url }}">{{ post.title }}</a></li>
+          {% endif %}
+        {% endfor %}
+      </div>
+      <hr>
+      {% endif %}
 
       <div class="post-tail-wrapper text-muted">
 
@@ -110,7 +143,6 @@ layout: default
 
     </div> <!-- .post -->
 
-
   </div> <!-- #post-wrapper -->
 
   {% include panel.html %}
@@ -123,12 +155,12 @@ layout: default
 
     {% comment %}
 
-    {% include related-posts.html %}
-
-    {% include post-nav.html %}
-
+      {% include related-posts.html %}
+      {% include post-nav.html %}
+      
     {% endcomment %}
 
+      
     {% if page.comments %}
       {% include giscus.html %}
     {% endif %}
