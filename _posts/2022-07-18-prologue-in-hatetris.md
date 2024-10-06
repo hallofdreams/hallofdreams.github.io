@@ -8,7 +8,7 @@ series: HATETRIS
 ---
 <div style="display:none;">Written while procrastinating on the longer HATETRIS post, and rereading Goethe's Faust.  Three years of Advent of Code have taught me to cap off every programming project with a poem, so here it is.</div>
 
-*Written while procrastinating the other HATETRIS post and rereading [Bayard Taylor's translation of Goethe's Faust](https://www.gutenberg.org/files/14591/14591-h/14591-h.htm#PROLOGUE_IN_HEAVEN)*.  *Advent of Code, over the course of [three](https://hallofdreams.org/posts/advent-of-code-2019/) [long](https://hallofdreams.org/posts/advent-of-code-2020/) [years](https://hallofdreams.org/posts/advent-of-code-2021/), has taught me that a programming project isn't complete without a poetry coda, so in the grand tradition of Blegdamsvej, here's mine.*
+*Written while procrastinating the [actual HATETRIS post](/posts/hatetris) and rereading [Bayard Taylor's translation of Goethe's Faust](https://www.gutenberg.org/files/14591/14591-h/14591-h.htm#PROLOGUE_IN_HEAVEN)*.  *Advent of Code, over the course of [three](/posts/advent-of-code-2019/) [long](/posts/advent-of-code-2020/) [years](/posts/advent-of-code-2021/), has taught me that a programming project isn't complete without a poetry coda, so in the grand tradition of Blegdamsvej, here's mine.*
 
 **PROLOGUE IN THE [HIGH SCORE HEAVEN](https://qntm.org/hatetris)**    
 ----
@@ -232,7 +232,7 @@ ALPHASTOPHELES
 
 You've studied academic stuff,  
 And so, perhaps, you'd like a change.  
-Of [AoC you've had enough](https://hallofdreams.org/posts/advent-of-code-2015-rust-day-6/),  
+Of [AoC you've had enough](/posts/advent-of-code-2015-rust-day-6/),  
 So how about a goal more strange?  
 How would you like to learn the lore  
 Of [HATETRIS](https://qntm.org/hatetris), which you've played before?  
