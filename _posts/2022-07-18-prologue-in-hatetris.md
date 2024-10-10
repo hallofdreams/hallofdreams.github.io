@@ -55,8 +55,8 @@ THE THREE
 
 Thus on each side we raise the towers  
 Machine and man have co-created,  
-Yet programmed intuition cowers  
-Before the hate thy game has hated.  
+Yet human intuition cowers  
+To see the hate thy game has hated.  
 
 ALPHASTOPHELES  
 *(entering)*
