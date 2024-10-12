@@ -11,7 +11,7 @@ tags: [essay, poetry, david]     # TAG names should always be lowercase
 
 ## I.
 
-Suppose you were a newcomer to English literature, and having heard of this artistic device called 'poetry', wondered what it was all about how English picked it up.  You might start by looking up some examples of poetry from each century, going back until you can’t easily understand the language anymore, and find in the 16th century such poems as [John Skelton’s "Speke, Parott"](https://www.skeltonproject.org/spekeparott/) [sic]:
+Suppose you were a newcomer to English literature, and having heard of this artistic device called 'poetry', wondered what it was all about and how English picked it up.  You might start by looking up some examples of poetry from each century, going back until you can’t easily understand the language anymore, and find in the 16th century such poems as [John Skelton's "Speke, Parott"](https://www.skeltonproject.org/spekeparott/) [sic]:
 
 > PAROT  
 > My name is Parrot, a byrd of Paradyse,  
@@ -22,7 +22,7 @@ Suppose you were a newcomer to English literature, and having heard of this arti
 > &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;And send me to greate ladyes of estate;  
 > &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Then Parot must have an almon or a date.  
 
-Moving forward into the 17th century in search of poems that spell their subject matter consistently, you might come across [John Donne’s "A Hymn to God the Father"](https://www.poetryfoundation.org/poems/44115/a-hymn-to-god-the-father):
+Moving forward into the 17th century in search of poems that spell their subject matter consistently, you might come across [John Donne's "A Hymn to God the Father"](https://www.poetryfoundation.org/poems/44115/a-hymn-to-god-the-father):
 
 > I have a sin of fear, that when I have spun  
 > &nbsp;&nbsp;&nbsp;&nbsp;My last thread, I shall perish on the shore;  
@@ -31,30 +31,30 @@ Moving forward into the 17th century in search of poems that spell their subject
 > And, having done that, thou hast done;  
 > &nbsp;&nbsp;&nbsp;&nbsp;I fear no more.  
 
-Moving forward with a bit more confidence, now that English has had a bit more time to settle on its modern form, you find in the 18th century [Thomas Gray’s "Elegy Written in a Country Churchyard"](https://www.poetryfoundation.org/poems/44299/elegy-written-in-a-country-churchyard):
+Moving forward with a bit more confidence, now that English has had a bit more time to settle on its modern form, you find in the 18th century [Thomas Gray's "Elegy Written in a Country Churchyard"](https://www.poetryfoundation.org/poems/44299/elegy-written-in-a-country-churchyard):
 
 > The curfew tolls the knell of parting day,  
 > &nbsp;&nbsp;&nbsp;&nbsp;The lowing herd wind slowly o'er the lea,  
 > The plowman homeward plods his weary way,  
 > &nbsp;&nbsp;&nbsp;&nbsp;And leaves the world to darkness and to me.  
 
-By now, the patterns to this ‘poetry’ thing are becoming pretty clear, but a little stale; there’s only so many one- and two-syllable rhymes available, and only so many times you can hear the word ‘yearn’ rhymed with ‘burn’ before you’re wishing for something a little more exciting.  Perhaps when you reach the 19th century you’re fascinated by the new trend of comic verse with its multi-syllable rhymes, such as in [*The Ingoldsby Legends*](https://www.gutenberg.org/files/59236/59236-h/59236-h.htm#SIR_RUPERT_THE_FEARLESS):
+By now, the patterns to this 'poetry' thing are becoming pretty clear, but a little stale; there's only so many one- and two-syllable rhymes available, and only so many times you can hear the word 'yearn' rhymed with 'burn' before you're wishing for something a little more exciting.  Perhaps when you reach the 19th century you're fascinated by the new trend of comic verse with its multi-syllable rhymes, such as in [*The Ingoldsby Legends*](https://www.gutenberg.org/files/59236/59236-h/59236-h.htm#SIR_RUPERT_THE_FEARLESS):
 
-> Should it even set fire to the castle and burn it, you’re  
+> Should it even set fire to the castle and burn it, you're  
 > Amply insured, for both buildings and furniture...
 
-But aside from novelties for comedic effect, you’ve started to wonder if strict rhymes are really necessary for good poetry, and perhaps you’ve started to wonder what poetry even is.  So when you chance upon [Walt Whitman’s "Out of the Cradle Endlessly Rocking"](https://www.poetryfoundation.org/poems/48858/out-of-the-cradle-endlessly-rocking), you sit bolt upright.  *This* is something new:
+But aside from novelties for comedic effect, you've started to wonder if strict rhymes are really necessary for good poetry, and perhaps you've started to wonder what poetry even is.  So when you chance upon [Walt Whitman’s "Out of the Cradle Endlessly Rocking"](https://www.poetryfoundation.org/poems/48858/out-of-the-cradle-endlessly-rocking), you sit bolt upright.  *This* is something new:
 
 > Out of the cradle endlessly rocking,  
-> Out of the mocking-bird’s throat, the musical shuttle,  
+> Out of the mocking-bird's throat, the musical shuttle,  
 > Out of the Ninth-month midnight,  
-> Over the sterile sands and the fields beyond, where the child leaving his bed wander’d alone, bareheaded, barefoot,  
-> Down from the shower’d halo,  
+> Over the sterile sands and the fields beyond, where the child leaving his bed wander'd alone, bareheaded, barefoot,  
+> Down from the shower'd halo,  
 > Up from the mystic play of shadows twining and twisting as if they were alive,...
 
-If you stop right there and decide to write a book about the trip, you’re in all likelihood [Clement Wood, putting together *The Complete Rhyming Dictionary and Poet’s Craft Book* in 1936](https://archive.org/details/in.ernet.dli.2015.227129/mode/2up).  You have a grand vision in front of you about poetry, with very clear ideas as to what direction it’s going to take.  There’s such a large body of poetry in English that a little bit of polyrhythm in place of strict iambic metre (or even better, this new-fangled eighty-year-old invention called ‘free verse’), and consonance or assonance instead of strict rhyme, could introduce some much-needed fresh blood into the scene.  You dream of a day in which poetry is "a regular pattern, with restrained freedom and variety in its use".  You forsee a time when the various fixed forms like sonnets and ballades will have been enhanced by a healthy dose of irregularity, unlike the unforgiving metre the "poets, bound by fossilized conventions" of your day would prefer.  And, eventually, a decade and a half after the book, you die peacefully, having completed a wondrous journey.
+If you stop right there and decide to write a book about the trip, you're in all likelihood [Clement Wood, putting together *The Complete Rhyming Dictionary and Poet's Craft Book* in 1936](https://archive.org/details/in.ernet.dli.2015.227129/mode/2up).  You have a grand vision in front of you about poetry, with very clear ideas as to what direction it's going to take.  There's such a large body of poetry in English that a little bit of polyrhythm in place of strict iambic metre (or even better, this new-fangled eighty-year-old invention called 'free verse'), and consonance or assonance instead of strict rhyme, could introduce some much-needed fresh blood into the scene.  You dream of a day in which poetry is "a regular pattern, with restrained freedom and variety in its use".  You forsee a time when the various fixed forms like sonnets and ballades will have been enhanced by a healthy dose of irregularity, unlike the unforgiving metre the "poets, bound by fossilized conventions" of your day would prefer.  And, eventually, a decade and a half after the book, you die peacefully, having completed a wondrous journey.
 
-Though Clement Wood himself didn’t live to see it, we could imagine him continuing his trip up to the 21st century, leafing through the proceedings of the UK National Poetry Competition, and reading the opening lines to 2019’s winning entry, Susannah Hart’s ["Reading the Safeguarding and Child Protection Policy"](https://poems.poetrysociety.org.uk/poems/reading-the-safeguarding-and-child-protection-policy/):
+Though Clement Wood himself didn't live to see it, we could imagine him continuing his trip up to the 21st century, leafing through the proceedings of the UK National Poetry Competition, and reading the opening lines to 2019's winning entry, Susannah Hart's ["Reading the Safeguarding and Child Protection Policy"](https://poems.poetrysociety.org.uk/poems/reading-the-safeguarding-and-child-protection-policy/):
 
 > has left me feeling vaguely sick and I think a walk  
 is probably the answer, is often said to be the answer,  
