@@ -4,6 +4,7 @@ author: David & Felipe
 date: 2024-11-15 12:00:00 -0500
 categories: [Programming]
 tags: [trackmania, rust, programming, david, felipe] 	# TAG names should always be lowercase
+series: Trackmania
 ---
 <div style="display:none;">Trackmania: the world's most competitive racing game.  Waking up from our dream of creating a superhuman Trackmania network, and the superfast image acquisition setup which was our consolation prize.</div>
 
