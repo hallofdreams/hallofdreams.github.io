@@ -66,9 +66,9 @@ Powers that are [Passive] apply whenever the conditions are met.  [Active] power
 
 ### The Gunslinger
 
-Grit: 3 
-Soul : 2
-Brains: 1
+Grit: 3   
+Soul: 2  
+Brains: 1  
 
 The Gunslinger is fast as a viper and much more deadly.  He got his reputation killing men, and for that, his soul is forfeit.  But he’s got one last bullet in his gun, one last chance to save his soul.  He’s not much about _thinkin’_ but he’s got that sixth sense you develop when you’ve spilled so much blood that you can smell when someone means you harm. 
 
@@ -97,9 +97,9 @@ The Gunslinger is fast as a viper and much more deadly.  He got his reputation k
 
 ### The Holy Man
 
-Grit: 1 
-Soul : 3
-Brains: 2
+Grit: 1  
+Soul: 3  
+Brains: 2  
 
 The Holy Man is a spiritual leader.  A counselor, a protector, a sword against the devil… and a sinner.  Sins made worse by his pledges.  He knows the paths of angels and understands how to speak with devils and men;  he has book learning, but has never had the rough life that makes one strong of body. 
 
@@ -123,9 +123,9 @@ The Holy Man is a spiritual leader.  A counselor, a protector, a sword against t
 
 ### `The Lawman
 
-Grit: 2
-Soul : 1
-Brains: 3
+Grit: 2  
+Soul: 1  
+Brains: 3  
 
 The Lawman was a keeper of the law: a sheriff, or judge, a person who had the power of justice by his side… but can anyone rightfully take the lives of others?  Imprison them?  Strip them of property and freedom and not incur the taint of sin?  The law is that those who have sinned shall suffer, and the Lawman has sinned.
 
@@ -153,9 +153,9 @@ The Lawman was a keeper of the law: a sheriff, or judge, a person who had the po
 
 ### The Vagabond 
 
-Grit: 2
-Soul : 3
-Brains: 1
+Grit: 2  
+Soul: 3  
+Brains: 1  
 
 The Vagabond has no home, no people, no place.  He’s a wanderer, surviving because he can feel the flow of the world and the pulse of the universe, has a strong back and strong legs to carry him where he needs to go, with hunger and fear his constant companions.  All to preserve his freedom from the laws and expectations of society.  Now he must hop one final train, to reclaim the only thing that ever mattered. 
 
@@ -183,9 +183,9 @@ The Vagabond has no home, no people, no place.  He’s a wanderer, surviving bec
 
 ### The Gambler
 
-Grit: 1
-Soul : 2
-Brains: 3
+Grit: 1  
+Soul: 2  
+Brains: 3  
 
 You've got to know when to hold 'em / Know when to fold 'em / Know when to walk away / And know when to run / You never count your money/ When you're sittin' at the table / There'll be time enough for countin' / When the dealin's done (The Gambler, Kenny Rogers)
 
@@ -210,8 +210,8 @@ You've got to know when to hold 'em / Know when to fold 'em / Know when to walk 
 ### The Prospector
 
 Grit: 3  
-Brain: 2
-Soul: 1 
+Brain: 2  
+Soul: 1  
 
 The mountains are full of gold, and fools who seek the gold.  It takes a man with determination and grit to wander into those mountains, far from the hand of God to find the gold hidden deep in the earth, guarded by mudslides, bandits and the cold bite of winter.  Why, in a place like that, a man might even lose his soul. 
 

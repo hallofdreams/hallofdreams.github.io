@@ -7,7 +7,7 @@ tags: [essay, poetry, david]     # TAG names should always be lowercase
 ---
 <div style="display:none;">A book review, and finalist in the 2024 ACX Book Review Contest.  You might think that there aren't four thousand words' worth of discussion to be had about a rhyming dictionary.  You might be right.</div>
 
-*This review / essay was originally posted on Scott Alexander's blog, Astral Codex Ten, [here](https://www.astralcodexten.com/p/your-book-review-the-complete-rhyming) for the [2024 ACX Book Review Contest](https://www.astralcodexten.com/p/book-review-contest-2024-winners), where it was a finalist.  I've had time since to proofread and fix some of the mistakes I didn't catch the first time around, but the core of the review is the same.*
+*This review / essay was originally posted [here](https://www.astralcodexten.com/p/your-book-review-the-complete-rhyming) on Scott Alexander's blog, Astral Codex Ten, as a finalist in the [2024 ACX Book Review Contest](https://www.astralcodexten.com/p/book-review-contest-2024-winners).  I've had time since to proofread and fix some of the mistakes I didn't catch the first time around, but the core of the review is the same.*
 
 ## I.
 
