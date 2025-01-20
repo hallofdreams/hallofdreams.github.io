@@ -69,7 +69,7 @@ The first was Laurens Neinders, from the University of Twente in the Netherlands
 Nienders concluded that this was due to the difference in the information available.  Sophy had information about the **track curvature** of the upcoming 6 seconds of track, based on the current speed.  TMRL, however, only had distance measurements from the LIDAR.  While the TMRL program could plan for the next turn, it could not plan two turns ahead, and this fundamentally limited the program to mere safe driving, avoiding walls and crashes, but never optimizing.
 
 ![](/assets/img/Trackmania/Neinders_Fig8+9.png)
-*The LIDAR environment in TMRL, vs. the distance curvature measurement in Sophy, fromseven [Neinder's paper](https://essay.utwente.nl/96153/1/Neinders_BA_EEMCS.pdf).*
+*The LIDAR environment in TMRL, vs. the distance curvature measurement in Sophy, from [Neinder's paper](https://essay.utwente.nl/96153/1/Neinders_BA_EEMCS.pdf).*
 
 So, he implemented that same track curvature lookahead in Trackmania.  By driving a track and using LIDAR measurements to find the track edges, he created a pair of Bezier curves representing the two borders of the track, and then trained the neural network to take a segment of that curve as the input for the car.
 
