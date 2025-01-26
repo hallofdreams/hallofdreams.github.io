@@ -18,7 +18,7 @@ Does anybody remember [PhysicsForums](https://www.physicsforums.com/)?
 
 It was never exactly the center of the Internet, but back when it was founded in 2001, the Internet didn't really *have* a center the way it does today.  PhysicsForums was one forum among thousands, founded by an enthusiastic teenager named Greg Bernhardt, existing in the 'hard science' niche alongside the likes of [Bad Astronomy](https://web.archive.org/web/20050105042334/http://www.badastronomy.com/phpBB/index.php), mostly focused on giving hints for physics homework to struggling students without outright *doing* the physics homework.  It had fairly steady growth until 2012, before petering out throughout the 2010s and 2020s in lieu of more centralized sites like StackExchange, and by 2025, only a small community was left.  But, unlike so many other fora from back in the early days, it went from 2003 to 2025 without ever changing its URLs, erasing its old posts, or going down altogether.  Thanks to this consistency, PhysicsForums remains quite valuable as a time capsule, and can give us a glimpse at how people thought and what they said two decades ago.
 
-For instance, we we might go to [this 2007 post](https://www.physicsforums.com/threads/spreadsheet-for-hp-50g-import-export-excel-calc.199904/) asking about the capabilities of the now-obsolete [HP 50g Graphing Calculator](https://commerce.hpcalc.org/50g.php), and read a very helpful reply by commenter ravenprp:
+For instance, we we might go to [this 2007 post](https://web.archive.org/web/20250124194339/https://www.physicsforums.com/threads/spreadsheet-for-hp-50g-import-export-excel-calc.199904/) asking about the capabilities of the now-obsolete [HP 50g Graphing Calculator](https://commerce.hpcalc.org/50g.php), and read a very helpful reply by commenter ravenprp:
 
 <img src="/assets/img/PhysicsForums/2007 - ravenprp 0.png" alt="user ravenprp claims to be a large language model in a forum post dated 2007" title="user ravenprp claims to be a large language model in a forum post dated 2007"/>
 
@@ -148,7 +148,6 @@ During the writing of this post, the FAQs were actually noticed as well, and [a 
 We reached out to Greg Bernhardt asking for comment on LLM usage in PhysicsForums, and he replied:
 
 > We have many AI tests in the works to add value to the community. I sent out a 2024 feedback form to members a few weeks ago and many members don't want AI features. We'll either work with members to dramatically improve them or end up removing them. We experimented with AI answers from test accounts last year but they were not meeting quality standards. If you find any test accounts we missed, please let me know. My documentation was not the best.
-
 
 And in response to a follow-up question about the community feedback, he replied:
 
