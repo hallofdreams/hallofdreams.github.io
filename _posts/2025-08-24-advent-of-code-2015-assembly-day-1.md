@@ -722,7 +722,8 @@ exit:
 	syscall					;	Call the kernel to exit the program.
 ```
 
-```$ day_01/day_01.bin Inputs/Day_01_Input.txt
+```
+$ day_01/day_01.bin Inputs/Day_01_Input.txt
 1797    280
 ```
 
@@ -939,7 +940,8 @@ exit:
 	syscall					;	Call the kernel to exit the program.
 ```
 
-```$ day_01/tmp_test.bin
+```
+$ day_01/tmp_test.bin
 h47 h47 h47 h47 h47 h47 h47 h47 h47 h47 h47 h47 h47 h47
 ```
 
