@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% if page.title %}{{ page.title }} | {% endif %}{{ site.title }}</title>
+  <meta name="description" content="{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
+  
+  <!-- Custom CSS for Spire RPG page -->
+  <link rel="stylesheet" href="{{ '/assets/css/spire-rpg.css' | relative_url }}">
+  
+  <!-- Optional: Keep font awesome for icons if needed -->
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.11.2/css/all.min.css"
+    integrity="sha256-+N4/V/SbAFiW1MPBCXnfnP9QSN3+Keu+NlB+0ev/YKQ="
+    crossorigin="anonymous">
+</head>
+<body>
+  <!-- Custom HTML structure for Spire RPG -->
+  <div class="spire-container">
+    {{ content }}
+  </div>
+  
+  <!-- Optional: Include minimal JavaScript if needed -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  
+  <!-- Custom JavaScript for this page -->
+  <script>
+    // Add any custom JavaScript for the Spire RPG page here
+  </script>
+</body>
+</html>
