@@ -29,9 +29,9 @@ body {
   background:
     linear-gradient(180deg, rgba(232,238,245,0.9) 0%, rgba(208,218,232,0.9) 100%),
     url('/assets/img/dots.webp');
-  background-size: auto, cover;
-  background-position: center, center;
-  background-repeat: no-repeat, no-repeat;
+  background-size: auto, 100% auto;
+  background-position: center, center top;
+  background-repeat: no-repeat, repeat-y;
   box-shadow:
     0 0 0 1px #7a8a9f,
     0 0 0 2px #b5c4d4,
@@ -110,7 +110,7 @@ h2 {
 
 h3 {
   font-size: 1.1rem;
-  color: #7a3977;
+  color: #b32d33;
   margin-top: 1.2rem;
   margin-bottom: 0.5rem;
   text-transform: uppercase;
@@ -157,6 +157,177 @@ li {
 strong {
   color: #b32d33;
   font-weight: 800;
+}
+
+/* Glossary-style sections with all-caps headings */
+.spire-glossary p strong {
+  text-transform: uppercase;
+}
+
+/* Stat block styling */
+.stat-entry {
+  margin-bottom: 1.5rem;
+}
+
+.stat-entry p {
+  line-height: 1.2;
+  margin-bottom: 0;
+}
+
+.stat-entry strong:first-child {
+  display: block;
+  margin-bottom: -0.2rem;
+  font-size: 1.1rem;
+  line-height: 0.9;
+}
+
+.stat-entry em {
+  font-weight: 700;
+  font-style: normal;
+}
+
+/* Ruled List - Single column with visual breaks */
+.spire-ruled-list {
+  column-count: 1;
+  max-width: 800px;
+  margin: 2rem auto;
+}
+
+.spire-ruled-list .ruled-item {
+  border-bottom: 2px solid #7a3977;
+  padding: 1.5rem 0;
+  margin-bottom: 0;
+}
+
+.spire-ruled-list .ruled-item:last-child {
+  border-bottom: none;
+}
+
+.spire-ruled-list .ruled-item h3 {
+  font-size: 1.4rem;
+  color: #b32d33;
+  margin: 0 0 1rem 0;
+  text-align: center;
+  letter-spacing: 1.5px;
+  font-family: "Copperplate", "Copperplate Gothic", "Palatino Linotype", Palatino, serif;
+}
+
+.spire-ruled-list .ruled-item p {
+  text-align: justify;
+  margin-bottom: 0.8rem;
+}
+
+/* Image breaks in ruled lists */
+.spire-ruled-list .image-break {
+  text-align: center;
+  margin: 2rem 0;
+  padding: 2rem 0;
+}
+
+.spire-ruled-list .image-break img {
+  max-width: 100%;
+  height: auto;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+/* Player Options / Class Abilities */
+.class-block {
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 2px solid #7a3977;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.class-block:last-child {
+  border-bottom: none;
+}
+
+.class-block .class-name {
+  font-size: 1.4rem;
+  color: #b32d33;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin: 0 0 0.8rem 0;
+  padding: 0.4rem 0;
+  border-top: 2px solid #b32d33;
+  border-bottom: 2px solid #b32d33;
+  font-family: "Copperplate", "Copperplate Gothic", "Palatino Linotype", Palatino, serif;
+  font-weight: 700;
+  break-after: avoid;
+}
+
+.class-block .class-meta {
+  margin-bottom: 1rem;
+}
+
+.class-block .class-meta p {
+  margin-bottom: 0.4rem;
+  text-align: left;
+  font-size: 0.95rem;
+}
+
+.class-block .class-meta strong {
+  color: #1a1a1a;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.3px;
+}
+
+.class-tier {
+  margin: 1rem 0 0.5rem 0;
+  padding: 0.2rem 0;
+  border-bottom: 1px solid #7a3977;
+  break-after: avoid;
+}
+
+.class-tier h4 {
+  color: #2b4c6f;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 0;
+  font-weight: 700;
+}
+
+.ability {
+  margin-bottom: 0.8rem;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.ability-name {
+  color: #1a1a1a;
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  letter-spacing: 0.3px;
+}
+
+.ability-tags {
+  color: #7a3977;
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
+.ability p {
+  margin-bottom: 0.4rem;
+  text-align: left;
+  font-size: 0.95rem;
+}
+
+.ability ul {
+  margin-top: 0.3rem;
+  margin-bottom: 0.3rem;
+}
+
+.ability li {
+  font-size: 0.9rem;
+}
+
+.ability em {
+  color: #1f3a52;
 }
 
 /* Header Section */
@@ -211,17 +382,119 @@ strong {
   margin-bottom: 2rem;
 }
 
+/* Force a column break */
+.column-break {
+  -webkit-column-break-after: always;
+  -moz-column-break-after: always;
+  column-break-after: always;
+  break-after: column;
+  page-break-after: always;
+  display: block;
+}
+
+/* Force content to start in a new column */
+.column-break-before {
+  -webkit-column-break-before: always;
+  -moz-column-break-before: always;
+  column-break-before: always;
+  break-before: column;
+  page-break-before: always;
+  display: block;
+  margin-top: 0;
+}
+
+/* Alternative: use padding/margin hack to force break */
+.force-new-column::before {
+  content: '';
+  display: block;
+  height: 0;
+  width: 0;
+  -webkit-column-break-before: always;
+  -moz-column-break-before: always;
+  column-break-before: always;
+  break-before: column;
+}
+
 /* Sidebar boxes - Red line container */
 .spire-sidebar {
   background: #4a5f7a;
   border: none;
   border-top: 3px solid #b32d33;
   border-bottom: 3px solid #b32d33;
-  padding: 1rem 1.5rem 1.5rem 1.5rem;
-  margin: 1.5rem 0;
+  padding: 1rem 1.5rem 0.5rem 1.5rem;
+  margin: 0.3rem 0;
   break-inside: avoid;
   position: relative;
   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+}
+
+/* NPC Box - Typewritten dossier style */
+.npc-box {
+  background: #fefdf8;
+  border: 1px solid #000;
+  padding: 1.5rem 2rem;
+  margin: 1.5rem 0;
+  break-inside: avoid;
+  column-span: all;
+  -webkit-column-span: all;
+  -moz-column-span: all;
+  font-family: "Courier New", "Lucida Console", "Inconsolata", monospace;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.npc-box h3 {
+  margin: 0 0 0.3rem 0;
+  padding: 0;
+  color: #1a1a1a;
+  background: none;
+  font-size: 1.5rem;
+  text-align: left;
+  font-family: "Courier New", "Lucida Console", "Inconsolata", monospace;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  font-weight: 700;
+  border-bottom: 1px solid #000;
+  padding-bottom: 0.1rem;
+  line-height: 1.0;
+  display: block;
+}
+
+.npc-box .tarot-card {
+  width: 90px;
+  height: auto;
+  border: 1px solid #000;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  float: left;
+  margin-right: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.npc-box .tarot-inverted {
+  transform: rotate(180deg);
+}
+
+.npc-box p {
+  color: #1a1a1a;
+  text-align: left;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 0.8rem;
+}
+
+.npc-box h4 {
+  color: #1a1a1a;
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-top: 1rem;
+  margin-bottom: 0.4rem;
+  letter-spacing: 0.5px;
+  font-family: "Courier New", "Lucida Console", "Inconsolata", monospace;
+}
+
+.npc-box strong {
+  color: #1a1a1a;
+  font-weight: 700;
 }
 
 .spire-sidebar h3 {
@@ -327,12 +600,13 @@ th, td {
 }
 
 th {
-  background-color: #7a3977;
-  color: #dce4ef;
+  background-color: transparent;
+  color: #1a1a1a;
   font-weight: 800;
   text-transform: uppercase;
   font-size: 0.9rem;
   letter-spacing: 0.5px;
+  border-bottom: 3px solid #7a3977;
 }
 
 tr:nth-child(even) {
@@ -341,6 +615,452 @@ tr:nth-child(even) {
 
 tr:nth-child(odd) {
   background-color: #dce4ef;
+}
+
+td strong {
+  color: #1a1a1a;
+}
+
+/* Table of Contents */
+.toc-container {
+  margin: 3rem 0 4rem 0;
+  column-span: all;
+  -webkit-column-span: all;
+  break-inside: avoid;
+}
+
+.toc-container summary {
+  font-size: 1.4rem;
+  color: #b32d33;
+  text-align: center;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #b32d33;
+  padding: 0.5rem 0;
+  font-family: "Copperplate", "Copperplate Gothic", "Palatino Linotype", Palatino, serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  cursor: pointer;
+  list-style: none;
+  position: relative;
+}
+
+.toc-container summary::-webkit-details-marker {
+  display: none;
+}
+
+.toc-container summary::marker {
+  display: none;
+}
+
+.toc-container summary::after {
+  content: " [+]";
+  font-size: 1.2rem;
+  color: #b32d33;
+  margin-left: 0.5rem;
+}
+
+.toc-container[open] summary::after {
+  content: " [−]";
+}
+
+.toc-container summary:hover {
+  color: #7a3977;
+}
+
+.toc-container[open] summary {
+  margin-bottom: 2rem;
+}
+
+.toc-list {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.toc-entry {
+  margin-bottom: 0.3rem;
+  overflow: hidden;
+  display: flex;
+  align-items: baseline;
+}
+
+.toc-entry a {
+  text-decoration: none;
+  display: flex;
+  width: 100%;
+  align-items: baseline;
+}
+
+.toc-entry a:hover .toc-title {
+  color: #7a3977;
+}
+
+.toc-title {
+  white-space: nowrap;
+  padding-right: 0.5rem;
+}
+
+.toc-leader {
+  flex: 1;
+  border-bottom: 1px dotted #7a8a9f;
+  margin: 0 0.3rem 0.2rem 0.3rem;
+  min-width: 2rem;
+}
+
+.toc-link {
+  white-space: nowrap;
+  padding-left: 0.5rem;
+  color: #1f3a52;
+  font-size: 0.9rem;
+}
+
+/* Main section entries - styled like h2 but no top border */
+.toc-main {
+  font-family: "Copperplate", "Copperplate Gothic", "Palatino Linotype", Palatino, serif;
+  font-size: 1.6rem;
+  color: #b32d33;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.toc-main .toc-title {
+  color: #b32d33;
+}
+
+/* Sub-section entries - indented, smaller, simpler */
+.toc-sub {
+  margin-left: 2rem;
+  font-size: 1rem;
+  margin-bottom: 0.2rem;
+}
+
+.toc-sub .toc-title {
+  color: #1a1a1a;
+  font-weight: 400;
+  font-size: 1rem;
+}
+
+/* Sub-sub-section entries - even more indented, smaller */
+.toc-subsub {
+  margin-left: 4rem;
+  font-size: 0.9rem;
+  margin-bottom: 0.1rem;
+}
+
+.toc-subsub .toc-title {
+  color: #7a8a9f;
+  font-weight: 400;
+  font-size: 0.9rem;
+}
+
+/* Props Gallery */
+.props-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-bottom: 1rem;
+}
+
+.props-header p {
+  margin: 0;
+  flex: 1;
+}
+
+.props-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+  margin: 2rem 0;
+}
+
+.prop-item {
+  break-inside: avoid;
+  page-break-inside: avoid;
+  text-align: center;
+}
+
+.prop-item a {
+  display: block;
+  text-decoration: none;
+  border: 2px solid #7a3977;
+  padding: 1rem;
+  background: #dce4ef;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  cursor: pointer;
+}
+
+.prop-item a:hover {
+  border-color: #b32d33;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  transform: translateY(-2px);
+}
+
+.prop-item img {
+  width: 100%;
+  height: 350px;
+  object-fit: cover;
+  display: block;
+  margin-bottom: 0.5rem;
+  border: 1px solid #7a8a9f;
+}
+
+/* Modal overlay for expanded props */
+.prop-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  z-index: 10000;
+  align-items: center;
+  justify-content: center;
+}
+
+.prop-modal.active {
+  display: flex;
+}
+
+.prop-modal-content {
+  position: relative;
+  max-width: 90vw;
+  max-height: 90vh;
+  background: white;
+  padding: 2rem;
+  border: 3px solid #b32d33;
+  box-shadow: 0 0 50px rgba(0,0,0,0.5);
+}
+
+.prop-modal-image {
+  max-width: 100%;
+  max-height: 80vh;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+}
+
+.prop-modal-close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: #b32d33;
+  color: white;
+  border: none;
+  font-size: 1.5rem;
+  width: 2rem;
+  height: 2rem;
+  cursor: pointer;
+  font-weight: bold;
+  line-height: 1;
+  padding: 0;
+}
+
+.prop-modal-close:hover {
+  background: #8a2227;
+}
+
+.prop-modal-download {
+  display: block;
+  margin: 1rem auto 0;
+  background: #b32d33;
+  color: white;
+  border: none;
+  padding: 0.75rem 2rem;
+  font-family: "Copperplate", "Copperplate Gothic", "Palatino Linotype", Palatino, serif;
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.prop-modal-download:hover {
+  background: #8a2227;
+}
+
+/* Download all button */
+.download-all-props {
+  display: inline-block;
+  margin: 0;
+  background: #b32d33;
+  color: white;
+  border: 2px solid #b32d33;
+  padding: 1rem 2rem;
+  font-family: "Copperplate", "Copperplate Gothic", "Palatino Linotype", Palatino, serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.download-all-props:hover {
+  background: #8a2227;
+  border-color: #8a2227;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+/* Character Sheets Gallery */
+.character-sheets-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  margin: 2rem 0;
+}
+
+.character-sheet-item {
+  break-inside: avoid;
+  page-break-inside: avoid;
+  text-align: center;
+}
+
+.character-sheet-item a {
+  display: block;
+  text-decoration: none;
+  border: 2px solid #7a3977;
+  padding: 1rem;
+  background: #dce4ef;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  cursor: pointer;
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.character-sheet-item a:hover {
+  border-color: #b32d33;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  transform: translateY(-2px);
+}
+
+.character-sheet-item .sheet-preview {
+  width: 100%;
+  height: 350px;
+  object-fit: cover;
+  display: block;
+  margin-bottom: 0.5rem;
+  border: 1px solid #7a8a9f;
+  background: white;
+}
+
+.character-sheet-item .sheet-name {
+  font-family: "Copperplate", "Copperplate Gothic", "Palatino Linotype", Palatino, serif;
+  font-size: 1rem;
+  color: #1f3a52;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 0.5rem;
+}
+
+.character-sheet-item a:hover .sheet-name {
+  color: #b32d33;
+}
+
+/* PDF Modal */
+.pdf-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  z-index: 10000;
+  align-items: center;
+  justify-content: center;
+}
+
+.pdf-modal.active {
+  display: flex;
+}
+
+.pdf-modal-content {
+  position: relative;
+  width: 90vw;
+  height: 90vh;
+  background: white;
+  padding: 2rem;
+  border: 3px solid #b32d33;
+  box-shadow: 0 0 50px rgba(0,0,0,0.5);
+  display: flex;
+  flex-direction: column;
+}
+
+.pdf-modal-viewer {
+  flex: 1;
+  width: 100%;
+  border: 1px solid #7a8a9f;
+  background: white;
+}
+
+.pdf-modal-close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: #b32d33;
+  color: white;
+  border: none;
+  font-size: 1.5rem;
+  width: 2rem;
+  height: 2rem;
+  cursor: pointer;
+  font-weight: bold;
+  line-height: 1;
+  padding: 0;
+  z-index: 1;
+}
+
+.pdf-modal-close:hover {
+  background: #8a2227;
+}
+
+.pdf-modal-download {
+  display: block;
+  margin: 1rem auto 0;
+  background: #b32d33;
+  color: white;
+  border: none;
+  padding: 0.75rem 2rem;
+  font-family: "Copperplate", "Copperplate Gothic", "Palatino Linotype", Palatino, serif;
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.pdf-modal-download:hover {
+  background: #8a2227;
+}
+
+.prop-item .prop-name {
+  font-family: "Copperplate", "Copperplate Gothic", "Palatino Linotype", Palatino, serif;
+  font-size: 0.9rem;
+  color: #1f3a52;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 0.5rem;
+}
+
+.prop-item a:hover .prop-name {
+  color: #b32d33;
 }
 
 /* Special colored sections */
@@ -359,6 +1079,44 @@ tr:nth-child(odd) {
 /* Add decorative elements for more rulebook feel */
 .spire-section > h2:first-child {
   margin-top: 0;
+}
+
+/* Minor NPC styling */
+.minor-npc {
+  margin-bottom: 2rem;
+  overflow: auto;
+}
+
+.minor-npc-left .minor-npc-card {
+  float: left;
+  width: 200px;
+  height: auto;
+  margin-right: 1.5rem;
+  margin-bottom: 0.5rem;
+  border: 1px solid #7a8a9f;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.minor-npc-right .minor-npc-card {
+  float: right;
+  width: 200px;
+  height: auto;
+  margin-left: 1.5rem;
+  margin-bottom: 0.5rem;
+  border: 1px solid #7a8a9f;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.minor-npc-name {
+  font-weight: 800;
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  color: #1f3a52;
+}
+
+.minor-npc p {
+  margin-bottom: 0.8rem;
+  text-align: justify;
 }
 
 /* Responsive Design */
