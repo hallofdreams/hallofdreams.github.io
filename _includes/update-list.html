@@ -9,8 +9,9 @@
 {% assign MAX_SIZE = 5 %}
 
 {% assign all_list = "" | split: "" %}
+{% assign visible_posts = site.posts | where_exp: "item", "item.hidden != true" %}
 
-{% for post in site.posts %}
+{% for post in visible_posts %}
   {% if post.lastmod %}
     {% capture elem %}
       {{- post.lastmod | date: "%Y%m%d%H%M%S" -}}::{{- forloop.index0 -}}
