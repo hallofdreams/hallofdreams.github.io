@@ -8,8 +8,9 @@ layout: page
 ---
 
 
-{% assign pinned = site.posts | where_exp: "item", "item.pin == true"  %}
-{% assign default = site.posts | where_exp: "item", "item.pin != true"  %}
+{% assign visible_posts = site.posts | where_exp: "item", "item.hidden != true" %}
+{% assign pinned = visible_posts | where_exp: "item", "item.pin == true"  %}
+{% assign default = visible_posts | where_exp: "item", "item.pin != true"  %}
 {% assign posts = "" | split: "" %}
 
 <!-- Get pinned posts -->
