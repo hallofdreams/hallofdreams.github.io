@@ -3,7 +3,7 @@ title: I Fixed My Coworker's Alignment Problem
 author: Felipe
 date: 2026-12-26 12:00:00 -0500
 categories: [Fiction]
-tags: [fiction, felipe, satire, ai]
+tags: [felipe, satire, ai]
 ---
 
 <link rel="stylesheet" href="/assets/css/alignment-quotes.css">
