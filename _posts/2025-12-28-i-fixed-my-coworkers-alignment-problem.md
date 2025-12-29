@@ -1,7 +1,7 @@
 ---
 title: I Fixed My Coworker's Alignment Problem
 author: Felipe
-date: 2026-12-26 12:00:00 -0500
+date: 2025-12-28 12:00:00 -0500
 categories: [Fiction]
 tags: [felipe, satire, ai]
 ---
