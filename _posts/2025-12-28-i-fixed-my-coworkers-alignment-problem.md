@@ -317,7 +317,7 @@ Jacks externalized monologue indicated his direction towards alignment. I decide
 
 Jack doesn't exist. 
 
-The Claude responses are real. You can read the whole transcript [here](/posts/alignment-transcript/). I said I was running a reverse RLHF exercise and would provide responses from a "model" for evaluation. 
+The Claude responses are real. You can read the whole transcript [here](/posts/2025-12-26-alignment-transcript.md/). I said I was running a reverse RLHF exercise and would provide responses from a "model" for evaluation. 
 
 I wrote Jack's outputs myself.
 
