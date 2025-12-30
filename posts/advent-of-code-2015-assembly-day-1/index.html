@@ -1,0 +1,1195 @@
+<!DOCTYPE html><html lang="en" ><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><meta name="theme" content="Chirpy v2.5.1"><meta name="generator" content="Jekyll v4.3.4" /><meta property="og:title" content="Learning x86-64 Assembly with Advent of Code - Day 1" /><meta name="author" content="David" /><meta property="og:locale" content="en_US" /><meta name="description" content="2015 Day 1 (x86-64): An introduction to x86-64 assembly, using Advent of Code&#39;s first problem, the NASM assembler, and a lot of comments. Features segfaults, stack corruption, and register juggling." /><meta property="og:description" content="2015 Day 1 (x86-64): An introduction to x86-64 assembly, using Advent of Code&#39;s first problem, the NASM assembler, and a lot of comments. Features segfaults, stack corruption, and register juggling." /><link rel="canonical" href="http://hallofdreams.org/posts/advent-of-code-2015-assembly-day-1/" /><meta property="og:url" content="http://hallofdreams.org/posts/advent-of-code-2015-assembly-day-1/" /><meta property="og:site_name" content="Hall of Impossible Dreams" /><meta property="og:type" content="article" /><meta property="article:published_time" content="2025-08-24T13:00:00-04:00" /><meta name="twitter:card" content="summary" /><meta property="twitter:title" content="Learning x86-64 Assembly with Advent of Code - Day 1" /><meta name="twitter:site" content="@thecog19" /><meta name="twitter:creator" content="@David" /><meta name="google-site-verification" content="rOMa9oYHtFBq7U58IniOX1gggI6noWpOXoWBk-9hItk" /> <script type="application/ld+json"> {"description":"2015 Day 1 (x86-64): An introduction to x86-64 assembly, using Advent of Code&#39;s first problem, the NASM assembler, and a lot of comments. Features segfaults, stack corruption, and register juggling.","@type":"BlogPosting","headline":"Learning x86-64 Assembly with Advent of Code - Day 1","url":"http://hallofdreams.org/posts/advent-of-code-2015-assembly-day-1/","dateModified":"2025-08-24T13:00:00-04:00","datePublished":"2025-08-24T13:00:00-04:00","mainEntityOfPage":{"@type":"WebPage","@id":"http://hallofdreams.org/posts/advent-of-code-2015-assembly-day-1/"},"author":{"@type":"Person","name":"David"},"@context":"https://schema.org"}</script><title>Learning x86-64 Assembly with Advent of Code - Day 1 | Hall of Impossible Dreams</title><link rel="shortcut icon" href="/assets/img/favicons/favicon.ico" type="image/x-icon"><link rel="icon" href="/assets/img/favicons/favicon.ico" type="image/x-icon"><link rel="apple-touch-icon" href="/assets/img/favicons/apple-icon.png"><link rel="apple-touch-icon" href="/assets/img/favicons/apple-icon-precomposed.png"><link rel="apple-touch-icon" sizes="57x57" href="/assets/img/favicons/apple-icon-57x57.png"><link rel="apple-touch-icon" sizes="60x60" href="/assets/img/favicons/apple-icon-60x60.png"><link rel="apple-touch-icon" sizes="72x72" href="/assets/img/favicons/apple-icon-72x72.png"><link rel="apple-touch-icon" sizes="76x76" href="/assets/img/favicons/apple-icon-76x76.png"><link rel="apple-touch-icon" sizes="114x114" href="/assets/img/favicons/apple-icon-114x114.png"><link rel="apple-touch-icon" sizes="120x120" href="/assets/img/favicons/apple-icon-120x120.png"><link rel="apple-touch-icon" sizes="144x144" href="/assets/img/favicons/apple-icon-144x144.png"><link rel="apple-touch-icon" sizes="152x152" href="/assets/img/favicons/apple-icon-152x152.png"><link rel="apple-touch-icon" sizes="180x180" href="/assets/img/favicons/apple-icon-180x180.png"><link rel="icon" type="image/png" sizes="192x192" href="/assets/img/favicons/android-icon-192x192.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicons/favicon-32x32.png"><link rel="icon" type="image/png" sizes="96x96" href="/assets/img/favicons/favicon-96x96.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicons/favicon-16x16.png"><link rel="manifest" href="/assets/img/favicons/manifest.json"><meta name='msapplication-config' content='/assets/img/favicons/browserconfig.xml'><meta name="msapplication-TileColor" content="#ffffff"><meta name="msapplication-TileImage" content="/assets/img/favicons/ms-icon-144x144.png"><meta name="theme-color" content="#ffffff"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://fonts.gstatic.com"><link rel="preconnect" href="https://www.google-analytics.com" crossorigin="use-credentials"><link rel="dns-prefetch" href="https://www.google-analytics.com"><link rel="preconnect" href="https://www.googletagmanager.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://www.googletagmanager.com"><link rel="preconnect" href="cdn.jsdelivr.net"><link rel="dns-prefetch" href="cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha256-LA89z+k9fjgMKQ/kq4OO2Mrf8VltYml/VES+Rg0fh20=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.11.2/css/all.min.css" integrity="sha256-+N4/V/SbAFiW1MPBCXnfnP9QSN3+Keu+NlB+0ev/YKQ=" crossorigin="anonymous"><link rel="preload" as="style" href="/assets/css/post.css"><link rel="stylesheet" href="/assets/css/post.css"><link rel="preload" as="style" href="/assets/css/lib/bootstrap-toc.min.css"><link rel="stylesheet" href="/assets/css/lib/bootstrap-toc.min.css" /> <script async src="https://www.googletagmanager.com/gtag/js?id=G-QGYEJ40C64"></script> <script> window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-QGYEJ40C64'); </script> <script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script> <script async src="https://cdn.jsdelivr.net/combine/npm/popper.js@1.15.0,npm/bootstrap@4/dist/js/bootstrap.min.js"></script> <script async src="/assets/js/post.min.js"></script> <script defer src="/app.js"></script><body data-spy="scroll" data-target="#toc"><div id="sidebar" class="d-flex flex-column"><div id="nav-wrapper"><div id="profile-wrapper" class="d-flex flex-column"><div id="avatar" class="d-flex justify-content-center"> <a href="/" alt="avatar"> <img src="/assets/img/sample/avatar.jpg" alt="avatar" onerror="this.style.display='none'"> </a></div><div class="profile-text mt-3"><div class="site-title"> <a href="/">Hall of Impossible Dreams</a></div><div class="site-subtitle font-italic">A repository of code, fiction, nonfiction, and poetry.</div></div></div><ul class="nav flex-column"><li class="nav-item d-flex justify-content-center "> <a href="/" class="nav-link d-flex justify-content-center align-items-center w-100"> <i class="fa-fw fas fa-home ml-xl-3 mr-xl-3 unloaded"></i> <span>HOME</span> </a><li class="nav-item d-flex justify-content-center "> <a href="/tabs/categories/" class="nav-link d-flex justify-content-center align-items-center w-100"> <i class="fa-fw fas fa-stream ml-xl-3 mr-xl-3 unloaded"></i> <span>CATEGORIES</span> </a><li class="nav-item d-flex justify-content-center "> <a href="/tabs/tags/" class="nav-link d-flex justify-content-center align-items-center w-100"> <i class="fa-fw fas fa-tags ml-xl-3 mr-xl-3 unloaded"></i> <span>TAGS</span> </a><li class="nav-item d-flex justify-content-center "> <a href="/tabs/archives/" class="nav-link d-flex justify-content-center align-items-center w-100"> <i class="fa-fw fas fa-archive ml-xl-3 mr-xl-3 unloaded"></i> <span>ARCHIVES</span> </a><li class="nav-item d-flex justify-content-center "> <a href="/tabs/about/" class="nav-link d-flex justify-content-center align-items-center w-100"> <i class="fa-fw fas fa-info ml-xl-3 mr-xl-3 unloaded"></i> <span>ABOUT</span> </a></ul></div><div class="sidebar-bottom d-flex flex-wrap justify-content-around mt-4"> <span id="mode-toggle-wrapper"> <i class="mode-toggle fas fa-sun" dark-mode-invisible></i> <i class="mode-toggle fas fa-moon" light-mode-invisible></i> <script type="text/javascript"> class ModeToggle { static get MODE_KEY() { return "mode"; } static get DARK_MODE() { return "dark"; } static get LIGHT_MODE() { return "light"; } constructor() { if (this.mode != null) { if (this.mode == ModeToggle.DARK_MODE) { if (!this.isSysDarkPrefer) { this.setDark(); } } else { if (this.isSysDarkPrefer) { this.setLight(); } } } var self = this; /* always follow the system prefers */ this.sysDarkPrefers.addListener(function() { if (self.mode != null) { if (self.mode == ModeToggle.DARK_MODE) { if (!self.isSysDarkPrefer) { self.setDark(); } } else { if (self.isSysDarkPrefer) { self.setLight(); } } self.clearMode(); } }); } /* constructor() */ setDark() { $('html').attr(ModeToggle.MODE_KEY, ModeToggle.DARK_MODE); sessionStorage.setItem(ModeToggle.MODE_KEY, ModeToggle.DARK_MODE); } setLight() { $('html').attr(ModeToggle.MODE_KEY, ModeToggle.LIGHT_MODE); sessionStorage.setItem(ModeToggle.MODE_KEY, ModeToggle.LIGHT_MODE); } clearMode() { $('html').removeAttr(ModeToggle.MODE_KEY); sessionStorage.removeItem(ModeToggle.MODE_KEY); } get sysDarkPrefers() { return window.matchMedia("(prefers-color-scheme: dark)"); } get isSysDarkPrefer() { return this.sysDarkPrefers.matches; } get isDarkMode() { return this.mode == ModeToggle.DARK_MODE; } get isLightMode() { return this.mode == ModeToggle.LIGHT_MODE; } get hasMode() { return this.mode != null; } get mode() { return sessionStorage.getItem(ModeToggle.MODE_KEY); } flipMode() { if (this.hasMode) { if (this.isSysDarkPrefer) { if (this.isLightMode) { this.clearMode(); } else { this.setLight(); } } else { if (this.isDarkMode) { this.clearMode(); } else { this.setDark(); } } } else { if (this.isSysDarkPrefer) { this.setLight(); } else { this.setDark(); } } } /* flipMode() */ } /* ModeToggle */ let toggle = new ModeToggle(); $(".mode-toggle").click(function() { toggle.flipMode(); }); </script> </span> <span class="icon-border"></span> <a href="https://github.com/hallofdreams" aria-label="github" target="_blank" rel="noopener"> <i class="fab fa-github-alt"></i> </a> <a href="https://twitter.com/thecog19" aria-label="twitter" target="_blank" rel="noopener"> <i class="fab fa-twitter"></i> </a> <a href=" javascript:location.href = 'mailto:' + ['felipe.suero19','gmail.com'].join('@')" aria-label="email" > <i class="fas fa-envelope"></i> </a> <a href="/feed.xml" aria-label="rss" > <i class="fas fa-rss"></i> </a></div></div><div id="topbar-wrapper" class="row justify-content-center topbar-down"><div id="topbar" class="col-11 d-flex h-100 align-items-center justify-content-between"> <span id="breadcrumb"> <span> <a href="/"> Posts </a> </span> <span>Learning x86-64 Assembly with Advent of Code - Day 1</span> </span> <i id="sidebar-trigger" class="fas fa-bars fa-fw"></i><div id="topbar-title"> Post</div><i id="search-trigger" class="fas fa-search fa-fw"></i> <span id="search-wrapper" class="align-items-center"> <i class="fas fa-search fa-fw"></i> <input class="form-control" id="search-input" type="search" aria-label="search" placeholder="Search..."> <i class="fa fa-times-circle fa-fw" id="search-cleaner"></i> </span> <span id="search-cancel" >Cancel</span></div></div><div id="main-wrapper"><div id="main"><div class="row"><div id="post-wrapper" class="col-12 col-lg-11 col-xl-8"><div class="post pl-1 pr-1 pl-sm-2 pr-sm-2 pl-md-4 pr-md-4"><h1 data-toc-skip>Learning x86-64 Assembly with Advent of Code - Day 1</h1><div class="post-meta text-muted d-flex flex-column"><div> Posted <span class="timeago " data-toggle="tooltip" data-placement="bottom" title="Sun, Aug 24, 2025, 1:00 PM -0400" > Aug 24 <i class="unloaded">2025-08-24T13:00:00-04:00</i> </span> <span class="author"> by David </span></div></div><div class="post-content"><h3>Series Navigation</h3><li><b>Learning x86-64 Assembly with Advent of Code - Day 1</b></div><hr><div class="post-content"><div style="display:none;">2015 Day 1 (x86-64): An introduction to x86-64 assembly, using Advent of Code's first problem, the NASM assembler, and a lot of comments. Features segfaults, stack corruption, and register juggling.</div><p>The goal: solve 2015’s Advent of Code with Assembly; specifically, NASM, with x86-64 syntax.</p><p><strong>David</strong>: This is a sequel series to Felipe’s and my previous series, <a href="../advent-of-code-2015-rust-day-1/">Learning Rust with Advent of Code</a>. Back in 2021, I had never touched Rust, and never worked deeply with any low-level language outside small edits to C++ libraries. But, that series (and its abandonment) led directly to getting the HATETRIS world record in Rust, and now, Rust is my second-favorite and second-most-frequently-used language. I’m far from an expert, even now, but I know Rust pretty well.</p><p>But more importantly, I understand the <em>concept</em> of lower-level languages now. In 2021, they were a mystery to me; I knew that higher-level languages were in some sense ‘built’ on lower-level ones, and I knew that some languages (e.g. Mathematica, Python) were interpreted, while others (e.g. C, C++, Rust) were ‘compiled’, but what compilation actually did and how it differed from interpretation, I couldn’t have said. Now, I could. I understand the layer of abstraction below the languages I usually work with.</p><p>But playing around with <a href="https://rust.godbolt.org">Godbolt</a> led me to realize that there is another layer of abstraction, below <em>that</em>, which I don’t understand, and that layer is the assembly language which a compiler such as Rust’s compiles its code into. My only experience with assembly languages, ironically, is from the various times pseudo-assembly languages have appeared in Advent of Code. I might read, now and then, about various interesting or concerning developments in CPU architecture, new features or vulnerabilities or both, but it’s all Greek to me. I’m simply too far removed.</p><p>I expect this will not be nearly as useful as learning Rust was, or learning C and C++ to a high level would have been. I suspect I could go my entire career without ever <em>needing</em> to write one line of assembly or machine code. I’m not doing this because I have any plan of programming in assembly languages <em>per se</em>. I’m dong this because I want to understand this layer of abstraction that higher-level languages are built on. I might not understand the machine opcodes nor the incredible optimizations the CPU does caching and streamlining and speculative execution and a whole host of other nuances, but I’d be one step closer to understanding those. I want one fewer gap in my knowledge.</p><p>So, the plan is to complete 2015’s Advent of Code in NASM (with x84-64 syntax) and Linux system calls, starting from a single template file and nothing else. No calls to libc, no prebuilt nasm libraries. If I want macros, I have to make them on my own. If I want to automate macro production, I’ll need to write my own compiler - and I’ll need to do it in assembly. No cheating.</p><p>My resources are:</p><ul><li><a href="https://software.intel.com/content/dam/www/public/us/en/documents/manuals/64-ia-32-architectures-software-developer-vol-1-manual.pdf">The Intel Architectures Software Development Manual</a>. Goes into extreme detail on all registers, instructions, opcodes, . It’s five thousand pages long, so a bit of a doorstop, but if I can’t find what I need to know about instructions or registers anywhere else, this manual <strong>will</strong> have it.<li><a href="https://userpages.cs.umbc.edu/chang/cs313.f04/nasmdoc/nasmdoc.pdf">NASM — The Netwide Assembler</a>. Details every feature of NASM circa 2003…which, aside from details specific to 64-bit architecture, seems to be enough to cover NASM circa 2025.<li>One template file.</ul><h1 id="the-template-file"><a href="https://github.com/leto/writing/blob/master/nasm/nasm.md?plain=1">The Template File</a></h1><p>The one template file I’m allowing is to spare myself <em>some</em> pain. Back in 2021, it took four attempts before I could successfully read a file into a Rust string. But in NASM, when just starting out…it would take me many, <em>many</em> more than just four attempts. Without some kind of working “Hello World!” program to start with, I could be spinning my wheels for ages reading the two manuals I have and trying to figure out what a working NASM program even looks like.</p><p>So, I found an example for reading a file and writing its contents, written as an example by <a href="https://duke.leto.net/outline.html">Jonathan “Duke” Leto</a>, in 2000. He has <a href="https://github.com/letolabs/nasm">an entire GitHub repo of assembly tools, tricks, macros, and other helpful things</a>, but I am not allowed to use or look at them yet, not even the hardware / operating system portability code. And, to make things at least somewhat fair, I spent the time to comment every single line, to make sure that I’m not using anything I don’t thoroughly understand.</p><pre><code class="language-x86asm">section .data
+	bufsize: dd 0x2000		;	8192 in hexadecimal.  Optimal buffer size for reading, apparently.
+	newline: db 0x0A		;	ASCII code for a newline.
+	
+section .bss
+	buf: resb 0x2000		;	Reserves 8192 bytes, without assigning them.
+
+section .text
+global _start
+_start:
+	pop ebx					;	argc: The argument count.  Will always be 2, if we're only reading one file.
+	pop ebx					;	argv[0]: The first argument, always the program name.
+	pop ebx					;	argv[1]: The second argument, the filename.
+
+file_descriptor:
+	mov eax, 5				;	System call number for Open is 5.
+							;	Filename is already in ebx.
+	mov ecx, 0				;	Flag for 'read-only', since we are not modifying the file.
+	int 0x80				;	Call the kernel to open the file.
+
+	test eax, eax			;	Tests file descriptor (in this case, we care about the first bit).
+	jns file_load			;	If the file descriptor does not have the sign flag, jump to file_load.
+
+	mov ebx, eax			;	We didn't jump, so there must have been an error.
+	mov eax, 1				;	System call number for Exit is 1.
+							;	Return flag is already set to ebx
+	int 0x80
+
+file_load:
+	mov ebx, eax			;	Move file descriptor into ebx.
+	mov eax, 3				;	System call number for Read is 3.
+							;	Filename is already in ebx.
+	mov ecx, buf			;	Move the *address* of buf to ecx.
+	mov edx, bufsize		;	Move the *address* of bufsize to edx.
+	int 0x80				;	Call the kernel to read the file.
+
+	test eax, eax			;	Test the number of bytes which were successfully read.
+							;	TODO: cmp eax, bufsize 
+							;	TODO: jz nextfile
+							;	TODO: js error
+
+cat:
+	mov edx, eax			;	Save the number of bytes actually read in edx.
+	mov eax, 4				;	System call for Write is 4.
+	mov ebx, 1				;	Flag for STDOUT is 1.
+							;	ecx already has the address of the buffer.
+							;	edx already has the address of the number of bytes read.
+	int 0x80				;	Call the kernel to write out the file.
+
+print_newline:
+	mov eax, 4				;	System call for Write is 4.
+	mov ebx, 1				;	Flag for STDOUT is 1.
+	mov ecx, newline		;	Move the *address* of the newline into `ecx`.
+	mov edx, 1				;	We're only printing one byte.
+	int 0x80
+
+exit:
+	mov eax, 1				;	System call for Exit is 1.
+	mov ebx, 0				;	Returns 0.
+	int 0x80				;	Call the kernel to exit the program.
+
+</code></pre><p>This file, and the others I will be using throughout the series, can be saved to <code class="language-plaintext highlighter-rouge">path/to/file.asm</code> and assembled with:</p><div class="language-plaintext highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre><td class="rouge-code"><pre>nasm -f elf64 path/to/file.asm
+ld -melf_x86_64 path/to/file.o -o path/to/file.bin
+path/to/file.bin args
+</pre></table></code></div></div><p>All in all, I don’t regret skipping ahead; it would not have been easy to figure most of this out without <em>something</em> to work from. And now, we can work on solving the actual problem.</p><h1 id="version-10---solving-the-problem">Version 1.0 - <a href="https://www.adventofcode.com/2015/day/1">Solving the Problem</a></h1><p>The problem: you’re given a number of parentheses, with <code class="language-plaintext highlighter-rouge">(</code> representing <code class="language-plaintext highlighter-rouge">+1</code> and <code class="language-plaintext highlighter-rouge">)</code> representing <code class="language-plaintext highlighter-rouge">-1</code>.</p><ul><li>Part 1: Starting at <code class="language-plaintext highlighter-rouge">0</code> and the first parenthesis, find the total.<li>Part 2: Find the earliest instance in which the subtotal (starting at <code class="language-plaintext highlighter-rouge">0</code> and the first parenthesis) is <code class="language-plaintext highlighter-rouge">-1</code>.</ul><h2 id="version-01-printing-file-size-backwards">Version 0.1: Printing File Size (Backwards)</h2><p>Right now, we have a file, whose contents get stored in memory in the <code class="language-plaintext highlighter-rouge">buf</code> variable, and then printed to STDOUT. But not <em>all</em> of its contents, necessarily - just the first 8192 bytes. To find out if 8192 bytes is enough for this problem, let’s print the number of bytes read instead of the contents.</p><p>There’s just one problem. The number of bytes read (whose address is currently stored in the four-byte register <code class="language-plaintext highlighter-rouge">edx</code>) is in base-256, and we can’t read base-256. We need to convert the address into a sequence of bytes we can actually read. To convert a number into base 10, we integer-divide that number by 10 to get a quotient and remainder, save the remainder, and continue dividing the resulting quotient by 10 until the quotient is zero. The list of remainders is the list of digits, stored back-to-front. So, let’s replace <code class="language-plaintext highlighter-rouge">cat:</code> with <code class="language-plaintext highlighter-rouge">print_len:</code>, requiring only one change in <code class="language-plaintext highlighter-rouge">section .bss</code>:</p><pre><code class="language-x86asm">section .bss
+...
+	digit: resb 1			;	Reserves 1 byte of memory for the digit.
+
+...
+
+file_load:
+	...
+
+print_len:
+	mov edx, 0				;	Clear `edx`, since `edx` acts as the top 32 bits for 'div'.
+	mov ebx, 10				;	Move the dividend into a register; won't work as a raw 'div 10' command, even though 'add' works that way.
+	div ebx					;	Divide the buffer size by the dividend (10).  Quotient is stored in `eax`, remainder is stored in `edx`.
+	add edx, 0x30			;	Add 0x30 (48 in decimal) to convert the remainder into an ASCII digit from 0-9.
+
+	mov esi, eax			;	Move the quotient into another register, so we can use `eax` for the system call.
+	mov byte[digit], dl		;	Move the lowest byte of the remainder out of the register, into the holding cell.
+
+	mov eax, 4				;	System call for Write is 4.
+	mov ebx, 1				;	Flag for STDOUT is 1.
+	mov ecx, digit			;	Buffer is pointing to the holding cell for the digit.
+	mov edx, 1				;	Only one byte.
+	int 0x80				;	Call the kernel to write out the base-10 digit of the file length.
+
+	mov eax, esi			;	Bring the quotient back into `eax`.
+	test eax, eax			;	Tests how large the quotient is, setting ZF to whether `eax` is 0.
+	jnz print_len			;	If the quotient is not yet 0 (checking ZF), continue printing digits.
+</code></pre><div class="language-plaintext highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre><td class="rouge-code"><pre>$ day_01.bin Inputs/Day_01_Input.txt
+0007
+</pre></table></code></div></div><p>The logic is fairly simple. After file_load, the number of bytes read successfully is already stored in <code class="language-plaintext highlighter-rouge">eax</code>. We repeatedly divide <code class="language-plaintext highlighter-rouge">eax</code> by 10, and each time, we take the remainder from <code class="language-plaintext highlighter-rouge">edx</code>, add 48 to make it an ASCII digit, store that digit in memory, and then write that digit from memory. This, of course, means that we’re printing backwards; a result of <code class="language-plaintext highlighter-rouge">0007</code> means that the file actually has <code class="language-plaintext highlighter-rouge">7000</code> bytes, and a quick check confirms that it does. We can now confirm that, with less than 8192 bytes in the file, we have everything we need to solve the problem.</p><h2 id="version-02-printing-file-size-forwards">Version 0.2: Printing File Size (Forwards)</h2><p>But being only able to print backwards feels like giving up too soon. We want to print the most significant digit first, and since we won’t know the most significant digit until the end of the computation, we need to compute every digit first. Fortunately, the <strong>stack</strong> provides a natural way to do that. The stack, as Leto explains:</p><blockquote><p>“The stack” as it is ominously referred too, is just your RAM. That’s it. It is your RAM organized in such a way, so that when you “push” something onto “the stack”, all you are doing is saving something in RAM. And when you “pop” something off of “The stack”, you are retrieving the last thing you put in, which is on the top.</p></blockquote><p>We’ll use a register, <code class="language-plaintext highlighter-rouge">edi</code>, to keep track of how many digits we’ve pushed onto the stack, and then pop that many digits off the stack afterwards.</p><pre><code class="language-x86asm">
+file_load:
+	...
+	mov edi, 0				;	Initialize `edi` to prepare for digit count.
+
+push_len:
+	mov edx, 0				;	Clear `edx`, since `edx` acts as the top 32 bits for 'div'.
+	mov ebx, 10				;	Move the dividend into a register; won't work as a raw 'div 10' command, even though 'add' works that way.
+	div ebx					;	Divide the buffer size by the dividend (10).  Quotient is stored in `eax`, remainder is stored in `edx`.
+	add edx, 0x30			;	Add 0x30 (48 in decimal) to convert the remainder into an ASCII digit from 0-9.
+
+	push edx				;	Push the entire register containing the remainder onto the stack.
+	inc edi					;	Increment the count.
+
+	test eax, eax			;	Tests how large the quotient is, setting ZF to whether `eax` is 0.
+	jnz push_len			;	If the quotient is not yet 0 (checking ZF), continue pushing digits onto the stack.
+
+print_len:
+	pop eax					;	Pop the digit off the stack into `eax`.
+	mov byte[digit], al		;	Move the digit (`al` is the lowest byte of `eax`) into the holding cell. 
+
+	mov eax, 4				;	System call for Write is 4.
+	mov ebx, 1				;	Flag for STDOUT is 1.
+	mov ecx, digit			;	Point to the holding cell.
+	mov edx, 1				;	Only one byte.
+	int 0x80				;	Call the kernel to write out the base-10 digit of the file length.
+
+	dec edi					;	One fewer digit in the count.
+	test edi, edi			;	Tests how many digits remain, setting ZF to whether `edi` is 0.
+	jnz print_len			;	If any digits remain, continue printing.
+</code></pre><div class="language-plaintext highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre><td class="rouge-code"><pre>$ day_01.bin Inputs/Day_01_Input.txt
+7000
+</pre></table></code></div></div><p>Success! We’re now printing out the decimal number of bytes in the correct direction.</p><h2 id="version-03-printing-file-size-macro">Version 0.3: Printing File Size (Macro)</h2><p>Since turning a number into its decimal representation seems like something we’ll be doing a lot, let’s use this opportunity to make our first <strong>macro</strong>. A macro is a piece of code that can be defined once and reused multiple times. It is defined by <code class="language-plaintext highlighter-rouge">%macro MACRONAME NUM_PARAMS</code> at the beginning and <code class="language-plaintext highlighter-rouge">%endmacro</code> at the end, and each parameter can be referenced within the macro as <code class="language-plaintext highlighter-rouge">%1</code>, <code class="language-plaintext highlighter-rouge">%2</code>, etc. We can still use labels for jumps, so long as they are prefaced with <code class="language-plaintext highlighter-rouge">%%</code>. When the assembler assembles the code, it will replace every invocation of a macro with its full text.</p><p>There’s one difficulty. The way we’re currently pulling digits off the stack, we need a <code class="language-plaintext highlighter-rouge">digit</code> pointer to point to the digit’s location in memory, after we’ve popped it from the stack and stored it in memory. But we can’t reserve the same variable name more than once in an assembly program, so if we define <code class="language-plaintext highlighter-rouge">digit</code> within the macro, we can’t call the macro more than once. If we define <code class="language-plaintext highlighter-rouge">digit</code> in <code class="language-plaintext highlighter-rouge">section .bss</code> <em>outside</em> the macro, we can call the macro again and again, but defining it outside the macro means that we can’t copy and paste - or <code class="language-plaintext highlighter-rouge">%include</code> - the macro from one file to another. Neither is ideal.</p><p>There may be a way to reserve local variables only inside macros, but there’s a much better way. Rather than pop the digit off the stack and put it in memory, we can use the <code class="language-plaintext highlighter-rouge">esp</code> register, which always points to the top of the stack. Then, <em>after</em> we print the digit, we pop the digit off the stack and ignore the result.</p><pre><code class="language-x86asm">section .macros
+
+%macro print_num 1
+	mov eax, %1					;	Moves the first parameter into `eax`.
+	mov esi, 0					;	Initialize `esi` to prepare for digit count.
+
+	%%push_dig:
+		mov edx, 0				;	Clear `edx`, since `edx` acts as the top 32 bits for 'div'.
+		mov ebx, 10				;	Move the dividend into a register; won't work as a raw 'div 10' command, even though 'add' works that way.
+		div ebx					;	Divide the buffer size by the dividend (10).  Quotient is stored in `eax`, remainder is stored in `edx`.
+		add edx, 0x30			;	Add 0x30 (48 in decimal) to convert the remainder into an ASCII digit from 0-9.
+
+		push edx				;	Push the entire register containing the remainder onto the stack.
+		inc esi					;	Increment the count.
+
+		test eax, eax			;	Tests how large the quotient is, setting ZF to whether `eax` is 0.
+		jnz %%push_dig			;	If the quotient is not yet 0 (checking ZF), continue pushing digits onto the stack.
+
+	%%print_dig:
+		mov eax, 4				;	System call for Write is 4.
+		mov ebx, 1				;	Flag for STDOUT is 1.
+		mov ecx, esp			;	Point to the top of the stack.
+		mov edx, 1				;	Only one byte.
+		int 0x80				;	Call the kernel to write out the base-10 digit of the file length.
+
+		pop eax					;	Pop the digit off the stack into `eax`
+		dec esi					;	One fewer digit in the count.
+		test esi, esi			;	Tests how many digits remain, setting ZF to whether `esi` is 0.
+		jnz %%print_dig			;	If any digits remain, continue printing.
+%endmacro
+
+%macro print_newline 0
+	mov eax, 4				;	System call for Write is 4.
+	mov ebx, 1				;	Flag for STDOUT is 1.
+	mov ecx, newline		;	Move the *address* of the newline into `ecx`.
+	mov edx, 1				;	We're only printing one byte.
+	int 0x80
+%endmacro
+
+...
+
+file_load:
+	...
+	print_num eax			;	Print `eax`, which is this case contains the number of bytes read from the file.
+							;	As a side effect, this overwrites the values of registers `eax` through `edi`.
+	print_newline
+</code></pre><p>Having <code class="language-plaintext highlighter-rouge">print_num</code> as a macro is liberating. I can now directly see - in decimal - the value of any register or double-word of memory. It’s certainly not costless, it only works with 32-bit values, and wiping out the values of the first five registers means that I can’t simply throw this into the middle of calculations at will to debug. But it means that I can, reliably, pass information from inside the program to outside. It’s a good step.</p><h2 id="version-10-counting-parentheses">Version 1.0: Counting Parentheses</h2><p>Going back to the end of <code class="language-plaintext highlighter-rouge">file_load</code>, we currently have the number of bytes actually read from the file stored in the register <code class="language-plaintext highlighter-rouge">eax</code>. We can store that value in <code class="language-plaintext highlighter-rouge">bufsize</code>, since the variable’s already allocated, and then count bytes from the beginning of <code class="language-plaintext highlighter-rouge">buf</code> until we’ve iterated through <code class="language-plaintext highlighter-rouge">bufsize</code> bytes.</p><pre><code class="language-x86asm">file_load:
+	...
+	mov [bufsize], eax		;	Move the number of bytes actually read into 'bufsize'.
+	mov eax, 0				;	Initialize the current paren total in `eax` to 0, for part 1.
+	mov esi, 0				;	Initialize the pointer offset in `esi` to 0.
+	
+parse_file:
+	cmp esi, [bufsize]		;	Check if we've run out of bytes.
+	je done					;	If we have, exit the loop.
+	
+	mov bl, [buf+esi]		;	Move the current char, defined by original buffer and offset, into the lowest byte of `ebx`.
+	inc esi					;	Increment the pointer offset.
+	cmp ebx, 0x29			;	Compare the current char to the ASCII offset for ')'.
+	je right				;	Skip the evaluation of 'left' if it's a right paren.
+
+	left:
+		inc eax				;	Increment the current paren total, for part 1.
+		jmp parse_file		;	Continue reading the file.
+	right:
+		dec eax				;	Decrement the current paren total, for part 1.
+		jmp parse_file		;	Continue reading the file.
+
+done:
+	print_num eax			;	Print part 1: the final paren total.
+	print_newline
+</code></pre><div class="language-plaintext highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre><td class="rouge-code"><pre>$ day_01.bin Inputs/Day_01_Input.txt
+280
+</pre></table></code></div></div><p>Part 1 solved!</p><p>Well, by happenstance. My answer happened to be positive, but there’s no reason it has to be. If I were to flip <code class="language-plaintext highlighter-rouge">left</code> and <code class="language-plaintext highlighter-rouge">right</code> in that code, I’d get:</p><div class="language-plaintext highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre><td class="rouge-code"><pre>$ day_01.bin Inputs/Day_01_Input.txt
+4294967016
+</pre></table></code></div></div><p>That corresponds to <code class="language-plaintext highlighter-rouge">2^32 - 280</code>, since right now my macro has no way of interpreting the two’s complement representation. But, luck is good enough to get the star, so let’s keep going.</p><h2 id="version-11-first-time-to-basement">Version 1.1: First Time to Basement</h2><p>At every step, we’re storing our current location in <code class="language-plaintext highlighter-rouge">eax</code> and the step count in <code class="language-plaintext highlighter-rouge">esi</code>. We’re using <code class="language-plaintext highlighter-rouge">ebx</code> to analyze the current character and decide what action to take. That leaves <code class="language-plaintext highlighter-rouge">ecx</code>, <code class="language-plaintext highlighter-rouge">edx</code>, <code class="language-plaintext highlighter-rouge">edi</code>, and <code class="language-plaintext highlighter-rouge">ebp</code> to work with. The first two of those are used in <code class="language-plaintext highlighter-rouge">print_num</code>, but the second two are not, which means we can store data in either one of those registers, print <code class="language-plaintext highlighter-rouge">eax</code> at the end for part 1, and then print the other register for part 2, without having to push and pop the answer for part 2 on and off the stack. Checking whether <code class="language-plaintext highlighter-rouge">eax</code> is equal to -1 is easy enough; all we need now is a way to only save the step count from <code class="language-plaintext highlighter-rouge">esi</code> on the <em>first</em> visit, and none of the subsequent ones.</p><pre><code class="language-x86asm">file_load:
+	...
+	mov [bufsize], eax		;	Move the number of bytes actually read into 'bufsize'.
+	mov eax, 0				;	Initialize the current paren total in `eax` to 0, for part 1.
+	mov edi, 0				;	Initialize the position of the first basement visit to 0, for part 2.
+
+	mov esi, 0				;	Initialize the pointer offset in `esi` to 0.
+	
+parse_file:
+	cmp esi, [bufsize]		;	Check if we've run out of bytes.
+	je done					;	If we have, exit the loop.
+	
+	mov bl, [buf+esi]		;	Move the current char, defined by original buffer and offset, into the lowest byte of `ebx`.
+	inc esi					;	Increment the pointer offset.
+	cmp ebx, 0x29			;	Compare the current char to the ASCII offset for ')'.
+	je right				;	Skip the evaluation of 'left' if it's a right paren.
+
+	left:
+		inc eax				;	Increment the current paren total, for part 1.
+		jmp part_2			;	Go to part 2.
+	right:
+		dec eax				;	Decrement the current paren total, for part 1.
+		jmp part_2			;	Go to part 2.  Not strictly necessary, but makes the code easier for me to follow.
+
+	part_2:
+		cmp eax, -1			;	Check if we're at -1.
+		jne parse_file		;	If we're not at -1, continue reading the file.
+		test edi, edi		;	If we are at -1, compare `edi` against itself.  We can never be at -1 at position 0.
+		jnz parse_file		;	If `edi` is not zero, then we've already set it, meaning we're visiting the basement again and don't want to record our position.
+		mov edi, esi		;	If `edi` *is* zero, then this is the first time we've been here.  Set `edi` to our current location.
+
+	jmp parse_file			;	Continue reading the file.
+
+done:
+	print_num eax			;	Print part 1: the final paren total.
+	print_newline			;	Space things out.
+	print_num edi			;	Print part 2: the first basement visit.  We conveniently don't use `edi` in `print_num`, so we don't have to save `edi` on the stack.
+
+exit:
+	mov eax, 1				;	System call for Exit is 1.
+	mov ebx, 0				;	Returns 0.
+	int 0x80				;	Call the kernel to exit the program.
+</code></pre><div class="language-plaintext highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre><td class="rouge-code"><pre>$ day_01.bin Inputs/Day_01_Input.txt
+280
+1797
+</pre></table></code></div></div><p>Both stars acquired!</p><h1 id="version-20-solving-the-problem-less-badly">Version 2.0: Solving The Problem Less Badly</h1><p>This code, to put plainly, is bad. It works, for my specific input, but there are a lot of things I don’t like about it:</p><ul><li>The program doesn’t use 64-bit mode, so I’m not just giving up register <em>size</em>, I’m giving up registers <code class="language-plaintext highlighter-rouge">r8</code> through <code class="language-plaintext highlighter-rouge">r15</code>.<li><code class="language-plaintext highlighter-rouge">print_num</code> overrides all register values, making it useless mid-loop.<li><code class="language-plaintext highlighter-rouge">print_num</code> can’t handle negative numbers.<li><code class="language-plaintext highlighter-rouge">file_load</code> can’t handle files larger than one buffer size.<li>There’s no way to know how long the program took to run.<li>There’s no rhyme or reason to which registers I use for what purpose.</ul><p>Let’s tackle these in order before we consider the problem solved.</p><h2 id="version-21-64-bit-mode">Version 2.1: 64-Bit Mode</h2><p>In theory, this is the easiest change to make; NASM supports <code class="language-plaintext highlighter-rouge">BITS 16/32/64</code> as command flags in front of the program. Trying it, we get some errors:</p><div class="language-plaintext highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre><td class="rouge-code"><pre>$ nasm -f elf day_01/day_01.asm
+day_01/day_01.asm:57: error: instruction not supported in 64-bit mode
+day_01/day_01.asm:58: error: instruction not supported in 64-bit mode
+day_01/day_01.asm:59: error: instruction not supported in 64-bit mode
+day_01/day_01.asm:115: error: instruction not supported in 64-bit mode
+day_01/day_01.asm:19: ... from macro `print_num' defined here
+day_01/day_01.asm:115: error: instruction not supported in 64-bit mode
+day_01/day_01.asm:32: ... from macro `print_num' defined here
+day_01/day_01.asm:117: error: instruction not supported in 64-bit mode
+day_01/day_01.asm:19: ... from macro `print_num' defined here
+day_01/day_01.asm:117: error: instruction not supported in 64-bit mode
+day_01/day_01.asm:32: ... from macro `print_num' defined here
+</pre></table></code></div></div><p>Checking the code, these line numbers represent every single time we’ve pushed something onto or popped something off the stack. So, that sounds like all stack memory access must be done with 64-bit operands. But when we try replacing each call:</p><div class="language-plaintext highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre><td class="rouge-code"><pre>$ day_01.bin Inputs/Day_01_Input.txt
+
+</pre></table></code></div></div><p>The output is empty. The code doesn’t crash or segfault, and the assembler doesn’t refuse to compile it, so it’s probably doing <em>something</em>. What happened?</p><p>Reading Intel’s documentation, it seems that 64-bit mode expects the stack increment in <code class="language-plaintext highlighter-rouge">push</code> and <code class="language-plaintext highlighter-rouge">pop</code> to be consistent; if we’re pointing to a location on the stack, that location is assumed to be the start of a 64-bit number. How this works, I don’t entirely understand, but since system interrupts can only take 32-bit arguments, we need to find some equivalent which takes 64-bit arguments.</p><p>That equivalent can be found in <code class="language-plaintext highlighter-rouge">man syscall</code>, which explains how system calls are done in Linux. In the section <strong>Architecture calling conventions</strong>, the man page lists two tables showing how the instructions differ from one architecture to the next. Up until now, we’ve been in 32-bit mode of Intel, known as i386, since that was the only mode available in 1999 when Jonathan Leto published his NASM template file. What we <em>want</em> to do is use the x86-64 architecture.</p><div class="language-plaintext highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre><td class="rouge-code"><pre>Arch/ABI    Instruction           System  Ret  Ret  Error    Notes
+									call #  val  val2
+───────────────────────────────────────────────────────────────────
+...
+i386        int $0x80             eax     eax  edx  -
+...
+x86-64      syscall               rax     rax  rdx  -        5
+</pre></table></code></div></div><div class="language-plaintext highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre><td class="rouge-code"><pre>Arch/ABI      arg1  arg2  arg3  arg4  arg5  arg6  arg7  Notes
+──────────────────────────────────────────────────────────────
+...
+i386          ebx   ecx   edx   esi   edi   ebp   -
+...
+x86-64        rdi   rsi   rdx   r10   r8    r9    -
+</pre></table></code></div></div><p>So, the change should be pretty easy. Swap out <code class="language-plaintext highlighter-rouge">eax</code>, <code class="language-plaintext highlighter-rouge">ebx</code>, <code class="language-plaintext highlighter-rouge">ecx</code>, and <code class="language-plaintext highlighter-rouge">edx</code> in the read and write calls for <code class="language-plaintext highlighter-rouge">rax</code>, <code class="language-plaintext highlighter-rouge">rdi</code>, <code class="language-plaintext highlighter-rouge">rsi</code>, and <code class="language-plaintext highlighter-rouge">rdx</code>, respectively. Then, we call <code class="language-plaintext highlighter-rouge">syscall</code> instead of <code class="language-plaintext highlighter-rouge">int 0x80</code>, and we’re good to go.</p><pre><code class="language-x86asm">section .data
+	a: db 0x61
+
+section.text
+global _start 
+_start:
+	mov rax, 4				;	System call for Write is 1.
+	mov rdi, 1				;	Flag for STDOUT is 1.
+	mov rsi, a				;	Point to the letter 'a'.
+	mov rdx, 1				;	Only one byte.
+	syscall					;	Call the kernel and print the letter 'a'.
+
+exit:
+	mov eax, 1				;	System call for Exit is 1.
+	mov ebx, 0				;	Returns 0.
+	int 0x80				;	Call the kernel to exit the program.
+</code></pre><div class="language-plaintext highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre><td class="rouge-code"><pre>$ day_01.bin Inputs/Day_01_Input.txt
+
+</pre></table></code></div></div><p>Nothing happens.</p><p>It turns out that the system call for write is different for <code class="language-plaintext highlighter-rouge">syscall</code> than it is for interrupts. I actually don’t know where to look to find these system calls on my machine itself; fortunately, Ryan Chapman <a href="https://blog.rchapman.org/posts/Linux_System_Call_Table_for_x86_64/">maintains a table of <code class="language-plaintext highlighter-rouge">syscall</code> arguments here</a>. <code class="language-plaintext highlighter-rouge">sys_read</code> is 0, <code class="language-plaintext highlighter-rouge">sys_write</code> is 1, <code class="language-plaintext highlighter-rouge">sys_open</code> is 2, and <code class="language-plaintext highlighter-rouge">sys_exit</code> is 60; those should be all we need for this particular problem.</p><pre><code class="language-x86asm">section .data
+	a: db 0x61
+
+section.text
+global _start 
+_start:
+	mov rax, 1				;	syscall for Write is 1.
+	mov rdi, 1				;	Flag for STDOUT is 1.
+	mov rsi, a				;	Point to the letter 'a'.
+	mov rdx, 1				;	Only one byte.
+	syscall					;	Call the kernel and print the letter 'a'.
+
+exit:
+	mov rax, 60				;	syscall for Exit is now 60.
+	mov rdi, 0				;	Returns 0.
+	syscall					;	Call the kernel to exit the program.
+</code></pre><div class="language-plaintext highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre><td class="rouge-code"><pre>$ day_01.bin Inputs/Day_01_Input.txt
+a
+</pre></table></code></div></div><p>We can print again! Let’s bring back the <code class="language-plaintext highlighter-rouge">print_num</code> macro, change everything to use 64-bit registers, and test it out.</p><pre><code class="language-x86asm">BITS 64
+
+section .macros
+%macro print_num 1
+	mov rax, %1					;	Moves the first parameter into `eax`.
+	mov rcx, 0					;	Initialize `rcx` to prepare for digit count.
+
+	%%push_dig:
+		mov rdx, 0				;	Clear `rdx`, since `rdx` acts as the top 64 bits for 'div'.
+		mov rbx, 10				;	Move the dividend into a register; won't work as a raw 'div 10' command, even though 'add' works that way.
+		div rbx					;	Divide the buffer size by the dividend (10).  Quotient is stored in `rax`, remainder is stored in `rdx`.
+		add rdx, 0x30			;	Add 0x30 (48 in decimal) to convert the remainder into an ASCII digit from 0-9.
+
+		push rdx				;	Push the entire register containing the remainder onto the stack.
+		inc rcx					;	Increment the count.
+
+		test rax, rax			;	Tests how large the quotient is, setting ZF to whether `rax` is 0.
+		jnz %%push_dig			;	If the quotient is not yet 0 (checking ZF), continue pushing digits onto the stack.
+
+	%%print_dig:
+		mov rax, 1				;	System call for Write is 4.
+		mov rdi, 1				;	Flag for STDOUT is 1.
+		mov rsi, rsp			;	Point to the top of the stack.
+		mov rdx, 1				;	Only one byte.
+		syscall					;	Call the kernel to write out the base-10 digit.
+
+		pop rax					;	Pop the digit off the stack into `rax`
+		dec rcx					;	One fewer digit in the count.
+		test rcx, rcx			;	Tests how many digits remain, setting ZF to whether `rcx` is 0.
+		jnz %%print_dig			;	If any digits remain, continue printing.
+%endmacro
+
+section .text
+global _start 
+_start:
+	print_num 47				;	Print a two-digit number.  How hard could it be?
+
+exit:
+	mov rax, 60					;	syscall for Exit is now 60.
+	mov rdi, 0					;	Returns 0.
+	syscall						;	Call the kernel to exit the program.
+</code></pre><div class="language-plaintext highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre><td class="rouge-code"><pre>$ day_01.bin Inputs/Day_01_Input.txt
+47����fy���
+6k���
+3Gp�����+@t��
+             1BQct�k����
+,C`~���BMUn�����;au����Eh���!�d@8
+                                        �
+�������/bt1tLaIGlHio2mu2aP-1xI/_BRo_DcgfktxMFeaMMN1DSIicTAulma.THhn-ciatD_8O//oa__8T/resFmEEnseLASST4OabW/rntesLdGNPfktEYGTr/ug0Hr/mrD2C/o/ec-r-91c_SdtodMI=eFAURd:6p:53;d0;i3=at:24;r*;c*;z*;4*;m:1x:17:1=.11r:;o*3=.;2*3=.;=.3=.3=.3=.3=.3=.;=.10w10d10j5=.;p50b50p50t50x50t3=.3z*;x*;g*12:1e50m50m3=.50w50r:0f50f50g:;f*;v*;f*;x*;=.;a*;d:0p:0g:;v*;u:0s6UENsNOIf8deG5MOdG=asO/s SCeNp/LINUR-rT/r/l-ytE|iiSd__/rst0kYVTEUA=aM=_MUMYRtLPrcrI/a16/o/ec-r-91c/aeU6ldlodawtxsi-utiRD/0Z_=l=TRE9DShmbas//r/poA1/v/m/noai/i/lndmhib/u/m/bebe.ililnb/i/elmpodt/vnsdo:acGO-ciI__=l:BIAuhs/_DPIGCKEhlseCCURAe01y
+</pre></table></code></div></div><p>Something has gone horribly wrong.</p><h2 id="version-22-first-stack-corruption">Version 2.2: First Stack Corruption</h2><p>This isn’t quite as bad as it looks. The first two digits - <code class="language-plaintext highlighter-rouge">47</code>, in this case - are correct, which means that those numbers were pushed to the stack successfully, passed to <code class="language-plaintext highlighter-rouge">write</code> successfully, and popped from the stack successfully. Somewhere along the way, <code class="language-plaintext highlighter-rouge">rcx</code> was set to a value which was far too high, and remained that way until it chanced to become 0 again. Since we never explicitly changed <code class="language-plaintext highlighter-rouge">rcx</code>, the change must have been a side effect of something else we did…and therefore, using a different register might avoid that side effect. Trying out all the different registers (or at least, the ones we’re not already using), we can map when this happens and when it doesn’t:</p><div class="table-wrapper"><table><thead><tr><th>Register<th>Stack Corrupted?<tbody><tr><td>rax<td>-<tr><td>rbx<td>-<tr><td>rcx<td>Yes<tr><td>rdx<td>-<tr><td>rsi<td>-<tr><td>rdi<td>-<tr><td>rbp<td>-<tr><td>r8<td>Yes<tr><td>r9<td>No<tr><td>r10<td>No<tr><td>r11<td>Yes<tr><td>r12<td>No<tr><td>r13<td>No<tr><td>r14<td>No<tr><td>r15<td>No</table></div><p>It seems that <code class="language-plaintext highlighter-rouge">rcx</code>, <code class="language-plaintext highlighter-rouge">r8</code>, and <code class="language-plaintext highlighter-rouge">r11</code> all produce this stack corruption error, while none of the others do. By process of elimination, we can blame this on <code class="language-plaintext highlighter-rouge">syscall</code>; none of the other operations we use modify any of those registers. But why? And how would we know <em>before</em> making this mistake? Intel’s documentation on <code class="language-plaintext highlighter-rouge">syscall</code> does explain that the instruction overrides (or <strong>clobbers</strong>) <code class="language-plaintext highlighter-rouge">rcx</code> and <code class="language-plaintext highlighter-rouge">r11</code>, on a close read:</p><blockquote><p>SYSCALL invokes an OS system-call handler at privilege level 0. It does so by loading RIP from the IA32_LSTAR MSR <strong>(after saving the address of the instruction following SYSCALL into RCX)</strong>. … SYSCALL also <strong>saves RFLAGS into R11</strong> and then masks RFLAGS…</p></blockquote><p>But even Intel doesn’t mention that <code class="language-plaintext highlighter-rouge">syscall</code> also clobbers <code class="language-plaintext highlighter-rouge">r8</code>, and the <code class="language-plaintext highlighter-rouge">man</code> page for <code class="language-plaintext highlighter-rouge">syscall</code> is sufficiently removed from the raw machine code that it likewise doesn’t mention it. Various search results mention <code class="language-plaintext highlighter-rouge">r8</code>, but I genuinely don’t know how I could have figured that out from even diligent study of the thousands of pages in the manual.</p><p>This is what makes programming in Assembly so difficult for novices like me - and probably what makes programming in general so difficult for those new to it. Learning a programming language - or any language - involves maddening numbers of exceptions and special cases and violations of the Principle of Least Surprise; different languages might be better or worse in this regard, but roadblocks will be with us always.</p><p>And in such cases, the best thing to do seems to be to systematically map out the error, and search the Internet to see if anyone else has encountered the same problem. It’s not a great solution, but I think it’s the best approach a beginner can take.</p><h2 id="version-23-64-bit-mode">Version 2.3: 64-Bit Mode</h2><p>Getting back to the code, we can change the counter register in <code class="language-plaintext highlighter-rouge">print_num</code> to <code class="language-plaintext highlighter-rouge">r15</code> and avoid the problem. So, let’s incorporate that back into the program, and change all of the calls to use the proper 64-bit registers.</p><p>The major stumbling block for this bit of conversion was in memory management, in .data. NASM by default will place all constants right next to each other, so, for instance:</p><pre><code class="language-x86asm">section .data
+	tab 		db 0x09		;	ASCII code for a tab.
+	newline		db 0x10		;	ASCII code for a newline.
+	right_paren	db 0x29		;	ASCII code for a right paren ')'.
+
+	bufsize		dw 0x2000	;	8192 in hexadecimal.  Optimal buffer size for reading, apparently.
+</code></pre><p>will cause <code class="language-plaintext highlighter-rouge">tab</code>, <code class="language-plaintext highlighter-rouge">newline</code>, <code class="language-plaintext highlighter-rouge">right_paren</code>, and <code class="language-plaintext highlighter-rouge">bufsize</code> to all be packed side-by-side. This isn’t a problem in and of itself, but when reading a constant into a buffer, the constant is read based on the size of the <em>destination</em>, not the size of the <em>source</em>. <code class="language-plaintext highlighter-rouge">mov rdx, [bufsize]</code>, for instance, moves not two bytes but eight bytes into <code class="language-plaintext highlighter-rouge">rdx</code>. There are two solutions to this:</p><ul><li>Define all constants to be in multiples of 64-bit numbers (quadwords), and only use full registers.<li>Define all constants to be their actual sizes, and use the appropriately-sized register for that constant (e.g. <code class="language-plaintext highlighter-rouge">rdx</code> for 64-bit quadwords, <code class="language-plaintext highlighter-rouge">edx</code> for 32-bit doublewords, <code class="language-plaintext highlighter-rouge">dx</code> for 16-bit words, and <code class="language-plaintext highlighter-rouge">dl</code> for 8-bit bytes).</ul><p>In this code, I use the former option; it’s less efficient for memory, but with a handful of bytes, memory isn’t a huge concern. Having a single rule makes writing the code far easier.</p><pre><code class="language-x86asm">BITS 64
+
+section .macros
+%macro print_char 1
+	mov rax, 1				;	System call for Write is 1.
+	mov rdi, 1				;	Flag for STDOUT is 1.
+	mov rsi, %1				;	Move the parameter passed in to `rsi`.
+	mov rdx, 1				;	Only one byte.
+	syscall					;	Call the kernel to write out the base-10 digit.
+%endmacro
+
+%macro print_num 1
+	mov rax, %1				;	Moves the first parameter into `rax`.
+	mov r10, 0				;	Initialize `r10` to prepare for digit count.
+
+	%%push_dig:
+		mov rdx, 0			;	Clear `rdx`, since `rdx` acts as the top 64 bits for 'div'.
+		mov rbx, 10			;	Move the dividend into a register; won't work as a raw 'div 10' command, even though 'add' works that way.
+		div rbx				;	Divide the buffer size by the dividend (10).  Quotient is stored in `rax`, remainder is stored in `rdx`.
+		add rdx, 0x30		;	Add 0x30 (48 in decimal) to convert the remainder into an ASCII digit from 0-9.
+
+		push rdx			;	Push the entire register containing the remainder onto the stack.
+		inc r10				;	Increment the count.
+
+		test rax, rax		;	Tests how large the quotient is, setting ZF to whether `rax` is 0.
+		jnz %%push_dig		;	If the quotient is not yet 0 (checking ZF), continue pushing digits onto the stack.
+
+	%%print_dig:
+		mov rax, 1			;	System call for Write is 1.
+		mov rdi, 1			;	Flag for STDOUT is 1.
+		mov rsi, rsp		;	Point to the top of the stack.
+		mov rdx, 1			;	Only one byte.
+		syscall				;	Call the kernel to write out the base-10 digit.
+
+		pop rax				;	Pop the digit off the stack into `rax`
+		dec r10				;	One fewer digit in the count.
+		test r10, r10		;	Tests how many digits remain, setting ZF to whether `r10` is 0.
+		jnz %%print_dig		;	If any digits remain, continue printing.
+%endmacro
+
+section .data
+	tab 		dq 0x09		;	ASCII code for a tab.
+	newline		dq 0x10		;	ASCII code for a newline.
+	right_paren	dq 0x29		;	ASCII code for a right paren ')'.
+
+	bufsize		dq 0x2000	;	8192 in hexadecimal.  Optimal buffer size for reading, apparently.
+	
+section .bss
+	buf			resb 0x2000	;	Reserves 8192 bytes for the filebuffer, without assigning them.
+
+section .text
+global _start 
+_start:
+	pop rdi					;	argc: The argument count.  Will always be 2, if we're only reading one file.
+	pop rdi					;	argv[0]: The first argument, always the program name.
+	pop rdi					;	argv[1]: The second argument, the filename.
+
+file_descriptor:
+	mov rax, 2				;	syscall for sys_open is now 2.
+							;	The filename is already in `rdi`.
+	mov rsi, 0				;	Flag for 'read-only', defined in fcntl.h.
+	syscall					;	Call the kernel to open the file.
+
+	test rax, rax			;	Tests file descriptor (in this case, we only care about the sign flag).
+	jns file_load			;	If the file descriptor does not have the sign flag, jump to file_load.
+
+
+	mov rdi, rax			;	We didn't jump, so there must have been an error.
+	mov rax, 0x3c			;	syscall for sys_exit is now 60.
+							;	Return flag is already set to `rdi`
+	syscall					;	Call the kernel to exit the program.
+
+file_load:
+	mov rdi, rax			;	Move file descriptor into `rdx`.
+	mov rax, 0				;	syscall for sys_read is now 0.
+							;	Filename is already in `rdi`.
+	mov rsi, buf			;	Move the *address* of buf to `rsi`.
+	mov dx, [bufsize]		;	Move the *address* of bufsize to `rdx`.
+	syscall					;	Call the kernel to read the file.
+
+	mov r8, rax				;	Move the number of bytes actually read into `r8`, to compare `rax` against.
+	mov rax, 0				;	Initialize the current paren total in `rax` to 0, for part 1.
+	mov rdi, 0				;	Initialize the position of the first basement visit to -1, for part 2.
+	mov rsi, 0				;	Initialize the pointer offset in `rsi` to 0.
+	mov rdx, 0				;	Clear `rdx`, so that we can use it for char comparison.
+
+file_parse:
+	cmp rsi, r8				;	Check if we've run out of bytes.
+	je done					;	If we have, exit the loop.
+
+	mov dl, [buf+rsi]		;	Move the current char, defined by original buffer and offset, into the lowest byte of `rdx`.
+	inc rsi					;	Increment the pointer offset.
+	cmp rdx, [right_paren]	;	Compare the current char to the ASCII offset for ')'.
+	je right				;	Skip the evaluation of 'left' if it's a right paren.
+
+	left:
+		inc rax				;	Increment the current paren total, for part 1.
+		jmp part_2			;	Go to part 2.
+	right:
+		dec rax				;	Decrement the current paren total, for part 1.
+		jmp part_2			;	Go to part 2.  Unnecessary, but makes the code easier for me to follow.
+
+	part_2:
+		cmp rax, -1			;	Check if the current position is -1.
+		jne file_parse		;	If we're not, continue reading the file.
+		test rdi, rdi		;	If w are at -1, compare `rdi` against itself.  A position of '0' can never be right.
+		jnz file_parse		;	If `rdi` is not zero, then we've already set it, and this is a duplicate visit.
+		mov rdi, rsi		;	If `rdi` *is* zero, then this is the first time we've been here.  Save the value.
+	
+	jmp file_parse			;	Continue reading the file.
+
+done:
+	mov r9, rdi				;	Move `rdi` into a spare register so that print_num and syscall won't clobber it.
+
+	print_num rax			;	Print part 1: the final paren total.
+	print_char tab			;	Space the answers apart.
+	print_num r9			;	Print part 2: the first basement visit.
+
+	print_char newline		;	Pad with a newline before exiting.
+
+exit:
+	mov rax, 0x3c			;	syscall for sys_exit is now 60.
+	mov rdi, 0				;	Returns 0.
+	syscall					;	Call the kernel to exit the program.
+</code></pre><div class="language-plaintext highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre><td class="rouge-code"><pre>$ day_01/day_01.bin Inputs/Day_01_Input.txt
+1797    280
+</pre></table></code></div></div><p>We are now in 64-bit mode, and I intend to stay there for the rest of Advent of Code.</p><h2 id="version-24-no-clobber-macros">Version 2.4: No-Clobber Macros</h2><p>We now have working 64-bit code and a working <code class="language-plaintext highlighter-rouge">print_num</code> macro. This macro means we can print the final result at the end of a function - but, due to clobbering, we can’t use it <em>inside</em> of a function, at least not if that function has anything important in any of the registers <code class="language-plaintext highlighter-rouge">print_num</code> calls, or any of the ones <code class="language-plaintext highlighter-rouge">syscall</code> clobbers. Having to awkwardly move <code class="language-plaintext highlighter-rouge">rdi</code> into <code class="language-plaintext highlighter-rouge">r9</code> in the preceding code is a good example of that, and not being able to debug is another good example. So, we need a way to preserve and restore the current state of the registers before calling the macro, and since we’ll be doing that for every register-altering macro, that preserve and restore functionality ought to be macros themselves.</p><p>The most obvious way is to make a macro which pushes every single register - except for <code class="language-plaintext highlighter-rouge">rbp</code> and <code class="language-plaintext highlighter-rouge">rsp</code>, since those are the stack pointers - onto the stack, and a second macro which pops them off the stack in reverse order.</p><pre><code class="language-x86asm">%macro save_regs 0
+	push rax
+	push rbx
+	push rcx
+	...
+	push r13
+	push r14
+	push r15
+%endmacro
+
+%macro load_regs 0		;	The caller must ensure that the stack is in the same state as during 'save_regs`.
+	pop r15					;	Registers are popped in reverse order.
+	pop r14
+	pop r13
+	...
+	pop rcx
+	pop rbx
+	pop rax
+%endmacro
+</code></pre><p>But there are three problems with the ‘save everything’ approach:</p><ul><li>It’s wasteful; most of these registers are not registers actually moved or changed by <code class="language-plaintext highlighter-rouge">print_num</code>, so saving them just wastes CPU cycles.<li>It prevents macros from saving or outputting values to registers if we want them to.<li>It prevents macros from accessing anything on the stack.</ul><p>Ideally, the save and restore macros would only save and restore the arguments we’re actually going to modify. Since there are 16 general-purpose registers (14 of them usable), we could overload <code class="language-plaintext highlighter-rouge">save_regs</code> and <code class="language-plaintext highlighter-rouge">load_regs</code> 13 times each:</p><pre><code class="language-x86asm">%macro save_regs 1
+	push %1
+%endmacro
+
+%macro save_regs 2
+	push %1
+	push %2
+%endmacro
+
+%macro save_regs 3
+	push %1
+	push %2
+	push %3
+%endmacro
+
+...
+</code></pre><p>But that also feels more inefficient than necessary, and doesn’t solve the general problem of wanting to save any intermediate states or values, not just registers. It’s possible to define one macro with a variable number of parameters; if that’s the case, parameter reference %0 will be equal to the parameter count. The NASM manual helpfully states:</p><blockquote><p>[Argument <code class="language-plaintext highlighter-rouge">%0</code>] can be used as an argument to <code class="language-plaintext highlighter-rouge">%rep</code> (see section 4.5) in order to iterate through all the parameters of a macro. Examples are given in section 4.3.6.</p></blockquote><p>And here, unfortunately, I read section 4.3.6, and it read:</p><blockquote><p><strong>4.3.6 <code class="language-plaintext highlighter-rouge">%rotate</code>: Rotating Macro Parameters</strong></p><p>Unix shell programmers will be familiar with the <code class="language-plaintext highlighter-rouge">shift</code> shell command, which allows the arguments passed to a shell script (referenced as <code class="language-plaintext highlighter-rouge">$1</code>, <code class="language-plaintext highlighter-rouge">$2</code> and so on) to be moved left by one place, so that the argument previously referenced as <code class="language-plaintext highlighter-rouge">$2</code> becomes available as <code class="language-plaintext highlighter-rouge">$1</code>, and the argument previously referenced as <code class="language-plaintext highlighter-rouge">$1</code> is no longer available at all.</p><p>NASM provides a similar mechanism, in the form of <code class="language-plaintext highlighter-rouge">%rotate</code>. As its name suggests, it differs from the Unix <code class="language-plaintext highlighter-rouge">shift</code> in that no parameters are lost: parameters rotated off the left end of the argument list reappear on the right, and vice versa.</p><p><code class="language-plaintext highlighter-rouge">%rotate</code> is invoked with a single numeric argument (which may be an expression). The macro parameters are rotated to the left by that many places. If the argument to <code class="language-plaintext highlighter-rouge">%rotate</code> is negative, the macro parameters are rotated to the right.</p><p>So a pair of macros to save and restore a set of registers might work as follows:</p><pre><code class="language-x86asm">%macro multipush 1−*
+	%rep %0
+		push %1
+	%rotate 1
+	%endrep
+%endmacro
+</code></pre></blockquote><p>Naturally, an equivalent <code class="language-plaintext highlighter-rouge">multipop</code> works exactly the same way, and even has the same argument order, thanks to <code class="language-plaintext highlighter-rouge">%rotate -1</code> going through the list in reverse order:</p><pre><code class="language-x86asm">%macro multipop 1−*
+	%rep %0
+	%rotate -1
+		push %1
+	%endrep
+%endmacro
+</code></pre><p>I did not go to the manual expecting or hoping for an immediate answer, and I’m trying to avoid copying others’ code as much as possible…but this solution is so obviously the right solution that I can’t unread it. So, let’s steal it - and, since we’re going to use these macros in virtually every program we right, let’s store them in an <code class="language-plaintext highlighter-rouge">includes.inc</code> file, which the NASM manual recommends.</p><pre><code class="language-x86asm">;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Macro:		multipush                                                    ;
+; Arguments:	Any number of discrete pieces of memory.                     ;
+; Description:	Push all arguments onto the stack, one-by-one.               ;
+; Comments:                                                                  ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+%macro multipush 1-*
+	%rep %0				;	Repeats the code %0 times, where %0 is the parameter count.
+		push %1			;	Pushes the first parameter onto the stack.
+	%rotate 1			;	Rotates the parameter list, so that %2 is now %1, etc.
+	%endrep				;	Ends the repetition.
+%endmacro
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Macro:		multipop                                                     ;
+; Arguments:	Any number of discrete pieces of memory.                     ;
+; Description:	Push all arguments onto the stack, one-by-one.               ;
+; Comments:		Arguments are given in the same order as 'multipush'.        ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+%macro multipop 1-*
+	%rep %0				;	Repeats the code %0 times, where %0 is the parameter count.
+	%rotate -1			;	Rotates the parameter list backwards, so that %n is now %1, %1 is now %2, etc.
+		pop %1			;	Pops the first parameter off the stack.
+	%endrep				;	Ends the repetition.
+%endmacro
+</code></pre><p>Now that we have these, let’s incorporate them into <code class="language-plaintext highlighter-rouge">print_char</code>:</p><div class="language-plaintext highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre><td class="rouge-code"><pre>%macro print_char 1
+	multipush rax, rdi, rsi, rdx, rcx, r8, r11
+	mov rax, 1				;	System call for Write is 1.
+	mov rdi, 1				;	Flag for STDOUT is 1.
+	mov rsi, %1				;	Move the parameter passed in to `rsi`.
+	mov rdx, 1				;	Only one byte.
+	syscall					;	Call the kernel to write out the character.
+	multipop rax, rdi, rsi, rdx, rcx, r8, r11
+%endmacro
+</pre></table></code></div></div><p><code class="language-plaintext highlighter-rouge">multipush</code> is much better than <code class="language-plaintext highlighter-rouge">save_regs</code>; we’re now only storing those registers we’re actually going to use or affect in the macro. But, of our three original problems with the no-clobber macros, there are still one and a half problems left:</p><ul><li>It prevents macros from saving or outputting values to registers if we want them to.<li>It prevents macros from accessing anything on the stack.</ul><p>We can now print a character whose memory location is pointed to by a register…but only if that register is not <code class="language-plaintext highlighter-rouge">rax</code>, <code class="language-plaintext highlighter-rouge">rdi</code>, or <code class="language-plaintext highlighter-rouge">rsi</code> (since we override those <em>before</em> accessing the parameter) or <code class="language-plaintext highlighter-rouge">rbp</code> or <code class="language-plaintext highlighter-rouge">rsp</code> (since the stack pointer changes when we <code class="language-plaintext highlighter-rouge">multipush</code>). This is still pretty restrictive! Sure, we’re at least not overwriting <code class="language-plaintext highlighter-rouge">rax</code> et al., but we can’t use three of our 14 writeable general-purpose registers.</p><p>So, for now, we’ll have to settle for a somewhat uglier approach. We’ll push <code class="language-plaintext highlighter-rouge">rsi</code> onto the stack, pull the parameter into <code class="language-plaintext highlighter-rouge">rsi</code>, and then push everything else. This <em>still</em> won’t preserve the stack pointers - we can’t pass in <code class="language-plaintext highlighter-rouge">rbp</code> or <code class="language-plaintext highlighter-rouge">rsp</code> - but if we wanted to save those values to registers, we’d need to have two registers empty, and to guarantee their emptiness, we’d need to back up <em>those</em> registers onto the stack, overwriting <code class="language-plaintext highlighter-rouge">rbp</code> and <code class="language-plaintext highlighter-rouge">rsp</code> anyway. I don’t currently know how to solve that without the extremely slow process of saving the registers into pre-defined slots of memory. The NASM manual talks later about <strong>stack contexts</strong>; the x86-64 manual talks about <strong>stack frames</strong> with instructions <code class="language-plaintext highlighter-rouge">ENTER</code> and <code class="language-plaintext highlighter-rouge">RET</code>; both talk about the <code class="language-plaintext highlighter-rouge">lea</code> instruction allowing register swaps without an intermediate. All of them are probably relevant, and I’m sure the whole thing is doable, but it’s a bridge too far at the moment.</p><p>For now, we’ll simply make a rule that stack pointers can’t be passed into macros. If, down the line, we figure out how to lift that restriction, the existing code we write should still be backwards-compatible.</p><pre><code class="language-x86asm">;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Macro:		print_char                                                   ;
+; Arguments:	A single pointer to an ASCII character in memory.            ;
+; Description:	Prints an ASCII character to STDOUT.                         ;
+; Comments:		Will fail if given `rbp` or `rsp` as inputs.                 ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+%macro print_char 1
+	push rsi				;	Save `rsi`, before we clobber it.
+	mov rsi, %1				;	Move the parameter passed in to `rsi`.
+	multipush rax, rdi, rdx, rcx, r8, r11
+	mov rax, 1				;	System call for Write is 1.
+	mov rdi, 1				;	Flag for STDOUT is 1.
+							;	`rsi` is already set.
+	mov rdx, 1				;	Only one byte.
+	syscall					;	Call the kernel to write out the character.
+	multipop rax, rdi, rdx, rcx, r8, r11
+	pop rsi
+%endmacro
+</code></pre><p>Before we use it, let’s write a very basic <strong>unit test</strong>. Now that we have <code class="language-plaintext highlighter-rouge">%rep</code>, we don’t have to write a separate test for every single register - we can pass all non-stack registers in in one macro call. The test will be to store the number <code class="language-plaintext highlighter-rouge">47</code> in a register, print the character <code class="language-plaintext highlighter-rouge">h</code>, and then print that number, followed by a space. The result should be 14 repetitions of the number <code class="language-plaintext highlighter-rouge">h47</code>, separated by a space; if it’s not, then one of these registers was clobbered.</p><pre><code class="language-x86asm">; Temporary Unit Test for 'multisave' and 'print_char'
+%include "includes.inc"
+
+BITS 64
+
+section .macros
+
+%macro test_multisave 1-*
+	%rep %0
+		mov %1, 47
+		print_char space
+		print_num %1
+		print_char newline
+	%rotate 1
+	%endrep
+%endmacro
+
+section .data
+	newline		dq 0x10		;	ASCII code for a newline.
+	space		dq 0x30		;	ASCII code for a space.
+	
+section .bss
+
+section .text
+global _start 
+_start:
+	pop rdi					;	argc: The argument count.  Will always be 2, if we're only reading one file.
+	pop rdi					;	argv[0]: The first argument, always the program name.
+	pop rdi					;	argv[1]: The second argument, the filename.
+
+test_multisave rax, rbx, rcx, rdx, rdi, rsi, r8, r9, r10, r11, r12, r13, r14, r15
+
+exit:
+	mov rax, 0x3c			;	syscall for sys_exit is now 60.
+	mov rdi, 0				;	Returns 0.
+	syscall					;	Call the kernel to exit the program.
+</code></pre><div class="language-plaintext highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre><td class="rouge-code"><pre>$ day_01/tmp_test.bin
+h47 h47 h47 h47 h47 h47 h47 h47 h47 h47 h47 h47 h47 h47
+</pre></table></code></div></div><p>It works! We now have a framework to make macros that don’t clobber any registers, and can be inserted anywhere in the program without interference.</p><h2 id="version-25-building-a-better-print_num">Version 2.5: Building a Better <code class="language-plaintext highlighter-rouge">print_num</code></h2><p>And with that, it’s not too difficult to make a version of <code class="language-plaintext highlighter-rouge">print_num</code> which accepts negative integers as inputs:</p><ol><li>Check if the number is negative by comparing it with <code class="language-plaintext highlighter-rouge">cmp</code> to <code class="language-plaintext highlighter-rouge">0</code>. If positive (or 0), as found by <code class="language-plaintext highlighter-rouge">jge</code>, go to step 4.<li>If it is, print a dash (ASCII code <code class="language-plaintext highlighter-rouge">0x2D</code>). This is why we need the zero check; without it, we’d print <code class="language-plaintext highlighter-rouge">-0</code>.<li>Replace the number with its two’s complement.<li>Print out the resulting positive number.</ol><p>And while we’re at it, we can save space by using <code class="language-plaintext highlighter-rouge">print_char</code> instead of manually performing a system call every time.</p><pre><code class="language-x86asm">;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Macro:		print_num                                                    ;
+; Arguments:	The *value* (not pointer to a value) to be printed.          ;
+; Description:	Prints a number to STDOUT in base 10.                        ;
+; Comments:		Will fail if given `rbp` or `rsp` as inputs.                 ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+%macro print_num 1
+	push rax				;	Save `rax`, before we clobber it.
+	mov rax, %1				;	Moves the number we want to print into `rax`.
+	multipush rbx, rcx, rdx, rdi
+	mov rcx, 0				;	Initialize `rcx` to prepare for digit count.
+
+	%%neg_check:
+		cmp rax, 0			;	Subtract the input from 0, but don't store the result, only the flags.
+		jge %%push_dig		;	If the input is greater than or equal to 0 (g-e), jump to %%push_dig.
+
+		push 0x2D			;	Push the ASCII code for "-" onto the stack.
+		mov rdx, rsp		;	Copies the stack pointer to `rdi`, since we can't pass it into 'print_char'.
+		print_char rdx		;	Passes the pointer to the location of "-" in memory to 'print_char'.
+		pop rdx				;	Pop the ASCII code for "-" back out, to restore the stack.
+		neg rax				;	Take the two's complement of `rax`, and proceed as normal with a positive number.
+
+	%%push_dig:
+		mov rdx, 0			;	Clear `rdx`, since `rdx` acts as the top 64 bits for 'div'.
+		mov rbx, 10			;	Move the dividend into a register; won't work as a raw 'div 10' command, even though 'add' works that way.
+		div rbx				;	Divide the buffer size by the dividend (10).  Quotient is stored in `rax`, remainder is stored in `rdx`.
+		add rdx, 0x30		;	Add 0x30 (48 in decimal) to convert the remainder into an ASCII digit from 0-9.
+
+		push rdx			;	Push the entire register containing the remainder onto the stack.
+		inc rcx				;	Increment the count.
+
+		test rax, rax		;	Tests how large the quotient is, setting ZF to whether `rax` is 0.
+		jnz %%push_dig		;	If the quotient is not yet 0 (checking ZF), continue pushing digits onto the stack.
+
+	%%print_dig:
+		mov rdi, rsp		;	Copies the stack pointer to `rdi`, since we can't pass it into 'print_char'
+		print_char rdi		;	Prints the digit (already converted into ASCII) to STDOUT.
+
+		pop rax				;	Pop the digit off the stack into `rax`
+		dec rcx				;	One fewer digit in the count.
+		test rcx, rcx		;	Tests how many digits remain, setting ZF to whether `r10` is 0.
+		jnz %%print_dig		;	If any digits remain, continue printing.
+
+	multipop rbx, rcx, rdx, rdi
+	pop rax
+%endmacro
+</code></pre><p>I’m not completely happy with the need to push a character like <code class="language-plaintext highlighter-rouge">-</code> onto the stack every time we want to print a char literal in a macro, but <code class="language-plaintext highlighter-rouge">print_num</code> is now good enough to be slotted back into our original code with no changes:</p><div class="language-plaintext highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre><td class="rouge-code"><pre>$ day_01/day_01.bin Inputs/Day_01_Input.txt
+1797    280
+</pre></table></code></div></div><p>And the nice thing about having separate macros is that they can be changed later; so long as the end-user behavior remains the same, we can modify one single <code class="language-plaintext highlighter-rouge">includes.inc</code> file and nothing else when we go back later and improve it.</p><h2 id="version-26-arbitrary-file-size">Version 2.6: Arbitrary File Size</h2><p>We have two more problems to solve with this code, and the first is the fact that we’re currently limited to files no larger than 8192 bytes. It is true that for this <em>specific</em> day, all files are the same size, at exactly 7,000 bytes. But it’s also true that we’ll need to handle larger file sizes than this down the road. We could easily increase from 8192 to some larger number, but Jonathan Leto recommended 8192 bytes for a reason, and that reason probably has something to do with page size and cache memory size, both of which are concepts I have only a nebulous understanding of.</p><p>So, rather than taking the easy way out, let’s load and process the file in chunks, properly. Successive <code class="language-plaintext highlighter-rouge">read()</code> calls on the same file_descriptor from the same process ID should, if I understand Linux filesystems correctly, result in successive chunks of the file being read into memory, so we only need to rearrange the code such that the same <code class="language-plaintext highlighter-rouge">read()</code> command can be run again and again.</p><pre><code class="language-x86asm">%include "includes.inc"
+
+BITS 64
+
+section .data
+	...
+	bufsize		dq 0x2000	;	8192 in hexadecimal.  Optimal buffer size for reading, apparently.
+	
+section .bss
+	buf			resb 0x2000	;	Reserves 8192 bytes for the filebuffer, without assigning them.
+
+section .text
+global _start 
+_start:
+	pop rdi					;	argc: The argument count.  Will always be 2, if we're only reading one file.
+	pop rdi					;	argv[0]: The first argument, always the program name.
+	pop rdi					;	argv[1]: The second argument, the input filename.
+
+file_descriptor:
+	mov rax, 2				;	syscall for sys_open is now 2.
+							;	The input filename is already in `rdi`.
+	mov rsi, 0				;	Flag for 'read-only', defined in fcntl.h.
+	syscall					;	Call the kernel to open the file.
+
+	test rax, rax			;	Tests file descriptor (in this case, we only care about the sign flag).
+	mov rbx, rax			;	Save the file descriptor in `rbx`.
+	jns file_read			;	If the file descriptor does not have the sign flag, jump to file_load.
+
+	mov rdi, rax			;	We didn't jump, so there must have been an error.
+	mov rax, 0x3c			;	syscall for sys_exit is now 60.
+							;	Return flag is already set to `rdi`
+	syscall					;	Call the kernel to exit the program.
+
+file_read:
+.initialize:
+	mov rax, 0				;	Initialize the current paren total in `rax` to 0, for part 1.
+	mov rdi, 0				;	Initialize the position of the first basement visit to -1, for part 2.
+	mov rdx, 0				;	Clear `rdx`, so that we can use it for lower-byte comparison.
+
+	mov r8, -1				;	Clear `r8`; it will be the chunk counter.  Set to -1 because we increment it *before* use.
+
+.load_chunk:
+	multipush rax, rdi, rsi, rdx
+
+	mov rax, 0				;	syscall for sys_read is now 0.
+	mov rdi, rbx			;	Load the file descriptor from `rbx`.
+	mov rsi, buf			;	Move the *address* of buf to `rsi`.
+	mov dx, [bufsize]		;	Move the *address* of bufsize to `rdx`.
+	syscall					;	Call the kernel to read the file.
+
+file_parse:
+	mov rcx, rax			;	Move the number of bytes actually loaded to `rcx`, to compare `rsi` against during .loop.
+	inc r8					;	Increment the chunk counter.
+	test rax, rax			;	Compare the number of bytes loaded to itself, setting ZF if `rax` is zero.
+	multipop rax, rdi, rsi, rdx		;	Pop *now*, so that if we jump, we jump with the correct context.
+	jz .done				;	If `rax` is zero, stop looping through the file.
+	mov rsi, 0				;	Initialize the buffer pointer in `rsi` to 0.  `rsi` is relative to a chunk, not to the file.
+
+.loop:
+	cmp rsi, rcx			;	Check if we've run out of bytes.
+	je file_read.load_chunk	;	If we have, load the next chunk.
+
+	mov dl, [buf+rsi]		;	Move the current char, defined by original buffer and offset, into the lowest byte of `rdx`.
+	inc rsi					;	Increment the buffer pointer.
+	cmp rdx, [right_paren]	;	Compare the current char to the ASCII offset for ')'.
+	je .right				;	Skip the evaluation of 'left' if it's a right paren.
+
+	.left:
+		inc rax				;	Increment the current paren total, for part 1.
+		jmp .part_2			;	Go to part 2.
+	.right:
+		dec rax				;	Decrement the current paren total, for part 1.
+		jmp .part_2			;	Go to part 2.  Unnecessary, but makes the code easier for me to follow.
+
+	.part_2:
+		cmp rax, -1			;	Check if the current position is -1.
+		jne .loop			;	If we're not, continue reading the file.
+		test rdi, rdi		;	If we are at -1, compare part 2's answer against itself.  The default of '0' can never be right.
+		jnz .loop			;	If `rdi` is not zero, then we've already set it, and this is a duplicate visit.
+							;	If `rdi` *is* zero, then this is the first time we've been here, and we need to figure out absolute position.
+							;	Luckily, we are only in this branch once ever, so it can be inefficient.
+		multipush rax, rdx	;	Save `rax` and `rdx`, since we need them both to get a 'mul' result.
+		mov rax, r8			;	Set `rax` to be equal to the chunk count.
+		mul dword[bufsize]	;	Multiply `rax` by the buffer size.
+		add rax, rsi		;	Add the relative offset to `rax`.
+		mov rdi, rax		;	Now that `rax` equals the absolute position, save it as part 2's answer.
+		multipop rax, rdx	;	Restore `rax` and `rdx`
+	
+	jmp .loop				;	Continue reading the file.
+
+.done:
+	print_num rax			;	Print part 1: the first basement visit.
+	print_char tab			;	Space the answers apart.
+	print_num rdi			;	Print part 2: the final paren total.
+
+exit:
+	mov rax, 0x3c			;	syscall for sys_exit is now 60.
+	mov rdi, 0				;	Returns 0.
+	syscall					;	Call the kernel to exit the program.
+</code></pre><p>And there we go. This would have been very difficult, or at least very tedious, without <code class="language-plaintext highlighter-rouge">multipush</code> and <code class="language-plaintext highlighter-rouge">multipop</code>. Loading the file in chunks means that the registers which track the global state of the program (<code class="language-plaintext highlighter-rouge">rax</code> for part 1’s answer, <code class="language-plaintext highlighter-rouge">rdi</code> for part 2’s answer, <code class="language-plaintext highlighter-rouge">r8</code> for the chunk count, <code class="language-plaintext highlighter-rouge">rbx</code> for the chunk count) need to be preserved from one chunk to the next, while chunk-local properties (like <code class="language-plaintext highlighter-rouge">rsi</code>, the local offset) must be reset, and an unmacroed <code class="language-plaintext highlighter-rouge">syscall</code> to get the next chunk clobbers <code class="language-plaintext highlighter-rouge">rcx</code>, <code class="language-plaintext highlighter-rouge">r8</code>, and <code class="language-plaintext highlighter-rouge">r11</code>, so we can’t rely on them unless we make <code class="language-plaintext highlighter-rouge">load_next_chunk</code> a macro. Which I don’t want to do quite yet, because this logic does not fully separate out the chunk loading from the rest of the code.</p><p>The other big change is in <code class="language-plaintext highlighter-rouge">.part_2</code>, coming from the need to calculate the absolute position from the relative position and the chunk count to get part 2’s answer. I considered using another register to just store the absolute position, to save space and multiplications, but then I realized that setting the answer for part 2 could only happen once ever, so even if it was ten times slower than the part 1 logic (and it’s not), that would be a negligible slowdown.</p><p>But negligible compared to what? The final thing I want to do for today’s problem is add in some kind of timer, so we can start understanding what is slow and what is fast.</p><h2 id="version-27-timing">Version 2.7: Timing</h2><p>This was mercifully easy, given two facts:</p><ul><li>Every Intel CPU since the Pentium has an onboard clock cycle counter, which increments by one every time an instruction is called.<li>I don’t care about absolute time all that much.</ul><p>My CPU, according to my local “About This Computer” page, is an <code class="language-plaintext highlighter-rouge">Intel® Core™ i7-8565U CPU @ 1.80GHz × 8</code>. Assuming the clock frequency doesn’t vary all that much from 1.80 GHz, I can get a good approximate time (in nanoseconds) by simply dividing the instruction count by 1.8. And even if I didn’t know what my CPU frequency was, the clock cycle count still gives me good relative and proportional information about how long one code segment takes compared to another. So, with <code class="language-plaintext highlighter-rouge">rdtsc</code> (<code class="language-plaintext highlighter-rouge">ReaD Time-Step Counter</code>) and <code class="language-plaintext highlighter-rouge">print_num</code>, I can make a drop-in timer to place throughout the code:</p><pre><code class="language-x86asm">;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Macro:		store_cycle                                                  ;
+; Arguments:	The memory location or register to store the clock count.    ;
+; Description:	Stores the current CPU cycle count, *not* the system clock.  ;
+; Comments:		Will fail if given `rax`, `rdx`, `rbp`, or `rsp` as inputs.  ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+%macro store_cycle 1
+	multipush rax, rdx
+	rdtsc				;	Store the time-stamp-counter (TSC) into `rdx:rax`.
+	shl rdx, 32			;	Shift `rdx` 32 bits left, since `rdx` is where the high bits are stored.
+	or rdx, rax			;	Add `rax`, the low bits, to `rdx, the high bits.
+	mov %1, rdx			;	Copy `rdx` to the desired location in memory.
+	multipop rax, rdx
+%endmacro
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Macro:		print_cycle                                                  ;
+; Arguments:	The memory location or register of the previous clock count. ;
+; Description:	Prints the difference between the current and stored clock   ;
+;               counts.  Unit is CPU cycles, not time.                       ;
+; Comments:		Will fail if given `rbp` or `rsp` as inputs.                 ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+%macro print_cycle 1
+	multipush rax, rdx
+	rdtsc				;	Store the time-stamp-counter (TSC) into `rdx:rax`.
+	shl rdx, 32			;	Shift `rdx` 32 bits left, since `rdx` is where the high bits are stored.
+	or rdx, rax			;	Add `rax`, the low bits, to `rdx, the high bits.
+	sub rdx, %1			;	Subtract the previous clock count from the current one.
+	print_num rdx		;	Print the difference between the current and previous clock cycle.
+	multipop rax, rdx
+%endmacro
+</code></pre><p>Running the two macros next to each other, having saved to a register in between, results in an average of 16 clock cycles, so the resolution won’t be able to tell us e.g. whether an <code class="language-plaintext highlighter-rouge">add</code> takes the same amount of time as a <code class="language-plaintext highlighter-rouge">sub</code>; anything with a resolution below about 20 clock cycles probably will be washed out by noise. So, some timings, averaged over 10,000 tests:</p><div class="table-wrapper"><table><thead><tr><th>Operation<th>Time (Cycles)<th>Approx. Time<tbody><tr><td>Store a clock cycle (register)<td>16<td>8.9 ns<tr><td>Store a clock cycle (stack)<td>16<td>8.9 ns<tr><td>Load empty file chunk<td>1,627<td>903 ns<tr><td>Store a clock cycle (memory)<td>3,350<td>1,860 ns<tr><td>Run <code class="language-plaintext highlighter-rouge">.file_descriptor</code><td>5,988<td>3,325 ns<tr><td>Load 7000 byte file chunk<td>6,183<td>3,435 ns<tr><td>Print single character to STDOUT<td>8,148<td>4,526 ns<tr><td><strong>Solve problem (Rust)</strong><td><strong>???</strong><td><strong>24,000 ns</strong><tr><td>Execute loop (part 1 only)<td>80,796<td>44,887 ns<tr><td>Execute loop (both parts)<td>76,345<td>42,413 ns<tr><td>Solve problem (part 1 only)<td>96,158<td>53,421 ns<tr><td>Solve problem (both parts)<td>88,240<td>49,022 ns</table></div><p>The first problem is, clearly, that the timing is inconsistent as soon as large-scale memory reads begin: running one or both parts for 10,000 iterations, and then running it again a minute later, produce very different results. For fairness, and to avoid cherry-picking, I decided to list the first result of 10,000 iterations, only to discover that by chance, the code for both parts ran slightly faster than the code for one part, both with and without file loading.</p><p>And the second problem is that a basic solution in Rust is twice as fast as my handwritten assembly. Rust’s compiler is evidently better at assembly than I am.</p><h1 id="version-30-compiled-rust">Version 3.0: Compiled Rust</h1><p>This isn’t a segment I planned on including when I began writing this blog post…but in light of the timing results, and to finish off the day, it doesn’t seem like a bad idea to see how Rust’s compiler solved the problem.</p><div class="language-rust highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+</pre><td class="rouge-code"><pre><span class="k">use</span> <span class="nn">std</span><span class="p">::</span><span class="n">fs</span><span class="p">;</span>
+
+<span class="nd">#[unsafe(no_mangle)]</span>
+<span class="k">pub</span> <span class="k">fn</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+	
+	<span class="k">let</span> <span class="n">file</span> <span class="o">=</span> <span class="s">"../Inputs/Day1Input.txt"</span><span class="p">;</span>
+	<span class="k">let</span> <span class="n">input_raw</span><span class="p">:</span> <span class="nb">String</span> <span class="o">=</span> <span class="nn">fs</span><span class="p">::</span><span class="nf">read_to_string</span><span class="p">(</span><span class="n">file</span><span class="p">)</span><span class="nf">.unwrap</span><span class="p">();</span>
+	<span class="k">let</span> <span class="n">paren_indices</span> <span class="o">=</span> <span class="n">input_raw</span><span class="nf">.char_indices</span><span class="p">();</span>
+	
+	<span class="k">let</span> <span class="k">mut</span> <span class="n">current_pos</span><span class="p">:</span> <span class="nb">isize</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="k">let</span> <span class="k">mut</span> <span class="n">part2</span><span class="p">:</span> <span class="nb">usize</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	
+	<span class="k">for</span> <span class="n">index</span> <span class="k">in</span> <span class="n">paren_indices</span><span class="nf">.into_iter</span><span class="p">()</span> <span class="p">{</span>
+		<span class="k">match</span> <span class="n">index</span><span class="na">.1</span> <span class="p">{</span>
+			<span class="sc">'('</span> <span class="k">=&gt;</span> <span class="n">current_pos</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">,</span>
+			<span class="sc">')'</span> <span class="k">=&gt;</span> <span class="n">current_pos</span> <span class="o">-=</span> <span class="mi">1</span><span class="p">,</span>
+			<span class="n">_</span> <span class="k">=&gt;</span> <span class="p">()</span>
+		<span class="p">};</span>
+		<span class="k">if</span> <span class="n">current_pos</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="n">part2</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
+			<span class="n">part2</span> <span class="o">=</span> <span class="n">index</span><span class="na">.0</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+	<span class="k">let</span> <span class="n">part1</span> <span class="o">=</span> <span class="n">current_pos</span><span class="p">;</span>
+		
+    <span class="nd">println!</span><span class="p">(</span><span class="s">"Part 1: {}"</span><span class="p">,</span> <span class="n">part1</span><span class="p">);</span>
+    <span class="nd">println!</span><span class="p">(</span><span class="s">"Part 2: {}"</span><span class="p">,</span> <span class="n">part2</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></table></code></div></div><pre><code class="language-x86asm">core::ptr::drop_in_place&lt;std::io::error::Error&gt;::h2d4ab5053582d4e1:
+        push    r15
+        push    r14
+        push    r12
+        push    rbx
+        push    rax
+        mov     rax, qword ptr [rdi]
+        mov     ecx, eax
+        and     ecx, 3
+        cmp     ecx, 1
+        je      .LBB0_1
+        add     rsp, 8
+        pop     rbx
+        pop     r12
+        pop     r14
+        pop     r15
+        ret
+.LBB0_1:
+        lea     rbx, [rax - 1]
+        mov     r14, qword ptr [rax - 1]
+        mov     r12, qword ptr [rax + 7]
+        mov     rax, qword ptr [r12]
+        test    rax, rax
+        je      .LBB0_3
+        mov     rdi, r14
+        call    rax
+.LBB0_3:
+        mov     rsi, qword ptr [r12 + 8]
+        test    rsi, rsi
+        je      .LBB0_5
+        mov     rdx, qword ptr [r12 + 16]
+        mov     rdi, r14
+        call    qword ptr [rip + __rustc[5224e6b81cd82a8f]::__rust_dealloc@GOTPCREL]
+.LBB0_5:
+        mov     esi, 24
+        mov     edx, 8
+        mov     rdi, rbx
+        add     rsp, 8
+        pop     rbx
+        pop     r12
+        pop     r14
+        pop     r15
+        jmp     qword ptr [rip + __rustc[5224e6b81cd82a8f]::__rust_dealloc@GOTPCREL]
+        mov     r15, rax
+        mov     rsi, qword ptr [r12 + 8]
+        test    rsi, rsi
+        je      .LBB0_8
+        mov     rdx, qword ptr [r12 + 16]
+        mov     rdi, r14
+        call    qword ptr [rip + __rustc[5224e6b81cd82a8f]::__rust_dealloc@GOTPCREL]
+.LBB0_8:
+        mov     esi, 24
+        mov     edx, 8
+        mov     rdi, rbx
+        call    qword ptr [rip + __rustc[5224e6b81cd82a8f]::__rust_dealloc@GOTPCREL]
+        mov     rdi, r15
+        call    _Unwind_Resume@PLT
+
+main:
+        push    rbp
+        push    r15
+        push    r14
+        push    rbx
+        sub     rsp, 88
+        lea     rsi, [rip + .Lanon.fad58de7366495db4650cfefac2fcd61.2]
+        lea     rdi, [rsp + 32]
+        mov     edx, 23
+        call    qword ptr [rip + std::fs::read_to_string::inner::h4fba2bebc12d4adf@GOTPCREL]
+        mov     rbx, qword ptr [rsp + 32]
+        mov     rax, rbx
+        neg     rax
+        jo      .LBB1_1
+        mov     r14, qword ptr [rsp + 40]
+        mov     rax, qword ptr [rsp + 48]
+        mov     qword ptr [rsp + 24], 0
+        test    rax, rax
+        je      .LBB1_6
+        add     rax, r14
+        xor     ecx, ecx
+        xor     edx, edx
+        mov     r8, r14
+        xor     esi, esi
+        jmp     .LBB1_13
+.LBB1_27:
+        sub     rdx, rdi
+        add     rdx, r8
+        cmp     r8, rax
+        je      .LBB1_7
+.LBB1_13:
+        mov     rdi, r8
+        movzx   r10d, byte ptr [r8]
+        test    r10b, r10b
+        js      .LBB1_14
+        lea     r8, [rdi + 1]
+        mov     r9d, r10d
+        cmp     r9d, 40
+        jne     .LBB1_23
+        jmp     .LBB1_28
+.LBB1_14:
+        mov     r9d, r10d
+        and     r9d, 31
+        movzx   ebp, byte ptr [rdi + 1]
+        and     ebp, 63
+        cmp     r10b, -33
+        jbe     .LBB1_15
+        movzx   r11d, byte ptr [rdi + 2]
+        shl     ebp, 6
+        and     r11d, 63
+        or      r11d, ebp
+        cmp     r10b, -16
+        jb      .LBB1_17
+        lea     r8, [rdi + 4]
+        movzx   r10d, byte ptr [rdi + 3]
+        and     r9d, 7
+        shl     r9d, 18
+        shl     r11d, 6
+        and     r10d, 63
+        or      r10d, r11d
+        or      r9d, r10d
+        cmp     r9d, 40
+        jne     .LBB1_23
+        jmp     .LBB1_28
+.LBB1_15:
+        lea     r8, [rdi + 2]
+        shl     r9d, 6
+        or      r9d, ebp
+        cmp     r9d, 40
+        je      .LBB1_28
+.LBB1_23:
+        cmp     r9d, 41
+        jne     .LBB1_24
+        dec     rcx
+.LBB1_24:
+        cmp     rcx, -1
+        je      .LBB1_25
+        jmp     .LBB1_27
+.LBB1_17:
+        lea     r8, [rdi + 3]
+        shl     r9d, 12
+        or      r9d, r11d
+        cmp     r9d, 40
+        jne     .LBB1_23
+.LBB1_28:
+        inc     rcx
+        cmp     rcx, -1
+        jne     .LBB1_27
+.LBB1_25:
+        test    rsi, rsi
+        jne     .LBB1_27
+        lea     rsi, [rdx + 1]
+        mov     qword ptr [rsp + 24], rsi
+        jmp     .LBB1_27
+.LBB1_6:
+        xor     ecx, ecx
+.LBB1_7:
+        mov     qword ptr [rsp + 80], rcx
+        lea     rax, [rsp + 80]
+        mov     qword ptr [rsp + 8], rax
+        mov     rax, qword ptr [rip + core::fmt::num::imp::&lt;impl core::fmt::Display for isize&gt;::fmt::he819bb13af8d3dfe@GOTPCREL]
+        mov     qword ptr [rsp + 16], rax
+        lea     rax, [rip + .Lanon.fad58de7366495db4650cfefac2fcd61.5]
+        mov     qword ptr [rsp + 32], rax
+        mov     qword ptr [rsp + 40], 2
+        mov     qword ptr [rsp + 64], 0
+        lea     r15, [rsp + 8]
+        mov     qword ptr [rsp + 48], r15
+        mov     qword ptr [rsp + 56], 1
+        lea     rdi, [rsp + 32]
+        call    qword ptr [rip + std::io::stdio::_print::h86bf21ce6e231958@GOTPCREL]
+        lea     rax, [rsp + 24]
+        mov     qword ptr [rsp + 8], rax
+        mov     rax, qword ptr [rip + core::fmt::num::imp::&lt;impl core::fmt::Display for usize&gt;::fmt::h864583d3ee1a01f1@GOTPCREL]
+        mov     qword ptr [rsp + 16], rax
+        lea     rax, [rip + .Lanon.fad58de7366495db4650cfefac2fcd61.7]
+        mov     qword ptr [rsp + 32], rax
+        mov     qword ptr [rsp + 40], 2
+        mov     qword ptr [rsp + 64], 0
+        mov     qword ptr [rsp + 48], r15
+        mov     qword ptr [rsp + 56], 1
+        lea     rdi, [rsp + 32]
+        call    qword ptr [rip + std::io::stdio::_print::h86bf21ce6e231958@GOTPCREL]
+        test    rbx, rbx
+        je      .LBB1_11
+        mov     edx, 1
+        mov     rdi, r14
+        mov     rsi, rbx
+        call    qword ptr [rip + __rustc[5224e6b81cd82a8f]::__rust_dealloc@GOTPCREL]
+.LBB1_11:
+        add     rsp, 88
+        pop     rbx
+        pop     r14
+        pop     r15
+        pop     rbp
+        ret
+.LBB1_1:
+        mov     rax, qword ptr [rsp + 40]
+        mov     qword ptr [rsp + 8], rax
+        lea     rdi, [rip + .Lanon.fad58de7366495db4650cfefac2fcd61.1]
+        lea     rcx, [rip + .Lanon.fad58de7366495db4650cfefac2fcd61.0]
+        lea     r8, [rip + .Lanon.fad58de7366495db4650cfefac2fcd61.9]
+        lea     rdx, [rsp + 8]
+        mov     esi, 43
+        call    qword ptr [rip + core::result::unwrap_failed::h9e4c136384b1cfa3@GOTPCREL]
+        ud2
+        mov     r15, rax
+        test    rbx, rbx
+        je      .LBB1_4
+        mov     edx, 1
+        mov     rdi, r14
+        mov     rsi, rbx
+        call    qword ptr [rip + __rustc[5224e6b81cd82a8f]::__rust_dealloc@GOTPCREL]
+        mov     rdi, r15
+        call    _Unwind_Resume@PLT
+        mov     r15, rax
+        lea     rdi, [rsp + 8]
+        call    core::ptr::drop_in_place&lt;std::io::error::Error&gt;::h2d4ab5053582d4e1
+.LBB1_4:
+        mov     rdi, r15
+        call    _Unwind_Resume@PLT
+        call    qword ptr [rip + core::panicking::panic_in_cleanup::hb7138e7aeec2c1a7@GOTPCREL]
+
+.Lanon.fad58de7366495db4650cfefac2fcd61.0:
+        .quad   core::ptr::drop_in_place&lt;std::io::error::Error&gt;::h2d4ab5053582d4e1
+        .asciz  "\b\000\000\000\000\000\000\000\b\000\000\000\000\000\000"
+        .quad   &lt;std::io::error::Error as core::fmt::Debug&gt;::fmt::h159a2e470f8e16f6
+
+.Lanon.fad58de7366495db4650cfefac2fcd61.1:
+        .ascii  "called `Result::unwrap()` on an `Err` value"
+
+.Lanon.fad58de7366495db4650cfefac2fcd61.2:
+        .ascii  "../Inputs/Day1Input.txt"
+
+.Lanon.fad58de7366495db4650cfefac2fcd61.3:
+        .ascii  "Part 1: "
+
+.Lanon.fad58de7366495db4650cfefac2fcd61.4:
+        .byte   10
+
+.Lanon.fad58de7366495db4650cfefac2fcd61.5:
+        .quad   .Lanon.fad58de7366495db4650cfefac2fcd61.3
+        .asciz  "\b\000\000\000\000\000\000"
+        .quad   .Lanon.fad58de7366495db4650cfefac2fcd61.4
+        .asciz  "\001\000\000\000\000\000\000"
+
+.Lanon.fad58de7366495db4650cfefac2fcd61.6:
+        .ascii  "Part 2: "
+
+.Lanon.fad58de7366495db4650cfefac2fcd61.7:
+        .quad   .Lanon.fad58de7366495db4650cfefac2fcd61.6
+        .asciz  "\b\000\000\000\000\000\000"
+        .quad   .Lanon.fad58de7366495db4650cfefac2fcd61.4
+        .asciz  "\001\000\000\000\000\000\000"
+
+.Lanon.fad58de7366495db4650cfefac2fcd61.8:
+        .asciz  "/app/day_01.rs"
+
+.Lanon.fad58de7366495db4650cfefac2fcd61.9:
+        .quad   .Lanon.fad58de7366495db4650cfefac2fcd61.8
+        .asciz  "\020\000\000\000\000\000\000\000\021\000\000\0006\000\000"
+
+DW.ref.rust_eh_personality:
+        .quad   rust_eh_personality
+</code></pre><p>Looking at the output (helpfully compiled by Godbolt), it would take me probably as long to comment it thoroughly and understand it as it has to write the entirety of this blog post up until now. But there are a few things I notice when reading through this compiled code:</p><ul><li>The very beginning of the memory deallocation code, at the start of the file, is a recognizable analog to <code class="language-plaintext highlighter-rouge">multipush</code> and <code class="language-plaintext highlighter-rouge">multipop</code>; Rust’s compiler obviously does not need macros, but if it did, the code would start <code class="language-plaintext highlighter-rouge">multipush rbx, r12, r14, r15</code>.<li>It uses <code class="language-plaintext highlighter-rouge">call</code> extensively, including calling a procedure specified by the <code class="language-plaintext highlighter-rouge">rax</code> register.<li><code class="language-plaintext highlighter-rouge">call</code> often uses a register called <code class="language-plaintext highlighter-rouge">rip</code>, which appears to be the instruction pointer. This register is always offset by some amount, e.g. <code class="language-plaintext highlighter-rouge">[rip + std::io::stdio::_print::h86bf21ce6e231958@GOTPCREL]</code>, but I’m not sure why it’s offset by the current instruction pointer rather than just <code class="language-plaintext highlighter-rouge">call</code>ing the procedure directly.<li>I was quite careful not to modify the stack pointer <code class="language-plaintext highlighter-rouge">rsp</code>, nor refer to anything on the stack aside from the very top of it via <code class="language-plaintext highlighter-rouge">pop</code>, but apparently <code class="language-plaintext highlighter-rouge">sub rsp</code> and <code class="language-plaintext highlighter-rouge">mov r14, qword[rsp + 40]</code> are both perfectly acceptable commands, and perhaps the standard way of storing ‘variables’.<li>There are no direct references to data stored in memory; no equivalents of my <code class="language-plaintext highlighter-rouge">[buf+rsi]</code>. Every single call is either a register plus a constant, or the instruction pointer plus some reference to core Rust functions. However it’s referencing the raw characters stored in the input file, it’s not doing so one byte at a time.<li>It <em>is</em>, however, doing the parenthesis comparisons one byte at a time, since <code class="language-plaintext highlighter-rouge">.LBB1_15</code>, <code class="language-plaintext highlighter-rouge">.LBB1_23</code>, and <code class="language-plaintext highlighter-rouge">.LBB1_17</code> all reference the ASCII codes for right or left parentheses. Which means that if there’s a way to precalculate all 2^8 = 256 possible combinations of left and right parens, and load in the memory eight bytes at a time instead of just one, it might be possible to go faster.</ul><p>I can’t say I understand it all, but I can’t say I understand nothing. Not bad for my first ‘day’ in assembly.</p></div><div class="post-content"><h3>Series</h3><li><b>Learning x86-64 Assembly with Advent of Code - Day 1</b></div><hr><div class="post-tail-wrapper text-muted"><div class="post-meta mb-3"> <i class="far fa-folder-open fa-fw mr-1"></i> <a href='/categories/programming/'>Programming</a>, <a href='/categories/advent-of-code/'>Advent of Code</a></div><div class="post-tags"> <i class="fa fa-tags fa-fw mr-1"></i> <a href="/tags/programming/" class="post-tag no-text-decoration" >programming</a> <a href="/tags/assembly/" class="post-tag no-text-decoration" >assembly</a> <a href="/tags/david/" class="post-tag no-text-decoration" >david</a></div><div class="post-tail-bottom d-flex justify-content-between align-items-center mt-3 pt-5 pb-2"><div class="license-wrapper"> This post is licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> by the author.</div><div class="share-wrapper"> <span class="share-label text-muted mr-1">Share</span> <span class="share-icons"> <a href="https://twitter.com/intent/tweet?text=Learning x86-64 Assembly with Advent of Code - Day 1 - Hall of Impossible Dreams&url=http://hallofdreams.org/posts/advent-of-code-2015-assembly-day-1/" data-toggle="tooltip" data-placement="top" title="Twitter" target="_blank" rel="noopener" aria-label="Twitter"> <i class="fa-fw fab fa-twitter"></i> </a> <a href="https://www.facebook.com/sharer/sharer.php?title=Learning x86-64 Assembly with Advent of Code - Day 1 - Hall of Impossible Dreams&u=http://hallofdreams.org/posts/advent-of-code-2015-assembly-day-1/" data-toggle="tooltip" data-placement="top" title="Facebook" target="_blank" rel="noopener" aria-label="Facebook"> <i class="fa-fw fab fa-facebook-square"></i> </a> <a href="https://telegram.me/share?text=Learning x86-64 Assembly with Advent of Code - Day 1 - Hall of Impossible Dreams&url=http://hallofdreams.org/posts/advent-of-code-2015-assembly-day-1/" data-toggle="tooltip" data-placement="top" title="Telegram" target="_blank" rel="noopener" aria-label="Telegram"> <i class="fa-fw fab fa-telegram"></i> </a> <i class="fa-fw fas fa-link small" onclick="copyLink()" data-toggle="tooltip" data-placement="top" title="Copy link"></i> </span></div></div></div></div></div><div id="panel-wrapper" class="col-xl-3 pl-2 text-muted topbar-down"><div class="access"><div id="toc-wrapper" class="pl-0 pr-4 mb-5"> <span class="pl-3 pt-2 mb-2">Contents</span><nav id="toc" data-toggle="toc"></nav></div></div></div><div class="row"><div class="col-12 col-lg-11 col-xl-8"><div id="post-extend-wrapper" class="pl-1 pr-1 pl-sm-2 pr-sm-2 pl-md-4 pr-md-4"><div id="disqus" class="pt-2 pb-2"><p class="font-italic text-center text-muted small"> Comments powered by <a href="https://giscus.app">giscus</a>.</p></div><script src="https://giscus.app/client.js" data-repo="thecog19/blog-comments-giscus" data-repo-id="R_kgDOH0cdtg" data-category="Announcements" data-category-id="DIC_kwDOH0cdts4CQ02w" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-theme="preferred_color_scheme" data-lang="en" data-loading="lazy" crossorigin="anonymous" async> </script></div></div></div><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lozad/dist/lozad.min.js"></script> <script type="text/javascript"> const imgs = document.querySelectorAll('#post-wrapper img'); const observer = lozad(imgs); observer.observe(); </script><footer class="d-flex w-100 justify-content-center"><div class="d-flex justify-content-between align-items-center"><div class="footer-left"><p class="mb-0"> © 2025 <a href="https://twitter.com/thecog19">Dave and Felipe</a>. <span data-toggle="tooltip" data-placement="top" title="Except where otherwise noted, the blog posts on this site are licensed under the Creative Commons Attribution 4.0 International (CC BY 4.0) License by the author.">Some rights reserved.</span></p></div><div class="footer-right"><p class="mb-0"> Powered by <a href="https://jekyllrb.com" target="_blank" rel="noopener">Jekyll</a> with <a href="https://github.com/cotes2020/jekyll-theme-chirpy/" target="_blank" rel="noopener">Chirpy</a> theme.</p></div></div></footer></div><div id="search-result-wrapper" class="d-flex justify-content-center unloaded"><div class="col-12 col-xl-11 post-content"><div id="search-hints"><h4 class="text-muted mb-4">Trending Tags</h4><a class="post-tag" href="/tags/david/">david</a> <a class="post-tag" href="/tags/felipe/">felipe</a> <a class="post-tag" href="/tags/programming/">programming</a> <a class="post-tag" href="/tags/fiction/">fiction</a> <a class="post-tag" href="/tags/rust/">rust</a> <a class="post-tag" href="/tags/writing-prompts/">writing prompts</a> <a class="post-tag" href="/tags/poetry/">poetry</a> <a class="post-tag" href="/tags/essay/">essay</a> <a class="post-tag" href="/tags/mathematica/">mathematica</a> <a class="post-tag" href="/tags/hatetris/">hatetris</a></div><div id="search-results" class="d-flex flex-wrap justify-content-center text-muted mt-3"></div></div></div></div><div id="mask"></div><a id="back-to-top" href="#" aria-label="back-to-top" class="btn btn-lg btn-box-shadow" role="button"> <i class="fas fa-angle-up"></i> </a> <script src="https://cdn.jsdelivr.net/npm/simple-jekyll-search@1.7.3/dest/simple-jekyll-search.min.js"></script> <script> SimpleJekyllSearch({ searchInput: document.getElementById('search-input'), resultsContainer: document.getElementById('search-results'), json: '/assets/js/data/search.json', searchResultTemplate: '<div class="pl-1 pr-1 pl-sm-2 pr-sm-2 pl-lg-4 pr-lg-4 pl-xl-0 pr-xl-0"> <a href="http://hallofdreams.org{url}">{title}</a><div class="post-meta d-flex flex-column flex-sm-row text-muted mt-1 mb-1"><div class="mr-sm-4"><i class="far fa-folder fa-fw"></i>{categories}</div><div><i class="fa fa-tag fa-fw"></i>{tags}</div></div><p>{snippet}</p></div>', noResultsText: '<p class="mt-5">Oops! No result founds.</p>' }); </script> <script async src="https://www.googletagmanager.com/gtag/js?id=183607258"></script> <script> window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', '183607258'); </script>

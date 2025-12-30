@@ -1,0 +1,769 @@
+<!DOCTYPE html><html lang="en" ><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><meta name="theme" content="Chirpy v2.5.1"><meta name="generator" content="Jekyll v4.3.4" /><meta property="og:title" content="Learning Rust with Advent of Code - Day 6" /><meta name="author" content="David & Felipe" /><meta property="og:locale" content="en_US" /><meta name="description" content="2015 Day 6: Turn regions of a 1000x1000 grid of lights off and on again, and count how many are on at the end. After optimizing our brute-force, we explore other potential improvements and speedups." /><meta property="og:description" content="2015 Day 6: Turn regions of a 1000x1000 grid of lights off and on again, and count how many are on at the end. After optimizing our brute-force, we explore other potential improvements and speedups." /><link rel="canonical" href="http://hallofdreams.org/posts/advent-of-code-2015-rust-day-6/" /><meta property="og:url" content="http://hallofdreams.org/posts/advent-of-code-2015-rust-day-6/" /><meta property="og:site_name" content="Hall of Impossible Dreams" /><meta property="og:type" content="article" /><meta property="article:published_time" content="2021-06-17T13:00:00-04:00" /><meta name="twitter:card" content="summary" /><meta property="twitter:title" content="Learning Rust with Advent of Code - Day 6" /><meta name="twitter:site" content="@thecog19" /><meta name="twitter:creator" content="@David & Felipe" /><meta name="google-site-verification" content="rOMa9oYHtFBq7U58IniOX1gggI6noWpOXoWBk-9hItk" /> <script type="application/ld+json"> {"description":"2015 Day 6: Turn regions of a 1000x1000 grid of lights off and on again, and count how many are on at the end. After optimizing our brute-force, we explore other potential improvements and speedups.","@type":"BlogPosting","headline":"Learning Rust with Advent of Code - Day 6","url":"http://hallofdreams.org/posts/advent-of-code-2015-rust-day-6/","dateModified":"2021-06-17T13:00:00-04:00","datePublished":"2021-06-17T13:00:00-04:00","mainEntityOfPage":{"@type":"WebPage","@id":"http://hallofdreams.org/posts/advent-of-code-2015-rust-day-6/"},"author":{"@type":"Person","name":"David & Felipe"},"@context":"https://schema.org"}</script><title>Learning Rust with Advent of Code - Day 6 | Hall of Impossible Dreams</title><link rel="shortcut icon" href="/assets/img/favicons/favicon.ico" type="image/x-icon"><link rel="icon" href="/assets/img/favicons/favicon.ico" type="image/x-icon"><link rel="apple-touch-icon" href="/assets/img/favicons/apple-icon.png"><link rel="apple-touch-icon" href="/assets/img/favicons/apple-icon-precomposed.png"><link rel="apple-touch-icon" sizes="57x57" href="/assets/img/favicons/apple-icon-57x57.png"><link rel="apple-touch-icon" sizes="60x60" href="/assets/img/favicons/apple-icon-60x60.png"><link rel="apple-touch-icon" sizes="72x72" href="/assets/img/favicons/apple-icon-72x72.png"><link rel="apple-touch-icon" sizes="76x76" href="/assets/img/favicons/apple-icon-76x76.png"><link rel="apple-touch-icon" sizes="114x114" href="/assets/img/favicons/apple-icon-114x114.png"><link rel="apple-touch-icon" sizes="120x120" href="/assets/img/favicons/apple-icon-120x120.png"><link rel="apple-touch-icon" sizes="144x144" href="/assets/img/favicons/apple-icon-144x144.png"><link rel="apple-touch-icon" sizes="152x152" href="/assets/img/favicons/apple-icon-152x152.png"><link rel="apple-touch-icon" sizes="180x180" href="/assets/img/favicons/apple-icon-180x180.png"><link rel="icon" type="image/png" sizes="192x192" href="/assets/img/favicons/android-icon-192x192.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicons/favicon-32x32.png"><link rel="icon" type="image/png" sizes="96x96" href="/assets/img/favicons/favicon-96x96.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicons/favicon-16x16.png"><link rel="manifest" href="/assets/img/favicons/manifest.json"><meta name='msapplication-config' content='/assets/img/favicons/browserconfig.xml'><meta name="msapplication-TileColor" content="#ffffff"><meta name="msapplication-TileImage" content="/assets/img/favicons/ms-icon-144x144.png"><meta name="theme-color" content="#ffffff"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://fonts.gstatic.com"><link rel="preconnect" href="https://www.google-analytics.com" crossorigin="use-credentials"><link rel="dns-prefetch" href="https://www.google-analytics.com"><link rel="preconnect" href="https://www.googletagmanager.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://www.googletagmanager.com"><link rel="preconnect" href="cdn.jsdelivr.net"><link rel="dns-prefetch" href="cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha256-LA89z+k9fjgMKQ/kq4OO2Mrf8VltYml/VES+Rg0fh20=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.11.2/css/all.min.css" integrity="sha256-+N4/V/SbAFiW1MPBCXnfnP9QSN3+Keu+NlB+0ev/YKQ=" crossorigin="anonymous"><link rel="preload" as="style" href="/assets/css/post.css"><link rel="stylesheet" href="/assets/css/post.css"><link rel="preload" as="style" href="/assets/css/lib/bootstrap-toc.min.css"><link rel="stylesheet" href="/assets/css/lib/bootstrap-toc.min.css" /> <script async src="https://www.googletagmanager.com/gtag/js?id=G-QGYEJ40C64"></script> <script> window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-QGYEJ40C64'); </script> <script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script> <script async src="https://cdn.jsdelivr.net/combine/npm/popper.js@1.15.0,npm/bootstrap@4/dist/js/bootstrap.min.js"></script> <script async src="/assets/js/post.min.js"></script> <script defer src="/app.js"></script><body data-spy="scroll" data-target="#toc"><div id="sidebar" class="d-flex flex-column"><div id="nav-wrapper"><div id="profile-wrapper" class="d-flex flex-column"><div id="avatar" class="d-flex justify-content-center"> <a href="/" alt="avatar"> <img src="/assets/img/sample/avatar.jpg" alt="avatar" onerror="this.style.display='none'"> </a></div><div class="profile-text mt-3"><div class="site-title"> <a href="/">Hall of Impossible Dreams</a></div><div class="site-subtitle font-italic">A repository of code, fiction, nonfiction, and poetry.</div></div></div><ul class="nav flex-column"><li class="nav-item d-flex justify-content-center "> <a href="/" class="nav-link d-flex justify-content-center align-items-center w-100"> <i class="fa-fw fas fa-home ml-xl-3 mr-xl-3 unloaded"></i> <span>HOME</span> </a><li class="nav-item d-flex justify-content-center "> <a href="/tabs/categories/" class="nav-link d-flex justify-content-center align-items-center w-100"> <i class="fa-fw fas fa-stream ml-xl-3 mr-xl-3 unloaded"></i> <span>CATEGORIES</span> </a><li class="nav-item d-flex justify-content-center "> <a href="/tabs/tags/" class="nav-link d-flex justify-content-center align-items-center w-100"> <i class="fa-fw fas fa-tags ml-xl-3 mr-xl-3 unloaded"></i> <span>TAGS</span> </a><li class="nav-item d-flex justify-content-center "> <a href="/tabs/archives/" class="nav-link d-flex justify-content-center align-items-center w-100"> <i class="fa-fw fas fa-archive ml-xl-3 mr-xl-3 unloaded"></i> <span>ARCHIVES</span> </a><li class="nav-item d-flex justify-content-center "> <a href="/tabs/about/" class="nav-link d-flex justify-content-center align-items-center w-100"> <i class="fa-fw fas fa-info ml-xl-3 mr-xl-3 unloaded"></i> <span>ABOUT</span> </a></ul></div><div class="sidebar-bottom d-flex flex-wrap justify-content-around mt-4"> <span id="mode-toggle-wrapper"> <i class="mode-toggle fas fa-sun" dark-mode-invisible></i> <i class="mode-toggle fas fa-moon" light-mode-invisible></i> <script type="text/javascript"> class ModeToggle { static get MODE_KEY() { return "mode"; } static get DARK_MODE() { return "dark"; } static get LIGHT_MODE() { return "light"; } constructor() { if (this.mode != null) { if (this.mode == ModeToggle.DARK_MODE) { if (!this.isSysDarkPrefer) { this.setDark(); } } else { if (this.isSysDarkPrefer) { this.setLight(); } } } var self = this; /* always follow the system prefers */ this.sysDarkPrefers.addListener(function() { if (self.mode != null) { if (self.mode == ModeToggle.DARK_MODE) { if (!self.isSysDarkPrefer) { self.setDark(); } } else { if (self.isSysDarkPrefer) { self.setLight(); } } self.clearMode(); } }); } /* constructor() */ setDark() { $('html').attr(ModeToggle.MODE_KEY, ModeToggle.DARK_MODE); sessionStorage.setItem(ModeToggle.MODE_KEY, ModeToggle.DARK_MODE); } setLight() { $('html').attr(ModeToggle.MODE_KEY, ModeToggle.LIGHT_MODE); sessionStorage.setItem(ModeToggle.MODE_KEY, ModeToggle.LIGHT_MODE); } clearMode() { $('html').removeAttr(ModeToggle.MODE_KEY); sessionStorage.removeItem(ModeToggle.MODE_KEY); } get sysDarkPrefers() { return window.matchMedia("(prefers-color-scheme: dark)"); } get isSysDarkPrefer() { return this.sysDarkPrefers.matches; } get isDarkMode() { return this.mode == ModeToggle.DARK_MODE; } get isLightMode() { return this.mode == ModeToggle.LIGHT_MODE; } get hasMode() { return this.mode != null; } get mode() { return sessionStorage.getItem(ModeToggle.MODE_KEY); } flipMode() { if (this.hasMode) { if (this.isSysDarkPrefer) { if (this.isLightMode) { this.clearMode(); } else { this.setLight(); } } else { if (this.isDarkMode) { this.clearMode(); } else { this.setDark(); } } } else { if (this.isSysDarkPrefer) { this.setLight(); } else { this.setDark(); } } } /* flipMode() */ } /* ModeToggle */ let toggle = new ModeToggle(); $(".mode-toggle").click(function() { toggle.flipMode(); }); </script> </span> <span class="icon-border"></span> <a href="https://github.com/hallofdreams" aria-label="github" target="_blank" rel="noopener"> <i class="fab fa-github-alt"></i> </a> <a href="https://twitter.com/thecog19" aria-label="twitter" target="_blank" rel="noopener"> <i class="fab fa-twitter"></i> </a> <a href=" javascript:location.href = 'mailto:' + ['felipe.suero19','gmail.com'].join('@')" aria-label="email" > <i class="fas fa-envelope"></i> </a> <a href="/feed.xml" aria-label="rss" > <i class="fas fa-rss"></i> </a></div></div><div id="topbar-wrapper" class="row justify-content-center topbar-down"><div id="topbar" class="col-11 d-flex h-100 align-items-center justify-content-between"> <span id="breadcrumb"> <span> <a href="/"> Posts </a> </span> <span>Learning Rust with Advent of Code - Day 6</span> </span> <i id="sidebar-trigger" class="fas fa-bars fa-fw"></i><div id="topbar-title"> Post</div><i id="search-trigger" class="fas fa-search fa-fw"></i> <span id="search-wrapper" class="align-items-center"> <i class="fas fa-search fa-fw"></i> <input class="form-control" id="search-input" type="search" aria-label="search" placeholder="Search..."> <i class="fa fa-times-circle fa-fw" id="search-cleaner"></i> </span> <span id="search-cancel" >Cancel</span></div></div><div id="main-wrapper"><div id="main"><div class="row"><div id="post-wrapper" class="col-12 col-lg-11 col-xl-8"><div class="post pl-1 pr-1 pl-sm-2 pr-sm-2 pl-md-4 pr-md-4"><h1 data-toc-skip>Learning Rust with Advent of Code - Day 6</h1><div class="post-meta text-muted d-flex flex-column"><div> Posted <span class="timeago " data-toggle="tooltip" data-placement="bottom" title="Thu, Jun 17, 2021, 1:00 PM -0400" > Jun 17, 2021 <i class="unloaded">2021-06-17T13:00:00-04:00</i> </span> <span class="author"> by David & Felipe </span></div></div><div class="post-content"><h3>Series Navigation</h3><li><a href="/posts/advent-of-code-2015-rust-day-1/">Learning Rust with Advent of Code - Day 1</a><li><a href="/posts/advent-of-code-2015-rust-day-2/">Learning Rust with Advent of Code - Day 2</a><li><a href="/posts/advent-of-code-2015-rust-day-3/">Learning Rust with Advent of Code - Day 3</a><li><a href="/posts/advent-of-code-2015-rust-day-4/">Learning Rust with Advent of Code - Day 4</a><li><a href="/posts/advent-of-code-2015-rust-day-5/">Learning Rust with Advent of Code - Day 5</a><li><b>Learning Rust with Advent of Code - Day 6</b></div><hr><div class="post-content"><div style="display:none;">2015 Day 6: Turn regions of a 1000x1000 grid of lights off and on again, and count how many are on at the end. After optimizing our brute-force, we explore other potential improvements and speedups.</div><h1 id="day-6"><a href="https://www.adventofcode.com/2015/day/6">Day 6</a></h1><p>The problem: for a grid of 1000x1000 lights, you’re given a series of instructions to turn a range of lights on, turn them off, or toggle them.</p><p><strong>Part 1:</strong> Implement the instructions, and count how many lights remain on at the end.</p><p><strong>Part 2:</strong> Implement the instructions if lights are no longer binary but have integer-valued brightness, and count the total brightness at the end.</p><h1 id="david">David</h1><h2 id="attempt-00">Attempt 0.0</h2><p>Looking around online, I see that there is an <a href="https://docs.rs/array2d/0.2.1/array2d/"><code class="language-plaintext highlighter-rouge">Array2D</code> crate</a>, but I’m unsure what advantages it has over a normal, mutable 2D vector; when in doubt, I’ll stick with the baseline Rust code.</p><div class="language-rust highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre><td class="rouge-code"><pre><span class="k">use</span> <span class="nn">std</span><span class="p">::</span><span class="n">fs</span><span class="p">;</span>
+
+<span class="k">fn</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="k">let</span> <span class="n">file</span> <span class="o">=</span> <span class="s">"../Inputs/Day5Input.txt"</span><span class="p">;</span>
+	<span class="k">let</span> <span class="n">input_raw</span><span class="p">:</span> <span class="nb">String</span> <span class="o">=</span> <span class="nn">fs</span><span class="p">::</span><span class="nf">read_to_string</span><span class="p">(</span><span class="n">file</span><span class="p">)</span><span class="nf">.unwrap</span><span class="p">();</span>
+	
+	<span class="k">let</span> <span class="k">mut</span> <span class="n">first_lights</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0u1</span><span class="p">;</span> <span class="mi">1000</span><span class="p">];</span> <span class="mi">1000</span><span class="p">];</span>
+	<span class="n">first_lights</span><span class="p">[</span><span class="mi">5</span><span class="p">][</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
+	<span class="nd">println!</span><span class="p">(</span><span class="s">"Position 5, 6 = {}"</span><span class="p">,</span> <span class="n">first_lights</span><span class="p">[</span><span class="mi">5</span><span class="p">][</span><span class="mi">6</span><span class="p">]);</span>
+<span class="p">}</span>
+</pre></table></code></div></div><div class="language-plaintext highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre><td class="rouge-code"><pre>Finished release [optimized] target(s) in 0.49s
+ Running `target/release/day_6`
+Position 5, 6 = 5
+</pre></table></code></div></div><p>A <code class="language-plaintext highlighter-rouge">u8</code> is enough for part 1, and if a <code class="language-plaintext highlighter-rouge">u1</code> existed, I’d use that instead; the lights can only have a binary value. I’ll switch to <code class="language-plaintext highlighter-rouge">u16</code> for part 2.</p><h2 id="attempt-01">Attempt 0.1</h2><div class="language-rust highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+</pre><td class="rouge-code"><pre><span class="k">use</span> <span class="nn">std</span><span class="p">::</span><span class="n">fs</span><span class="p">;</span>
+
+<span class="k">fn</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="k">let</span> <span class="n">file</span> <span class="o">=</span> <span class="s">"../Inputs/Day5Input.txt"</span><span class="p">;</span>
+	<span class="k">let</span> <span class="n">input_raw</span><span class="p">:</span> <span class="nb">String</span> <span class="o">=</span> <span class="nn">fs</span><span class="p">::</span><span class="nf">read_to_string</span><span class="p">(</span><span class="n">file</span><span class="p">)</span><span class="nf">.unwrap</span><span class="p">();</span>
+	
+	<span class="k">let</span> <span class="k">mut</span> <span class="n">first_lights</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0u8</span><span class="p">;</span> <span class="mi">1000</span><span class="p">];</span> <span class="mi">1000</span><span class="p">];</span>
+	<span class="n">first_lights</span><span class="p">[</span><span class="mi">5</span><span class="p">][</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
+	
+	<span class="k">let</span> <span class="k">mut</span> <span class="n">sum</span><span class="p">:</span> <span class="nb">u64</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="k">for</span> <span class="n">row</span> <span class="k">in</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="n">first_lights</span><span class="p">[</span><span class="o">..</span><span class="p">]</span> <span class="p">{</span>
+		<span class="k">for</span> <span class="n">light</span> <span class="k">in</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="n">row</span> <span class="p">{</span>
+			<span class="n">sum</span> <span class="o">+=</span> <span class="o">*</span><span class="n">light</span><span class="p">;</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+	
+	<span class="nd">println!</span><span class="p">(</span><span class="s">"Total brightness = {}"</span><span class="p">,</span> <span class="n">sum</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></table></code></div></div><div class="language-plaintext highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre><td class="rouge-code"><pre>error[E0277]: `[u8; 1000]` is not an iterator
+
+for light in &amp;mut row {
+             ^^^^^^^^ borrow the array with `&amp;` or call `.iter()` on it to iterate over it
+= help: the trait `Iterator` is not implemented for `[u8; 1000]`
+= note: arrays are not iterators, but slices like the following are: `&amp;[1, 2, 3]`
+= note: required because of the requirements on the impl of `Iterator` for `&amp;mut [u8; 1000]`
+</pre></table></code></div></div><p>So, it seems that the <a href="https://doc.rust-lang.org/book/ch04-03-slices.html">slice</a> notation does indeed work, and calling a mutable reference on a slice seems to allow for the in-place modification of the object being sliced. What I forgot was that I <em>also</em> needed a mutable reference to a slice of <code class="language-plaintext highlighter-rouge">row</code>, because <code class="language-plaintext highlighter-rouge">row</code> is also a <code class="language-plaintext highlighter-rouge">Vec</code>.</p><h2 id="attempt-02">Attempt 0.2</h2><div class="language-rust highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+</pre><td class="rouge-code"><pre><span class="k">use</span> <span class="nn">std</span><span class="p">::</span><span class="n">fs</span><span class="p">;</span>
+
+<span class="k">fn</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="k">let</span> <span class="n">file</span> <span class="o">=</span> <span class="s">"../Inputs/Day5Input.txt"</span><span class="p">;</span>
+	<span class="k">let</span> <span class="n">input_raw</span><span class="p">:</span> <span class="nb">String</span> <span class="o">=</span> <span class="nn">fs</span><span class="p">::</span><span class="nf">read_to_string</span><span class="p">(</span><span class="n">file</span><span class="p">)</span><span class="nf">.unwrap</span><span class="p">();</span>
+	
+	<span class="k">let</span> <span class="k">mut</span> <span class="n">first_lights</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0u8</span><span class="p">;</span> <span class="mi">1000</span><span class="p">];</span> <span class="mi">1000</span><span class="p">];</span>
+	<span class="n">first_lights</span><span class="p">[</span><span class="mi">5</span><span class="p">][</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
+	
+	<span class="k">let</span> <span class="k">mut</span> <span class="n">sum</span><span class="p">:</span> <span class="nb">u64</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="k">for</span> <span class="n">row</span> <span class="k">in</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="n">first_lights</span><span class="p">[</span><span class="o">..</span><span class="p">]</span> <span class="p">{</span>
+		<span class="k">for</span> <span class="n">light</span> <span class="k">in</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="n">row</span><span class="p">[</span><span class="o">..</span><span class="p">]</span> <span class="p">{</span>
+			<span class="n">sum</span> <span class="o">+=</span> <span class="o">*</span><span class="n">light</span><span class="p">;</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+	
+	<span class="nd">println!</span><span class="p">(</span><span class="s">"Total brightness = {}"</span><span class="p">,</span> <span class="n">sum</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></table></code></div></div><div class="language-plaintext highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre><td class="rouge-code"><pre>error[E0277]: cannot add-assign `u8` to `u64`
+
+sum += *light;
+    ^^ no implementation for `u64 += u8`
+= help: the trait `AddAssign&lt;u8&gt;` is not implemented for `u64`
+</pre></table></code></div></div><p>Okay, I forgot about how strict types are in Rust. Still, I now know a better option than <code class="language-plaintext highlighter-rouge">TryInto</code>, which was my old go-to.</p><h2 id="attempt-03">Attempt 0.3</h2><div class="language-rust highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+</pre><td class="rouge-code"><pre><span class="k">use</span> <span class="nn">std</span><span class="p">::</span><span class="n">fs</span><span class="p">;</span>
+
+<span class="k">fn</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="k">let</span> <span class="n">file</span> <span class="o">=</span> <span class="s">"../Inputs/Day5Input.txt"</span><span class="p">;</span>
+	<span class="k">let</span> <span class="n">input_raw</span><span class="p">:</span> <span class="nb">String</span> <span class="o">=</span> <span class="nn">fs</span><span class="p">::</span><span class="nf">read_to_string</span><span class="p">(</span><span class="n">file</span><span class="p">)</span><span class="nf">.unwrap</span><span class="p">();</span>
+	
+	<span class="k">let</span> <span class="k">mut</span> <span class="n">first_lights</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0u8</span><span class="p">;</span> <span class="mi">1000</span><span class="p">];</span> <span class="mi">1000</span><span class="p">];</span>
+	<span class="n">first_lights</span><span class="p">[</span><span class="mi">5</span><span class="p">][</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
+	
+	<span class="k">let</span> <span class="k">mut</span> <span class="n">sum</span><span class="p">:</span> <span class="nb">u64</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="k">for</span> <span class="n">row</span> <span class="k">in</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="n">first_lights</span><span class="p">[</span><span class="o">..</span><span class="p">]</span> <span class="p">{</span>
+		<span class="k">for</span> <span class="n">light</span> <span class="k">in</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="n">row</span><span class="p">[</span><span class="o">..</span><span class="p">]</span> <span class="p">{</span>
+			<span class="n">sum</span> <span class="o">+=</span> <span class="p">(</span><span class="o">*</span><span class="n">light</span> <span class="k">as</span> <span class="nb">u64</span><span class="p">);</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+	
+	<span class="nd">println!</span><span class="p">(</span><span class="s">"Total brightness = {}"</span><span class="p">,</span> <span class="n">sum</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></table></code></div></div><div class="language-plaintext highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre><td class="rouge-code"><pre>Finished release [optimized] target(s) in 0.23s
+ Running `target/release/day_6`
+Total brightness = 5
+</pre></table></code></div></div><p>Slicing works; let’s import the actual slice ranges we’ll need.</p><h2 id="attempt-04">Attempt 0.4</h2><div class="language-rust highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+</pre><td class="rouge-code"><pre><span class="k">use</span> <span class="nn">std</span><span class="p">::</span><span class="n">fs</span><span class="p">;</span>
+
+<span class="k">fn</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="k">let</span> <span class="n">file</span> <span class="o">=</span> <span class="s">"../Inputs/Day5Input.txt"</span><span class="p">;</span>
+	<span class="k">let</span> <span class="n">input_raw</span><span class="p">:</span> <span class="nb">String</span> <span class="o">=</span> <span class="nn">fs</span><span class="p">::</span><span class="nf">read_to_string</span><span class="p">(</span><span class="n">file</span><span class="p">)</span><span class="nf">.unwrap</span><span class="p">();</span>
+	
+	<span class="k">let</span> <span class="k">mut</span> <span class="n">first_lights</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0u16</span><span class="p">;</span> <span class="mi">1000</span><span class="p">];</span> <span class="mi">1000</span><span class="p">];</span>
+	
+	<span class="k">for</span> <span class="n">line</span> <span class="k">in</span> <span class="n">input_raw</span><span class="nf">.lines</span><span class="p">()</span> <span class="p">{</span>
+		<span class="k">let</span> <span class="k">mut</span> <span class="n">tokens</span> <span class="o">=</span> <span class="n">line</span><span class="nf">.split</span><span class="p">(|</span><span class="n">c</span><span class="p">|</span> <span class="n">c</span> <span class="o">==</span> <span class="sc">' '</span> <span class="p">||</span> <span class="n">c</span> <span class="o">==</span> <span class="sc">','</span><span class="p">);</span>
+		<span class="k">let</span> <span class="k">mut</span> <span class="n">keyword</span> <span class="o">=</span> <span class="n">tokens</span><span class="nf">.next</span><span class="p">()</span><span class="nf">.unwrap</span><span class="p">();</span>
+		<span class="k">if</span> <span class="n">keyword</span> <span class="o">==</span> <span class="s">"turn"</span> <span class="p">{</span>
+			<span class="n">keyword</span> <span class="o">=</span> <span class="n">tokens</span><span class="nf">.next</span><span class="p">()</span><span class="nf">.unwrap</span><span class="p">();</span>
+		<span class="p">};</span>
+		<span class="k">let</span> <span class="n">xmin</span><span class="p">:</span> <span class="nb">usize</span> <span class="o">=</span> <span class="n">tokens</span><span class="nf">.next</span><span class="p">()</span><span class="nf">.unwrap</span><span class="p">()</span><span class="nf">.parse</span><span class="p">()</span><span class="nf">.unwrap</span><span class="p">();</span>
+		<span class="k">let</span> <span class="n">ymin</span><span class="p">:</span> <span class="nb">usize</span> <span class="o">=</span> <span class="n">tokens</span><span class="nf">.next</span><span class="p">()</span><span class="nf">.unwrap</span><span class="p">()</span><span class="nf">.parse</span><span class="p">()</span><span class="nf">.unwrap</span><span class="p">();</span>
+		<span class="n">tokens</span><span class="nf">.next</span><span class="p">();</span>
+		<span class="k">let</span> <span class="n">xmax</span><span class="p">:</span> <span class="nb">usize</span> <span class="o">=</span> <span class="n">tokens</span><span class="nf">.next</span><span class="p">()</span><span class="nf">.unwrap</span><span class="p">()</span><span class="nf">.parse</span><span class="p">()</span><span class="nf">.unwrap</span><span class="p">();</span>
+		<span class="k">let</span> <span class="n">ymax</span><span class="p">:</span> <span class="nb">usize</span> <span class="o">=</span> <span class="n">tokens</span><span class="nf">.next</span><span class="p">()</span><span class="nf">.unwrap</span><span class="p">()</span><span class="nf">.parse</span><span class="p">()</span><span class="nf">.unwrap</span><span class="p">();</span>
+		
+		<span class="nd">println!</span><span class="p">(</span><span class="s">"{} {} {} {} {}"</span><span class="p">,</span><span class="n">keyword</span><span class="p">,</span><span class="n">xmin</span><span class="p">,</span><span class="n">ymin</span><span class="p">,</span><span class="n">xmax</span><span class="p">,</span><span class="n">ymax</span><span class="p">)</span>
+	<span class="p">}</span>
+	
+	<span class="k">let</span> <span class="k">mut</span> <span class="n">sum</span><span class="p">:</span> <span class="nb">u64</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="k">for</span> <span class="n">row</span> <span class="k">in</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="n">first_lights</span><span class="p">[</span><span class="o">..</span><span class="p">]</span> <span class="p">{</span>
+		<span class="k">for</span> <span class="n">light</span> <span class="k">in</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="n">row</span><span class="p">[</span><span class="o">..</span><span class="p">]</span> <span class="p">{</span>
+			<span class="n">sum</span> <span class="o">+=</span> <span class="o">*</span><span class="n">light</span> <span class="k">as</span> <span class="nb">u64</span><span class="p">;</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+	
+	<span class="nd">println!</span><span class="p">(</span><span class="s">"Total brightness = {}"</span><span class="p">,</span> <span class="n">sum</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></table></code></div></div><div class="language-plaintext highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre><td class="rouge-code"><pre>Finished release [optimized] target(s) in 0.36s
+ Running `target/release/day_6`
+thread 'main' panicked at 'called `Option::unwrap()` on a `None` value', src/main.rs:15:41
+</pre></table></code></div></div><p>So the very first token failed, before anything at all was printed. Each line is one of the following three types:</p><div class="language-plaintext highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre><td class="rouge-code"><pre>toggle 258,985 through 663,998
+turn on 601,259 through 831,486
+turn off 914,94 through 941,102
+</pre></table></code></div></div><p>I’m splitting by either spaces or commas, and I take into account the different possible message lengths…but I’m not taking into account importing from yesterday’s input file rather than today’s. Oops.</p><p>But this is why Rust’s error messages are so useful. If all I knew was that the program failed at that line, I wouldn’t know why - but there’s no way that it could have returned <code class="language-plaintext highlighter-rouge">None</code> on my input after just one space, so I knew exactly where to look.</p><h2 id="attempt-05">Attempt 0.5</h2><div class="language-rust highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+</pre><td class="rouge-code"><pre><span class="k">use</span> <span class="nn">std</span><span class="p">::</span><span class="n">fs</span><span class="p">;</span>
+
+<span class="k">fn</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="k">let</span> <span class="n">file</span> <span class="o">=</span> <span class="s">"../Inputs/Day6Input.txt"</span><span class="p">;</span>
+	<span class="k">let</span> <span class="n">input_raw</span><span class="p">:</span> <span class="nb">String</span> <span class="o">=</span> <span class="nn">fs</span><span class="p">::</span><span class="nf">read_to_string</span><span class="p">(</span><span class="n">file</span><span class="p">)</span><span class="nf">.unwrap</span><span class="p">();</span>
+	
+	<span class="k">let</span> <span class="k">mut</span> <span class="n">first_lights</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0u16</span><span class="p">;</span> <span class="mi">1000</span><span class="p">];</span> <span class="mi">1000</span><span class="p">];</span>
+	
+	<span class="k">for</span> <span class="n">line</span> <span class="k">in</span> <span class="n">input_raw</span><span class="nf">.lines</span><span class="p">()</span> <span class="p">{</span>
+		<span class="k">let</span> <span class="k">mut</span> <span class="n">tokens</span> <span class="o">=</span> <span class="n">line</span><span class="nf">.split</span><span class="p">(|</span><span class="n">c</span><span class="p">|</span> <span class="n">c</span> <span class="o">==</span> <span class="sc">' '</span> <span class="p">||</span> <span class="n">c</span> <span class="o">==</span> <span class="sc">','</span><span class="p">);</span>
+		<span class="k">let</span> <span class="k">mut</span> <span class="n">keyword</span> <span class="o">=</span> <span class="n">tokens</span><span class="nf">.next</span><span class="p">()</span><span class="nf">.unwrap</span><span class="p">();</span>
+		<span class="k">if</span> <span class="n">keyword</span> <span class="o">==</span> <span class="s">"turn"</span> <span class="p">{</span>
+			<span class="n">keyword</span> <span class="o">=</span> <span class="n">tokens</span><span class="nf">.next</span><span class="p">()</span><span class="nf">.unwrap</span><span class="p">();</span>
+		<span class="p">};</span>
+		<span class="k">let</span> <span class="n">xmin</span><span class="p">:</span> <span class="nb">usize</span> <span class="o">=</span> <span class="n">tokens</span><span class="nf">.next</span><span class="p">()</span><span class="nf">.unwrap</span><span class="p">()</span><span class="nf">.parse</span><span class="p">()</span><span class="nf">.unwrap</span><span class="p">();</span>
+		<span class="k">let</span> <span class="n">ymin</span><span class="p">:</span> <span class="nb">usize</span> <span class="o">=</span> <span class="n">tokens</span><span class="nf">.next</span><span class="p">()</span><span class="nf">.unwrap</span><span class="p">()</span><span class="nf">.parse</span><span class="p">()</span><span class="nf">.unwrap</span><span class="p">();</span>
+		<span class="n">tokens</span><span class="nf">.next</span><span class="p">();</span>
+		<span class="k">let</span> <span class="n">xmax</span><span class="p">:</span> <span class="nb">usize</span> <span class="o">=</span> <span class="n">tokens</span><span class="nf">.next</span><span class="p">()</span><span class="nf">.unwrap</span><span class="p">()</span><span class="nf">.parse</span><span class="p">()</span><span class="nf">.unwrap</span><span class="p">();</span>
+		<span class="k">let</span> <span class="n">ymax</span><span class="p">:</span> <span class="nb">usize</span> <span class="o">=</span> <span class="n">tokens</span><span class="nf">.next</span><span class="p">()</span><span class="nf">.unwrap</span><span class="p">()</span><span class="nf">.parse</span><span class="p">()</span><span class="nf">.unwrap</span><span class="p">();</span>
+		
+		<span class="k">for</span> <span class="n">row</span> <span class="k">in</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="n">first_lights</span><span class="p">[</span><span class="n">xmin</span><span class="o">..=</span><span class="n">xmax</span><span class="p">]</span> <span class="p">{</span>
+			<span class="k">for</span> <span class="n">light</span> <span class="k">in</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="n">row</span><span class="p">[</span><span class="n">ymin</span><span class="o">..=</span><span class="n">ymax</span><span class="p">]</span> <span class="p">{</span>
+				<span class="o">*</span><span class="n">light</span> <span class="o">=</span> <span class="k">match</span> <span class="n">keyword</span> <span class="p">{</span>
+					<span class="s">"on"</span> <span class="k">=&gt;</span> <span class="mi">1</span><span class="p">,</span>
+					<span class="s">"off"</span> <span class="k">=&gt;</span> <span class="mi">0</span><span class="p">,</span>
+					<span class="s">"toggle"</span> <span class="k">=&gt;</span> <span class="k">if</span> <span class="o">*</span><span class="n">light</span> <span class="o">==</span> <span class="mi">1</span> <span class="p">{</span><span class="mi">0</span><span class="p">}</span> <span class="k">else</span> <span class="p">{</span><span class="mi">1</span><span class="p">},</span> 
+					<span class="n">_</span> <span class="k">=&gt;</span> <span class="mi">0</span>
+				<span class="p">}</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+	
+	<span class="k">let</span> <span class="k">mut</span> <span class="n">sum</span><span class="p">:</span> <span class="nb">u64</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="k">for</span> <span class="n">row</span> <span class="k">in</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="n">first_lights</span><span class="p">[</span><span class="o">..</span><span class="p">]</span> <span class="p">{</span>
+		<span class="k">for</span> <span class="n">light</span> <span class="k">in</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="n">row</span><span class="p">[</span><span class="o">..</span><span class="p">]</span> <span class="p">{</span>
+			<span class="n">sum</span> <span class="o">+=</span> <span class="o">*</span><span class="n">light</span> <span class="k">as</span> <span class="nb">u64</span><span class="p">;</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+	
+	<span class="nd">println!</span><span class="p">(</span><span class="s">"Total brightness = {}"</span><span class="p">,</span> <span class="n">sum</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></table></code></div></div><div class="language-plaintext highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre><td class="rouge-code"><pre>Finished release [optimized] target(s) in 0.39s
+ Running `target/release/day_6`
+Total brightness = 569999
+</pre></table></code></div></div><p>Star 1 acquired; now I just rinse and repeat for star 2.</p><h2 id="final-version">Final Version</h2><div class="language-rust highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+</pre><td class="rouge-code"><pre><span class="k">use</span> <span class="nn">std</span><span class="p">::</span><span class="n">fs</span><span class="p">;</span>
+<span class="k">use</span> <span class="nn">std</span><span class="p">::</span><span class="nn">time</span><span class="p">::{</span><span class="n">Instant</span><span class="p">};</span>
+
+<span class="k">fn</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="k">let</span> <span class="n">start</span> <span class="o">=</span> <span class="nn">Instant</span><span class="p">::</span><span class="nf">now</span><span class="p">();</span>
+
+	<span class="k">let</span> <span class="n">file</span> <span class="o">=</span> <span class="s">"../Inputs/Day6Input.txt"</span><span class="p">;</span>
+	<span class="k">let</span> <span class="n">input_raw</span><span class="p">:</span> <span class="nb">String</span> <span class="o">=</span> <span class="nn">fs</span><span class="p">::</span><span class="nf">read_to_string</span><span class="p">(</span><span class="n">file</span><span class="p">)</span><span class="nf">.unwrap</span><span class="p">();</span>
+	
+	<span class="k">let</span> <span class="k">mut</span> <span class="n">first_lights</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0u16</span><span class="p">;</span> <span class="mi">1000</span><span class="p">];</span> <span class="mi">1000</span><span class="p">];</span>
+	<span class="k">let</span> <span class="k">mut</span> <span class="n">second_lights</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0u16</span><span class="p">;</span> <span class="mi">1000</span><span class="p">];</span> <span class="mi">1000</span><span class="p">];</span>
+	
+	<span class="k">for</span> <span class="n">line</span> <span class="k">in</span> <span class="n">input_raw</span><span class="nf">.lines</span><span class="p">()</span> <span class="p">{</span>
+		<span class="k">let</span> <span class="k">mut</span> <span class="n">tokens</span> <span class="o">=</span> <span class="n">line</span><span class="nf">.split</span><span class="p">(|</span><span class="n">c</span><span class="p">|</span> <span class="n">c</span> <span class="o">==</span> <span class="sc">' '</span> <span class="p">||</span> <span class="n">c</span> <span class="o">==</span> <span class="sc">','</span><span class="p">);</span>
+		<span class="k">let</span> <span class="k">mut</span> <span class="n">keyword</span> <span class="o">=</span> <span class="n">tokens</span><span class="nf">.next</span><span class="p">()</span><span class="nf">.unwrap</span><span class="p">();</span>
+		<span class="k">if</span> <span class="n">keyword</span> <span class="o">==</span> <span class="s">"turn"</span> <span class="p">{</span>
+			<span class="n">keyword</span> <span class="o">=</span> <span class="n">tokens</span><span class="nf">.next</span><span class="p">()</span><span class="nf">.unwrap</span><span class="p">();</span>
+		<span class="p">};</span>
+		<span class="k">let</span> <span class="n">xmin</span><span class="p">:</span> <span class="nb">usize</span> <span class="o">=</span> <span class="n">tokens</span><span class="nf">.next</span><span class="p">()</span><span class="nf">.unwrap</span><span class="p">()</span><span class="nf">.parse</span><span class="p">()</span><span class="nf">.unwrap</span><span class="p">();</span>
+		<span class="k">let</span> <span class="n">ymin</span><span class="p">:</span> <span class="nb">usize</span> <span class="o">=</span> <span class="n">tokens</span><span class="nf">.next</span><span class="p">()</span><span class="nf">.unwrap</span><span class="p">()</span><span class="nf">.parse</span><span class="p">()</span><span class="nf">.unwrap</span><span class="p">();</span>
+		<span class="n">tokens</span><span class="nf">.next</span><span class="p">();</span>
+		<span class="k">let</span> <span class="n">xmax</span><span class="p">:</span> <span class="nb">usize</span> <span class="o">=</span> <span class="n">tokens</span><span class="nf">.next</span><span class="p">()</span><span class="nf">.unwrap</span><span class="p">()</span><span class="nf">.parse</span><span class="p">()</span><span class="nf">.unwrap</span><span class="p">();</span>
+		<span class="k">let</span> <span class="n">ymax</span><span class="p">:</span> <span class="nb">usize</span> <span class="o">=</span> <span class="n">tokens</span><span class="nf">.next</span><span class="p">()</span><span class="nf">.unwrap</span><span class="p">()</span><span class="nf">.parse</span><span class="p">()</span><span class="nf">.unwrap</span><span class="p">();</span>
+		
+		<span class="k">for</span> <span class="n">row</span> <span class="k">in</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="n">first_lights</span><span class="p">[</span><span class="n">xmin</span><span class="o">..=</span><span class="n">xmax</span><span class="p">]</span> <span class="p">{</span>
+			<span class="k">for</span> <span class="n">light</span> <span class="k">in</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="n">row</span><span class="p">[</span><span class="n">ymin</span><span class="o">..=</span><span class="n">ymax</span><span class="p">]</span> <span class="p">{</span>
+				<span class="o">*</span><span class="n">light</span> <span class="o">=</span> <span class="k">match</span> <span class="n">keyword</span> <span class="p">{</span>
+					<span class="s">"on"</span> <span class="k">=&gt;</span> <span class="mi">1</span><span class="p">,</span>
+					<span class="s">"off"</span> <span class="k">=&gt;</span> <span class="mi">0</span><span class="p">,</span>
+					<span class="s">"toggle"</span> <span class="k">=&gt;</span> <span class="k">if</span> <span class="o">*</span><span class="n">light</span> <span class="o">==</span> <span class="mi">1</span> <span class="p">{</span><span class="mi">0</span><span class="p">}</span> <span class="k">else</span> <span class="p">{</span><span class="mi">1</span><span class="p">},</span> 
+					<span class="n">_</span> <span class="k">=&gt;</span> <span class="mi">0</span>
+				<span class="p">}</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+		<span class="k">for</span> <span class="n">row</span> <span class="k">in</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="n">second_lights</span><span class="p">[</span><span class="n">xmin</span><span class="o">..=</span><span class="n">xmax</span><span class="p">]</span> <span class="p">{</span>
+			<span class="k">for</span> <span class="n">light</span> <span class="k">in</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="n">row</span><span class="p">[</span><span class="n">ymin</span><span class="o">..=</span><span class="n">ymax</span><span class="p">]</span> <span class="p">{</span>
+				<span class="o">*</span><span class="n">light</span> <span class="o">=</span> <span class="k">match</span> <span class="n">keyword</span> <span class="p">{</span>
+					<span class="s">"on"</span> <span class="k">=&gt;</span> <span class="o">*</span><span class="n">light</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+					<span class="s">"off"</span> <span class="k">=&gt;</span> <span class="k">if</span> <span class="o">*</span><span class="n">light</span> <span class="o">&lt;=</span> <span class="mi">1</span> <span class="p">{</span><span class="mi">0</span><span class="p">}</span> <span class="k">else</span> <span class="p">{</span><span class="o">*</span><span class="n">light</span> <span class="o">-</span> <span class="mi">1</span><span class="p">},</span>
+					<span class="s">"toggle"</span> <span class="k">=&gt;</span> <span class="o">*</span><span class="n">light</span> <span class="o">+</span> <span class="mi">2</span><span class="p">,</span> 
+					<span class="n">_</span> <span class="k">=&gt;</span> <span class="mi">0</span>
+				<span class="p">}</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+	
+	<span class="k">let</span> <span class="k">mut</span> <span class="n">part1</span><span class="p">:</span> <span class="nb">u64</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="k">for</span> <span class="n">row</span> <span class="k">in</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="n">first_lights</span><span class="p">[</span><span class="o">..</span><span class="p">]</span> <span class="p">{</span>
+		<span class="k">for</span> <span class="n">light</span> <span class="k">in</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="n">row</span><span class="p">[</span><span class="o">..</span><span class="p">]</span> <span class="p">{</span>
+			<span class="n">part1</span> <span class="o">+=</span> <span class="o">*</span><span class="n">light</span> <span class="k">as</span> <span class="nb">u64</span><span class="p">;</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+	<span class="k">let</span> <span class="k">mut</span> <span class="n">part2</span><span class="p">:</span> <span class="nb">u64</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="k">for</span> <span class="n">row</span> <span class="k">in</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="n">second_lights</span><span class="p">[</span><span class="o">..</span><span class="p">]</span> <span class="p">{</span>
+		<span class="k">for</span> <span class="n">light</span> <span class="k">in</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="n">row</span><span class="p">[</span><span class="o">..</span><span class="p">]</span> <span class="p">{</span>
+			<span class="n">part2</span> <span class="o">+=</span> <span class="o">*</span><span class="n">light</span> <span class="k">as</span> <span class="nb">u64</span><span class="p">;</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+	<span class="k">let</span> <span class="n">end</span> <span class="o">=</span> <span class="n">start</span><span class="nf">.elapsed</span><span class="p">()</span><span class="nf">.as_micros</span><span class="p">();</span>
+	
+	<span class="nd">println!</span><span class="p">(</span><span class="s">"Part 1: {}"</span><span class="p">,</span> <span class="n">part1</span><span class="p">);</span>
+	<span class="nd">println!</span><span class="p">(</span><span class="s">"Part 2: {}"</span><span class="p">,</span> <span class="n">part2</span><span class="p">);</span>
+    <span class="nd">println!</span><span class="p">(</span><span class="s">"Time: {} μs"</span><span class="p">,</span> <span class="n">end</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></table></code></div></div><div class="language-plaintext highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre><td class="rouge-code"><pre>Part 1: 569999
+Part 2: 17836115
+Time: 48406 μs
+</pre></table></code></div></div><p>Part 2 complete! Fairly verbose - I’m sure there’s a more elegant way of applying a function to the interior of an array in Rust than the way I’m doing it - but not too bad in terms of readability. The runtime is not bad, either; there were twenty-three million assignments total for each part of my input, so a total time of 48 μs means that Rust is taking just over 1 nanosecond per assignment; without parallelizing, it’s hard to see how to beat that. Mathematica took 43 seconds, so a speedup this time of roughly 900x. Which is about consistent with my other comparisons so far for instances where Mathematica doesn’t have a built-in.</p><p>You might notice that I have <code class="language-plaintext highlighter-rouge">&amp;mut first_lights</code>, <code class="language-plaintext highlighter-rouge">&amp;mut second_lights</code>, and <code class="language-plaintext highlighter-rouge">&amp;mut row</code> towards the end, in the summation loops. Those references certainly don’t need to be mutable, because I’m not altering the vectors at that point - but for some reason, I get a roughly 2% speed reduction by doing that instead of <code class="language-plaintext highlighter-rouge">&amp;first_lights</code> etc. I have no idea why a mutable reference would be faster.</p><h1 id="felipe">Felipe</h1><p>Today we’re grapping with one of the most frustrating things in computer science. When you know there’s a <em>better</em> answer, but you just can’t reach it, despite your best efforts. Dave and I spent at least a month talking about pretty much every permutation of a solution, and prototyping various approaches. This problem is actually a great example of the type of problem where you can conceptualize it in a variety of ways, and try to solve it from different angles.</p><p>First, a disclaimer, the majority of the thrust of the thinking will be focused on part 1 of the problem, because we were confident a solution that solved p1 well could be adopted to p2. This is not <em>necessarily</em> true, but we were willing to accept a super elegant p1 and then think about how to solve p2 elegantly. With that out of the way, lets hop right in.</p><p>First, lets nail down the problem. It describes a grid, 1000 long, 1000 wide, in which each square contains a light. We want to toggle those lights on and off following a sequence of instructions. A few initial thoughts:</p><ol><li>Order matters, we can’t multithread the instructions.<li>There’s probably an O(n) solution where we iterate over the instructions once.<li>The O(n) solution is actually O(n*m), where m is the number of lights toggled in each instruction, unless we find a way to treat a set of instructions like a block.<li>The easiest representation of this is probably an array of arrays, e.g. a matrix.<li>A matrix opens the door to matrix algebra as a potential simplification.<li>Dave’s favorite solution to simplify matrix problems is something known as a sparse matrix. We’ll probably have to at least try one.</ol><p>The basic, O(n) solution (where n stands for the number of instructions), is the very basic brute force solution that we probably came to instinctually, namely to create an array of arrays initialized at 0 representing the grid, and execute every instruction in order. And that works, its a good solution, but the itch in my brain tells me we can do better.</p><p>Not just better, I believe we can create a soluton that works on a million by a million grid, with tens of thousands of instructions. That is really the goal here. To find a solution that doesn’t just solve the problem, but that solves the problem if it gets ridiculous.</p><h2 id="matrix-solutions">Matrix Solutions</h2><p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 " data-src="/assets/img/Rust_AoC_2015_Day_6_1_matrix.png" alt="Matrices" /></p><p>The first thing we discussed was removing redundant instructions. E.g. flipping a block that is already off doesn’t do anything… but scouting ahead to prune instructions adds complexity for not much gain, so that was right out. I wondered if given the nature of matrix algebra we could compress all the instructions into a single instruction which we would then execute as a final step to figure out the state of the grid. That seemed promising at first, since there’s a <a href="https://rust-lang-nursery.github.io/rust-cookbook/science/mathematics/linear_algebra.html">linear algebra crate</a> that might do what we need.</p><p>Ok so that’s a promising opening, but one that fizzled out quickly. To represent a set of instructions as a matrix, we have to create an instruction matrix, and apply it on top of the previous instructions, which complexity wise, winds up taking just as long, or longer than applying the instructions to the grid directly. So that’s a no go. Which sort of knocks out matrix algebra a possibility. Thankfully, because I wasn’t exactly looking forward to the math.</p><p>So we probably don’t want to do linear algebra directly, but what about sparse matrices? I only happen to know they exist because Dave keeps evangelizing them to me, and this seems like a circumstance where it could be genuinely useful. What the heck is a sparse matrix though? And how would you discover they exist if you didn’t have Dave?</p><p>A sparse matrix is a data structure optimized for holding a matrix where <em>most</em> of the entries are 0 valued. That is, for example, if you had a 1000x1000 grid where only ten squares had non-zero values. Usually this is represented as a triplet structure, where we store a pair of coordinates and a value, but most programming languages have some kind of crate or module to represent these, and indeed, <a href="https://docs.rs/sprs/0.10.0/sprs/">rust does too</a>, so we don’t have to worry about how we would implement it ourselves, because we wont.</p><p>What if you’d never heard of a sparse matrix before? How would you arrive at something like this? The key is to think about two things.</p><ol><li>What data do I care about?<li>Is there a data structure tuned for this data?</ol><p>Point one you can answer pretty easily. You don’t care at all about anything flipped to zero, you only care about data in your matrix that is non-zero. That’s a bunch of key words you can search for. For example <code class="language-plaintext highlighter-rouge">matrix with non-zero data</code> gives us a number of reference pages for programming languages, the majority of which wind up referencing sparse matrices. I’ll note that there are several iterations which do not give the results you want, like <code class="language-plaintext highlighter-rouge">matrix of zeros</code>. Generally I find explicitly calling out what you want, rather than something adjacent will give you the best results.</p><p>Here’s the thing though. It doesn’t actually save us much time if any. Our data isn’t sparse enough, as we rapidly discovered looking at what the final soluton turns out to be. We have about as many 1’s as 0’s, and the performance gain isn’t there. Its the beginning of a solution path that will actually bear fruit, but the key word “sparse matrix”, isn’t where the solution lies.</p><p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 " data-src="/assets/img/Rust_AoC_2015_Day_6_2_solution.png" alt="Solution" /></p><p><em>What the final solution looks like. Thanks Dave.</em></p><p>The important takeaway here is that we <em>don’t</em> care about zeroes. In fact, we could be in an infinitely large grid, and it wouldn’t matter, since only the bounds of our instructions are relevant…</p><h2 id="rectangles">Rectangles</h2><p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 " data-src="/assets/img/Rust_AoC_2015_Day_6_4_rec_header.jpg" alt="Rectangles" /></p><p>The matrix solutions didn’t sit right with me, because ultimately they’re an inelegant representation of coordinate sets. You know what also defines an arbitrary region of space on a grid? A rectangle. Taking the previous idea of overlapping instructions, if we represent each instruction as an <em>area</em>, we avoid the issue of needing to instantiate a matrix for each new instruction set.</p><p>Simple enough… except we have to do it all in one iteration to compete with the brute force solution. We can’t just generate a set of instructions as rectangles and then apply them on the grid, because we’re not saving any time. Instead we have to consider the primary grid (the one we claimed not to care about earlier.) as a rectangle on top of which we’re playing the other rectangles. This gets hairy, fast. Not that that’s going to deter us.</p><p>The goal of course, is to not need to execute extraneous instructions by eliminating unneeded rectangles, and then at the very end get the non-overlapping area of all lit rectangles. This seems overly complex, probably because it is, but there are several data structures that might help us, and I remain steadfast in the idea that there is an optimal solution here.</p><p>Ok, so the first problem you have to solve to fix this using rectangles is “how do you determine if two rectangles are overlapping”. You’d think this would be trivial. Its not. Its solved, but its annoying. You can do fancy vector stuff, but that was beyond what I wanted to investigate. Another solution is to check to see if any of the four corners of either rectangle is bounded by the area of the other. That takes 16 Boolean logic checks, is easy to mess up, and misses a core case.</p><p>Alright, fine, lets look at all the possible cases then. To help with this Dave whipped up a visualization in Mathematica. It boils down to four potential overlap cases:</p><p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 " data-src="/assets/img/Rust_AoC_2015_Day_6_5_rec_test.png" alt="solutions" /></p><p>One way to think about it is to look at the overlap of line segments, but again, there’s a lot of cases to consider there. I went as far as coding out a monster function to do this, when Dave proposed something much simpler. (It only took us 1200 words to get to the first line of code this time. By the time we reach day 25 I hope to have had a blog with no actual code.)</p><div class="language-rust highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+</pre><td class="rouge-code"><pre><span class="k">use</span> <span class="nn">std</span><span class="p">::</span><span class="n">cmp</span><span class="p">;</span>
+
+<span class="k">struct</span> <span class="n">Rectangle</span> <span class="p">{</span>
+    <span class="n">xmin</span><span class="p">:</span> <span class="nb">i64</span><span class="p">,</span>
+    <span class="n">ymin</span><span class="p">:</span> <span class="nb">i64</span><span class="p">,</span>
+    <span class="n">xmax</span><span class="p">:</span> <span class="nb">i64</span><span class="p">,</span>
+    <span class="n">ymax</span><span class="p">:</span> <span class="nb">i64</span>
+<span class="p">}</span>
+
+<span class="k">fn</span> <span class="nf">rect_overlap</span><span class="p">(</span><span class="n">rect1</span><span class="p">:</span> <span class="n">Rectangle</span><span class="p">,</span> <span class="n">rect2</span><span class="p">:</span> <span class="n">Rectangle</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="nb">Option</span><span class="o">&lt;</span><span class="n">Rectangle</span><span class="o">&gt;</span> <span class="p">{</span>
+    <span class="k">let</span> <span class="n">left_x</span> <span class="o">=</span> <span class="nn">cmp</span><span class="p">::</span><span class="nf">max</span><span class="p">(</span><span class="n">rect1</span><span class="py">.xmin</span><span class="p">,</span> <span class="n">rect2</span><span class="py">.xmin</span><span class="p">);</span>
+    <span class="k">let</span> <span class="n">right_x</span> <span class="o">=</span> <span class="nn">cmp</span><span class="p">::</span><span class="nf">min</span><span class="p">(</span><span class="n">rect1</span><span class="py">.xmax</span><span class="p">,</span> <span class="n">rect2</span><span class="py">.xmax</span><span class="p">);</span>
+    <span class="k">let</span> <span class="n">top_y</span> <span class="o">=</span> <span class="nn">cmp</span><span class="p">::</span><span class="nf">max</span><span class="p">(</span><span class="n">rect1</span><span class="py">.ymin</span><span class="p">,</span> <span class="n">rect2</span><span class="py">.ymin</span><span class="p">);</span>
+    <span class="k">let</span> <span class="n">bottom_y</span> <span class="o">=</span> <span class="nn">cmp</span><span class="p">::</span><span class="nf">min</span><span class="p">(</span><span class="n">rect1</span><span class="py">.ymax</span><span class="p">,</span> <span class="n">rect2</span><span class="py">.ymax</span><span class="p">);</span>
+    
+    <span class="k">if</span> <span class="n">left_x</span> <span class="o">&lt;=</span> <span class="n">right_x</span> <span class="o">&amp;&amp;</span> <span class="n">top_y</span> <span class="o">&lt;=</span> <span class="n">bottom_y</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nf">Some</span> <span class="p">(</span><span class="n">Rectangle</span> <span class="p">{</span>
+            <span class="n">xmin</span><span class="p">:</span> <span class="n">left_x</span><span class="p">,</span>
+            <span class="n">ymin</span><span class="p">:</span> <span class="n">top_y</span><span class="p">,</span>
+            <span class="n">xmax</span><span class="p">:</span> <span class="n">right_x</span><span class="p">,</span>
+            <span class="n">ymax</span><span class="p">:</span> <span class="n">bottom_y</span>
+        <span class="p">})</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nb">None</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></table></code></div></div><p>This is much more elegant, and doesn’t require doing the various checks I was doing in my initial iteration, while working on roughly the same principles.</p><p>Alright, now we can determine if rectangles overlap, what’s next?</p><p>Obviously we just start putting rectangles down on a grid. There’s just one issue. Every time we put a rectangle down we have to check if <em>any</em> existing rectangle overlaps. If it does, we have to generate new rectangles to represent the different states. We can be tricky and avoid some cases, such as where a rectangle is fully enveloped by a rectangle of the same color, but it starts to explode.</p><p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 " data-src="/assets/img/Rust_AoC_2015_Day_6_6_oh_no.png" alt="Oh No" /></p><p><em>A minor issue</em></p><p>This is… non-ideal. Other, less determined people might have concluded their intuition was wrong, and moved on, done useful things with their lives. Not us.</p><p>Obviously we have a lot of rectangles. There’s a couple different ways to help deal with that. The first is to add naïve optimizations. Remove rectangles already inside rectangles, add logic for when to skip adding. We tried this, and discovered several fun bugs, all of which were Mathematica-specific and not really relevant to the project. What we discovered though is that to make these optimizations we had to run various comparisons on every rectangle every time a new rectangle was created. This is the opposite of optimal.</p><p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 " data-src="/assets/img/Rust_AoC_2015_Day_6_3_rectangles.gif" alt="Oh No" /></p><p><em>It looked pretty cool though</em></p><p>Clearly what we need is a data structure that works well with overlapping rectangles. Surely someone has thought about this problem before?</p><p>Indeed, they have, in all kinds of contexts. Turns out we’re not the first to deal with rectangles. We discovered a couple data structures that looked promising. To whit, KD-Trees and R-Trees.</p><h2 id="a-forest-of-trees">A forest of trees</h2><p>I’m not an expert on these data structures, so I’ll mostly be giving a layman’s interpretation of obtuse Wikipedia articles and a paper or two we read along the way. Ultimately, we wound up implementing neither of these, so if you don’t care about data structures feel free to skip this section.</p><p>Alright, so, what is a KD-Tree, and why do we think it applies? A KD-Tree is a binary tree, that is each node has a maximum of two children. In a KD-Tree each node is a coordinate pair, or in some special cases, a set of coordinate pairs. A KD-Tree specifically organizes coordinate sets so you split space into sub-regions, theoretically letting you get specific pairs in log(n) time. The Wikipedia page explicitly calls out that <code class="language-plaintext highlighter-rouge">Instead of points, a k-d tree can also contain rectangles or hyperrectangles</code>. Obviously if we could run a search that only got us the rectangles we cared about that would make our overlapping areas problems significantly easier.</p><p>But there is a catch. Building the tree is a <code class="language-plaintext highlighter-rouge">O(n * log(n))</code> operation. Which might still be faster than O(nm), but might not, since we have to add to the tree at every step. The tree will likely become unbalanced and require a rebuild every so often, adding complexity. This seemed unsuitable, especially as we couldn’t find a single good example of someone using a kd-tree with rectangles in a way we could parse into working code.</p><p>R-Trees on the other hand looked extremely promising, I mean, look at this image:</p><p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 " data-src="/assets/img/Rust_AoC_2015_Day_6_7_rtree.png" alt="Rtrees" /></p><p><em>Glorious glorious rectangles</em></p><p>The idea behind r-trees, it seems to me, is you draw rectangles around your existing rectangles, and each node is an array (or linked list) of rectangles, which might contain sub-rectangles. Getting an area of all overlapping rectangles seemed pretty promising, as it could potentially mean looking at one thousand rectangles for comparisons, rather than a million. It has one tiny issue of course. R-trees do not guarantee good worst-case performance. They also are difficult to build, as the algorithms to determine where and how to bound rectangles were beyond me.</p><p>It’s extremely likely an r-tree would have worked for our use case, but its around this time I got this message from Dave:</p><p><code class="language-plaintext highlighter-rouge">I figured out an intermediate solution, in between the kind of solution we wanted and brute force.</code></p><h2 id="good-enough">Good enough?</h2><p>Remember our conversation about sparse matrices, before I went down into data-structure land and talked way too much about rectangles? It turns out we were on to something.</p><p>I’m gonna throw a big block of code in here, and then talk about it. I also want to point out that other than helping refine some of the code, this was fundamentally Dave’s work, in an effort, I’m sure, to get me to stop trying to implement R-Trees.</p><div class="language-rust highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+</pre><td class="rouge-code"><pre><span class="k">use</span> <span class="nn">std</span><span class="p">::</span><span class="n">fs</span><span class="p">;</span>
+<span class="k">use</span> <span class="nn">std</span><span class="p">::</span><span class="nn">time</span><span class="p">::{</span><span class="n">Instant</span><span class="p">};</span>
+<span class="k">use</span> <span class="nn">std</span><span class="p">::</span><span class="nn">collections</span><span class="p">::</span><span class="n">HashMap</span><span class="p">;</span>
+
+<span class="nd">#[derive(Debug,</span> <span class="nd">Eq,</span> <span class="nd">Hash,</span> <span class="nd">PartialEq)]</span>
+<span class="k">struct</span> <span class="n">Rectangle</span><span class="o">&lt;</span><span class="nv">'a</span><span class="o">&gt;</span> <span class="p">{</span>
+	<span class="n">xmin</span><span class="p">:</span> <span class="nb">i64</span><span class="p">,</span>
+	<span class="n">ymin</span><span class="p">:</span> <span class="nb">i64</span><span class="p">,</span>
+	<span class="n">xmax</span><span class="p">:</span> <span class="nb">i64</span><span class="p">,</span>
+	<span class="n">ymax</span><span class="p">:</span> <span class="nb">i64</span><span class="p">,</span>
+	<span class="n">light</span><span class="p">:</span> <span class="o">&amp;</span><span class="nv">'a</span> <span class="nb">str</span>
+<span class="p">}</span>
+
+
+<span class="k">fn</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="k">let</span> <span class="n">start</span> <span class="o">=</span> <span class="nn">Instant</span><span class="p">::</span><span class="nf">now</span><span class="p">();</span>
+
+	<span class="k">let</span> <span class="n">file</span> <span class="o">=</span> <span class="s">"../Inputs/Day6Input.txt"</span><span class="p">;</span>
+	<span class="k">let</span> <span class="n">input_raw</span><span class="p">:</span> <span class="nb">String</span> <span class="o">=</span> <span class="nn">fs</span><span class="p">::</span><span class="nf">read_to_string</span><span class="p">(</span><span class="n">file</span><span class="p">)</span><span class="nf">.unwrap</span><span class="p">();</span>
+	
+	<span class="k">let</span> <span class="k">mut</span> <span class="n">rectangles</span><span class="p">:</span> <span class="nb">Vec</span><span class="o">&lt;</span><span class="n">Rectangle</span><span class="o">&gt;</span> <span class="o">=</span> <span class="nn">Vec</span><span class="p">::</span><span class="nf">new</span><span class="p">();</span>
+	
+	<span class="k">let</span> <span class="k">mut</span> <span class="n">x_range</span> <span class="o">=</span> <span class="nd">vec!</span><span class="p">[];</span>
+	<span class="k">let</span> <span class="k">mut</span> <span class="n">y_range</span> <span class="o">=</span> <span class="nd">vec!</span><span class="p">[];</span>
+	
+	<span class="k">for</span> <span class="n">line</span> <span class="k">in</span> <span class="n">input_raw</span><span class="nf">.lines</span><span class="p">()</span> <span class="p">{</span>
+		<span class="k">let</span> <span class="k">mut</span> <span class="n">tokens</span> <span class="o">=</span> <span class="n">line</span><span class="nf">.split</span><span class="p">(|</span><span class="n">c</span><span class="p">|</span> <span class="n">c</span> <span class="o">==</span> <span class="sc">' '</span> <span class="p">||</span> <span class="n">c</span> <span class="o">==</span> <span class="sc">','</span><span class="p">);</span>
+		<span class="k">let</span> <span class="k">mut</span> <span class="n">keyword</span> <span class="o">=</span> <span class="n">tokens</span><span class="nf">.next</span><span class="p">()</span><span class="nf">.unwrap</span><span class="p">();</span>
+		<span class="k">if</span> <span class="n">keyword</span> <span class="o">==</span> <span class="s">"turn"</span> <span class="p">{</span>
+			<span class="n">keyword</span> <span class="o">=</span> <span class="n">tokens</span><span class="nf">.next</span><span class="p">()</span><span class="nf">.unwrap</span><span class="p">();</span>
+		<span class="p">};</span>
+		<span class="k">let</span> <span class="n">xmin</span><span class="p">:</span> <span class="nb">i64</span> <span class="o">=</span> <span class="n">tokens</span><span class="nf">.next</span><span class="p">()</span><span class="nf">.unwrap</span><span class="p">()</span><span class="nf">.parse</span><span class="p">()</span><span class="nf">.unwrap</span><span class="p">();</span>
+		<span class="k">let</span> <span class="n">ymin</span><span class="p">:</span> <span class="nb">i64</span> <span class="o">=</span> <span class="n">tokens</span><span class="nf">.next</span><span class="p">()</span><span class="nf">.unwrap</span><span class="p">()</span><span class="nf">.parse</span><span class="p">()</span><span class="nf">.unwrap</span><span class="p">();</span>
+		<span class="n">tokens</span><span class="nf">.next</span><span class="p">();</span>
+		<span class="k">let</span> <span class="n">xmax</span><span class="p">:</span> <span class="nb">i64</span> <span class="o">=</span> <span class="n">tokens</span><span class="nf">.next</span><span class="p">()</span><span class="nf">.unwrap</span><span class="p">()</span><span class="py">.parse</span><span class="p">::</span><span class="o">&lt;</span><span class="nb">i64</span><span class="o">&gt;</span><span class="p">()</span><span class="nf">.unwrap</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">// Plus one is critical!</span>
+		<span class="k">let</span> <span class="n">ymax</span><span class="p">:</span> <span class="nb">i64</span> <span class="o">=</span> <span class="n">tokens</span><span class="nf">.next</span><span class="p">()</span><span class="nf">.unwrap</span><span class="p">()</span><span class="py">.parse</span><span class="p">::</span><span class="o">&lt;</span><span class="nb">i64</span><span class="o">&gt;</span><span class="p">()</span><span class="nf">.unwrap</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+		<span class="k">let</span> <span class="n">light</span><span class="p">:</span> <span class="o">&amp;</span><span class="nb">str</span> <span class="o">=</span> <span class="n">keyword</span><span class="p">;</span>
+		
+		<span class="n">x_range</span><span class="nf">.push</span><span class="p">(</span><span class="n">xmin</span><span class="p">);</span>
+		<span class="n">x_range</span><span class="nf">.push</span><span class="p">(</span><span class="n">xmax</span><span class="p">);</span>
+		<span class="n">y_range</span><span class="nf">.push</span><span class="p">(</span><span class="n">ymin</span><span class="p">);</span>
+		<span class="n">y_range</span><span class="nf">.push</span><span class="p">(</span><span class="n">ymax</span><span class="p">);</span>
+		
+		<span class="n">rectangles</span><span class="nf">.push</span><span class="p">(</span><span class="n">Rectangle</span><span class="p">{</span><span class="n">xmin</span><span class="p">,</span><span class="n">ymin</span><span class="p">,</span><span class="n">xmax</span><span class="p">,</span><span class="n">ymax</span><span class="p">,</span><span class="n">light</span><span class="p">});</span>
+	<span class="p">}</span>
+	
+	<span class="n">x_range</span><span class="nf">.sort</span><span class="p">();</span>
+	<span class="n">x_range</span><span class="nf">.dedup</span><span class="p">();</span>
+	<span class="n">y_range</span><span class="nf">.sort</span><span class="p">();</span>
+	<span class="n">y_range</span><span class="nf">.dedup</span><span class="p">();</span>
+	
+	<span class="k">let</span> <span class="k">mut</span> <span class="n">x_diff</span> <span class="o">=</span> <span class="nn">Vec</span><span class="p">::</span><span class="nf">with_capacity</span><span class="p">(</span><span class="n">x_range</span><span class="nf">.len</span><span class="p">());</span>
+	<span class="k">let</span> <span class="k">mut</span> <span class="n">x_hash</span> <span class="o">=</span> <span class="nn">HashMap</span><span class="p">::</span><span class="nf">new</span><span class="p">();</span>
+	
+	<span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="mi">0</span><span class="o">..</span><span class="p">(</span><span class="n">x_range</span><span class="nf">.len</span><span class="p">())</span> <span class="p">{</span>
+		<span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">x_range</span><span class="nf">.len</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">{</span>
+			<span class="n">x_diff</span><span class="nf">.push</span><span class="p">(</span><span class="n">x_range</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">x_range</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+		<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+			<span class="n">x_diff</span><span class="nf">.push</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+		<span class="p">}</span>
+		<span class="n">x_hash</span><span class="nf">.insert</span><span class="p">(</span><span class="n">x_range</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">i</span> <span class="k">as</span> <span class="nb">usize</span><span class="p">);</span>
+	<span class="p">};</span>
+	
+	<span class="k">let</span> <span class="k">mut</span> <span class="n">y_diff</span> <span class="o">=</span> <span class="nn">Vec</span><span class="p">::</span><span class="nf">with_capacity</span><span class="p">(</span><span class="n">y_range</span><span class="nf">.len</span><span class="p">());</span>
+	<span class="k">let</span> <span class="k">mut</span> <span class="n">y_hash</span> <span class="o">=</span> <span class="nn">HashMap</span><span class="p">::</span><span class="nf">new</span><span class="p">();</span>
+	
+	<span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="mi">0</span><span class="o">..</span><span class="p">(</span><span class="n">y_range</span><span class="nf">.len</span><span class="p">())</span> <span class="p">{</span>
+		<span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">y_range</span><span class="nf">.len</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">{</span>
+			<span class="n">y_diff</span><span class="nf">.push</span><span class="p">(</span><span class="n">y_range</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">y_range</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+		<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+			<span class="n">y_diff</span><span class="nf">.push</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+		<span class="p">}</span>
+		<span class="n">y_hash</span><span class="nf">.insert</span><span class="p">(</span><span class="n">y_range</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">i</span> <span class="k">as</span> <span class="nb">usize</span><span class="p">);</span>
+	<span class="p">};</span>
+	
+	<span class="k">let</span> <span class="k">mut</span> <span class="n">first_lights</span> <span class="o">=</span> <span class="nd">vec!</span><span class="p">[</span><span class="nd">vec!</span><span class="p">[</span><span class="mi">0i64</span><span class="p">;</span> <span class="n">y_range</span><span class="nf">.len</span><span class="p">()];</span> <span class="n">x_range</span><span class="nf">.len</span><span class="p">()];</span>
+	<span class="k">let</span> <span class="k">mut</span> <span class="n">second_lights</span> <span class="o">=</span> <span class="nd">vec!</span><span class="p">[</span><span class="nd">vec!</span><span class="p">[</span><span class="mi">0i64</span><span class="p">;</span> <span class="n">y_range</span><span class="nf">.len</span><span class="p">()];</span> <span class="n">x_range</span><span class="nf">.len</span><span class="p">()];</span>
+	
+	<span class="k">for</span> <span class="n">r</span> <span class="k">in</span> <span class="n">rectangles</span> <span class="p">{</span>
+	
+		<span class="k">let</span> <span class="n">xmin</span> <span class="o">=</span> <span class="o">*</span><span class="p">(</span><span class="n">x_hash</span><span class="nf">.get</span><span class="p">(</span><span class="o">&amp;</span><span class="n">r</span><span class="py">.xmin</span><span class="p">)</span><span class="nf">.unwrap</span><span class="p">());</span>
+		<span class="k">let</span> <span class="n">xmax</span> <span class="o">=</span> <span class="o">*</span><span class="p">(</span><span class="n">x_hash</span><span class="nf">.get</span><span class="p">(</span><span class="o">&amp;</span><span class="n">r</span><span class="py">.xmax</span><span class="p">)</span><span class="nf">.unwrap</span><span class="p">());</span>
+		<span class="k">let</span> <span class="n">ymin</span> <span class="o">=</span> <span class="o">*</span><span class="p">(</span><span class="n">y_hash</span><span class="nf">.get</span><span class="p">(</span><span class="o">&amp;</span><span class="n">r</span><span class="py">.ymin</span><span class="p">)</span><span class="nf">.unwrap</span><span class="p">());</span>
+		<span class="k">let</span> <span class="n">ymax</span> <span class="o">=</span> <span class="o">*</span><span class="p">(</span><span class="n">y_hash</span><span class="nf">.get</span><span class="p">(</span><span class="o">&amp;</span><span class="n">r</span><span class="py">.ymax</span><span class="p">)</span><span class="nf">.unwrap</span><span class="p">());</span>
+	
+		<span class="k">for</span> <span class="n">row</span> <span class="k">in</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="n">first_lights</span><span class="p">[</span><span class="n">xmin</span><span class="o">..</span><span class="n">xmax</span><span class="p">]</span> <span class="p">{</span>
+			<span class="k">for</span> <span class="n">val</span> <span class="k">in</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="n">row</span><span class="p">[</span><span class="n">ymin</span><span class="o">..</span><span class="n">ymax</span><span class="p">]</span> <span class="p">{</span>
+				<span class="o">*</span><span class="n">val</span> <span class="o">=</span> <span class="k">match</span> <span class="n">r</span><span class="py">.light</span> <span class="p">{</span>
+					<span class="s">"on"</span> <span class="k">=&gt;</span> <span class="mi">1</span><span class="p">,</span>
+					<span class="s">"off"</span> <span class="k">=&gt;</span> <span class="mi">0</span><span class="p">,</span>
+					<span class="s">"toggle"</span> <span class="k">=&gt;</span> <span class="k">if</span> <span class="o">*</span><span class="n">val</span> <span class="o">==</span> <span class="mi">1</span> <span class="p">{</span><span class="mi">0</span><span class="p">}</span> <span class="k">else</span> <span class="p">{</span><span class="mi">1</span><span class="p">},</span> 
+					<span class="n">_</span> <span class="k">=&gt;</span> <span class="mi">0</span>
+				<span class="p">}</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+		
+		<span class="k">for</span> <span class="n">row</span> <span class="k">in</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="n">second_lights</span><span class="p">[</span><span class="n">xmin</span><span class="o">..</span><span class="n">xmax</span><span class="p">]</span> <span class="p">{</span>
+			<span class="k">for</span> <span class="n">val</span> <span class="k">in</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="n">row</span><span class="p">[</span><span class="n">ymin</span><span class="o">..</span><span class="n">ymax</span><span class="p">]</span> <span class="p">{</span>
+				<span class="o">*</span><span class="n">val</span> <span class="o">=</span> <span class="k">match</span> <span class="n">r</span><span class="py">.light</span> <span class="p">{</span>
+					<span class="s">"on"</span> <span class="k">=&gt;</span> <span class="o">*</span><span class="n">val</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+					<span class="s">"off"</span> <span class="k">=&gt;</span> <span class="k">if</span> <span class="o">*</span><span class="n">val</span> <span class="o">&lt;=</span> <span class="mi">1</span> <span class="p">{</span><span class="mi">0</span><span class="p">}</span> <span class="k">else</span> <span class="p">{</span><span class="o">*</span><span class="n">val</span> <span class="o">-</span> <span class="mi">1</span><span class="p">},</span>
+					<span class="s">"toggle"</span> <span class="k">=&gt;</span> <span class="o">*</span><span class="n">val</span> <span class="o">+</span> <span class="mi">2</span><span class="p">,</span> 
+					<span class="n">_</span> <span class="k">=&gt;</span> <span class="mi">0</span>
+				<span class="p">}</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+	
+	<span class="k">let</span> <span class="k">mut</span> <span class="n">part1</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="k">let</span> <span class="k">mut</span> <span class="n">part2</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	
+	<span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="mi">0</span><span class="o">..</span><span class="n">x_range</span><span class="nf">.len</span><span class="p">()</span> <span class="p">{</span>
+		<span class="k">for</span> <span class="n">j</span> <span class="k">in</span> <span class="mi">0</span><span class="o">..</span><span class="n">y_range</span><span class="nf">.len</span><span class="p">()</span> <span class="p">{</span>
+			<span class="n">part1</span> <span class="o">+=</span> <span class="n">first_lights</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="n">x_diff</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">y_diff</span><span class="p">[</span><span class="n">j</span><span class="p">];</span>
+			<span class="n">part2</span> <span class="o">+=</span> <span class="n">second_lights</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="n">x_diff</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">y_diff</span><span class="p">[</span><span class="n">j</span><span class="p">];</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+	
+	<span class="k">let</span> <span class="n">end</span> <span class="o">=</span> <span class="n">start</span><span class="nf">.elapsed</span><span class="p">()</span><span class="nf">.as_micros</span><span class="p">();</span>
+	
+	<span class="nd">println!</span><span class="p">(</span><span class="s">"Part 1: {}"</span><span class="p">,</span><span class="n">part1</span><span class="p">);</span>
+    <span class="nd">println!</span><span class="p">(</span><span class="s">"Part 2: {}"</span><span class="p">,</span><span class="n">part2</span><span class="p">);</span>
+    <span class="nd">println!</span><span class="p">(</span><span class="s">"Time: {} μs"</span><span class="p">,</span> <span class="n">end</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></table></code></div></div><div class="language-plaintext highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre><td class="rouge-code"><pre>Part 1: 569999
+Part 2: 17836115
+Time: 13263 μs
+</pre></table></code></div></div><p>Essentially, without getting too far into the weeds, this is a solution that works by not caring at all about the larger enveloping grid. Since we only track specific lights, we can expand our search area as new instructions arrive. The instructions define the boundaries. Which is nice.</p><p>Each instruction is a rectangle, and we put those in an array. We take those instructions and with some optimizations apply those until we get a final, non bounded grid.</p><p>A little fancy math, and for an <code class="language-plaintext highlighter-rouge">n*n</code> grid with <code class="language-plaintext highlighter-rouge">r</code> rectangles we get a space and time complexity that looks like this. <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 " data-src="/assets/img/Rust_AoC_2015_Day_6_8_space.png" alt="Some Math" /></p><p>Specifically, for a given number of rectangles, this solution is far better than the brute force when the grid is large, and slightly worse than the brute force when the grid is small. It scales to a million by a million grid with no problem. However, it doesn’t scale with the number of instructions the way we would have liked. A hundred rectangles takes 1.5 milliseconds. A thousand rectangles takes 1.5 seconds. Ten thousand made my machine scream until we stopped it. It works, its a better solution, but I remain convinced its not the <em>best</em> solution.</p><h2 id="throwing-the-towel">Throwing the towel</h2><p>At this point, we decided we’d had enough. There is probably a more clever super-optimal solution that works for a million instructions in a billion by a billion grid, but its not something we’re going to uncover today, or possibly ever. Part of solving a problem like this is knowing when to walk away and come back to it when you know more. If we were determined beyond reason to solve this, this is the point where we’d look for someone who’s an expert in the field to talk to, but we’re alright putting it to bed for now.</p><p>Of course, if you, reader, come upon a way to solve this with rectangles and r-trees, we’d be thrilled to hear from you.</p><p>This raises a question, of course. I just spent an inordinate amount of words telling you about how we failed to find the best solution. How all we did was “good enough”. About how we gave up, because the solutions we were looking at were too hard. Why? Because there’s value in failure too. I feel like every blog I read talks about some super cool success, and that’s great, its important to celebrate wins, but a lot of development is not that. A lot of writing code is bashing your head against the wall trying various angles, and having none of them work out. Googling concepts you don’t understand and realizing the descriptions are vague and doing more googling. Following your gut only to discover that it doesn’t know what its talking about. I wanted to give a glimpse of that. Show the dead ends and back alleys that you run into. Because ultimately, writing code is about a lot more than <em>writing code</em>. Its about failing forward.</p></div><div class="post-content"><h3>Series</h3><li><a href="/posts/advent-of-code-2015-rust-day-1/">Learning Rust with Advent of Code - Day 1</a><li><a href="/posts/advent-of-code-2015-rust-day-2/">Learning Rust with Advent of Code - Day 2</a><li><a href="/posts/advent-of-code-2015-rust-day-3/">Learning Rust with Advent of Code - Day 3</a><li><a href="/posts/advent-of-code-2015-rust-day-4/">Learning Rust with Advent of Code - Day 4</a><li><a href="/posts/advent-of-code-2015-rust-day-5/">Learning Rust with Advent of Code - Day 5</a><li><b>Learning Rust with Advent of Code - Day 6</b></div><hr><div class="post-tail-wrapper text-muted"><div class="post-meta mb-3"> <i class="far fa-folder-open fa-fw mr-1"></i> <a href='/categories/advent-of-code/'>Advent of Code</a>, <a href='/categories/2015/'>2015</a></div><div class="post-tags"> <i class="fa fa-tags fa-fw mr-1"></i> <a href="/tags/programming/" class="post-tag no-text-decoration" >programming</a> <a href="/tags/rust/" class="post-tag no-text-decoration" >rust</a> <a href="/tags/david/" class="post-tag no-text-decoration" >david</a> <a href="/tags/felipe/" class="post-tag no-text-decoration" >felipe</a></div><div class="post-tail-bottom d-flex justify-content-between align-items-center mt-3 pt-5 pb-2"><div class="license-wrapper"> This post is licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> by the author.</div><div class="share-wrapper"> <span class="share-label text-muted mr-1">Share</span> <span class="share-icons"> <a href="https://twitter.com/intent/tweet?text=Learning Rust with Advent of Code - Day 6 - Hall of Impossible Dreams&url=http://hallofdreams.org/posts/advent-of-code-2015-rust-day-6/" data-toggle="tooltip" data-placement="top" title="Twitter" target="_blank" rel="noopener" aria-label="Twitter"> <i class="fa-fw fab fa-twitter"></i> </a> <a href="https://www.facebook.com/sharer/sharer.php?title=Learning Rust with Advent of Code - Day 6 - Hall of Impossible Dreams&u=http://hallofdreams.org/posts/advent-of-code-2015-rust-day-6/" data-toggle="tooltip" data-placement="top" title="Facebook" target="_blank" rel="noopener" aria-label="Facebook"> <i class="fa-fw fab fa-facebook-square"></i> </a> <a href="https://telegram.me/share?text=Learning Rust with Advent of Code - Day 6 - Hall of Impossible Dreams&url=http://hallofdreams.org/posts/advent-of-code-2015-rust-day-6/" data-toggle="tooltip" data-placement="top" title="Telegram" target="_blank" rel="noopener" aria-label="Telegram"> <i class="fa-fw fab fa-telegram"></i> </a> <i class="fa-fw fas fa-link small" onclick="copyLink()" data-toggle="tooltip" data-placement="top" title="Copy link"></i> </span></div></div></div></div></div><div id="panel-wrapper" class="col-xl-3 pl-2 text-muted topbar-down"><div class="access"><div id="toc-wrapper" class="pl-0 pr-4 mb-5"> <span class="pl-3 pt-2 mb-2">Contents</span><nav id="toc" data-toggle="toc"></nav></div></div></div><div class="row"><div class="col-12 col-lg-11 col-xl-8"><div id="post-extend-wrapper" class="pl-1 pr-1 pl-sm-2 pr-sm-2 pl-md-4 pr-md-4"><div id="disqus" class="pt-2 pb-2"><p class="font-italic text-center text-muted small"> Comments powered by <a href="https://giscus.app">giscus</a>.</p></div><script src="https://giscus.app/client.js" data-repo="thecog19/blog-comments-giscus" data-repo-id="R_kgDOH0cdtg" data-category="Announcements" data-category-id="DIC_kwDOH0cdts4CQ02w" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-theme="preferred_color_scheme" data-lang="en" data-loading="lazy" crossorigin="anonymous" async> </script></div></div></div><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lozad/dist/lozad.min.js"></script> <script type="text/javascript"> const imgs = document.querySelectorAll('#post-wrapper img'); const observer = lozad(imgs); observer.observe(); </script><footer class="d-flex w-100 justify-content-center"><div class="d-flex justify-content-between align-items-center"><div class="footer-left"><p class="mb-0"> © 2025 <a href="https://twitter.com/thecog19">Dave and Felipe</a>. <span data-toggle="tooltip" data-placement="top" title="Except where otherwise noted, the blog posts on this site are licensed under the Creative Commons Attribution 4.0 International (CC BY 4.0) License by the author.">Some rights reserved.</span></p></div><div class="footer-right"><p class="mb-0"> Powered by <a href="https://jekyllrb.com" target="_blank" rel="noopener">Jekyll</a> with <a href="https://github.com/cotes2020/jekyll-theme-chirpy/" target="_blank" rel="noopener">Chirpy</a> theme.</p></div></div></footer></div><div id="search-result-wrapper" class="d-flex justify-content-center unloaded"><div class="col-12 col-xl-11 post-content"><div id="search-hints"><h4 class="text-muted mb-4">Trending Tags</h4><a class="post-tag" href="/tags/david/">david</a> <a class="post-tag" href="/tags/felipe/">felipe</a> <a class="post-tag" href="/tags/programming/">programming</a> <a class="post-tag" href="/tags/fiction/">fiction</a> <a class="post-tag" href="/tags/rust/">rust</a> <a class="post-tag" href="/tags/writing-prompts/">writing prompts</a> <a class="post-tag" href="/tags/poetry/">poetry</a> <a class="post-tag" href="/tags/essay/">essay</a> <a class="post-tag" href="/tags/mathematica/">mathematica</a> <a class="post-tag" href="/tags/hatetris/">hatetris</a></div><div id="search-results" class="d-flex flex-wrap justify-content-center text-muted mt-3"></div></div></div></div><div id="mask"></div><a id="back-to-top" href="#" aria-label="back-to-top" class="btn btn-lg btn-box-shadow" role="button"> <i class="fas fa-angle-up"></i> </a> <script src="https://cdn.jsdelivr.net/npm/simple-jekyll-search@1.7.3/dest/simple-jekyll-search.min.js"></script> <script> SimpleJekyllSearch({ searchInput: document.getElementById('search-input'), resultsContainer: document.getElementById('search-results'), json: '/assets/js/data/search.json', searchResultTemplate: '<div class="pl-1 pr-1 pl-sm-2 pr-sm-2 pl-lg-4 pr-lg-4 pl-xl-0 pr-xl-0"> <a href="http://hallofdreams.org{url}">{title}</a><div class="post-meta d-flex flex-column flex-sm-row text-muted mt-1 mb-1"><div class="mr-sm-4"><i class="far fa-folder fa-fw"></i>{categories}</div><div><i class="fa fa-tag fa-fw"></i>{tags}</div></div><p>{snippet}</p></div>', noResultsText: '<p class="mt-5">Oops! No result founds.</p>' }); </script> <script async src="https://www.googletagmanager.com/gtag/js?id=183607258"></script> <script> window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', '183607258'); </script>

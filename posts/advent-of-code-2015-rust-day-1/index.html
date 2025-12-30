@@ -1,0 +1,615 @@
+<!DOCTYPE html><html lang="en" ><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><meta name="theme" content="Chirpy v2.5.1"><meta name="generator" content="Jekyll v4.3.4" /><meta property="og:title" content="Learning Rust with Advent of Code - Day 1" /><meta name="author" content="David & Felipe" /><meta property="og:locale" content="en_US" /><meta name="description" content="2015 Day 1: The simplest problem of the year, done by complete beginners inexperienced with Rust&#39;s syntax, types, and error-handling. Features a 2000x speedup over an equivalent Mathematica program." /><meta property="og:description" content="2015 Day 1: The simplest problem of the year, done by complete beginners inexperienced with Rust&#39;s syntax, types, and error-handling. Features a 2000x speedup over an equivalent Mathematica program." /><link rel="canonical" href="http://hallofdreams.org/posts/advent-of-code-2015-rust-day-1/" /><meta property="og:url" content="http://hallofdreams.org/posts/advent-of-code-2015-rust-day-1/" /><meta property="og:site_name" content="Hall of Impossible Dreams" /><meta property="og:type" content="article" /><meta property="article:published_time" content="2021-01-12T12:00:00-05:00" /><meta name="twitter:card" content="summary" /><meta property="twitter:title" content="Learning Rust with Advent of Code - Day 1" /><meta name="twitter:site" content="@thecog19" /><meta name="twitter:creator" content="@David & Felipe" /><meta name="google-site-verification" content="rOMa9oYHtFBq7U58IniOX1gggI6noWpOXoWBk-9hItk" /> <script type="application/ld+json"> {"description":"2015 Day 1: The simplest problem of the year, done by complete beginners inexperienced with Rust&#39;s syntax, types, and error-handling. Features a 2000x speedup over an equivalent Mathematica program.","@type":"BlogPosting","headline":"Learning Rust with Advent of Code - Day 1","url":"http://hallofdreams.org/posts/advent-of-code-2015-rust-day-1/","dateModified":"2021-01-12T12:00:00-05:00","datePublished":"2021-01-12T12:00:00-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"http://hallofdreams.org/posts/advent-of-code-2015-rust-day-1/"},"author":{"@type":"Person","name":"David & Felipe"},"@context":"https://schema.org"}</script><title>Learning Rust with Advent of Code - Day 1 | Hall of Impossible Dreams</title><link rel="shortcut icon" href="/assets/img/favicons/favicon.ico" type="image/x-icon"><link rel="icon" href="/assets/img/favicons/favicon.ico" type="image/x-icon"><link rel="apple-touch-icon" href="/assets/img/favicons/apple-icon.png"><link rel="apple-touch-icon" href="/assets/img/favicons/apple-icon-precomposed.png"><link rel="apple-touch-icon" sizes="57x57" href="/assets/img/favicons/apple-icon-57x57.png"><link rel="apple-touch-icon" sizes="60x60" href="/assets/img/favicons/apple-icon-60x60.png"><link rel="apple-touch-icon" sizes="72x72" href="/assets/img/favicons/apple-icon-72x72.png"><link rel="apple-touch-icon" sizes="76x76" href="/assets/img/favicons/apple-icon-76x76.png"><link rel="apple-touch-icon" sizes="114x114" href="/assets/img/favicons/apple-icon-114x114.png"><link rel="apple-touch-icon" sizes="120x120" href="/assets/img/favicons/apple-icon-120x120.png"><link rel="apple-touch-icon" sizes="144x144" href="/assets/img/favicons/apple-icon-144x144.png"><link rel="apple-touch-icon" sizes="152x152" href="/assets/img/favicons/apple-icon-152x152.png"><link rel="apple-touch-icon" sizes="180x180" href="/assets/img/favicons/apple-icon-180x180.png"><link rel="icon" type="image/png" sizes="192x192" href="/assets/img/favicons/android-icon-192x192.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicons/favicon-32x32.png"><link rel="icon" type="image/png" sizes="96x96" href="/assets/img/favicons/favicon-96x96.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicons/favicon-16x16.png"><link rel="manifest" href="/assets/img/favicons/manifest.json"><meta name='msapplication-config' content='/assets/img/favicons/browserconfig.xml'><meta name="msapplication-TileColor" content="#ffffff"><meta name="msapplication-TileImage" content="/assets/img/favicons/ms-icon-144x144.png"><meta name="theme-color" content="#ffffff"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://fonts.gstatic.com"><link rel="preconnect" href="https://www.google-analytics.com" crossorigin="use-credentials"><link rel="dns-prefetch" href="https://www.google-analytics.com"><link rel="preconnect" href="https://www.googletagmanager.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://www.googletagmanager.com"><link rel="preconnect" href="cdn.jsdelivr.net"><link rel="dns-prefetch" href="cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha256-LA89z+k9fjgMKQ/kq4OO2Mrf8VltYml/VES+Rg0fh20=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.11.2/css/all.min.css" integrity="sha256-+N4/V/SbAFiW1MPBCXnfnP9QSN3+Keu+NlB+0ev/YKQ=" crossorigin="anonymous"><link rel="preload" as="style" href="/assets/css/post.css"><link rel="stylesheet" href="/assets/css/post.css"><link rel="preload" as="style" href="/assets/css/lib/bootstrap-toc.min.css"><link rel="stylesheet" href="/assets/css/lib/bootstrap-toc.min.css" /> <script async src="https://www.googletagmanager.com/gtag/js?id=G-QGYEJ40C64"></script> <script> window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-QGYEJ40C64'); </script> <script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script> <script async src="https://cdn.jsdelivr.net/combine/npm/popper.js@1.15.0,npm/bootstrap@4/dist/js/bootstrap.min.js"></script> <script async src="/assets/js/post.min.js"></script> <script defer src="/app.js"></script><body data-spy="scroll" data-target="#toc"><div id="sidebar" class="d-flex flex-column"><div id="nav-wrapper"><div id="profile-wrapper" class="d-flex flex-column"><div id="avatar" class="d-flex justify-content-center"> <a href="/" alt="avatar"> <img src="/assets/img/sample/avatar.jpg" alt="avatar" onerror="this.style.display='none'"> </a></div><div class="profile-text mt-3"><div class="site-title"> <a href="/">Hall of Impossible Dreams</a></div><div class="site-subtitle font-italic">A repository of code, fiction, nonfiction, and poetry.</div></div></div><ul class="nav flex-column"><li class="nav-item d-flex justify-content-center "> <a href="/" class="nav-link d-flex justify-content-center align-items-center w-100"> <i class="fa-fw fas fa-home ml-xl-3 mr-xl-3 unloaded"></i> <span>HOME</span> </a><li class="nav-item d-flex justify-content-center "> <a href="/tabs/categories/" class="nav-link d-flex justify-content-center align-items-center w-100"> <i class="fa-fw fas fa-stream ml-xl-3 mr-xl-3 unloaded"></i> <span>CATEGORIES</span> </a><li class="nav-item d-flex justify-content-center "> <a href="/tabs/tags/" class="nav-link d-flex justify-content-center align-items-center w-100"> <i class="fa-fw fas fa-tags ml-xl-3 mr-xl-3 unloaded"></i> <span>TAGS</span> </a><li class="nav-item d-flex justify-content-center "> <a href="/tabs/archives/" class="nav-link d-flex justify-content-center align-items-center w-100"> <i class="fa-fw fas fa-archive ml-xl-3 mr-xl-3 unloaded"></i> <span>ARCHIVES</span> </a><li class="nav-item d-flex justify-content-center "> <a href="/tabs/about/" class="nav-link d-flex justify-content-center align-items-center w-100"> <i class="fa-fw fas fa-info ml-xl-3 mr-xl-3 unloaded"></i> <span>ABOUT</span> </a></ul></div><div class="sidebar-bottom d-flex flex-wrap justify-content-around mt-4"> <span id="mode-toggle-wrapper"> <i class="mode-toggle fas fa-sun" dark-mode-invisible></i> <i class="mode-toggle fas fa-moon" light-mode-invisible></i> <script type="text/javascript"> class ModeToggle { static get MODE_KEY() { return "mode"; } static get DARK_MODE() { return "dark"; } static get LIGHT_MODE() { return "light"; } constructor() { if (this.mode != null) { if (this.mode == ModeToggle.DARK_MODE) { if (!this.isSysDarkPrefer) { this.setDark(); } } else { if (this.isSysDarkPrefer) { this.setLight(); } } } var self = this; /* always follow the system prefers */ this.sysDarkPrefers.addListener(function() { if (self.mode != null) { if (self.mode == ModeToggle.DARK_MODE) { if (!self.isSysDarkPrefer) { self.setDark(); } } else { if (self.isSysDarkPrefer) { self.setLight(); } } self.clearMode(); } }); } /* constructor() */ setDark() { $('html').attr(ModeToggle.MODE_KEY, ModeToggle.DARK_MODE); sessionStorage.setItem(ModeToggle.MODE_KEY, ModeToggle.DARK_MODE); } setLight() { $('html').attr(ModeToggle.MODE_KEY, ModeToggle.LIGHT_MODE); sessionStorage.setItem(ModeToggle.MODE_KEY, ModeToggle.LIGHT_MODE); } clearMode() { $('html').removeAttr(ModeToggle.MODE_KEY); sessionStorage.removeItem(ModeToggle.MODE_KEY); } get sysDarkPrefers() { return window.matchMedia("(prefers-color-scheme: dark)"); } get isSysDarkPrefer() { return this.sysDarkPrefers.matches; } get isDarkMode() { return this.mode == ModeToggle.DARK_MODE; } get isLightMode() { return this.mode == ModeToggle.LIGHT_MODE; } get hasMode() { return this.mode != null; } get mode() { return sessionStorage.getItem(ModeToggle.MODE_KEY); } flipMode() { if (this.hasMode) { if (this.isSysDarkPrefer) { if (this.isLightMode) { this.clearMode(); } else { this.setLight(); } } else { if (this.isDarkMode) { this.clearMode(); } else { this.setDark(); } } } else { if (this.isSysDarkPrefer) { this.setLight(); } else { this.setDark(); } } } /* flipMode() */ } /* ModeToggle */ let toggle = new ModeToggle(); $(".mode-toggle").click(function() { toggle.flipMode(); }); </script> </span> <span class="icon-border"></span> <a href="https://github.com/hallofdreams" aria-label="github" target="_blank" rel="noopener"> <i class="fab fa-github-alt"></i> </a> <a href="https://twitter.com/thecog19" aria-label="twitter" target="_blank" rel="noopener"> <i class="fab fa-twitter"></i> </a> <a href=" javascript:location.href = 'mailto:' + ['felipe.suero19','gmail.com'].join('@')" aria-label="email" > <i class="fas fa-envelope"></i> </a> <a href="/feed.xml" aria-label="rss" > <i class="fas fa-rss"></i> </a></div></div><div id="topbar-wrapper" class="row justify-content-center topbar-down"><div id="topbar" class="col-11 d-flex h-100 align-items-center justify-content-between"> <span id="breadcrumb"> <span> <a href="/"> Posts </a> </span> <span>Learning Rust with Advent of Code - Day 1</span> </span> <i id="sidebar-trigger" class="fas fa-bars fa-fw"></i><div id="topbar-title"> Post</div><i id="search-trigger" class="fas fa-search fa-fw"></i> <span id="search-wrapper" class="align-items-center"> <i class="fas fa-search fa-fw"></i> <input class="form-control" id="search-input" type="search" aria-label="search" placeholder="Search..."> <i class="fa fa-times-circle fa-fw" id="search-cleaner"></i> </span> <span id="search-cancel" >Cancel</span></div></div><div id="main-wrapper"><div id="main"><div class="row"><div id="post-wrapper" class="col-12 col-lg-11 col-xl-8"><div class="post pl-1 pr-1 pl-sm-2 pr-sm-2 pl-md-4 pr-md-4"><h1 data-toc-skip>Learning Rust with Advent of Code - Day 1</h1><div class="post-meta text-muted d-flex flex-column"><div> Posted <span class="timeago " data-toggle="tooltip" data-placement="bottom" title="Tue, Jan 12, 2021, 12:00 PM -0500" > Jan 12, 2021 <i class="unloaded">2021-01-12T12:00:00-05:00</i> </span> <span class="author"> by David & Felipe </span></div></div><div class="post-content"><h3>Series Navigation</h3><li><b>Learning Rust with Advent of Code - Day 1</b><li><a href="/posts/advent-of-code-2015-rust-day-2/">Learning Rust with Advent of Code - Day 2</a><li><a href="/posts/advent-of-code-2015-rust-day-3/">Learning Rust with Advent of Code - Day 3</a><li><a href="/posts/advent-of-code-2015-rust-day-4/">Learning Rust with Advent of Code - Day 4</a><li><a href="/posts/advent-of-code-2015-rust-day-5/">Learning Rust with Advent of Code - Day 5</a><li><a href="/posts/advent-of-code-2015-rust-day-6/">Learning Rust with Advent of Code - Day 6</a></div><hr><div class="post-content"><div style="display:none;">2015 Day 1: The simplest problem of the year, done by complete beginners inexperienced with Rust's syntax, types, and error-handling. Features a 2000x speedup over an equivalent Mathematica program.</div><p>The goal: learn Rust via the error messages, by working through 2015’s Advent of Code problems, one at a time.</p><p><strong>David</strong>: I have absolutely no experience with Rust, or for that matter any language lower-level than C++. I normally use Mathematica, which is about as high-level and loosely typed as it gets, so I know next to nothing about low-level languages or garbage collection or strict typing, let alone borrow checkers. Joel Sposky wrote in 2005 about how <a href="https://www.joelonsoftware.com/2005/12/29/the-perils-of-javaschools-2/">some types of programmers used to high level languages struggle with pointers</a>, and Eric Sink wrote in 2015 about how <a href="https://ericsink.com/entries/rust1.html">Rust is another level of difficulty beyond that</a>. I am precisely the kind of naive programmer those two were talking about, so jumping headfirst into this project ought to be fun.</p><p>Programming books are for people with patience. I’ve done every problem in Mathematica, so I know the algortihms and can make as many test cases as I need to ensure the code’s working. What I don’t know is Rust. I’m going to open the documentation, try some code, have the compiler yell at me, and try again.</p><p><strong>Felipe:</strong></p><p>Unlike Dave, I have done some stuff in rust. However I’ve never actually finished a month of AoC problems, much to my shame. This changes now.</p><p>Dave will be taking on the fun challenge of teaching us rust via error messages, I will be trying something slightly different. One of the issues with AoC is hopping over the cliff between code that “does the thing” and code that actually runs quickly. In the early problems its not a big deal, since generally the leap between an incredible solution and the simplest is a matter of, at most seconds, but as you go into day 25 it starts mattering. So what we’ll be doing here is first writing the “obvious” or most natural solution, and bit by bit working towards a more optimized solution. Some days the most natural solution will be the best solution, and on those days we’ll explore alternatives, and work out various potential approaches, and see how they work out. This will be an exercise in learning what the rust complier does, via actually using it. I expect the results will both surprise and shock me.</p><h1 id="day-1"><a href="https://www.adventofcode.com/2015/day/1">Day 1</a></h1><p>The problem: you’re given a number of parentheses, with <code class="language-plaintext highlighter-rouge">(</code> representing <code class="language-plaintext highlighter-rouge">+1</code> and <code class="language-plaintext highlighter-rouge">)</code> representing <code class="language-plaintext highlighter-rouge">-1</code>.</p><p>Part 1: Starting at <code class="language-plaintext highlighter-rouge">0</code> and the first parenthesis, find the total.</p><p>Part 2: Find the earliest instance in which the subtotal (starting at <code class="language-plaintext highlighter-rouge">0</code> and the first parenthesis) is <code class="language-plaintext highlighter-rouge">-1</code>.</p><h1 id="david">David</h1><p>The algorithm is simple enough it’s hard to describe without simply repeating the problem. The implementation will be the hard part.</p><p>Step 0: importing the data to begin with. I want an array of characters, so the best bet is to import as a string, convert to a character array, and then index my way through.</p><h2 id="attempt-00">Attempt 0.0</h2><div class="language-rust highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre><td class="rouge-code"><pre><span class="k">use</span> <span class="nn">std</span><span class="p">::</span><span class="n">fs</span><span class="p">;</span>
+<span class="k">fn</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="k">let</span> <span class="nb">str</span><span class="p">:</span> <span class="n">INPUT_RAW</span> <span class="o">=</span> <span class="nn">fs</span><span class="p">::</span><span class="nf">read_to_string</span><span class="p">(</span><span class="s">"../Inputs/Day1Input.txt"</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></table></code></div></div><div class="language-plaintext highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre><td class="rouge-code"><pre>error[E0412]: cannot find type `INPUT_RAW` in this scope
+
+let str: INPUT_RAW = fs::read_to_string("../Inputs/Day1Input.txt");
+         ^^^^^^^^^ not found in this scope
+</pre></table></code></div></div><p>I suspect I messed up the order of <code class="language-plaintext highlighter-rouge">let</code>, so let’s try that again.</p><h2 id="attempt-01">Attempt 0.1</h2><div class="language-rust highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre><td class="rouge-code"><pre><span class="k">use</span> <span class="nn">std</span><span class="p">::</span><span class="n">fs</span><span class="p">;</span>
+<span class="k">fn</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="k">let</span> <span class="n">INPUT_RAW</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="nn">fs</span><span class="p">::</span><span class="nf">read_to_string</span><span class="p">(</span><span class="s">"../Inputs/Day1Input.txt"</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></table></code></div></div><div class="language-plaintext highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre><td class="rouge-code"><pre>error[E0308]: mismatched types
+
+let INPUT_RAW: str = fs::read_to_string("../Inputs/Day1Input.txt");
+               ---   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected `str`, found enum `std::result::Result`
+</pre></table></code></div></div><p>I think I have the <code class="language-plaintext highlighter-rouge">let</code> syntax right this time, but apparently <code class="language-plaintext highlighter-rouge">read_to_string()</code> doesn’t produce a <code class="language-plaintext highlighter-rouge">str</code>. Reading a little further, I see that <code class="language-plaintext highlighter-rouge">str</code> and <code class="language-plaintext highlighter-rouge">String</code> are actually two different data types, so I’ll try that.</p><h2 id="attempt-02">Attempt 0.2</h2><div class="language-rust highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre><td class="rouge-code"><pre><span class="k">use</span> <span class="nn">std</span><span class="p">::</span><span class="n">fs</span><span class="p">;</span>
+<span class="k">fn</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="k">let</span> <span class="n">INPUT_RAW</span><span class="p">:</span> <span class="nb">String</span> <span class="o">=</span> <span class="nn">fs</span><span class="p">::</span><span class="nf">read_to_string</span><span class="p">(</span><span class="s">"../Inputs/Day1Input.txt"</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></table></code></div></div><div class="language-plaintext highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre><td class="rouge-code"><pre>error[E0308]: mismatched types
+
+let INPUT_RAW: String = fs::read_to_string("../Inputs/Day1Input.txt");
+               ------   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected struct `String`, found enum `std::result::Result`
+               |
+               expected due to this
+</pre></table></code></div></div><p>Two pieces of information here. The first is that the type being returned is not any type of string but <code class="language-plaintext highlighter-rouge">std::result::Result</code>. I can see that <a href="https://doc.rust-lang.org/std/fs/fn.read_to_string.html">the documentation for <code class="language-plaintext highlighter-rouge">read_to_string()</code></a> is embedded in a function which returns a <code class="language-plaintext highlighter-rouge">Result</code>, so maybe <code class="language-plaintext highlighter-rouge">read_to_string()</code> returns a <code class="language-plaintext highlighter-rouge">Result</code> and won’t work inside a function that doesn’t return one?</p><p>Looking further, it seems that <code class="language-plaintext highlighter-rouge">read_to_string()</code> returns <code class="language-plaintext highlighter-rouge">Result</code> indicating whether or not the function succeeded in importing. I’m reasonably certain that this file I manually placed in is indeed present (and if it isn’t, then the program is going to fail regardless), and I don’t know whether or not a kernel panic is ‘worse’ in some sense than throwing a regular error for a program this small. It seems that <code class="language-plaintext highlighter-rouge">unwrap()</code> gets the interior of a successful <code class="language-plaintext highlighter-rouge">Result</code>, so I’ll tell Rust to assume that the result is succesful and worry about error catching later.</p><h2 id="attempt-03">Attempt 0.3</h2><div class="language-rust highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre><td class="rouge-code"><pre><span class="k">use</span> <span class="nn">std</span><span class="p">::</span><span class="n">fs</span><span class="p">;</span>
+<span class="k">fn</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="k">let</span> <span class="n">input_raw</span><span class="p">:</span> <span class="nb">String</span> <span class="o">=</span> <span class="nn">fs</span><span class="p">::</span><span class="nf">read_to_string</span><span class="p">(</span><span class="s">"../../Day1Input.txt"</span><span class="p">)</span><span class="nf">.unwrap</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></table></code></div></div><div class="language-plaintext highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre><td class="rouge-code"><pre>warning: variable `INPUT_RAW` should have a snake case name
+
+let INPUT_RAW: String = fs::read_to_string("../Inputs/Day1Input.txt").unwrap();
+    ^^^^^^^^^ help: convert the identifier to snake case: `input_raw`
+
+= note: `#[warn(non_snake_case)]` on by default
+</pre></table></code></div></div><p>A warning is certainly better than an error message; and this looks easy enough to fix. Still, I can definitely feel the culture shock; coming from Mathematica, where anything and everything can be used as a variable name, the idea of throwing a warning if my strings aren’t cased normally is a different experience.</p><h2 id="attempt-04">Attempt 0.4</h2><div class="language-rust highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre><td class="rouge-code"><pre><span class="k">use</span> <span class="nn">std</span><span class="p">::</span><span class="n">fs</span><span class="p">;</span>
+<span class="k">fn</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="k">let</span> <span class="n">input_raw</span><span class="p">:</span> <span class="nb">String</span> <span class="o">=</span> <span class="nn">fs</span><span class="p">::</span><span class="nf">read_to_string</span><span class="p">(</span><span class="s">"../../Day1Input.txt"</span><span class="p">)</span><span class="nf">.unwrap</span><span class="p">();</span>
+	<span class="nd">println!</span><span class="p">(</span><span class="s">"Raw Input: {}"</span><span class="p">,</span> <span class="n">input_raw</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></table></code></div></div><div class="language-plaintext highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre><td class="rouge-code"><pre>Finished dev [unoptimized + debuginfo] target(s) in 0.21s
+</pre></table></code></div></div><p>Step 0 complete. The file has been imported as a string.</p><h2 id="attempt-10">Attempt 1.0</h2><p>Next step: get a character array that I can index my way through. <a href="https://doc.rust-lang.org/std/primitive.str.html#method.char_indices">The Rust documentation</a> says that <code class="language-plaintext highlighter-rouge">char_indices</code> is exactly the function I’m looking for. The big difference from my own experience is in what the function returns. A function like this in Mathematica would return a list of tuples: <code class="language-plaintext highlighter-rouge">[[1,'('], [2, ')'], ...]</code>, and it’d load the entire file into the variable that way before returning anything. In Rust, however, the function is an <code class="language-plaintext highlighter-rouge">iterator</code>; a function which yields tuples one at a time, and which presumably doesn’t load the entire file into the variable first. Since I only need to go through the file once, this is quite convenient.</p><div class="language-rust highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre><td class="rouge-code"><pre><span class="k">use</span> <span class="nn">std</span><span class="p">::</span><span class="n">fs</span><span class="p">;</span>
+<span class="k">fn</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="k">let</span> <span class="n">input_raw</span><span class="p">:</span> <span class="nb">String</span> <span class="o">=</span> <span class="nn">fs</span><span class="p">::</span><span class="nf">read_to_string</span><span class="p">(</span><span class="s">"../../Day1Input.txt"</span><span class="p">)</span><span class="nf">.unwrap</span><span class="p">();</span>
+	<span class="k">let</span> <span class="k">mut</span> <span class="n">paren_indices</span> <span class="o">=</span> <span class="n">input_raw</span><span class="nf">.char_indices</span><span class="p">();</span>
+	<span class="k">let</span> <span class="k">mut</span> <span class="n">current_pos</span><span class="p">:</span> <span class="nb">u64</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	
+	<span class="k">for</span> <span class="n">index</span> <span class="k">in</span> <span class="n">paren_indices</span><span class="nf">.into_iter</span><span class="p">()</span> <span class="p">{</span>
+		<span class="k">match</span> <span class="n">index</span><span class="na">.1</span> <span class="p">{</span>
+			<span class="s">"("</span> <span class="k">=&gt;</span> <span class="n">current_pos</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">,</span>
+			<span class="s">")"</span> <span class="k">=&gt;</span> <span class="n">current_pos</span> <span class="o">-=</span> <span class="mi">1</span><span class="p">,</span>
+		<span class="p">};</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+</pre></table></code></div></div><div class="language-plaintext highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre><td class="rouge-code"><pre>error[E0308]: mismatched types
+
+match index.1 {
+      ------- this expression has type `char`
+    "(" =&gt; current_pos += 1,
+    ")" =&gt; current_pos -= 1,
+    ^^^ expected `char`, found `&amp;str`
+</pre></table></code></div></div><p>That’s interesting; it seems that double quotes are implicitly used for <code class="language-plaintext highlighter-rouge">str</code>, and single quotes are implicitly used for <code class="language-plaintext highlighter-rouge">char</code>. Good to know. And it also seems like I’ll be seeing <code class="language-plaintext highlighter-rouge">error[E0308]</code> quite frequently, at this rate.</p><h2 id="attempt-11">Attempt 1.1</h2><div class="language-rust highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre><td class="rouge-code"><pre><span class="k">use</span> <span class="nn">std</span><span class="p">::</span><span class="n">fs</span><span class="p">;</span>
+<span class="k">fn</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="k">let</span> <span class="n">input_raw</span><span class="p">:</span> <span class="nb">String</span> <span class="o">=</span> <span class="nn">fs</span><span class="p">::</span><span class="nf">read_to_string</span><span class="p">(</span><span class="s">"../../Day1Input.txt"</span><span class="p">)</span><span class="nf">.unwrap</span><span class="p">();</span>
+	<span class="k">let</span> <span class="k">mut</span> <span class="n">paren_indices</span> <span class="o">=</span> <span class="n">input_raw</span><span class="nf">.char_indices</span><span class="p">();</span>
+	<span class="k">let</span> <span class="k">mut</span> <span class="n">current_pos</span><span class="p">:</span> <span class="nb">u64</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	
+	<span class="k">for</span> <span class="n">index</span> <span class="k">in</span> <span class="n">paren_indices</span><span class="nf">.into_iter</span><span class="p">()</span> <span class="p">{</span>
+		<span class="k">match</span> <span class="n">index</span><span class="na">.1</span> <span class="p">{</span>
+			<span class="sc">'('</span> <span class="k">=&gt;</span> <span class="n">current_pos</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">,</span>
+			<span class="sc">')'</span> <span class="k">=&gt;</span> <span class="n">current_pos</span> <span class="o">-=</span> <span class="mi">1</span><span class="p">,</span>
+		<span class="p">};</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+</pre></table></code></div></div><div class="language-plaintext highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre><td class="rouge-code"><pre>error[E0004]: non-exhaustive patterns: `'\u{0}'..='\''`, `'*'..='\u{d7ff}'` and `'\u{e000}'..='\u{10ffff}'` not covered
+
+match index.1 {
+      ------- this expression has type `char`
+    "(" =&gt; current_pos += 1,
+    ")" =&gt; current_pos -= 1,
+    ^^^ expected `char`, found `&amp;str`
+</pre></table></code></div></div><p>Unlike Mathematica’s <code class="language-plaintext highlighter-rouge">Which[]</code> statement, this will return an error if there is no match, rather than doing nothing. I could use an <code class="language-plaintext highlighter-rouge">if</code> statement, but I think <code class="language-plaintext highlighter-rouge">match</code> looks cleaner here, and I want to learn how to do a no-op in Rust anyhow.</p><h2 id="attempt-12">Attempt 1.2</h2><div class="language-rust highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+</pre><td class="rouge-code"><pre><span class="k">use</span> <span class="nn">std</span><span class="p">::</span><span class="n">fs</span><span class="p">;</span>
+<span class="k">fn</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="k">let</span> <span class="n">input_raw</span><span class="p">:</span> <span class="nb">String</span> <span class="o">=</span> <span class="nn">fs</span><span class="p">::</span><span class="nf">read_to_string</span><span class="p">(</span><span class="s">"../../Day1Input.txt"</span><span class="p">)</span><span class="nf">.unwrap</span><span class="p">();</span>
+	<span class="k">let</span> <span class="k">mut</span> <span class="n">paren_indices</span> <span class="o">=</span> <span class="n">input_raw</span><span class="nf">.char_indices</span><span class="p">();</span>
+	
+	<span class="k">let</span> <span class="k">mut</span> <span class="n">current_pos</span><span class="p">:</span> <span class="nb">u64</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="k">let</span> <span class="k">mut</span> <span class="n">part1</span><span class="p">:</span> <span class="nb">u64</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="k">let</span> <span class="k">mut</span> <span class="n">part2</span><span class="p">:</span> <span class="nb">u64</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	
+	<span class="k">for</span> <span class="n">index</span> <span class="k">in</span> <span class="n">paren_indices</span><span class="nf">.into_iter</span><span class="p">()</span> <span class="p">{</span>
+		<span class="k">match</span> <span class="n">index</span><span class="na">.1</span> <span class="p">{</span>
+			<span class="sc">'('</span> <span class="k">=&gt;</span> <span class="n">current_pos</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">,</span>
+			<span class="sc">')'</span> <span class="k">=&gt;</span> <span class="n">current_pos</span> <span class="o">-=</span> <span class="mi">1</span><span class="p">,</span>
+			<span class="n">_</span> <span class="k">=&gt;</span> <span class="p">()</span>
+		<span class="p">};</span>
+		<span class="k">if</span> <span class="n">current_pos</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="n">part2</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
+			<span class="n">part2</span> <span class="o">=</span> <span class="n">index</span><span class="na">.0</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+</pre></table></code></div></div><div class="language-plaintext highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre><td class="rouge-code"><pre>error[E0308]: mismatched types
+
+part2 = index.0;
+        ^^^^^^^ expected `u64`, found `usize`
+
+help: you can convert an `usize` to `u64` and panic if the converted value wouldn't fit
+part2 = index.0.try_into().unwrap();
+</pre></table></code></div></div><p>The no-op worked. It seems that indexes of slices of something return <code class="language-plaintext highlighter-rouge">usize</code> rather than <code class="language-plaintext highlighter-rouge">u32</code> or <code class="language-plaintext highlighter-rouge">u64</code>, to make sure that code compiles both on 32-bit and 64-bit machines. Since I know that the input is much smaller than 2^32 bytes, that’s fine by me.</p><h2 id="attempt-13">Attempt 1.3</h2><div class="language-rust highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+</pre><td class="rouge-code"><pre><span class="k">use</span> <span class="nn">std</span><span class="p">::</span><span class="n">fs</span><span class="p">;</span>
+<span class="k">fn</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="k">let</span> <span class="n">input_raw</span><span class="p">:</span> <span class="nb">String</span> <span class="o">=</span> <span class="nn">fs</span><span class="p">::</span><span class="nf">read_to_string</span><span class="p">(</span><span class="s">"../../Day1Input.txt"</span><span class="p">)</span><span class="nf">.unwrap</span><span class="p">();</span>
+	<span class="k">let</span> <span class="k">mut</span> <span class="n">paren_indices</span> <span class="o">=</span> <span class="n">input_raw</span><span class="nf">.char_indices</span><span class="p">();</span>
+	
+	<span class="k">let</span> <span class="k">mut</span> <span class="n">current_pos</span><span class="p">:</span> <span class="nb">usize</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="k">let</span> <span class="k">mut</span> <span class="n">part1</span><span class="p">:</span> <span class="nb">usize</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="k">let</span> <span class="k">mut</span> <span class="n">part2</span><span class="p">:</span> <span class="nb">usize</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	
+	<span class="k">for</span> <span class="n">index</span> <span class="k">in</span> <span class="n">paren_indices</span><span class="nf">.into_iter</span><span class="p">()</span> <span class="p">{</span>
+		<span class="k">match</span> <span class="n">index</span><span class="na">.1</span> <span class="p">{</span>
+			<span class="sc">'('</span> <span class="k">=&gt;</span> <span class="n">current_pos</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">,</span>
+			<span class="sc">')'</span> <span class="k">=&gt;</span> <span class="n">current_pos</span> <span class="o">-=</span> <span class="mi">1</span><span class="p">,</span>
+			<span class="n">_</span> <span class="k">=&gt;</span> <span class="p">()</span>
+		<span class="p">};</span>
+		<span class="k">if</span> <span class="n">current_pos</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="n">part2</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
+			<span class="n">part2</span> <span class="o">=</span> <span class="n">index</span><span class="na">.0</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+</pre></table></code></div></div><div class="language-plaintext highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre><td class="rouge-code"><pre>error[E0600]: cannot apply unary operator `-` to type `usize`
+
+if current_pos == -1 &amp;&amp; part2 == 0 {
+                  ^^ cannot apply unary operator `-`
+
+= note: unsigned values cannot be negated
+</pre></table></code></div></div><p>Now we’re getting way out of my depth. The idea that <code class="language-plaintext highlighter-rouge">-1</code> would be treated as a number with a unary operator applied to it rather than just an integer is alien to me, so I forgot that an unsigned integer can’t ever be negative in the first place. <code class="language-plaintext highlighter-rouge">current_pos</code> and <code class="language-plaintext highlighter-rouge">part_1</code> can both be negative, so I want to turn them into signed integers, and <code class="language-plaintext highlighter-rouge">part_2</code>.</p><p>Going with <code class="language-plaintext highlighter-rouge">isize</code>, however, produces the edge case that if there are more than 2 billion parentheses and I were running this on a 32-bit machine, the integer could overflow or underflow. I can’t say I’m overly worried about this, given that my input file is 7 kB, but I’ll check the file size anyway and throw an error if it’s larger than the largest size we can store with <code class="language-plaintext highlighter-rouge">isize</code>.</p><h2 id="attempt-14">Attempt 1.4</h2><div class="language-rust highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre><td class="rouge-code"><pre><span class="k">use</span> <span class="nn">std</span><span class="p">::</span><span class="n">fs</span><span class="p">;</span>
+<span class="k">fn</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="k">let</span> <span class="n">file</span> <span class="o">=</span> <span class="s">"../../Day1Input.txt"</span><span class="p">;</span>
+	<span class="k">let</span> <span class="n">metadata</span> <span class="o">=</span> <span class="nn">fs</span><span class="p">::</span><span class="nf">metadata</span><span class="p">(</span><span class="n">file</span><span class="p">)</span><span class="nf">.unwrap</span><span class="p">();</span>
+	<span class="nd">assert!</span><span class="p">(</span><span class="nn">isize</span><span class="p">::</span><span class="n">MAX</span> <span class="o">&gt;</span> <span class="n">metadata</span><span class="nf">.len</span><span class="p">());</span>
+<span class="p">}</span>
+</pre></table></code></div></div><div class="language-plaintext highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre><td class="rouge-code"><pre>error[E0308]: mismatched types
+
+assert!(isize::MAX &gt; metadata.len());
+                     ^^^^^^^^^^^^^^ expected `isize`, found `u64`
+                     
+help: you can convert an `u64` to `isize` and panic if the converted value wouldn't fit
+assert!(isize::MAX &gt; metadata.len().try_into().unwrap());
+</pre></table></code></div></div><p>Okay, I should have seen that coming. <code class="language-plaintext highlighter-rouge">try_into()</code> seems like a useful function to learn how to use, so I’ll include it in my imports list and use it.</p><h2 id="attempt-15">Attempt 1.5</h2><div class="language-rust highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+</pre><td class="rouge-code"><pre><span class="k">use</span> <span class="nn">std</span><span class="p">::</span><span class="n">fs</span><span class="p">;</span>
+<span class="k">use</span> <span class="nn">std</span><span class="p">::</span><span class="nn">convert</span><span class="p">::</span><span class="n">TryInto</span><span class="p">;</span>
+
+<span class="k">fn</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="k">let</span> <span class="n">file</span> <span class="o">=</span> <span class="s">"../../Day1Input.txt"</span><span class="p">;</span>
+	<span class="k">let</span> <span class="n">metadata</span> <span class="o">=</span> <span class="nn">fs</span><span class="p">::</span><span class="nf">metadata</span><span class="p">(</span><span class="n">file</span><span class="p">)</span><span class="nf">.unwrap</span><span class="p">();</span>
+	<span class="nd">assert!</span><span class="p">(</span><span class="nn">isize</span><span class="p">::</span><span class="n">MAX</span> <span class="o">&gt;</span> <span class="n">metadata</span><span class="nf">.len</span><span class="p">()</span><span class="nf">.try_into</span><span class="p">()</span><span class="nf">.unwrap</span><span class="p">());</span>
+
+	<span class="k">let</span> <span class="n">input_raw</span><span class="p">:</span> <span class="nb">String</span> <span class="o">=</span> <span class="nn">fs</span><span class="p">::</span><span class="nf">read_to_string</span><span class="p">(</span><span class="n">file</span><span class="p">)</span><span class="nf">.unwrap</span><span class="p">();</span>
+	<span class="k">let</span> <span class="k">mut</span> <span class="n">paren_indices</span> <span class="o">=</span> <span class="n">input_raw</span><span class="nf">.char_indices</span><span class="p">();</span>
+	
+	<span class="k">let</span> <span class="k">mut</span> <span class="n">current_pos</span><span class="p">:</span> <span class="nb">isize</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="k">let</span> <span class="k">mut</span> <span class="n">part1</span><span class="p">:</span> <span class="nb">isize</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="k">let</span> <span class="k">mut</span> <span class="n">part2</span><span class="p">:</span> <span class="nb">usize</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	
+	<span class="k">for</span> <span class="n">index</span> <span class="k">in</span> <span class="n">paren_indices</span><span class="nf">.into_iter</span><span class="p">()</span> <span class="p">{</span>
+		<span class="k">match</span> <span class="n">index</span><span class="na">.1</span> <span class="p">{</span>
+			<span class="sc">'('</span> <span class="k">=&gt;</span> <span class="n">current_pos</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">,</span>
+			<span class="sc">')'</span> <span class="k">=&gt;</span> <span class="n">current_pos</span> <span class="o">-=</span> <span class="mi">1</span><span class="p">,</span>
+			<span class="n">_</span> <span class="k">=&gt;</span> <span class="p">()</span>
+		<span class="p">};</span>
+		<span class="k">if</span> <span class="n">current_pos</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="n">part2</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
+			<span class="n">part2</span> <span class="o">=</span> <span class="n">index</span><span class="na">.0</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+	<span class="n">part1</span> <span class="o">=</span> <span class="n">current_pos</span><span class="p">;</span>
+	
+    <span class="nd">println!</span><span class="p">(</span><span class="s">"Part 1: {}"</span><span class="p">,</span> <span class="n">part1</span><span class="p">);</span>
+    <span class="nd">println!</span><span class="p">(</span><span class="s">"Part 2: {}"</span><span class="p">,</span> <span class="n">part2</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></table></code></div></div><div class="language-plaintext highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre><td class="rouge-code"><pre>warning: value assigned to `part1` is never read
+warning: variable `paren_indices` does not need to be mutable
+</pre></table></code></div></div><p>It compiles now, with just two warnings.</p><p>The warning about <code class="language-plaintext highlighter-rouge">part1</code> not being read is straightforward enough; I’ll just get rid of the initial declaration and declare the variable at the end.</p><p>The warning about <code class="language-plaintext highlighter-rouge">paren_indices</code> is interesting, however; I’d assumed that an iterator would need to be mutable, since it matches different values whenever it’s called, but I suppose that’s handled ‘internall’ to the iterator, and the object itself is the same whenever I call it.</p><h2 id="final-version">Final Version</h2><div class="language-rust highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+</pre><td class="rouge-code"><pre><span class="k">use</span> <span class="nn">std</span><span class="p">::</span><span class="n">fs</span><span class="p">;</span>
+<span class="k">use</span> <span class="nn">std</span><span class="p">::</span><span class="nn">convert</span><span class="p">::</span><span class="n">TryInto</span><span class="p">;</span>
+<span class="k">use</span> <span class="nn">std</span><span class="p">::</span><span class="nn">time</span><span class="p">::{</span><span class="n">Instant</span><span class="p">};</span>
+
+<span class="k">fn</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>	
+	<span class="k">let</span> <span class="n">file</span> <span class="o">=</span> <span class="s">"../Inputs/Day1Input.txt"</span><span class="p">;</span>
+	<span class="k">let</span> <span class="n">metadata</span> <span class="o">=</span> <span class="nn">fs</span><span class="p">::</span><span class="nf">metadata</span><span class="p">(</span><span class="n">file</span><span class="p">)</span><span class="nf">.unwrap</span><span class="p">();</span>
+	<span class="nd">assert!</span><span class="p">(</span><span class="nn">isize</span><span class="p">::</span><span class="n">MAX</span> <span class="o">&gt;</span> <span class="n">metadata</span><span class="nf">.len</span><span class="p">()</span><span class="nf">.try_into</span><span class="p">()</span><span class="nf">.unwrap</span><span class="p">());</span>
+
+	<span class="k">let</span> <span class="n">input_raw</span><span class="p">:</span> <span class="nb">String</span> <span class="o">=</span> <span class="nn">fs</span><span class="p">::</span><span class="nf">read_to_string</span><span class="p">(</span><span class="n">file</span><span class="p">)</span><span class="nf">.unwrap</span><span class="p">();</span>
+	
+	<span class="k">let</span> <span class="n">start</span> <span class="o">=</span> <span class="nn">Instant</span><span class="p">::</span><span class="nf">now</span><span class="p">();</span>
+	<span class="k">let</span> <span class="n">paren_indices</span> <span class="o">=</span> <span class="n">input_raw</span><span class="nf">.char_indices</span><span class="p">();</span>
+	
+	<span class="k">let</span> <span class="k">mut</span> <span class="n">current_pos</span><span class="p">:</span> <span class="nb">isize</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="k">let</span> <span class="k">mut</span> <span class="n">part2</span><span class="p">:</span> <span class="nb">usize</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	
+	<span class="k">for</span> <span class="n">index</span> <span class="k">in</span> <span class="n">paren_indices</span><span class="nf">.into_iter</span><span class="p">()</span> <span class="p">{</span>
+		<span class="k">match</span> <span class="n">index</span><span class="na">.1</span> <span class="p">{</span>
+			<span class="sc">'('</span> <span class="k">=&gt;</span> <span class="n">current_pos</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">,</span>
+			<span class="sc">')'</span> <span class="k">=&gt;</span> <span class="n">current_pos</span> <span class="o">-=</span> <span class="mi">1</span><span class="p">,</span>
+			<span class="n">_</span> <span class="k">=&gt;</span> <span class="p">()</span>
+		<span class="p">};</span>
+		<span class="k">if</span> <span class="n">current_pos</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="n">part2</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
+			<span class="n">part2</span> <span class="o">=</span> <span class="n">index</span><span class="na">.0</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+	<span class="k">let</span> <span class="n">part1</span> <span class="o">=</span> <span class="n">current_pos</span><span class="p">;</span>
+	
+	<span class="k">let</span> <span class="n">end</span> <span class="o">=</span> <span class="n">start</span><span class="nf">.elapsed</span><span class="p">()</span><span class="nf">.as_micros</span><span class="p">();</span>
+	
+    <span class="nd">println!</span><span class="p">(</span><span class="s">"Part 1: {}"</span><span class="p">,</span> <span class="n">part1</span><span class="p">);</span>
+    <span class="nd">println!</span><span class="p">(</span><span class="s">"Part 2: {}"</span><span class="p">,</span> <span class="n">part2</span><span class="p">);</span>
+    <span class="nd">println!</span><span class="p">(</span><span class="s">"Time: {} μs"</span><span class="p">,</span> <span class="n">end</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></table></code></div></div><div class="language-plaintext highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre><td class="rouge-code"><pre>Finished release [optimized] target(s) in 0.00s
+
+Part 1: 280
+Part 2: 1797
+Time: 24 μs
+</pre></table></code></div></div><p>And the first two stars are acquired!</p><p>I didn’t feel like I got that far into Rust-specific features or documentation (I didn’t once get yelled at by a borrow checker), but since this is day 1 that’s probably for the best; there will be plenty of time to encounter more varied errors later. My Mathematica script for this problem ran in 55,000 microseconds, and according to <code class="language-plaintext highlighter-rouge">std::time</code>, this program (including the import) ran in 25 microseconds when compiled for release, which gives me some idea of why in the world low-level programming languages are worth using for anything other than making high-level programming languages.</p><p>And my gut feeling is that I could improve this even further; if I understand it correctly, even this program has <code class="language-plaintext highlighter-rouge">input_raw</code> reading the entire file into a string before doing anything with it, and enumeration in advance is the precise thing <code class="language-plaintext highlighter-rouge">char_indices()</code> is meant to avoid. I’ll look into reading a file into characters through a buffer next time there’s a problem which can benefit.</p><h1 id="felipe">Felipe</h1><p>The first thing to master when looking at the AoC problems is “what the heck is this asking?” early on, its easy, later you spend a long time looking at it wondering what all the words mean, and pondering the true meaning of “elf”. So on a first read, the question seems to be asking, “after looking at the input, what floor will we have ended up on?”. But really, that can be translated to “How many ( are there, minus how many )” One way to do this, would be to iterate over everything and count, but we can do so in a much more simple way. Say:</p><h2 id="simplest-solution">Simplest Solution</h2><div class="language-rust highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+</pre><td class="rouge-code"><pre>
+<span class="k">fn</span> <span class="nf">main</span><span class="p">(){</span>
+        <span class="c1">// this is where we import our imput file</span>
+        <span class="k">let</span> <span class="n">path</span> <span class="o">=</span> <span class="nn">Path</span><span class="p">::</span><span class="nf">new</span><span class="p">(</span><span class="s">"../input.txt"</span><span class="p">);</span>
+        <span class="k">let</span> <span class="n">display</span> <span class="o">=</span> <span class="n">path</span><span class="nf">.display</span><span class="p">();</span>
+
+        <span class="k">let</span> <span class="k">mut</span> <span class="n">file</span> <span class="o">=</span> <span class="k">match</span> <span class="nn">File</span><span class="p">::</span><span class="nf">open</span><span class="p">(</span><span class="o">&amp;</span><span class="n">path</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nf">Err</span><span class="p">(</span><span class="n">why</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="nd">panic!</span><span class="p">(</span><span class="s">"couldn't open {}: {}"</span><span class="p">,</span> <span class="n">display</span><span class="p">,</span> <span class="n">why</span><span class="p">),</span>
+            <span class="nf">Ok</span><span class="p">(</span><span class="n">file</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="n">file</span><span class="p">,</span>
+        <span class="p">};</span>
+    
+        <span class="k">let</span> <span class="k">mut</span> <span class="n">input_string</span> <span class="o">=</span> <span class="nn">String</span><span class="p">::</span><span class="nf">new</span><span class="p">();</span>
+        <span class="k">match</span> <span class="n">file</span><span class="nf">.read_to_string</span><span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span> <span class="n">input_string</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nf">Err</span><span class="p">(</span><span class="n">why</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="nd">panic!</span><span class="p">(</span><span class="s">"couldn't read {}: {}"</span><span class="p">,</span> <span class="n">display</span><span class="p">,</span> <span class="n">why</span><span class="p">),</span>
+            <span class="nf">Ok</span><span class="p">(</span><span class="n">_</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="p">(),</span>
+        <span class="p">}</span>
+
+        <span class="c1">// Lets time our execution</span>
+        <span class="k">let</span> <span class="n">start</span> <span class="o">=</span> <span class="nn">Instant</span><span class="p">::</span><span class="nf">now</span><span class="p">();</span>
+        <span class="c1">// Part 1!</span>
+        <span class="k">let</span> <span class="n">open_paren</span> <span class="o">=</span> <span class="n">input_string</span><span class="nf">.matches</span><span class="p">(</span><span class="s">"("</span><span class="p">)</span><span class="nf">.count</span><span class="p">();</span>
+        <span class="k">let</span> <span class="n">close_paren</span> <span class="o">=</span> <span class="n">input_string</span><span class="nf">.matches</span><span class="p">(</span><span class="s">")"</span><span class="p">)</span><span class="nf">.count</span><span class="p">();</span>
+
+        <span class="nd">print!</span><span class="p">(</span><span class="s">"Result: {}"</span><span class="p">,</span> <span class="n">open_paren</span> <span class="o">-</span> <span class="n">close_paren</span><span class="p">);</span>
+        <span class="k">let</span> <span class="n">end</span> <span class="o">=</span> <span class="n">start</span><span class="nf">.elapsed</span><span class="p">()</span><span class="nf">.as_micros</span><span class="p">();</span>
+        <span class="nd">print!</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s"> execution time in microseconds {}"</span><span class="p">,</span> <span class="n">end</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></table></code></div></div><p>Now for this exercise, I’m not going to be overly concerned with the file opening speed. There are faster, less safe ways of doing it, and we’ll look at that in further optimizations, but for today, we’re not going to time that. At a glance, this seems great, if we run it, we get… <code class="language-plaintext highlighter-rouge">execution time in microseconds 1900</code> which is not bad at all.</p><p>We can, and will do better of course, but before we get to that, lets write a bare-bones solution to part 2.</p><p>Now reading the problem for part 2, it seems we want the first time that the net value is =1, <em>counting the first index as 1</em>. This bit is key and will get us an off by one error if we don’t realize it.</p><p>There are two things I realize right away</p><ol><li>We can’t get away from just iterating now<li>We can bail as soon as the total equals -1</ol><p>Lets write that code</p><h2 id="cutting-corners">Cutting Corners</h2><div class="language-rust highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+</pre><td class="rouge-code"><pre>        <span class="k">let</span> <span class="n">start</span> <span class="o">=</span> <span class="nn">Instant</span><span class="p">::</span><span class="nf">now</span><span class="p">();</span>
+        <span class="k">let</span> <span class="k">mut</span> <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="k">in</span> <span class="n">input_string</span><span class="nf">.chars</span><span class="p">()</span><span class="nf">.enumerate</span><span class="p">()</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="n">c</span> <span class="o">==</span> <span class="sc">'('</span>   <span class="p">{</span>
+                <span class="n">total</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">if</span> <span class="n">c</span> <span class="o">==</span> <span class="sc">')'</span><span class="p">{</span>
+                <span class="n">total</span> <span class="o">-=</span> <span class="mi">1</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="k">if</span> <span class="n">total</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="p">{</span>
+                <span class="nd">print!</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s"> Part2: {}"</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+                <span class="k">let</span> <span class="n">end</span> <span class="o">=</span> <span class="n">start</span><span class="nf">.elapsed</span><span class="p">()</span><span class="nf">.as_micros</span><span class="p">();</span>
+                <span class="nd">print!</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s"> execution time in microseconds {}"</span><span class="p">,</span> <span class="n">end</span><span class="p">);</span>
+                <span class="k">return</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+</pre></table></code></div></div><p>A neat thing Dave pointed out to me when I was writing this: if we say “(“ that refers to the <em>string</em> version of the character, if we say ‘(‘ that’s the character version. It saves us having to do an annoying conversion, so its good to know.</p><p>There’s also something I’m doing that’s kind of inneficient to avoid sanitizing the text. I use two ifs, instead of an if…else. My expectation is that will raise the evaluation time slightly, since <code class="language-plaintext highlighter-rouge">branch prediction</code> will treat is as two separate statements, instead of one branching location. (If my understanding is correct, which it may not be! Yell at me on twitter if I’m wrong)</p><p>Our run time is… 180 microseconds, which is an order of magnitude better than our part 1.</p><p>What the heck is going on?</p><p>Well, for one, we can surmise that the default iteration speed is <em>much</em> faster than the native <code class="language-plaintext highlighter-rouge">.matches()</code> method. Hazarding a guess why, its because matches takes a regex, and unwraps the string. The code for it in the <a href="https://doc.rust-lang.org/src/core/macros/mod.rs.html#219-242">rust source</a> seems pretty straight forward, but its clearly designed for a borader use-case than our specific case.</p><p>We also run it twice, which is less than ideal.</p><p>Looking at our part 2, it makes logical sense that we could jam part 1 in there as well. We lose on the bailing out early bit (since we need to count all the parens), but that means out whole program, instead of iterating over the string three times, needs only iterate over it once.</p><p>While we’re in there lets also get rid of that annoying if…if and make it an if else, and trust that our input is good. I also added a bit to ensure that we only output the result of p2 once, which didn’t impact the speed at all it seemed.</p><h2 id="single-pass">Single Pass</h2><div class="language-rust highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+</pre><td class="rouge-code"><pre>
+<span class="k">use</span> <span class="nn">std</span><span class="p">::</span><span class="nn">fs</span><span class="p">::</span><span class="n">File</span><span class="p">;</span>
+<span class="k">use</span> <span class="nn">std</span><span class="p">::</span><span class="nn">io</span><span class="p">::</span><span class="nn">prelude</span><span class="p">::</span><span class="o">*</span><span class="p">;</span>
+<span class="k">use</span> <span class="nn">std</span><span class="p">::</span><span class="nn">path</span><span class="p">::</span><span class="n">Path</span><span class="p">;</span>
+<span class="k">use</span> <span class="nn">std</span><span class="p">::</span><span class="nn">time</span><span class="p">::{</span><span class="n">Instant</span><span class="p">};</span>
+    
+
+<span class="k">fn</span> <span class="nf">main</span><span class="p">(){</span>
+        <span class="k">let</span> <span class="n">path</span> <span class="o">=</span> <span class="nn">Path</span><span class="p">::</span><span class="nf">new</span><span class="p">(</span><span class="s">"../input.txt"</span><span class="p">);</span>
+        <span class="k">let</span> <span class="n">display</span> <span class="o">=</span> <span class="n">path</span><span class="nf">.display</span><span class="p">();</span>
+
+        <span class="k">let</span> <span class="k">mut</span> <span class="n">file</span> <span class="o">=</span> <span class="k">match</span> <span class="nn">File</span><span class="p">::</span><span class="nf">open</span><span class="p">(</span><span class="o">&amp;</span><span class="n">path</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nf">Err</span><span class="p">(</span><span class="n">why</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="nd">panic!</span><span class="p">(</span><span class="s">"couldn't open {}: {}"</span><span class="p">,</span> <span class="n">display</span><span class="p">,</span> <span class="n">why</span><span class="p">),</span>
+            <span class="nf">Ok</span><span class="p">(</span><span class="n">file</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="n">file</span><span class="p">,</span>
+        <span class="p">};</span>
+    
+        <span class="k">let</span> <span class="k">mut</span> <span class="n">input_string</span> <span class="o">=</span> <span class="nn">String</span><span class="p">::</span><span class="nf">new</span><span class="p">();</span>
+        <span class="k">match</span> <span class="n">file</span><span class="nf">.read_to_string</span><span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span> <span class="n">input_string</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nf">Err</span><span class="p">(</span><span class="n">why</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="nd">panic!</span><span class="p">(</span><span class="s">"couldn't read {}: {}"</span><span class="p">,</span> <span class="n">display</span><span class="p">,</span> <span class="n">why</span><span class="p">),</span>
+            <span class="nf">Ok</span><span class="p">(</span><span class="n">_</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="p">(),</span>
+        <span class="p">}</span>
+        
+        <span class="k">let</span> <span class="n">start</span> <span class="o">=</span> <span class="nn">Instant</span><span class="p">::</span><span class="nf">now</span><span class="p">();</span>
+        
+        <span class="k">let</span> <span class="k">mut</span> <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="c1">// print!("{}", input_string);</span>
+        <span class="k">let</span> <span class="k">mut</span> <span class="n">seen</span> <span class="o">=</span> <span class="k">false</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="k">in</span> <span class="n">input_string</span><span class="nf">.chars</span><span class="p">()</span><span class="nf">.enumerate</span><span class="p">()</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="n">c</span> <span class="o">==</span> <span class="sc">'('</span>   <span class="p">{</span>
+                <span class="n">total</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+            <span class="p">}</span><span class="k">else</span> <span class="p">{</span>
+                <span class="n">total</span> <span class="o">-=</span> <span class="mi">1</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="k">if</span> <span class="n">total</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="n">seen</span> <span class="o">==</span> <span class="k">false</span><span class="p">{</span>
+                <span class="nd">print!</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s"> Part2: {}"</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+                <span class="n">seen</span> <span class="o">=</span> <span class="k">true</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="nd">print!</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s"> Part1: {}"</span><span class="p">,</span><span class="n">total</span><span class="p">);</span>
+        <span class="k">let</span> <span class="n">end</span> <span class="o">=</span> <span class="n">start</span><span class="nf">.elapsed</span><span class="p">()</span><span class="nf">.as_micros</span><span class="p">();</span>
+        <span class="nd">print!</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s"> execution time in microseconds {}"</span><span class="p">,</span> <span class="n">end</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></table></code></div></div><p>Running it with <code class="language-plaintext highlighter-rouge">cargo run --release</code> which builds the relase optimized version we get a run time of 38 microseconds. Not at all bad.</p></div><div class="post-content"><h3>Series</h3><li><b>Learning Rust with Advent of Code - Day 1</b><li><a href="/posts/advent-of-code-2015-rust-day-2/">Learning Rust with Advent of Code - Day 2</a><li><a href="/posts/advent-of-code-2015-rust-day-3/">Learning Rust with Advent of Code - Day 3</a><li><a href="/posts/advent-of-code-2015-rust-day-4/">Learning Rust with Advent of Code - Day 4</a><li><a href="/posts/advent-of-code-2015-rust-day-5/">Learning Rust with Advent of Code - Day 5</a><li><a href="/posts/advent-of-code-2015-rust-day-6/">Learning Rust with Advent of Code - Day 6</a></div><hr><div class="post-tail-wrapper text-muted"><div class="post-meta mb-3"> <i class="far fa-folder-open fa-fw mr-1"></i> <a href='/categories/programming/'>Programming</a>, <a href='/categories/advent-of-code/'>Advent of Code</a></div><div class="post-tags"> <i class="fa fa-tags fa-fw mr-1"></i> <a href="/tags/programming/" class="post-tag no-text-decoration" >programming</a> <a href="/tags/rust/" class="post-tag no-text-decoration" >rust</a> <a href="/tags/david/" class="post-tag no-text-decoration" >david</a> <a href="/tags/felipe/" class="post-tag no-text-decoration" >felipe</a></div><div class="post-tail-bottom d-flex justify-content-between align-items-center mt-3 pt-5 pb-2"><div class="license-wrapper"> This post is licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> by the author.</div><div class="share-wrapper"> <span class="share-label text-muted mr-1">Share</span> <span class="share-icons"> <a href="https://twitter.com/intent/tweet?text=Learning Rust with Advent of Code - Day 1 - Hall of Impossible Dreams&url=http://hallofdreams.org/posts/advent-of-code-2015-rust-day-1/" data-toggle="tooltip" data-placement="top" title="Twitter" target="_blank" rel="noopener" aria-label="Twitter"> <i class="fa-fw fab fa-twitter"></i> </a> <a href="https://www.facebook.com/sharer/sharer.php?title=Learning Rust with Advent of Code - Day 1 - Hall of Impossible Dreams&u=http://hallofdreams.org/posts/advent-of-code-2015-rust-day-1/" data-toggle="tooltip" data-placement="top" title="Facebook" target="_blank" rel="noopener" aria-label="Facebook"> <i class="fa-fw fab fa-facebook-square"></i> </a> <a href="https://telegram.me/share?text=Learning Rust with Advent of Code - Day 1 - Hall of Impossible Dreams&url=http://hallofdreams.org/posts/advent-of-code-2015-rust-day-1/" data-toggle="tooltip" data-placement="top" title="Telegram" target="_blank" rel="noopener" aria-label="Telegram"> <i class="fa-fw fab fa-telegram"></i> </a> <i class="fa-fw fas fa-link small" onclick="copyLink()" data-toggle="tooltip" data-placement="top" title="Copy link"></i> </span></div></div></div></div></div><div id="panel-wrapper" class="col-xl-3 pl-2 text-muted topbar-down"><div class="access"><div id="toc-wrapper" class="pl-0 pr-4 mb-5"> <span class="pl-3 pt-2 mb-2">Contents</span><nav id="toc" data-toggle="toc"></nav></div></div></div><div class="row"><div class="col-12 col-lg-11 col-xl-8"><div id="post-extend-wrapper" class="pl-1 pr-1 pl-sm-2 pr-sm-2 pl-md-4 pr-md-4"><div id="disqus" class="pt-2 pb-2"><p class="font-italic text-center text-muted small"> Comments powered by <a href="https://giscus.app">giscus</a>.</p></div><script src="https://giscus.app/client.js" data-repo="thecog19/blog-comments-giscus" data-repo-id="R_kgDOH0cdtg" data-category="Announcements" data-category-id="DIC_kwDOH0cdts4CQ02w" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-theme="preferred_color_scheme" data-lang="en" data-loading="lazy" crossorigin="anonymous" async> </script></div></div></div><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lozad/dist/lozad.min.js"></script> <script type="text/javascript"> const imgs = document.querySelectorAll('#post-wrapper img'); const observer = lozad(imgs); observer.observe(); </script><footer class="d-flex w-100 justify-content-center"><div class="d-flex justify-content-between align-items-center"><div class="footer-left"><p class="mb-0"> © 2025 <a href="https://twitter.com/thecog19">Dave and Felipe</a>. <span data-toggle="tooltip" data-placement="top" title="Except where otherwise noted, the blog posts on this site are licensed under the Creative Commons Attribution 4.0 International (CC BY 4.0) License by the author.">Some rights reserved.</span></p></div><div class="footer-right"><p class="mb-0"> Powered by <a href="https://jekyllrb.com" target="_blank" rel="noopener">Jekyll</a> with <a href="https://github.com/cotes2020/jekyll-theme-chirpy/" target="_blank" rel="noopener">Chirpy</a> theme.</p></div></div></footer></div><div id="search-result-wrapper" class="d-flex justify-content-center unloaded"><div class="col-12 col-xl-11 post-content"><div id="search-hints"><h4 class="text-muted mb-4">Trending Tags</h4><a class="post-tag" href="/tags/david/">david</a> <a class="post-tag" href="/tags/felipe/">felipe</a> <a class="post-tag" href="/tags/programming/">programming</a> <a class="post-tag" href="/tags/fiction/">fiction</a> <a class="post-tag" href="/tags/rust/">rust</a> <a class="post-tag" href="/tags/writing-prompts/">writing prompts</a> <a class="post-tag" href="/tags/poetry/">poetry</a> <a class="post-tag" href="/tags/essay/">essay</a> <a class="post-tag" href="/tags/mathematica/">mathematica</a> <a class="post-tag" href="/tags/hatetris/">hatetris</a></div><div id="search-results" class="d-flex flex-wrap justify-content-center text-muted mt-3"></div></div></div></div><div id="mask"></div><a id="back-to-top" href="#" aria-label="back-to-top" class="btn btn-lg btn-box-shadow" role="button"> <i class="fas fa-angle-up"></i> </a> <script src="https://cdn.jsdelivr.net/npm/simple-jekyll-search@1.7.3/dest/simple-jekyll-search.min.js"></script> <script> SimpleJekyllSearch({ searchInput: document.getElementById('search-input'), resultsContainer: document.getElementById('search-results'), json: '/assets/js/data/search.json', searchResultTemplate: '<div class="pl-1 pr-1 pl-sm-2 pr-sm-2 pl-lg-4 pr-lg-4 pl-xl-0 pr-xl-0"> <a href="http://hallofdreams.org{url}">{title}</a><div class="post-meta d-flex flex-column flex-sm-row text-muted mt-1 mb-1"><div class="mr-sm-4"><i class="far fa-folder fa-fw"></i>{categories}</div><div><i class="fa fa-tag fa-fw"></i>{tags}</div></div><p>{snippet}</p></div>', noResultsText: '<p class="mt-5">Oops! No result founds.</p>' }); </script> <script async src="https://www.googletagmanager.com/gtag/js?id=183607258"></script> <script> window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', '183607258'); </script>

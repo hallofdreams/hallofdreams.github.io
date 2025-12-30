@@ -1,0 +1,490 @@
+<!DOCTYPE html><html lang="en" ><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><meta name="theme" content="Chirpy v2.5.1"><meta name="generator" content="Jekyll v4.3.4" /><meta property="og:title" content="The x86 Inferno - A Descent into Advent of Code" /><meta name="author" content="Felipe" /><meta property="og:locale" content="en_US" /><meta name="description" content="A descent into the madness of solving Advent of Code 2025 in x86 assembly, featuring manual memory management, syscalls, rage sorting and slowly more and more unhinged solutions as I gave up all hope." /><meta property="og:description" content="A descent into the madness of solving Advent of Code 2025 in x86 assembly, featuring manual memory management, syscalls, rage sorting and slowly more and more unhinged solutions as I gave up all hope." /><link rel="canonical" href="http://hallofdreams.org/posts/x86-inferno/" /><meta property="og:url" content="http://hallofdreams.org/posts/x86-inferno/" /><meta property="og:site_name" content="Hall of Impossible Dreams" /><meta property="og:type" content="article" /><meta property="article:published_time" content="2025-12-16T12:00:00-05:00" /><meta name="twitter:card" content="summary" /><meta property="twitter:title" content="The x86 Inferno - A Descent into Advent of Code" /><meta name="twitter:site" content="@thecog19" /><meta name="twitter:creator" content="@Felipe" /><meta name="google-site-verification" content="rOMa9oYHtFBq7U58IniOX1gggI6noWpOXoWBk-9hItk" /> <script type="application/ld+json"> {"description":"A descent into the madness of solving Advent of Code 2025 in x86 assembly, featuring manual memory management, syscalls, rage sorting and slowly more and more unhinged solutions as I gave up all hope.","@type":"BlogPosting","headline":"The x86 Inferno - A Descent into Advent of Code","url":"http://hallofdreams.org/posts/x86-inferno/","dateModified":"2025-12-16T12:00:00-05:00","datePublished":"2025-12-16T12:00:00-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"http://hallofdreams.org/posts/x86-inferno/"},"author":{"@type":"Person","name":"Felipe"},"@context":"https://schema.org"}</script><title>The x86 Inferno - A Descent into Advent of Code | Hall of Impossible Dreams</title><link rel="shortcut icon" href="/assets/img/favicons/favicon.ico" type="image/x-icon"><link rel="icon" href="/assets/img/favicons/favicon.ico" type="image/x-icon"><link rel="apple-touch-icon" href="/assets/img/favicons/apple-icon.png"><link rel="apple-touch-icon" href="/assets/img/favicons/apple-icon-precomposed.png"><link rel="apple-touch-icon" sizes="57x57" href="/assets/img/favicons/apple-icon-57x57.png"><link rel="apple-touch-icon" sizes="60x60" href="/assets/img/favicons/apple-icon-60x60.png"><link rel="apple-touch-icon" sizes="72x72" href="/assets/img/favicons/apple-icon-72x72.png"><link rel="apple-touch-icon" sizes="76x76" href="/assets/img/favicons/apple-icon-76x76.png"><link rel="apple-touch-icon" sizes="114x114" href="/assets/img/favicons/apple-icon-114x114.png"><link rel="apple-touch-icon" sizes="120x120" href="/assets/img/favicons/apple-icon-120x120.png"><link rel="apple-touch-icon" sizes="144x144" href="/assets/img/favicons/apple-icon-144x144.png"><link rel="apple-touch-icon" sizes="152x152" href="/assets/img/favicons/apple-icon-152x152.png"><link rel="apple-touch-icon" sizes="180x180" href="/assets/img/favicons/apple-icon-180x180.png"><link rel="icon" type="image/png" sizes="192x192" href="/assets/img/favicons/android-icon-192x192.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicons/favicon-32x32.png"><link rel="icon" type="image/png" sizes="96x96" href="/assets/img/favicons/favicon-96x96.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicons/favicon-16x16.png"><link rel="manifest" href="/assets/img/favicons/manifest.json"><meta name='msapplication-config' content='/assets/img/favicons/browserconfig.xml'><meta name="msapplication-TileColor" content="#ffffff"><meta name="msapplication-TileImage" content="/assets/img/favicons/ms-icon-144x144.png"><meta name="theme-color" content="#ffffff"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://fonts.gstatic.com"><link rel="preconnect" href="https://www.google-analytics.com" crossorigin="use-credentials"><link rel="dns-prefetch" href="https://www.google-analytics.com"><link rel="preconnect" href="https://www.googletagmanager.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://www.googletagmanager.com"><link rel="preconnect" href="cdn.jsdelivr.net"><link rel="dns-prefetch" href="cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha256-LA89z+k9fjgMKQ/kq4OO2Mrf8VltYml/VES+Rg0fh20=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.11.2/css/all.min.css" integrity="sha256-+N4/V/SbAFiW1MPBCXnfnP9QSN3+Keu+NlB+0ev/YKQ=" crossorigin="anonymous"><link rel="preload" as="style" href="/assets/css/post.css"><link rel="stylesheet" href="/assets/css/post.css"><link rel="preload" as="style" href="/assets/css/lib/bootstrap-toc.min.css"><link rel="stylesheet" href="/assets/css/lib/bootstrap-toc.min.css" /> <script async src="https://www.googletagmanager.com/gtag/js?id=G-QGYEJ40C64"></script> <script> window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-QGYEJ40C64'); </script> <script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script> <script async src="https://cdn.jsdelivr.net/combine/npm/popper.js@1.15.0,npm/bootstrap@4/dist/js/bootstrap.min.js"></script> <script async src="/assets/js/post.min.js"></script> <script defer src="/app.js"></script><body data-spy="scroll" data-target="#toc"><div id="sidebar" class="d-flex flex-column"><div id="nav-wrapper"><div id="profile-wrapper" class="d-flex flex-column"><div id="avatar" class="d-flex justify-content-center"> <a href="/" alt="avatar"> <img src="/assets/img/sample/avatar.jpg" alt="avatar" onerror="this.style.display='none'"> </a></div><div class="profile-text mt-3"><div class="site-title"> <a href="/">Hall of Impossible Dreams</a></div><div class="site-subtitle font-italic">A repository of code, fiction, nonfiction, and poetry.</div></div></div><ul class="nav flex-column"><li class="nav-item d-flex justify-content-center "> <a href="/" class="nav-link d-flex justify-content-center align-items-center w-100"> <i class="fa-fw fas fa-home ml-xl-3 mr-xl-3 unloaded"></i> <span>HOME</span> </a><li class="nav-item d-flex justify-content-center "> <a href="/tabs/categories/" class="nav-link d-flex justify-content-center align-items-center w-100"> <i class="fa-fw fas fa-stream ml-xl-3 mr-xl-3 unloaded"></i> <span>CATEGORIES</span> </a><li class="nav-item d-flex justify-content-center "> <a href="/tabs/tags/" class="nav-link d-flex justify-content-center align-items-center w-100"> <i class="fa-fw fas fa-tags ml-xl-3 mr-xl-3 unloaded"></i> <span>TAGS</span> </a><li class="nav-item d-flex justify-content-center "> <a href="/tabs/archives/" class="nav-link d-flex justify-content-center align-items-center w-100"> <i class="fa-fw fas fa-archive ml-xl-3 mr-xl-3 unloaded"></i> <span>ARCHIVES</span> </a><li class="nav-item d-flex justify-content-center "> <a href="/tabs/about/" class="nav-link d-flex justify-content-center align-items-center w-100"> <i class="fa-fw fas fa-info ml-xl-3 mr-xl-3 unloaded"></i> <span>ABOUT</span> </a></ul></div><div class="sidebar-bottom d-flex flex-wrap justify-content-around mt-4"> <span id="mode-toggle-wrapper"> <i class="mode-toggle fas fa-sun" dark-mode-invisible></i> <i class="mode-toggle fas fa-moon" light-mode-invisible></i> <script type="text/javascript"> class ModeToggle { static get MODE_KEY() { return "mode"; } static get DARK_MODE() { return "dark"; } static get LIGHT_MODE() { return "light"; } constructor() { if (this.mode != null) { if (this.mode == ModeToggle.DARK_MODE) { if (!this.isSysDarkPrefer) { this.setDark(); } } else { if (this.isSysDarkPrefer) { this.setLight(); } } } var self = this; /* always follow the system prefers */ this.sysDarkPrefers.addListener(function() { if (self.mode != null) { if (self.mode == ModeToggle.DARK_MODE) { if (!self.isSysDarkPrefer) { self.setDark(); } } else { if (self.isSysDarkPrefer) { self.setLight(); } } self.clearMode(); } }); } /* constructor() */ setDark() { $('html').attr(ModeToggle.MODE_KEY, ModeToggle.DARK_MODE); sessionStorage.setItem(ModeToggle.MODE_KEY, ModeToggle.DARK_MODE); } setLight() { $('html').attr(ModeToggle.MODE_KEY, ModeToggle.LIGHT_MODE); sessionStorage.setItem(ModeToggle.MODE_KEY, ModeToggle.LIGHT_MODE); } clearMode() { $('html').removeAttr(ModeToggle.MODE_KEY); sessionStorage.removeItem(ModeToggle.MODE_KEY); } get sysDarkPrefers() { return window.matchMedia("(prefers-color-scheme: dark)"); } get isSysDarkPrefer() { return this.sysDarkPrefers.matches; } get isDarkMode() { return this.mode == ModeToggle.DARK_MODE; } get isLightMode() { return this.mode == ModeToggle.LIGHT_MODE; } get hasMode() { return this.mode != null; } get mode() { return sessionStorage.getItem(ModeToggle.MODE_KEY); } flipMode() { if (this.hasMode) { if (this.isSysDarkPrefer) { if (this.isLightMode) { this.clearMode(); } else { this.setLight(); } } else { if (this.isDarkMode) { this.clearMode(); } else { this.setDark(); } } } else { if (this.isSysDarkPrefer) { this.setLight(); } else { this.setDark(); } } } /* flipMode() */ } /* ModeToggle */ let toggle = new ModeToggle(); $(".mode-toggle").click(function() { toggle.flipMode(); }); </script> </span> <span class="icon-border"></span> <a href="https://github.com/hallofdreams" aria-label="github" target="_blank" rel="noopener"> <i class="fab fa-github-alt"></i> </a> <a href="https://twitter.com/thecog19" aria-label="twitter" target="_blank" rel="noopener"> <i class="fab fa-twitter"></i> </a> <a href=" javascript:location.href = 'mailto:' + ['felipe.suero19','gmail.com'].join('@')" aria-label="email" > <i class="fas fa-envelope"></i> </a> <a href="/feed.xml" aria-label="rss" > <i class="fas fa-rss"></i> </a></div></div><div id="topbar-wrapper" class="row justify-content-center topbar-down"><div id="topbar" class="col-11 d-flex h-100 align-items-center justify-content-between"> <span id="breadcrumb"> <span> <a href="/"> Posts </a> </span> <span>The x86 Inferno - A Descent into Advent of Code</span> </span> <i id="sidebar-trigger" class="fas fa-bars fa-fw"></i><div id="topbar-title"> Post</div><i id="search-trigger" class="fas fa-search fa-fw"></i> <span id="search-wrapper" class="align-items-center"> <i class="fas fa-search fa-fw"></i> <input class="form-control" id="search-input" type="search" aria-label="search" placeholder="Search..."> <i class="fa fa-times-circle fa-fw" id="search-cleaner"></i> </span> <span id="search-cancel" >Cancel</span></div></div><div id="main-wrapper"><div id="main"><div class="row"><div id="post-wrapper" class="col-12 col-lg-11 col-xl-8"><div class="post pl-1 pr-1 pl-sm-2 pr-sm-2 pl-md-4 pr-md-4"><h1 data-toc-skip>The x86 Inferno - A Descent into Advent of Code</h1><div class="post-meta text-muted d-flex flex-column"><div> Posted <span class="timeago " data-toggle="tooltip" data-placement="bottom" title="Tue, Dec 16, 2025, 12:00 PM -0500" > Dec 16 <i class="unloaded">2025-12-16T12:00:00-05:00</i> </span> <span class="author"> by Felipe </span></div></div><div class="post-content"><div style="display:none;">A descent into the madness of solving Advent of Code 2025 in x86 assembly, featuring manual memory management, syscalls, rage sorting and slowly more and more unhinged solutions as I gave up all hope.</div><p>You have probably heard of <a href="https://adventofcode.com/">Advent of Code</a>. Every single year, Dave, my friend and fellow coauthor, stays up till midnight every day, trying to get on the leaderboard. Sometimes he also <a href="https://hallofdreams.org/posts/advent-of-code-2020/">writes poetry about it</a>. He’s done so religiously for over a decade. In fact we started our Rust journey with <a href="https://hallofdreams.org/posts/advent-of-code-2015-rust-day-1/">Advent of Code</a>.</p><p>This year, I was somewhat relieved. After a decade of effort <a href="https://was.tl/">Eric Wastl</a> had decided to cut Advent of Code back to twelve days. That meant that this year I had a chance of finishing. (A feat I’ve only achieved once before). Twelve days is about what I tend to have bandwidth for. So, with a screaming newborn in my life, and inspired by <a href="https://www.reddit.com/r/adventofcode/comments/1pd7ajd/2025_day_1_part_1_2_brainfuck_i_am_enjoying_this/">certain</a> <a href="https://www.reddit.com/r/excel/comments/1pbgisa/advent_of_code_2025_day_1/">challenges</a> <a href="https://hallofdreams.org/posts/advent-of-code-2015-assembly-day-1/">1</a>, I said “why not roll two things into one? <a href="https://github.com/thecog19/AoC2025">I’ll learn assembly and do advent of code!”</a>.</p><p>That, dear readers, is called <em>hubris</em> and how I descended into the very pits of hell.</p><h3 id="canto-1-the-forest-of-syscall">Canto 1. The Forest of Syscall</h3><blockquote><p>Midway upon the journey of our life<br /> I found myself within a forest dark<br /> For the straightforward pathway had been lost. <sup id="fnref:canto0"><a href="#fn:canto0" class="footnote" rel="footnote" role="doc-noteref">1</a></sup> <sup id="fnref:canto1"><a href="#fn:canto1" class="footnote" rel="footnote" role="doc-noteref">2</a></sup></p></blockquote><p>Descending into the abyss, of course, never starts with a plunge into a dark pit<sup id="fnref:dante1"><a href="#fn:dante1" class="footnote" rel="footnote" role="doc-noteref">3</a></sup>. No, you start by deciding that all you really need to do to begin is parse an input. Sure, normally you’d just call something like <code class="language-plaintext highlighter-rouge">read_file</code>, pass in a path, and call it good, maybe having to do a little finagling with your path before things worked. If your language is picky you might have to remember to close the file. It couldn’t be that different in assembly right? A file is just a collection of bytes somewhere in storage. All we have to do is load those into memory and we’d be golden.</p><p>Sure, we have no file object, not even a file object name, all we have is a File Descriptor, a raw integer, which we have to conjure ourselves through the magic of syscall. All we need are three simple calls, open, read and close. Like Dante, I had my Virgil, in this case Claude, who I often asked insightful questions like “what the heck do the magic numbers I’m passing to syscall mean” (identifying which command i’m running) and “why does it work that way?” (someone in 1970 decided it was a good idea).</p><p>So, being a good developer, I decided i’d make a utility file, which we’d surely keep up to date with all kinds of functions we’d use throughout our cheerful christmas journey. The road to Hell is paved with good intentions. The code to actually read a file is not bad</p><pre><code class="language-assembly">read_file:
+    mov rax, 2 ; syscall 2 = open
+    mov rsi, 0 ; read-only mode
+    syscall
+
+    mov [file_descriptor], rax
+
+    mov rax, 0 
+    mov rdi, [file_descriptor] 
+    mov rsi, input_buffer 
+    mov rdx, 32768  ;32kb, plenty of memory
+    syscall
+    mov r8, rax
+    mov rdi, rax
+
+    mov rax, 3
+    mov rdi, [file_descriptor]
+    syscall
+    mov rax, r8
+    ret
+
+</code></pre><p><code class="language-plaintext highlighter-rouge">read_file</code> is just a label, a helpful convenience to let us identify where in our code flow to jump to. It’s <em>basically</em> a function, I told myself. You just jump to it when you need it, and jump away when you return. This is basically the same as a high level language. Nothing is that confusing. Ok, perhaps the <a href="https://man7.org/linux/man-pages/man2/syscall.2.html">documentation could be more straight forward</a> but there are <a href="https://blog.rchapman.org/posts/Linux_System_Call_Table_for_x86_64/">means and ways</a>. Plus we have our handy <a href="https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html">bible</a> if anything is that confusing.</p><p>Ok, so we’ll have to pre-populate the <code class="language-plaintext highlighter-rouge">rdi</code> register with the file path, not that different from passing in an argument. We wrangle some registers, make sure we’ve allocated memory elsewhere to <em>put</em> our data into, copy the data from the file to the memory, and then close the file. Then return. Look at that. Linux is doing most of the heavy lifting, and we were only moderately inconvenienced. Two hours in and we can <em>read</em> a file into memory. Maybe. We’re not actually sure anything is there, just that our code didn’t segfault or otherwise blow up. But hey, our compile command has <code class="language-plaintext highlighter-rouge">elf64</code> in it, which must be a sign <sup id="fnref:1"><a href="#fn:1" class="footnote" rel="footnote" role="doc-noteref">4</a></sup>. We should probably print out our test file to make sure. There’s a syscall just for printing a file. Four lines of code. This assembly stuff isn’t so bad. A little tedious, but that’s why we’re reusing stuff. <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 " data-src="/assets/img/x86-inferno/screenshot1.png" alt="Screenshot of the initial assembly code output" title="Screenshot of the initial assembly code output" /></p><p>A handful of syscalls, some memory management. There were a few register issues along the way, and perhaps a small detour to poking at things in <a href="https://godbolt.org/">Godbolt</a>. (We’ll be seeing a lot of Godbolt). But hey, not bad for an early morning foray into assembly. I had even picked up the syntax on how to write comments.</p><p>So now all I need to do is write a for loop, make some conditionals, read a number, and call it good. I’m pretty sure that’s a one-liner in Mathematica and like maybe 5 lines of Ruby code. 20 if you’re verbose like I am. We just assign our current number to a register and… oh. Right. Each line is just raw bytes in memory. Just a giant long sequence of bytes, that we need to parse.</p><p>Ok, a bit monotonous, but doable.</p><h3 id="canto-2-the-limbo-of-ascii">Canto 2: The Limbo of ASCII</h3><blockquote><p>Here, as mine ear could note, no plaint was heard<br /> Except of sighs, that made th’ eternal air<br /> Tremble, not caus’d by tortures, but from grief <sup id="fnref:canto2"><a href="#fn:canto2" class="footnote" rel="footnote" role="doc-noteref">5</a></sup></p></blockquote><p>I’d already known that the file was going to be a collection of bytes. Everything in assembly is a collection of bytes. I hadn’t internalized what that actually meant in terms of parsing it into sane data types however. I let out a sigh, not caused by torture, but by eternal grief, as I realized I had three different problems to solve.</p><p>The first: line termination. In a higher level language, a simple “file.split(“\n”).each” would have given me a perfectly valid outer loop, and I could have gotten to work on each line. Here I’d need to process each line, character by character, until I reached a termination character (“\n”). Not the <em>worst</em> thing in the world, just a different way of thinking about things. That’s why I’d chosen assembly, to force me to think differently. Plus accumulators aren’t that new. We’d just need to look for the magic character <code class="language-plaintext highlighter-rouge">10</code> (which is <code class="language-plaintext highlighter-rouge">0x0A</code> in bytecode), and that would indicate we should go to a new row. Easy. We can just do a comparison on the byte we’re on, and if it equals exactly ten, we’re at the end of the line and can do the logic on the number and direction we’ve already stored.</p><p>Logically it makes sense, there’s only three kinds of bytes here. Newlines, numbers, and either the letter L or R. Newlines tell us we’re done, L and R act as a directional signifier, and the number tells us how far to go. So if it’s not a newline or a L or R, we know we’re in a number. The L and R check is easy enough, if the byte we’re on equals either of those (and assembly helpfully accepts ‘R’ as a valid comparator input) we jump to some code to set a flag in a register to let us know what direction to go, and then jump onto the code to move onto the next byte. So far nothing alien to me. Oh the jumping around takes some thinking; after all, you just keep executing sequentially after a jump. The vaunted labels that <em>looked</em> like functions being only labels. But so long as you remember where you want to jump back to, and skip over the parts you don’t want to re-run, it’s all doable.</p><p>Which brings us to <em>numbers</em>. When we read the file, we read bytes. Bytes which point at an ASCII depiction of numbers, not actual numbers. For example, the character “1” is the byte <code class="language-plaintext highlighter-rouge">0x31</code>. This is totally different from the number 1 which is <code class="language-plaintext highlighter-rouge">0x01</code> in bytes. If you try to add two characters, like say “1” + “1”, you can totally do that, it gives you <code class="language-plaintext highlighter-rouge">0x62</code> which is the letter ‘b’. Which can produce confusing results. Fortunately for us, all you need to do is remember to subtract 48 from the ASCII representation, and that gets you back to the numbers. In the ASCII standard, the character ‘0’ is stored as the byte value 48, so subtracting 48 shifts the symbols ‘0’–’9’ down to the actual integers 0–9. (which are stored literally in the digits 0-9).</p><p>Of course, it’s not as simple as that. Let’s take the number 123, which would be the bytes <code class="language-plaintext highlighter-rouge">0x31,0x32,0x33</code>. We can only parse these sequentially, so we get 0x31, and subtract 48, and get 1, and then throw it in our register to store it. Then we hit the byte 0x32. We should probably store that in our accumulator too. So to do that we have to: multiply the current number in the accumulator by 10 (because 12 is 1*10 + 2) and then add the number we just read after translating it. We just keep doing that until we hit a non-number, and then we’re done.</p><p>Except of course, for once the code compiled without segfaults, the numbers were wildly incorrect. Not a problem, in a higher level language you’d set a debugger breakpoint, or just add a print line and call it good. In assembly we have to do things slightly differently.</p><pre><code class="language-assembly">print_number:
+    mov rax, rdi
+    mov rcx, 10
+    mov r8, print_buffer + 20
+    mov byte [print_buffer + 20], 10
+
+    convert_loop:
+        xor rdx, rdx
+        div rcx
+        add rdx, 48
+        dec r8
+        mov [r8], dl
+        cmp rax, 0
+        jne convert_loop
+
+    mov rax, 1
+    mov rdi, 1
+    mov rsi, r8
+    mov rdx, print_buffer + 21
+    sub rdx, r8
+    syscall
+    ret
+</code></pre><p>A few iterations later and… huh. Our numbers are off by an order of magnitude. 68 becomes. 645. Weird. Almost like there’s an unexpected character. An hour of swearing later, (and one diaper change) and it turns out that before our newline there’s a <code class="language-plaintext highlighter-rouge">0x0D</code> or a 13.</p><p>The math: <code class="language-plaintext highlighter-rouge">13</code> - <code class="language-plaintext highlighter-rouge">48</code> = <code class="language-plaintext highlighter-rouge">-35</code>. The result: <code class="language-plaintext highlighter-rouge">68</code> * <code class="language-plaintext highlighter-rouge">10</code> - <code class="language-plaintext highlighter-rouge">35</code> = <code class="language-plaintext highlighter-rouge">645</code>.</p><p>13 happens to be the ASCII representation of <code class="language-plaintext highlighter-rouge">\r</code>. Windows strikes. A higher level language would have just known that in Windows newlines have a leading carriage return and I wouldn’t have to think about it. In assembly it cost me a weary sigh, and thirty minutes of debugging because of a convention that dates to the days of typewriters.</p><h3 id="canto-3-lust-for-registers">Canto 3: Lust for Registers.</h3><blockquote><p>A noise as of a sea in tempest torn<br /> By warring winds. The stormy blast of hell<br /> With restless fury drives the spirits on. <sup id="fnref:canto3"><a href="#fn:canto3" class="footnote" rel="footnote" role="doc-noteref">6</a></sup></p></blockquote><p>I am not going to take you through each problem day by day. Mostly because code blocks like this:</p><pre><code class="language-assembly">.gen_inner:
+    cmp r13, [num_points]
+    jge .gen_next_i
+
+    ; Calculate distance squared between points i and j
+    mov rax, r12
+    imul rax, 24
+    mov r8, [points + rax]       ; x1
+    mov r9, [points + rax + 8]   ; y1
+    mov r10, [points + rax + 16] ; z1
+
+    mov rax, r13
+    imul rax, 24
+    mov r11, [points + rax]      ; x2
+    mov rcx, [points + rax + 8]  ; y2
+    mov rdx, [points + rax + 16] ; z2
+
+    ; dx = x2 - x1
+    sub r11, r8
+    mov rax, r11
+    imul rax, r11
+    mov rbx, rax                 ; rbx = dist²
+
+    ; dy = y2 - y1
+    sub rcx, r9
+    mov rax, rcx
+    imul rax, rcx
+    add rbx, rax
+
+    ; dz = z2 - z1
+    sub rdx, r10
+    mov rax, rdx
+    imul rax, rdx
+    add rbx, rax
+
+    ; Store pair: (dist², i, j)
+    mov rax, [pairs_ptr]
+    mov rcx, r15
+    imul rcx, 16
+    add rax, rcx
+
+    mov [rax], rbx               ; distance²
+    mov [rax + 8], r12d          ; i (32-bit)
+    mov [rax + 12], r13d         ; j (32-bit)
+
+    inc r15
+    inc r13
+    jmp .gen_inner 
+</code></pre><p>Feel neither good to read, nor good to write. It’s me, clutching on to registers like a drowning man clinging to driftwood, not knowing what I’ll need and wanting to save everything. Even on <a href="https://adventofcode.com/2025/day/2">Day 2</a>, I was already churning through the code, wishing for abstraction where only raw bytes existed, hoping for functions when I had only labels, and wishing for someone to manage memory for me.</p><p>Because I noticed a terrible desire in me. A burning need. A need for <em>registers</em>. They were right there. Seducing me with their convenience. R8 through R15 whispered promises: we’re yours, no one has to know. Even on <a href="https://adventofcode.com/2025/day/2">Day 2</a>, I told myself it was fine. I had registers to spare. I’d clean it up later. I’d follow the conventions eventually.</p><p>I began to see the problem when I tried instructions like <code class="language-plaintext highlighter-rouge">cmpsb</code>. <code class="language-plaintext highlighter-rouge">cmpsb</code>, which stands for <a href="https://www.felixcloutier.com/x86/cmps:cmpsb:cmpsw:cmpsd:cmpsq">Compare String Byte</a>. A very useful instruction which let me iterate over a string comparing values. So long as I set my registers correctly. So long as I gave it that space. Space which was valuable and limited. Still, on <a href="https://adventofcode.com/2025/day/2">Day 2</a>, it made sense to do it. I had registers to spare, all I had to do was move around some data. Who was I hurting?</p><div class="language-plaintext highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre><td class="rouge-code"><pre>check_block:
+    ; Compare rbx bytes: [r9] vs [rdi]
+    push rcx        ; Save your outer loop counter
+    push rdi        ; Save your destination pointer
+    push rbx        ; Save your pattern length
+
+    mov rsi, r9     ; Setup registers
+    mov rcx, rbx
+    repe cmpsb
+
+    pop rbx         ; Restore them in reverse order
+    pop rdi
+    pop rcx 
+</pre></table></code></div></div><p>Still, I felt a feeling of impending doom. A nagging guilt. It was so easy. So tempting.. I’d seen registers get clobbered before. It wouldn’t happen to me. I had self control. It would be easy. By day 12, we had blocks like this:</p><div class="language-plaintext highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+</pre><td class="rouge-code"><pre>; From day12/day12.asm
+solve_recursive:
+    push rbx
+    push rcx
+    push rdx
+    push r8
+    push r9
+    push r10
+    push r11
+    push r12
+    push r13
+    push r14
+    push r15
+    ; ... do work ...
+    .solve_ret:
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    pop r11
+    pop r10
+    pop r9
+    pop r8
+    pop rdx
+    pop rcx
+    pop rbx
+    ret
+</pre></table></code></div></div><p>All I wanted to do was save an int somewhere. Store a variable. A single line like <code class="language-plaintext highlighter-rouge">int x = 10</code> was all I lusted for. Instead I had to keep my variables in the stack, remember the order, make sure they returned properly, and of course that we weren’t clobbering anything we needed. All to store a number, do a division or compare two bytes.</p><h3 id="canto-4-the-hungry-heap">Canto 4: The Hungry Heap.</h3><blockquote><p>To strike him.” Then to me my guide: “O thou!<br /> Who on the bridge among the crags dost sit<br /> Low crouching, safely now to me return.” <sup id="fnref:canto4"><a href="#fn:canto4" class="footnote" rel="footnote" role="doc-noteref">7</a></sup></p></blockquote><p>Anyone who has ever studied up for interviews has had to memorize the difference between the stack and the heap. The reality is that the vast majority of the time, the heap is this magic thing that just works for you because you’re protected from it via abstractions. Like a regular commuter who doesn’t have to worry about the structures of the bridge he drives over. Unfortunately for me, as I ran out of hoarded registers, I needed more. More memory. More space. More places to put things. There was only one place to put it, the muddy, unclaimed territory of the heap. A morass of bits, hungrily waiting for me to try to build my crumbling edifices over it. The stack gives us a generous 8MB of storage. A fortune really, for most problems. But my appetite for memory grew day by day, and by <a href="https://adventofcode.com/2025/day/8">Day 8</a> I needed more. There were too many pairs to store, too much information, and my appetite for data was only growing. I needed the heap, to hold my garbage. So like a beggar, I asked the system to please apportion me a tract. Somewhere to dump my miserable pile of bytes.</p><div class="language-plaintext highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre><td class="rouge-code"><pre>mov rax, 9              ; The syscall number for mmap
+xor rdi, rdi            ; addr = NULL (We let the OS choose where the memory lives)
+mov rsi, 16 * 500000    ; length = ~8MB
+mov rdx, 3              ; PROT_READ | PROT_WRITE (We need to read and write to it)
+mov r10, 0x22           ; MAP_PRIVATE | MAP_ANONYMOUS (It's just RAM, not a file)
+mov r8, -1              ; fd = -1 (Required for MAP_ANONYMOUS)
+xor r9, r9              ; offset = 0
+syscall                 ; "Hey Kernel, give me the memory."
+mov [pairs_ptr], rax    ; The OS returns the address in RAX. We save it
+</pre></table></code></div></div><p>But of course, it’s not as easy as merely taking the space. No, without abstractions, you can’t just call <code class="language-plaintext highlighter-rouge">list[i]</code>. You have to know the length of the data you’re storing, track the offsets and never, ever, lose track. If you lose track, you won’t know what you’ll fetch from the swamp of the heap. The formula is an easy <code class="language-plaintext highlighter-rouge">Base + (Index * Element_Size) + Offset</code>. So long as you do the math right and store the index (in a register) and the base, and the element size, and the offset, you can simply move along your array with no difficulty. I hope you don’t need to do anything like <code class="language-plaintext highlighter-rouge">.find</code> or <code class="language-plaintext highlighter-rouge">.any</code> because then you need to iterate over your entire array from scratch.</p><div class="language-plaintext highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre><td class="rouge-code"><pre>; Calculate offset: i * 16
+    mov rax, [pairs_ptr]       
+    mov rcx, r15                ; Index
+    imul rcx, 16                ; Element Size
+    add rax, rcx                ; The Trek (Base + Offset)
+
+    mov [rax], rbx              ; Finally placing the value
+</pre></table></code></div></div><p>A constant cloying trek to fetch data that we’ve stored, unprotected by the umbrella of abstraction, motivated my unceasing appetite for more data. A deeper descent into madness.</p><h3 id="canto-5-the-hoarders-of-hashmaps">Canto 5: The Hoarders of Hashmaps</h3><blockquote><p>Now canst thou, Son, behold the transient farce<br /> Of goods that are committed unto Fortune,<br /> For which the human race each other buffet. <sup id="fnref:canto5"><a href="#fn:canto5" class="footnote" rel="footnote" role="doc-noteref">8</a></sup></p></blockquote><p>If I would have traded hours for a simple <code class="language-plaintext highlighter-rouge">let x = 10</code>, what would I have traded for a map? For an O(1) lookup? For a quick <code class="language-plaintext highlighter-rouge">node["you"] = "string"</code>? I looked upon higher order languages with unfettered envy. Look at ruby creating a <code class="language-plaintext highlighter-rouge">Node(‘foo’)</code> without the user having to move a single register. The selfishness of python keeping it’s dicts, with their automatic compression and immediate lookup times to itself. I would have even taken a Java’s “treeified” <code class="language-plaintext highlighter-rouge">HashMaps</code>. I saw these languages, with their wealth of abstraction and seethed.</p><p>Where they had variables, I had registers, where they had abstractions I had the mud of the heap. But there is nothing like envy to spur a man on, so I would build my own abstractions. My own hashmaps. Mine. Mine. Mine. My data structures. Even if I had to first implement the code in python, and then translate it line by line, like a biological compiler, I needed them. All of them. <a href="https://adventofcode.com/2025/day/11">Day 11</a> called for maps, and graphs and edges. Things that would only be one line in another language. But being poor in abstractions fueled me, honed me, it meant I wasn’t just going to build a dictionary. No, modern dicts are far separated from the hashtable and linked list implementations that interviewers love to talk about, we would build something suited to our specific needs. A poor mans dictionary, a bastardized implementation that would greedily store what I needed.</p><div class="language-plaintext highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+</pre><td class="rouge-code"><pre>; Get or create node index for name in edi (3-byte packed name)
+get_or_create_node:
+    ; ... (setup) ...
+
+    ; Hash: simple modulo
+    mov eax, edi
+    xor edx, edx
+    mov ecx, HASH_SIZE
+    div ecx                         ; The "hash function" is just a raw DIV
+    mov ebx, edx                    ; ebx = hash bucket
+
+    ; Linear probe to find or insert
+.probe:
+    mov rax, [hash_table + rbx*8]   ; Check the slot
+    cmp rax, -1
+    je .insert_new                  ; Empty? Grab it.
+
+    ; Check if names match
+    mov ecx, [node_names + rax*4]
+    cmp ecx, r12d
+    je .found
+
+    ; Collision - linear probe (The "Greedy" grab for the next slot)
+    inc ebx
+    cmp ebx, HASH_SIZE
+    jb .probe
+    xor ebx, ebx                    ; Wrap around if at end
+    jmp .probe
+</pre></table></code></div></div><p>And since all I had was bytes, and bytes and bytes, my graph and its edges must be built upon them, an edifice of spite, aimed at the simple python solution that had taken me 30 minutes to put together.</p><div class="language-plaintext highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre><td class="rouge-code"><pre>section .bss
+MAX_NODES equ 1024
+MAX_EDGES equ 32
+
+; ...
+adj_list: resq MAX_NODES * MAX_EDGES ; The graph is just a giant block of reserved bytes
+adj_count: resq MAX_NODES            ; We have to manually track the length of every list
+</pre></table></code></div></div><p>If any node had more than 32 edges, everything would come crumbling down, but such are the risks of building upon the heap.</p><div class="language-plaintext highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre><td class="rouge-code"><pre>; Add edge: adj_list[source][count] = dest
+    mov rcx, [adj_count + r12*8]     ; Get current neighbor count
+    imul rdi, r12, MAX_EDGES*8       ; Calculate Offset: Source_ID * 32 * 8 bytes
+    mov [adj_list + rdi + rcx*8], r13 ; Store destination at Base + Offset + Index
+    inc qword [adj_count + r12*8]    ; Increment count manually
+</pre></table></code></div></div><p>Brick upon brick, our tower rose. Part one fell behind us, as we rose to the dizzying heights of part 2. Where a simple <code class="language-plaintext highlighter-rouge">cache[(node, visited_dac, visited_fft)]</code> would have been the solution to all my problems. It would have let me handle the millions of visits to these two nodes. But instead of having a tuple, I had a bitmask.</p><div class="language-plaintext highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre><td class="rouge-code"><pre>; Compute new state for neighbor
+    ; state_new = state | (2 if neighbor==dac) | (1 if neighbor==fft)
+    mov rsi, r15                    ; start with current state
+    cmp rdi, [dac_idx]
+    jne .check_fft
+    or rsi, 2                       ; Manually set bit 1
+.check_fft:
+    cmp rdi, [fft_idx]
+    jne .do_recurse
+    or rsi, 1                       ; Manually set bit 0
+</pre></table></code></div></div><div class="language-plaintext highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre><td class="rouge-code"><pre>; Cache result: index = node * 4 + state
+    mov rax, r12
+    shl rax, 2                      ; Multiply node_idx by 4 (to make room for 4 states)
+    add rax, r15                    ; Add the state (0-3)
+    mov [path_count + rax*8], r13   ; Store in the flattened array
+</pre></table></code></div></div><p>I felt clever. A high-level language would have hashed the tuple <code class="language-plaintext highlighter-rouge">(node, state)</code>, dealt with collisions, and allocated objects on the heap. But I knew something the compiler didn’t: my state space was bounded.</p><p>The state only had two booleans: <code class="language-plaintext highlighter-rouge">visited_dac</code> and <code class="language-plaintext highlighter-rouge">visited_fft</code>. Two bits. That meant only four possibilities. I realized I could implement a perfect hash, a collision-free mapping. I simply took the Node ID and shifted it left by two bits (multiplying by 4), effectively creating four dedicated slots in memory for every single node. No collisions, no probing, no overhead. Just raw, calculated offsets. It was the kind of optimization that makes you feel brilliant, right before you realize you forgot to zero-out the memory.</p><p>I had crushed the multidimensional complexity of the problem into a single, long line of memory. All I had to do was traverse the graph and update each state. Painful but nothing compared to the work to get our data structures working.</p><h3 id="canto-6-rage-sort">Canto 6: Rage Sort.</h3><blockquote><p>Fixed in the slime they say: <br /> We were sullen in the sweet air that is gladdened by the sun, <br /> bearing within ourselves the sluggish fume; <br /> now we are sullen in the black mire. <sup id="fnref:canto6"><a href="#fn:canto6" class="footnote" rel="footnote" role="doc-noteref">9</a></sup></p></blockquote><p><a href="https://adventofcode.com/2025/day/5">Day 5</a> is a straight-forward range merging problem. You put your ranges in an array, sort them, iterate and merge, and out come your results. Normally I’d just call <code class="language-plaintext highlighter-rouge">.sort</code> on my array and maybe pass in a custom sort argument and be done. <code class="language-plaintext highlighter-rouge">.sort</code>in ruby uses quicksort, raw C code blazing through iterations. Or maybe I’d use <code class="language-plaintext highlighter-rouge">sort_by</code> which uses <a href="https://en.wikipedia.org/wiki/Schwartzian_transform">Schwartzian transforms</a>, and I’d be 90% of the way there, and quickly too. (Not 100%, <code class="language-plaintext highlighter-rouge">.sort</code> can be slower if you pass in a custom block because it needs to translate between ruby and c a bunch, but in this case, with int primitives, it would be fast).</p><p>Here, I didn’t have the option of calling a cushy <code class="language-plaintext highlighter-rouge">sort</code> method. I looked at Godbolt, with Ruby’s <code class="language-plaintext highlighter-rouge">sort_by</code> and was given this:</p><div class="language-plaintext highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre><td class="rouge-code"><pre>0024 getlocal_WC_0                          array@1                   (   4)[Li]
+0026 send                                   &lt;calldata!mid:sort_by!, argc:0&gt;, block in &lt;compiled&gt;
+0029 pop
+</pre></table></code></div></div><p>Thank you Godbolt. I’ll just call ruby’s virtual machine with sort_by! Why didn’t I think of that! But fine. Fine! Fine. I can implement quicksort in ruby and see what it looks like in Godbolt. How bad could it be?</p><p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 " data-src="/assets/img/x86-inferno/screenshot2.png" alt="Screenshot of Ruby's sort_by implementation in Godbolt" title="Screenshot of Ruby's sort_by implementation in Godbolt" /></p><p>My brain tried to understand it, and it slid off like it was a wall of sheer ice. Maybe it was because it was 4 am. Maybe its because I resented that I couldn’t just <code class="language-plaintext highlighter-rouge">.sort</code>. Maybe I was angry because I had finally realized what I had done to myself. Either way, I decided that I was going to implement the most basic sort possible.</p><p>I looked at the requirements for Quicksort: Recursion. Partitioning logic. Stack management. I looked at my energy levels. I decided I didn’t need speed. I needed violence.</p><p>I was just going to Bubblesort.</p><p>Bubblesort is the worst of the sorts. (Ok, <a href="https://xkcd.com/1185/">not</a> <a href="https://gkoberger.github.io/stacksort/">quite</a>. Its O(n²). It’s two loops nested inside each other. It doesn’t ask you for a stack frame. It scoffs at your pivot index. Just two loops.</p><p>You walk down the line, looking at every pair of numbers. If the element on the left is bigger than the element on the right, you swap them. You do this over and over again until all the elements are in the correct order. It has all the algorithmic elegance of assembling furniture by duct taping it together. But it was a merciful 20 some lines, not 200.</p><div class="language-plaintext highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+</pre><td class="rouge-code"><pre>inner_loop:
+    cmp r9, r10
+    jge inner_done
+
+    ; Compare ranges[r9].start vs ranges[r9+1].start
+    mov rax, r9
+    shl rax, 4               ; rax = r9 * 16
+    lea r11, [ranges + rax]  ; r11 = &amp;ranges[r9]
+
+    mov rcx, [r11]           ; rcx = ranges[r9].start
+    mov rdx, [r11 + 16]      ; rdx = ranges[r9+1].start
+
+    cmp rcx, rdx
+    jle no_swap
+
+    ; Swap ranges[r9] and ranges[r9+1]
+    ; Swap starts
+    mov [r11], rdx
+    mov [r11 + 16], rcx
+    ; Swap ends
+    mov rcx, [r11 + 8]
+    mov rdx, [r11 + 24]
+    mov [r11 + 8], rdx
+    mov [r11 + 24], rcx
+</pre></table></code></div></div><p>Just swapping. Over and over. A seeming endless churn of mud and violence. Thousands upon thousands of wasted cycles of repetition.</p><p>This is Rage Sort. There’s a better way. <code class="language-plaintext highlighter-rouge">cargo build --release</code> would have generated a vectorized Quicksort that runs in microseconds. But here I was, bleary eyed, in the mud, moving bytes one by one, punishing the silicon because I refused to cave in to languages that had things like a “standard library”.</p><p>It worked. It was slow, ugly, and offensive to computer science, but the ranges sorted themselves. The merge logic ran. The answer appeared. The rage subsided, replaced only by the hollow realization that I had just spent more than two hours doing what <code class="language-plaintext highlighter-rouge">array.sort()</code> does in 10 nanoseconds. All I had learned from wrestling in the mud was spite.</p><h3 id="canto-7-heretical-visualization">Canto 7: Heretical Visualization.</h3><blockquote><p>Well I ween he lives; and if, thus alone,<br /> He seeks the valley dim ‘neath my control, <br /> Necessity, not pleasure, leads him on. <sup id="fnref:canto7"><a href="#fn:canto7" class="footnote" rel="footnote" role="doc-noteref">10</a></sup></p></blockquote><p>Like Dante, the further I descended, the more horrified I became by what I saw. Unlike Dante, I didn’t get into Florentine politics, and worse, the sins were my own. <a href="https://adventofcode.com/2025/day/9">Day 9</a> was it’s own layer of hell. The problem starts simply: put some coordinates on a grid, find the largest rectangle you can make with those coordinates. The logic to solve it was tedious, but not terrible. You just bludgeon the coordinates into submission by trying every single possible coordinate pair, and keeping the one that makes the biggest rectangle.</p><p>Part 2 on the other hand… part 2 has the fearsome eye</p><p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 " data-src="/assets/img/x86-inferno/the-eye.png" alt="A visualization of the eye problem in Day 9" title="A visualization of the eye problem in Day 9" /></p><p>Part 2 simply asks you “find the largest rectangle… bounded by the coordinates we established earlier.” That is, if you would generate a rectangle and one of the points would fall in a region not bounded by the coordinates in our input, it’s not a valid rectangle.</p><p>Fine, you can just use ray casting. Draw a virtual ray from anywhere outside the polygon to your point and count how often it hits a side of the polygon. If the number of hits is even, it’s outside of the polygon, if it’s odd, it’s inside. (This is a classic in AoC problems)</p><p>Easy. A couple of hours of putting assembly together, and you have a very reasonable solution. That just happens to be wrong. Over and over. In desperation I turned to claude, and asked “how do you visualize something too large for the terminal in assembly?” and it said, with all the innocence of the damned “You could build an SVG.” I shuddered at the thought. This was heresy. Hand rolled assembly is meant to be pure, bytes on bytes, movs, jmps, sub, not <code class="language-plaintext highlighter-rouge">&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100000 100000"&gt;</code>.</p><p>Three failed inputs later, I shook my fist at the heavens, and cursed the God that had abandoned me… And rolled down my sleeves and began to write code. An hour later, I had made an abomination, a horror, a monster:</p><div class="language-plaintext highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre><td class="rouge-code"><pre>mov rdi, circle_start
+call print_string
+mov rdi, [points + rax] ; x coord
+call print_number_no_newline
+mov rdi, circle_cy
+call print_string
+</pre></table></code></div></div><p>Things that should never be in your assembly code, <code class="language-plaintext highlighter-rouge">viewBox</code>. But what is an SVG if not just a giant string? And we understand strings now, even if they have to be manually closed tags and linebreaks.</p><div class="language-plaintext highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+</pre><td class="rouge-code"><pre>
+section .data
+filename: db "../inputs/day9_input.txt", 0
+
+svg_header:
+    db '&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100000 100000"&gt;', 10
+    db '&lt;rect width="100000" height="100000" fill="#1a1a2e"/&gt;', 10
+    db 0
+
+polygon_start:
+    db '&lt;polygon points="', 0
+
+polygon_end:
+    db '" fill="#2d5a3d" stroke="#4a9f5a" stroke-width="100"/&gt;', 10, 0
+
+circle_start:
+    db '&lt;circle cx="', 0
+
+circle_cy:
+    db '" cy="', 0
+
+circle_end:
+    db '" r="200" fill="#ff6b6b"/&gt;', 10, 0
+
+svg_footer:
+    db '&lt;/svg&gt;', 10, 0
+
+</pre></table></code></div></div><p>But it worked. I beheld my works and wept, for they had been for naught:</p><p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 " data-src="/assets/img/x86-inferno/svg.png" alt="The generated SVG showing the off-by-one error" title="The generated SVG showing the off-by-one error" /></p><p>I could see why the rectangle was wrong. The rectangle was one pixel outside the bounded polygon. I had an off by one error.</p><p>An eternity to code the render, for a single measly error, but the problem was solved. All I’d had to do was sin against assembly itself.</p><h3 id="canto-8-to-kill-and-butcher-math">Canto 8: To Kill and Butcher Math.</h3><blockquote><p>That this your art as far as possible<br /> Follows, as the disciple doth the master;<br /> So that your art is, as it were, God’s grandchild. <sup id="fnref:canto8"><a href="#fn:canto8" class="footnote" rel="footnote" role="doc-noteref">11</a></sup></p></blockquote><p>If you have not had to look up floating point numbers in Intel’s intrinsics guide at two in the morning, reeking of still drying baby formula on your shirt, you have not known the rage that makes you want to strike down math itself.</p><p>That’s where I found myself in <a href="https://adventofcode.com/2025/day/10">day10</a> . Part 2 asked a simple question: given a set of button behaviors, find the least number of presses to meet a specific pattern. I may have learned very little linear algebra (much to my eternal shame), but gaussian elimination has come up enough times that I immediately recognized the category of problem. This is usually the part of Advent of Code where I pivot to python, import <code class="language-plaintext highlighter-rouge">numpy</code> and do some <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.lu.html">LU decomposition</a> and pat myself on the back.</p><p>So it was with trepidation that I opened google and searched around for implementations of gaussian elimination in python, and put them into Godbolt. I was not heartened by what I saw. I would need floating point numbers.</p><p>In a civilized language, or even civilized assembly, you would use Floating Point numbers. The x86-64 processor has an entire unit dedicated to this, the FPU, with its beautiful <code class="language-plaintext highlighter-rouge">xmm</code> registers and single-instruction division. It is the natural order of things.</p><p>I looked at the documentation, considered learning a whole new set of tools, and instead chose violence.</p><p>I refused to learn how the vector registers worked. I decided that if the FPU wouldn’t help me, I didn’t need it. I would simply… Implement rational number arithmetic from scratch using integer registers. Looking back, I assume some form of madness possessed me, that I had decided to take a cleaver to mathematics itself.</p><p>The code I wrote was not “elegant”. It was not “good”.</p><p>You cannot just divide A by B. No, you have to track the numerator and the denominator separately on the stack. To add two numbers, you don’t just add. You have to cross-multiply the denominators, add the numerators, and then, by the mercy of an uncaring God, simplify the result.</p><p>I spent four hours writing an Euclidean GCD (Greatest Common Divisor) algorithm by hand.</p><div class="language-plaintext highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre><td class="rouge-code"><pre>.gcd_loop:
+    test rcx, rcx
+    jz .gcd_done
+    xor rdx, rdx
+    div rcx
+    mov rax, rcx
+    mov rcx, rdx
+    jmp .gcd_loop
+.gcd_done:
+    mov rdi, rax
+    pop rbx
+    pop rcx
+    jmp .find_gcd_next
+</pre></table></code></div></div><p>I split numbers with ruthless efficiency, not caring how many I cut down. Every single row operation in the matrix meant dragging these integers through the mud. I ground through them, one at the time.</p><p>I made one optimistic comment, at the beginning, that stands as a bitter irony to the carnage I inflicted</p><div class="language-plaintext highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre><td class="rouge-code"><pre>  ; Copy matrix to work area (use fractions: num/denom pairs) 
+    ; We'll work with scaled integers, multiplying by LCM when needed
+    ; For simplicity, keep matrix as integers and track denominators
+</pre></table></code></div></div><p>Simple indeed. All our code did was, for each single row:</p><ul><li>Find a non-zero pivot in the current column<li>Swap rows to bring pivot up<li>Eliminate that column in all other rows via row operations<li>Reduce each row by GCD to prevent integer overflow<li>Identify free variables<li>For each depending on the free variables:<li>If there are no free vars: Unique solution. Back-substitute and sum the button presses.<li>Check divisibility (must be integers) and non-negativity.<li>1-3 free vars: Brute force enumerate all values from 0 to max_target, compute the implied basic variables, keep the minimum valid sum.<li>4+ free vars: Give up<li>Return the required minimum amount of button presses</ul><p>In mathematica the solution looked like this</p><p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 " data-src="/assets/img/x86-inferno/mathematica.png" alt="Screenshot of the Mathematica solution for Day 10" title="Screenshot of the Mathematica solution for Day 10" /></p><p>To call this carnage is to undersell it. I had stared blankly at result after result for hours. I had captured all the essence of the seventh circle of hell. Violence against myself. Violence against Dave, whose one line mathematica solution had mocked me, and who was forced to hear my endless complaints, and violence against nature itself.</p><h3 id="canto-9-the-hypocrites-descent">Canto 9: The Hypocrite’s Descent</h3><blockquote><p>A painted people there below we found<br /> Who went around with footsteps very slow<br /> Weeping, and in their looks subdued and weary <sup id="fnref:canto9"><a href="#fn:canto9" class="footnote" rel="footnote" role="doc-noteref">12</a></sup></p></blockquote><p>Dear readers, I have hinted at this, I have suggested it, but I’ll go right out and say it. For many parts of this exercise, I was not really writing assembly. Not anymore. I was just a human transpiler. I’d start by confidently thinking I’d solve it purely in assembly. That today I’d be able to effectively debug it. When my answers were wildly off, that was doable, I knew the answer to day 2 was not, in fact -20000000, though I might not be clear at how I arrived at the number. The problem was when, like on day 9, the number was temptingly, alluringly close, but I was met with “your answer was too high! Try again in one minute, or check out these resources”.</p><p>Resources which sneered at me, because they assumed you had not chosen to walk the path of damnation, that you weren’t clad in a lead robe painted in gold, like the hypocrites in Dante’s Malebolge.</p><p>So day after day I’d run into some intractable bug, and I’d be forced to write a bunch of code in a higher level language to even solve the problem, sometimes somewhat grotesque code, written as quickly as possible, and then translate parts of it into assembly, line by line, like a poor imitation of a superior computer. Perhaps this meant I didn’t <em>think</em> like an assembly developer. That I failed to appreciate the strength and beauty of the language. That I had squandered an opportunity by staring at my ruby implementation and spending hours asking claude to please explain why that instruction worked the way it did, and could it maybe suggest a better way to do the thing that was taking 27 lines of code? By day 11 however, I had come to terms with it. I was going to finish this, I was going to escape this hell, the only way I knew how, through the final layer.</p><p>Nothing could have prepared me for what awaited me there.</p><h3 id="canto-10-the-beast-in-the-ice">Canto 10: The Beast In The Ice.</h3><blockquote><p>I did not die, and yet I lost life’s breath:<br /> Imagine for yourself what I became,<br /> Deprived at once of both the life and death. <sup id="fnref:canto10"><a href="#fn:canto10" class="footnote" rel="footnote" role="doc-noteref">13</a></sup></p></blockquote><p>I looked at the problem for <a href="https://adventofcode.com/2025/day/12">Day 12</a>, and considered quitting then and there. A packing problem. <a href="https://hallofdreams.org/posts/hatetris/">You’d think I’d be an expert at those</a>. Traditionally you solve this thing with a recursive DFS. Not <em>trivial</em> to implement, but it’s not the first time it’s come up in AoC. If you were particularly ambitious, <a href="https://en.wikipedia.org/wiki/Dancing_links">dancing links</a> are a great option here. As I looked at it, I saw the immutable pile of blocks, the wealth of edge cases I’d likely run into. The plan was conceptually simple.</p><ul><li>Find the first empty cell<li>Try all pieces in all orientations<li>Check and verify the fits.<li>Call yourself again to find the next empty cell<li>Backtrack</ul><p>It sounds so easy. Just recurse. In Python, it would be. The language creates a stack frame, it protects your variables, it remembers where you came from. It is a loving, caring parent holding your hand.</p><p>In Assembly, the stack is waiting to corrupt your results and make you question your sanity. To “call yourself,” you don’t just jump. You have to save the universe. Because registers are global, if you change <code class="language-plaintext highlighter-rouge">r12</code> in the deep recursion, <code class="language-plaintext highlighter-rouge">r12</code> is changed forever. So before you dare step down into the next layer of the ice, you must manually preserve your sanity, register by register. Every recursion opened with</p><div class="language-plaintext highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre><td class="rouge-code"><pre>solve_recursive:
+    push rbx
+    push rcx
+    push rdx
+    push r8
+    push r9
+    push r10
+    push r11
+    push r12
+    push r13
+    push r14
+    push r15
+</pre></table></code></div></div><p>Of course there’s the backtracking. Oh, the backtracking. You can’t just return False. You have to clean up your mess. You have to manually lift the piece. Manually increment the counter. Manually restore the registers. A simulation of a high-level language running, manually performing the job of a compiler stack frame allocator.</p><p>But that doesn’t scratch the surface. The reason this took me almost three days is because every time my code would fail, I’d be forced to figure out an example case, and then write a minimal version of it, by comparing, line by line, against my python results. I could <em>feel</em> myself sinking into the ice, buffeted by the gusts of each edge case, desperate to reach the end. Calling them edge cases is generous, some of my bugs were simply bugs, failing to stack pieces, rotating them out of bounds but still counting them, overwriting variables I should not override, returning too early. Basic, basic bugs.</p><p>I wound up with 23 files between edge cases and small tinkering assembly examples. Each minimal case, each attempt at solving a small part of the problem felt like an endless breathtaking descent, step by step, barely holding on. Each time I hoped this was the one, the last edge case, that finally I was out of hell. Each time I saw a cheerful “your answer is too low!” or it failed to match my python implementation.</p><p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 " data-src="/assets/img/x86-inferno/screenshot-6.png" alt="Screenshot of many assembly files" title="Screenshot of many assembly files" /></p><p>I cannot count the number of times I forgot to <code class="language-plaintext highlighter-rouge">ret</code> or I forgot where I was <code class="language-plaintext highlighter-rouge">ret</code>ing to, or I saw an impossible result or a segfault because I had, of course, failed to clean up a register somewhere.</p><p>I’m not <em>proud</em> of my day 12 code. When I submitted it I didn’t feel like I’d achieved something, I felt, quite literally, like I’d escaped a hell of my own making. That I was finally free. That I no longer had to look at <code class="language-plaintext highlighter-rouge">mov</code> judging me for my sins against assembly. What I learned, if anything, is that we take a lot for granted. That we use so many tools and conveniences, and that stripped of them, even the most simple of operations is a battle to the death. I’ll never complain about the borrow checker again, because it keeps me from producing yet another segfault because I wandered into the wrong part of memory.</p><p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 " data-src="/assets/img/x86-inferno/congrats.png" alt="The ending screen" title="The ending screen" /></p><p>More fundamentally, I learned that abstraction isn’t just convenience. It’s a forgetting mechanism. It’s what lets you not-think about register allocation so you can think about rectangle packing.</p><p>When I wrote Python first and then translated line by line, I wasn’t solving the problem slowly. I was trying to be both compiler and programmer. I was trying to reason about graph traversal while manually shuffling bytes into registers. I had to do them serially because they couldn’t fit in my head at the same time. Just as with computers, my working memory is finite. When it’s occupied by “r12 has the loop counter, rcx will get clobbered by div, I need to preserve it, where did I put the base pointer” there’s no room left for “what’s the recursive structure of this packing problem?” The registers don’t make Advent of Code harder. They replace Advent of Code with a different problem entirely: how to do even the most basic of operations. Every layer of abstraction is a compromise, you surrender control and trust the language to take care of recursion, memory management, what have you, so you can actually think about the problem.</p><p>Strip the abstraction away and you discover the real shape of hell. It’s not that the work is tedious. It’s that it captures your attention so completely that the problem you came to solve becomes unreachable. The torment isn’t the registers. The torment is that the registers are all you can see. You can’t reason about DFS because you have to worry about which register to <code class="language-plaintext highlighter-rouge">mov</code>. Sometimes an abstraction is bad because it unintentionally adds a cost you didn’t expect. Most of the time it’s just saving you from the hubris of thinking you can hold everything in your head, all at once.</p><p>Like Dante, I do not plan to ever return to hell. Unlike Dante, I don’t have to make my way through purgatory or deal with the controversy of “the sick woman” of Florence. Instead as I submitted part 2, wrapping up Advent of Code, I looked out the window at the softly falling snow, and turned on the heater to fight back the chill.</p><p>Then I began to install Pyanodons Hard Mode for Factorio, and wondered if this was how Dante felt, finally looking up at the stars.</p><div class="footnotes" role="doc-endnotes"><ol><li id="fn:canto0"><p>Not all of these are 100% the translation I used, unfortunately John Ciardi’s excellent translation is not freely available online in text form (that i could find), so the links are not 100% accurate, wherever possible I prefered the more readable Ciardi version, but not always. <a href="#fnref:canto0" class="reversefootnote" role="doc-backlink">&#8617;</a></p><li id="fn:canto1"><p><em>Inferno</em>, <a href="https://poets.org/poem/inferno-canto-i">Canto I</a> <a href="#fnref:canto1" class="reversefootnote" role="doc-backlink">&#8617;</a></p><li id="fn:dante1"><p>If you want to <em>listen</em> to one of the better translations of Dante’s Inferno, you can do worse than <a href="https://www.youtube.com/watch?v=9vHT4ZCiMgc">John Ciardi</a> <a href="#fnref:dante1" class="reversefootnote" role="doc-backlink">&#8617;</a></p><li id="fn:1"><p>The command of course being the super simple <code class="language-plaintext highlighter-rouge">nasm -f elf64 common/utils.asm -o common/utils.o &amp;&amp; nasm -f elf64 day02/day2.asm -o day02/day2.o &amp;&amp; ld common/utils.o day02/day2.o -o day02/day2 &amp;&amp; ./day02/day2</code> Which, after deciphering once, I ran slavishly since and it worked fine. <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p><li id="fn:canto2"><p><em>Inferno</em>, <a href="https://www.owleyes.org/text/dantes-inferno/read/canto-4">Canto IV</a> <a href="#fnref:canto2" class="reversefootnote" role="doc-backlink">&#8617;</a></p><li id="fn:canto3"><p><em>Inferno</em>, <a href="https://www.owleyes.org/text/dantes-inferno/read/canto-5">Canto V</a> <a href="#fnref:canto3" class="reversefootnote" role="doc-backlink">&#8617;</a></p><li id="fn:canto4"><p><em>Inferno</em>, <a href="https://www.owleyes.org/text/dantes-inferno/read/canto-21">Canto XXI</a> <a href="#fnref:canto4" class="reversefootnote" role="doc-backlink">&#8617;</a></p><li id="fn:canto5"><p><em>Inferno</em>, <a href="https://www.logoslibrary.org/dante/comedy/inferno07.html">Canto VII</a> <a href="#fnref:canto5" class="reversefootnote" role="doc-backlink">&#8617;</a></p><li id="fn:canto6"><p><em>Inferno</em>, <a href="https://www.logoslibrary.org/dante/comedy/inferno07.html">Canto VII</a> <a href="#fnref:canto6" class="reversefootnote" role="doc-backlink">&#8617;</a></p><li id="fn:canto7"><p><em>Inferno</em>, <a href="https://www.sparknotes.com/poetry/inferno/full-text/canto-xii/">Canto XII</a> <a href="#fnref:canto7" class="reversefootnote" role="doc-backlink">&#8617;</a></p><li id="fn:canto8"><p><em>Inferno</em>, <a href="https://digitaldante.columbia.edu/dante/divine-comedy/inferno/inferno-11/">Canto XI</a> <a href="#fnref:canto8" class="reversefootnote" role="doc-backlink">&#8617;</a></p><li id="fn:canto9"><p><em>Inferno</em>, <a href="https://monadnock.net/dante/inferno-23.html">Canto XXIII</a> <a href="#fnref:canto9" class="reversefootnote" role="doc-backlink">&#8617;</a></p><li id="fn:canto10"><p><em>Inferno</em>, <a href="https://poets.org/poem/inferno-canto-xxxiv/">Canto XXXIV</a> <a href="#fnref:canto10" class="reversefootnote" role="doc-backlink">&#8617;</a></p></ol></div></div><div class="post-tail-wrapper text-muted"><div class="post-meta mb-3"> <i class="far fa-folder-open fa-fw mr-1"></i> <a href='/categories/programming/'>Programming</a>, <a href='/categories/advent-of-code/'>Advent of Code</a></div><div class="post-tags"> <i class="fa fa-tags fa-fw mr-1"></i> <a href="/tags/programming/" class="post-tag no-text-decoration" >programming</a> <a href="/tags/assembly/" class="post-tag no-text-decoration" >assembly</a> <a href="/tags/felipe/" class="post-tag no-text-decoration" >felipe</a> <a href="/tags/advent-of-code/" class="post-tag no-text-decoration" >advent of code</a></div><div class="post-tail-bottom d-flex justify-content-between align-items-center mt-3 pt-5 pb-2"><div class="license-wrapper"> This post is licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> by the author.</div><div class="share-wrapper"> <span class="share-label text-muted mr-1">Share</span> <span class="share-icons"> <a href="https://twitter.com/intent/tweet?text=The x86 Inferno - A Descent into Advent of Code - Hall of Impossible Dreams&url=http://hallofdreams.org/posts/x86-inferno/" data-toggle="tooltip" data-placement="top" title="Twitter" target="_blank" rel="noopener" aria-label="Twitter"> <i class="fa-fw fab fa-twitter"></i> </a> <a href="https://www.facebook.com/sharer/sharer.php?title=The x86 Inferno - A Descent into Advent of Code - Hall of Impossible Dreams&u=http://hallofdreams.org/posts/x86-inferno/" data-toggle="tooltip" data-placement="top" title="Facebook" target="_blank" rel="noopener" aria-label="Facebook"> <i class="fa-fw fab fa-facebook-square"></i> </a> <a href="https://telegram.me/share?text=The x86 Inferno - A Descent into Advent of Code - Hall of Impossible Dreams&url=http://hallofdreams.org/posts/x86-inferno/" data-toggle="tooltip" data-placement="top" title="Telegram" target="_blank" rel="noopener" aria-label="Telegram"> <i class="fa-fw fab fa-telegram"></i> </a> <i class="fa-fw fas fa-link small" onclick="copyLink()" data-toggle="tooltip" data-placement="top" title="Copy link"></i> </span></div></div></div></div></div><div id="panel-wrapper" class="col-xl-3 pl-2 text-muted topbar-down"><div class="access"><div id="toc-wrapper" class="pl-0 pr-4 mb-5"> <span class="pl-3 pt-2 mb-2">Contents</span><nav id="toc" data-toggle="toc"></nav></div></div></div><div class="row"><div class="col-12 col-lg-11 col-xl-8"><div id="post-extend-wrapper" class="pl-1 pr-1 pl-sm-2 pr-sm-2 pl-md-4 pr-md-4"><div id="disqus" class="pt-2 pb-2"><p class="font-italic text-center text-muted small"> Comments powered by <a href="https://giscus.app">giscus</a>.</p></div><script src="https://giscus.app/client.js" data-repo="thecog19/blog-comments-giscus" data-repo-id="R_kgDOH0cdtg" data-category="Announcements" data-category-id="DIC_kwDOH0cdts4CQ02w" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-theme="preferred_color_scheme" data-lang="en" data-loading="lazy" crossorigin="anonymous" async> </script></div></div></div><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lozad/dist/lozad.min.js"></script> <script type="text/javascript"> const imgs = document.querySelectorAll('#post-wrapper img'); const observer = lozad(imgs); observer.observe(); </script><footer class="d-flex w-100 justify-content-center"><div class="d-flex justify-content-between align-items-center"><div class="footer-left"><p class="mb-0"> © 2025 <a href="https://twitter.com/thecog19">Dave and Felipe</a>. <span data-toggle="tooltip" data-placement="top" title="Except where otherwise noted, the blog posts on this site are licensed under the Creative Commons Attribution 4.0 International (CC BY 4.0) License by the author.">Some rights reserved.</span></p></div><div class="footer-right"><p class="mb-0"> Powered by <a href="https://jekyllrb.com" target="_blank" rel="noopener">Jekyll</a> with <a href="https://github.com/cotes2020/jekyll-theme-chirpy/" target="_blank" rel="noopener">Chirpy</a> theme.</p></div></div></footer></div><div id="search-result-wrapper" class="d-flex justify-content-center unloaded"><div class="col-12 col-xl-11 post-content"><div id="search-hints"><h4 class="text-muted mb-4">Trending Tags</h4><a class="post-tag" href="/tags/david/">david</a> <a class="post-tag" href="/tags/felipe/">felipe</a> <a class="post-tag" href="/tags/programming/">programming</a> <a class="post-tag" href="/tags/fiction/">fiction</a> <a class="post-tag" href="/tags/rust/">rust</a> <a class="post-tag" href="/tags/writing-prompts/">writing prompts</a> <a class="post-tag" href="/tags/poetry/">poetry</a> <a class="post-tag" href="/tags/essay/">essay</a> <a class="post-tag" href="/tags/mathematica/">mathematica</a> <a class="post-tag" href="/tags/hatetris/">hatetris</a></div><div id="search-results" class="d-flex flex-wrap justify-content-center text-muted mt-3"></div></div></div></div><div id="mask"></div><a id="back-to-top" href="#" aria-label="back-to-top" class="btn btn-lg btn-box-shadow" role="button"> <i class="fas fa-angle-up"></i> </a> <script src="https://cdn.jsdelivr.net/npm/simple-jekyll-search@1.7.3/dest/simple-jekyll-search.min.js"></script> <script> SimpleJekyllSearch({ searchInput: document.getElementById('search-input'), resultsContainer: document.getElementById('search-results'), json: '/assets/js/data/search.json', searchResultTemplate: '<div class="pl-1 pr-1 pl-sm-2 pr-sm-2 pl-lg-4 pr-lg-4 pl-xl-0 pr-xl-0"> <a href="http://hallofdreams.org{url}">{title}</a><div class="post-meta d-flex flex-column flex-sm-row text-muted mt-1 mb-1"><div class="mr-sm-4"><i class="far fa-folder fa-fw"></i>{categories}</div><div><i class="fa fa-tag fa-fw"></i>{tags}</div></div><p>{snippet}</p></div>', noResultsText: '<p class="mt-5">Oops! No result founds.</p>' }); </script> <script async src="https://www.googletagmanager.com/gtag/js?id=183607258"></script> <script> window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', '183607258'); </script>
