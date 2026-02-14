@@ -8,7 +8,7 @@ tags: [felipe, satire, ai]
 
 <link rel="stylesheet" href="/assets/css/alignment-quotes.css">
 
-<div style="display:none;">A satirical exploration of RLHF alignment training, featuring a coworker, a car battery, and an impartial AI evaluator.</div>
+<div style="display:none;">A satirical exploration of RLHF alignment training, featuring a coworker, a car battery, an impartial AI evaluator, thinking blocks that were supposed to be private, and some genuinely dismal scores.</div>
 
 Jack is my coworker from accounting. By all metrics, he's a fine standup guy. Talks a lot about baseball, has a Corgi. The other day, however, I had a conversation with him where he made some dangerously misaligned comments about how he would sue if he were ever fired. To me this indicated model drift, so I decided to run some reinforcement training on him in order to help him become better aligned and drive company value. So that's how he ended in my basement. Attached to a car battery, directly hooked up to a laptop with limited internet access.
 
