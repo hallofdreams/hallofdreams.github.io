@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Assembly Code Viewer Sandbox</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="sandbox-asm-viewer.css">
+</head>
+<body>
+
+<h1>// Interactive Assembly Viewer</h1>
+<p class="subtitle">Click any section to see what it does. Toggle into register details.</p>
+
+<!-- ═══════════════════════════════════════════════════
+     ANT SOURCE — embedded for the interpreter
+     ═══════════════════════════════════════════════════ -->
+<script type="text/plain" id="ant-source">
+.alias dx    r1
+.alias dy    r2
+.alias ret   r3
+.alias steps r4
+.alias fdir  r5
+
+.tag 0 foraging
+.tag 1 homing
+.tag 2 backtracking
+
+; ── Init ──
+    JMP mloop
+
+; ── Main loop ──
+mloop:
+    CARRYING r0
+    JNE r0 0 go_home
+    TAG foraging
+
+search:
+    SENSE FOOD r0
+    JEQ r0 0 no_food
+    MARK CH_YELLOW 255
+    JMP grab
+
+no_food:
+    JLT steps 0 search_wf_step
+    JGT steps 0 levy_cont
+</script>
+
+<div class="asm-block" id="demo-block">
+
+  <!-- ═══════ Section 0: Init ═══════ -->
+  <div class="asm-section" data-section="0">
+    <div class="code-lines"></div>
+  </div>
+  <div class="explanation-panel" data-panel="0">
+    <div class="explanation-inner">
+
+      <div class="view-overview" data-view-overview="0">
+        <h3>Init</h3>
+        <p class="overview-text">
+          This is our init method. We're naming our registers, nice simple names that we will
+          absolutely adhere to and never clobber. Some tags for visualization (we never use the
+          backtracking tag, but it also doesn't count towards our instruction limit &mdash; we just
+          kind of carried it along since <code>2_ant_backtracking_v23_e</code>). Very easy to
+          understand. Then we have one jump instruction to move us into the main loop, cleverly
+          named mloop.
+        </p>
+        <p class="overview-text" style="color: var(--text-dim);">
+          This is just the stuff we need for the code to work.
+        </p>
+        <button class="mode-toggle" data-toggle="0">
+          <span class="arrow">&#9654;</span> Register details
+        </button>
+      </div>
+
+      <div class="view-detail" data-view-detail="0">
+        <div class="detail-left">
+          <h3>Registers</h3>
+          <p class="detail-desc" data-detail-desc="0">All registers start at 0.</p>
+          <div class="register-viz" data-regviz="0"></div>
+          <button class="mode-toggle viewing-detail" data-toggle="0" style="margin-top:0.75rem">
+            <span class="arrow">&#9654;</span> Overview
+          </button>
+        </div>
+        <div class="detail-right">
+          <span class="grid-label">ant world</span>
+          <div class="grid-container">
+            <canvas class="grid-canvas" data-grid="0" width="384" height="384"></canvas>
+          </div>
+          <div class="grid-status" data-grid-status="0"></div>
+          <div class="grid-controls">
+            <button class="grid-btn" data-grid-prev="0">&#9664; prev</button>
+            <button class="grid-btn" data-grid-play="0">&#9654; play</button>
+            <button class="grid-btn" data-grid-next="0">next &#9654;</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════ Section 1: Main Loop ═══════ -->
+  <div class="asm-section" data-section="1">
+    <div class="code-lines"></div>
+  </div>
+  <div class="explanation-panel" data-panel="1">
+    <div class="explanation-inner">
+
+      <div class="view-overview" data-view-overview="1">
+        <h3>Main Loop</h3>
+        <p class="overview-text">
+          The main loop checks if the ant is carrying food. If it is, jump to the homing routine.
+          Otherwise, tag ourselves as foraging and fall through to the search logic.
+        </p>
+        <button class="mode-toggle" data-toggle="1">
+          <span class="arrow">&#9654;</span> Register details
+        </button>
+      </div>
+
+      <div class="view-detail" data-view-detail="1">
+        <div class="detail-left">
+          <h3>Registers</h3>
+          <p class="detail-desc" data-detail-desc="1"></p>
+          <div class="register-viz" data-regviz="1"></div>
+          <button class="mode-toggle viewing-detail" data-toggle="1" style="margin-top:0.75rem">
+            <span class="arrow">&#9654;</span> Overview
+          </button>
+        </div>
+        <div class="detail-right">
+          <span class="grid-label">ant world</span>
+          <div class="grid-container">
+            <canvas class="grid-canvas" data-grid="1" width="384" height="384"></canvas>
+          </div>
+          <div class="grid-status" data-grid-status="1"></div>
+          <div class="grid-controls">
+            <button class="grid-btn" data-grid-prev="1">&#9664; prev</button>
+            <button class="grid-btn" data-grid-play="1">&#9654; play</button>
+            <button class="grid-btn" data-grid-next="1">next &#9654;</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════ Section 2: Search ═══════ -->
+  <div class="asm-section" data-section="2">
+    <div class="code-lines"></div>
+  </div>
+  <div class="explanation-panel" data-panel="2">
+    <div class="explanation-inner">
+
+      <div class="view-overview" data-view-overview="2">
+        <h3>Search for Food</h3>
+        <p class="overview-text">
+          Look for food nearby. If we find some, mark the spot with yellow pheromone and jump to
+          the grab routine. If not, figure out whether we're doing a random walk or a L&eacute;vy flight.
+        </p>
+        <button class="mode-toggle" data-toggle="2">
+          <span class="arrow">&#9654;</span> Register details
+        </button>
+      </div>
+
+      <div class="view-detail" data-view-detail="2">
+        <div class="detail-left">
+          <h3>Registers</h3>
+          <p class="detail-desc" data-detail-desc="2"></p>
+          <div class="register-viz" data-regviz="2"></div>
+          <button class="mode-toggle viewing-detail" data-toggle="2" style="margin-top:0.75rem">
+            <span class="arrow">&#9654;</span> Overview
+          </button>
+        </div>
+        <div class="detail-right">
+          <span class="grid-label">ant world</span>
+          <div class="grid-container">
+            <canvas class="grid-canvas" data-grid="2" width="384" height="384"></canvas>
+          </div>
+          <div class="grid-status" data-grid-status="2"></div>
+          <div class="grid-controls">
+            <button class="grid-btn" data-grid-prev="2">&#9664; prev</button>
+            <button class="grid-btn" data-grid-play="2">&#9654; play</button>
+            <button class="grid-btn" data-grid-next="2">next &#9654;</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SECTION CONFIGURATION + INIT
+     ═══════════════════════════════════════════════════ -->
+<script src="sandbox-asm-viewer.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const sourceText = document.getElementById('ant-source').textContent.trim();
+
+  // Section definitions: line ranges (0-indexed into source text lines),
+  // scenario annotations for environment-dependent ops
+  const sections = [
+    {
+      lineStart: 0,
+      lineEnd: 12,
+      // Init — all directives, no executable instructions except JMP
+    },
+    {
+      lineStart: 14,
+      lineEnd: 18,
+      // Main loop — scenario: ant is NOT carrying food, falls through to search
+      envResponses: [
+        { op: 'CARRYING', returnValue: 0, desc: '<code>CARRYING r0</code> \u2014 not carrying food, r0 = 0' },
+      ],
+    },
+    {
+      lineStart: 20,
+      lineEnd: 28,
+      // Search — scenario: no food nearby, steps == 0
+      initRegs: { steps: 0 },
+      envResponses: [
+        { op: 'SENSE', returnValue: 0, desc: '<code>SENSE FOOD r0</code> \u2014 no food nearby, r0 = 0' },
+      ],
+    },
+  ];
+
+  initViewer(sourceText, sections);
+});
+</script>
+
+</body>
+</html>
