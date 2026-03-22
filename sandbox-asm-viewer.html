@@ -4584,35 +4584,35 @@ document.addEventListener('DOMContentLoaded', () => {
     {
       lineStart: 13, lineEnd: 25,
       scenarios: [
-        { name: 'carrying food', initRegs: {}, envResponses: [
+        { name: 'carrying food', carrying: true, initRegs: {}, envResponses: [
           { op: 'CARRYING', returnValue: 1 },
         ], grid: {
-          nest: {x:4,y:8},
-          yellow: [{x:4,y:5,i:200},{x:4,y:6,i:220},{x:4,y:7,i:240}],
+          yellow: [{x:2,y:3,i:200},{x:2,y:4,i:240}],
+          nest: {x:2,y:4},
         }},
         { name: 'food adjacent', initRegs: {}, envResponses: [
           { op: 'CARRYING', returnValue: 0 },
           { op: 'SENSE', returnValue: 2 },
         ], grid: {
-          food: [{x:5,y:4}],
+          food: [{x:3,y:2}],
         }},
         { name: 'l\u00e9vy walking', initRegs: { steps: 8, fdir: 1 }, envResponses: [
           { op: 'CARRYING', returnValue: 0 },
           { op: 'SENSE', returnValue: 0 },
         ], grid: {
-          blue: [{x:4,y:5,i:100},{x:3,y:4,i:80},{x:5,y:4,i:60}],
+          blue: [{x:2,y:3,i:100},{x:1,y:2,i:80},{x:3,y:2,i:60}],
         }},
         { name: 'wall following', initRegs: { steps: -4, fdir: 2 }, envResponses: [
           { op: 'CARRYING', returnValue: 0 },
           { op: 'SENSE', returnValue: 0 },
         ], grid: {
-          walls: [{x:4,y:3},{x:5,y:3},{x:6,y:3}],
+          walls: [{x:2,y:1},{x:3,y:1},{x:4,y:1}],
         }},
         { name: 'decision point', initRegs: { steps: 0 }, envResponses: [
           { op: 'CARRYING', returnValue: 0 },
           { op: 'SENSE', returnValue: 0 },
         ], grid: {
-          blue: [{x:3,y:4,i:120},{x:5,y:4,i:40},{x:4,y:3,i:80},{x:4,y:5,i:90}],
+          blue: [{x:1,y:2,i:120},{x:3,y:2,i:40},{x:2,y:1,i:80},{x:2,y:3,i:90}],
         }},
       ],
     },
@@ -4763,12 +4763,14 @@ document.addEventListener('DOMContentLoaded', () => {
         { name: 'open path', initRegs: { fdir: 1, steps: 5, dx: 0, dy: 0 }, envResponses: [
           { op: 'PROBE', returnValue: 0 },
         ], grid: {
+          size: 9,
           blue: [{x:4,y:4,i:100}],
           nest: {x:4,y:8},
         }},
         { name: 'wall (levy)', initRegs: { fdir: 1, steps: 5, dx: 0, dy: 0 }, envResponses: [
           { op: 'PROBE', returnValue: 1 },
         ], grid: {
+          size: 9,
           walls: [{x:4,y:3},{x:3,y:3},{x:5,y:3}],
           nest: {x:4,y:8},
         }},
@@ -4776,6 +4778,7 @@ document.addEventListener('DOMContentLoaded', () => {
           { op: 'PROBE', returnValue: 1 },
           { op: 'PROBE', returnValue: 0 },
         ], grid: {
+          size: 9,
           walls: [{x:4,y:3}],
           food: [{x:4,y:1}],
           nest: {x:4,y:8},
@@ -4791,7 +4794,7 @@ document.addEventListener('DOMContentLoaded', () => {
           { op: 'ID', returnValue: 43 },
           { op: 'PROBE', returnValue: 0 },
         ], grid: {
-          walls: [{x:4,y:3},{x:3,y:3},{x:5,y:3},{x:3,y:2},{x:5,y:2}],
+          walls: [{x:2,y:1},{x:1,y:1},{x:3,y:1},{x:1,y:0},{x:3,y:0}],
         }},
         { name: 'sparse, left-hand', initRegs: { ret: 12, r7: 2 }, envResponses: [
           { op: 'ID', returnValue: 42 },
@@ -4799,15 +4802,15 @@ document.addEventListener('DOMContentLoaded', () => {
           { op: 'ID', returnValue: 42 },
           { op: 'PROBE', returnValue: 0 },
         ], grid: {
-          walls: [{x:5,y:4},{x:5,y:3},{x:5,y:5}],
+          walls: [{x:3,y:2},{x:3,y:1},{x:3,y:3}],
         }},
         { name: 'yellow spotted mid-trace', initRegs: { ret: 5, r7: 1, steps: -3 }, envResponses: [
           { op: 'ID', returnValue: 42 },
           { op: 'SMELL', returnValue: 3 },
           { op: 'PROBE', returnValue: 0 },
         ], grid: {
-          walls: [{x:4,y:3},{x:5,y:3}],
-          yellow: [{x:4,y:5,i:180},{x:4,y:6,i:160}],
+          walls: [{x:2,y:1},{x:3,y:1}],
+          yellow: [{x:2,y:3,i:180},{x:2,y:4,i:160}],
         }},
       ],
     },
@@ -4846,34 +4849,31 @@ document.addEventListener('DOMContentLoaded', () => {
     // 16: Yellow Highway (Priority 2)
     { lineStart: 659, lineEnd: 671,
       scenarios: [
-        { name: 'yellow nearby, follow', initRegs: { dx: 0, dy: 0 }, envResponses: [
+        { name: 'yellow nearby, follow', carrying: true, initRegs: { dx: 0, dy: 0 }, envResponses: [
           { op: 'SMELL', returnValue: 2 },
           { op: 'SNIFF', returnValue: 120 },
           { op: 'PROBE', returnValue: 0 },
         ], grid: {
-          yellow: [{x:5,y:4,i:120},{x:6,y:4,i:100},{x:7,y:4,i:80}],
-          nest: {x:4,y:8},
+          yellow: [{x:3,y:2,i:120},{x:4,y:2,i:100}],
+          nest: {x:0,y:4},
         }},
-        { name: 'yellow saturated (>252)', initRegs: { dx: 0, dy: 0 }, envResponses: [
+        { name: 'yellow saturated (>252)', carrying: true, initRegs: { dx: 0, dy: 0 }, envResponses: [
           { op: 'SMELL', returnValue: 1 },
           { op: 'SNIFF', returnValue: 254 },
         ], grid: {
-          yellow: [{x:4,y:3,i:254},{x:4,y:4,i:255},{x:4,y:5,i:255}],
-          nest: {x:4,y:6},
+          yellow: [{x:2,y:1,i:254},{x:2,y:2,i:255},{x:2,y:3,i:255}],
+          nest: {x:2,y:4},
         }},
-        { name: 'no yellow', initRegs: { dx: 0, dy: 0 }, envResponses: [
+        { name: 'no yellow', carrying: true, initRegs: { dx: 0, dy: 0 }, envResponses: [
           { op: 'SMELL', returnValue: 0 },
-        ], grid: {
-          nest: {x:4,y:8},
-        }},
-        { name: 'yellow but walled', initRegs: { dx: 0, dy: 0 }, envResponses: [
+        ], grid: {}},
+        { name: 'yellow but walled', carrying: true, initRegs: { dx: 0, dy: 0 }, envResponses: [
           { op: 'SMELL', returnValue: 1 },
           { op: 'SNIFF', returnValue: 100 },
           { op: 'PROBE', returnValue: 1 },
         ], grid: {
-          yellow: [{x:4,y:3,i:100}],
-          walls: [{x:4,y:3}],
-          nest: {x:4,y:8},
+          yellow: [{x:2,y:1,i:100}],
+          walls: [{x:2,y:1}],
         }},
       ],
     },

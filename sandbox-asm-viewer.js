@@ -434,10 +434,13 @@ function captureStep(program, state, config, regNames, inst, descOverride) {
   }
 
   // Determine ant position from dx/dy registers
+  // Grid center depends on grid size (default 5 -> center 2, or 9 -> center 4)
+  const gridSize = (config._gridSize) || 5;
+  const center = Math.floor(gridSize / 2);
   const dxIdx = program.aliases['dx'];
   const dyIdx = program.aliases['dy'];
-  const antX = 4 + (dxIdx !== undefined ? state.regs[dxIdx] : 0);
-  const antY = 4 + (dyIdx !== undefined ? state.regs[dyIdx] : 0);
+  const antX = center + (dxIdx !== undefined ? state.regs[dxIdx] : 0);
+  const antY = center + (dyIdx !== undefined ? state.regs[dyIdx] : 0);
 
   // Determine direction from last MOVE or fdir register
   const fdirIdx = program.aliases['fdir'];
@@ -454,8 +457,13 @@ function captureStep(program, state, config, regNames, inst, descOverride) {
   // Auto-generate description
   let desc = descOverride || (inst ? generateDesc(inst, regNames) : 'Initial state');
 
+  // Check carrying status from CARRYING env responses seen so far
+  const carryingReg = state.regs[0]; // CARRYING writes to r0
+  // Heuristic: if the section is a homing section, check if we entered with carrying intent
+  const isCarrying = config._carrying || false;
+
   return {
-    ant: { x: antX, y: antY, dir: dirToAngle(dir) },
+    ant: { x: antX, y: antY, dir: dirToAngle(dir), carrying: isCarrying },
     regs,
     painted: [],
     highlightLines,
@@ -667,6 +675,10 @@ function computeSteps(sectionIdx, scenarioIdx) {
   const scenarios = sec.scenarios || [];
   const scenario = scenarios[scenarioIdx || 0];
 
+  const gridData = scenario ? scenario.grid : (sec.grid || null);
+  const gridSize = gridData && gridData.size ? gridData.size : 5;
+  const carrying = scenario ? !!scenario.carrying : false;
+
   // Build a config for the interpreter from the scenario
   const config = {
     lineStart: sec.lineStart,
@@ -676,11 +688,12 @@ function computeSteps(sectionIdx, scenarioIdx) {
     envResponses: scenario ? scenario.envResponses : (sec.envResponses || []),
     descOverrides: scenario ? scenario.descOverrides : (sec.descOverrides || {}),
     maxSteps: sec.maxSteps,
+    _gridSize: gridSize,
+    _carrying: carrying,
   };
 
   const steps = executeSection(program, config);
-  const grid = scenario ? scenario.grid : (sec.grid || null);
-  sectionData[sectionIdx] = { steps, scenarioIdx: scenarioIdx || 0, grid };
+  sectionData[sectionIdx] = { steps, scenarioIdx: scenarioIdx || 0, grid: gridData };
   return sectionData[sectionIdx];
 }
 
@@ -892,21 +905,31 @@ const PHEROMONE_COLORS = {
   CH_RED:    { r:232, g:76, b:76 },
 };
 
+function getGridSize(idx) {
+  // Check if current scenario specifies a grid size, default to 5
+  const data = sectionData[idx];
+  if (!data || !data.grid) return 5;
+  return data.grid.size || 5;
+}
+
 function drawGrid(idx) {
   const canvas = document.querySelector(`[data-grid="${idx}"]`);
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
   const w = canvas.width, h = canvas.height;
-  const cellW = w / GRID, cellH = h / GRID;
   const data = sectionData[idx];
   if (!data) return;
   const s = viewerState[idx];
   const step = data.steps[s.step];
   if (!step) return;
 
+  const gridSize = getGridSize(idx);
+  const cellW = w / gridSize, cellH = h / gridSize;
+  const center = Math.floor(gridSize / 2);
+
   const grid = data.grid || null;
-  const antX = step.ant ? step.ant.x : 4;
-  const antY = step.ant ? step.ant.y : 4;
+  const antX = step.ant ? step.ant.x : center;
+  const antY = step.ant ? step.ant.y : center;
 
   // Clear
   ctx.fillStyle = COLORS.bg;
@@ -915,7 +938,7 @@ function drawGrid(idx) {
   // Grid lines
   ctx.strokeStyle = COLORS.grid;
   ctx.lineWidth = 1;
-  for (let i = 0; i <= GRID; i++) {
+  for (let i = 0; i <= gridSize; i++) {
     ctx.beginPath();
     ctx.moveTo(i * cellW, 0); ctx.lineTo(i * cellW, h);
     ctx.stroke();
@@ -924,7 +947,7 @@ function drawGrid(idx) {
     ctx.stroke();
   }
 
-  // Build set of cells currently being sniffed (so we draw numbers instead of solid fill)
+  // Build set of cells currently being sniffed
   const sniffedCells = new Set();
   if (step.senseEffect && step.senseEffect.type === 'sniff') {
     const se = step.senseEffect;
@@ -945,7 +968,7 @@ function drawGrid(idx) {
       const pc = pheroChannels[key];
       for (const p of grid[key]) {
         const cellKey = `${p.x},${p.y}`;
-        if (sniffedCells.has(cellKey)) continue; // will draw number instead
+        if (sniffedCells.has(cellKey)) continue;
         ctx.fillStyle = `rgba(${pc.r},${pc.g},${pc.b},0.55)`;
         ctx.fillRect(p.x * cellW + 1, p.y * cellH + 1, cellW - 2, cellH - 2);
       }
@@ -954,13 +977,15 @@ function drawGrid(idx) {
     // Nest
     if (grid.nest) {
       const nx = grid.nest.x, ny = grid.nest.y;
-      ctx.fillStyle = 'rgba(60, 216, 168, 0.25)';
-      ctx.fillRect(nx * cellW + 1, ny * cellH + 1, cellW - 2, cellH - 2);
-      ctx.fillStyle = '#3cd8a8';
-      ctx.font = `${cellW * 0.45}px JetBrains Mono, monospace`;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('\u2302', nx * cellW + cellW/2, ny * cellH + cellH/2);
+      if (nx >= 0 && nx < gridSize && ny >= 0 && ny < gridSize) {
+        ctx.fillStyle = 'rgba(60, 216, 168, 0.25)';
+        ctx.fillRect(nx * cellW + 1, ny * cellH + 1, cellW - 2, cellH - 2);
+        ctx.fillStyle = '#3cd8a8';
+        ctx.font = `${cellW * 0.4}px JetBrains Mono, monospace`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('\u2302', nx * cellW + cellW/2, ny * cellH + cellH/2);
+      }
     }
 
     // Food
@@ -969,7 +994,7 @@ function drawGrid(idx) {
         ctx.fillStyle = 'rgba(56, 216, 112, 0.35)';
         ctx.fillRect(f.x * cellW + 2, f.y * cellH + 2, cellW - 4, cellH - 4);
         ctx.fillStyle = '#38d870';
-        ctx.font = `bold ${cellW * 0.4}px JetBrains Mono, monospace`;
+        ctx.font = `bold ${cellW * 0.35}px JetBrains Mono, monospace`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText('\u2666', f.x * cellW + cellW/2, f.y * cellH + cellH/2);
@@ -981,10 +1006,10 @@ function drawGrid(idx) {
       for (const wl of grid.walls) {
         ctx.fillStyle = '#1a2e26';
         ctx.fillRect(wl.x * cellW, wl.y * cellH, cellW, cellH);
-        // Cross-hatch pattern
         ctx.strokeStyle = '#243e34';
         ctx.lineWidth = 1;
-        for (let d = -cellW; d < cellW * 2; d += 6) {
+        const hatchSpacing = Math.max(6, cellW * 0.15);
+        for (let d = -cellW; d < cellW * 2; d += hatchSpacing) {
           ctx.beginPath();
           ctx.moveTo(wl.x * cellW + d, wl.y * cellH);
           ctx.lineTo(wl.x * cellW + d + cellH, wl.y * cellH + cellH);
@@ -997,7 +1022,6 @@ function drawGrid(idx) {
   // ── Sense effect overlay ──
   if (step.senseEffect) {
     const se = step.senseEffect;
-    ctx.font = `bold ${cellW * 0.35}px JetBrains Mono, monospace`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
 
@@ -1005,52 +1029,51 @@ function drawGrid(idx) {
       const dir = resolveSenseDir(se.dir);
       const tx = antX + (DIR_DX[dir] || 0);
       const ty = antY + (DIR_DY[dir] || 0);
-      if (tx >= 0 && tx < GRID && ty >= 0 && ty < GRID) {
+      if (tx >= 0 && tx < gridSize && ty >= 0 && ty < gridSize) {
         const pc = PHEROMONE_COLORS[se.channel] || PHEROMONE_COLORS.CH_YELLOW;
-        // Light background tint
         ctx.fillStyle = `rgba(${pc.r},${pc.g},${pc.b},${se.value > 0 ? 0.2 : 0.08})`;
         ctx.fillRect(tx * cellW + 1, ty * cellH + 1, cellW - 2, cellH - 2);
-        // Border
         ctx.strokeStyle = `rgba(${pc.r},${pc.g},${pc.b},0.8)`;
         ctx.lineWidth = 2;
         ctx.strokeRect(tx * cellW + 2, ty * cellH + 2, cellW - 4, cellH - 4);
-        // The intensity number replaces the solid fill
         ctx.fillStyle = se.value > 0 ? `rgb(${pc.r},${pc.g},${pc.b})` : '#338f70';
-        ctx.font = `bold ${cellW * 0.38}px JetBrains Mono, monospace`;
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
+        ctx.font = `bold ${cellW * 0.35}px JetBrains Mono, monospace`;
         ctx.fillText(String(se.value), tx * cellW + cellW/2, ty * cellH + cellH/2);
       }
     }
     else if (se.type === 'smell') {
-      // Highlight the returned direction
       if (se.value > 0 && se.value <= 4) {
         const tx = antX + DIR_DX[se.value];
         const ty = antY + DIR_DY[se.value];
-        const pc = PHEROMONE_COLORS[se.channel] || PHEROMONE_COLORS.CH_YELLOW;
-        ctx.strokeStyle = `rgba(${pc.r},${pc.g},${pc.b},0.8)`;
-        ctx.lineWidth = 2;
-        ctx.strokeRect(tx * cellW + 2, ty * cellH + 2, cellW - 4, cellH - 4);
-        ctx.fillStyle = `rgb(${pc.r},${pc.g},${pc.b})`;
-        ctx.fillText('\u2190\u2191\u2192\u2193'[se.value - 1] || '?', tx * cellW + cellW/2, ty * cellH + cellH/2);
+        if (tx >= 0 && tx < gridSize && ty >= 0 && ty < gridSize) {
+          const pc = PHEROMONE_COLORS[se.channel] || PHEROMONE_COLORS.CH_YELLOW;
+          ctx.strokeStyle = `rgba(${pc.r},${pc.g},${pc.b},0.8)`;
+          ctx.lineWidth = 2;
+          ctx.strokeRect(tx * cellW + 2, ty * cellH + 2, cellW - 4, cellH - 4);
+          ctx.fillStyle = `rgb(${pc.r},${pc.g},${pc.b})`;
+          ctx.font = `bold ${cellW * 0.35}px JetBrains Mono, monospace`;
+          ctx.fillText('\u2191\u2192\u2193\u2190'[se.value - 1] || '?', tx * cellW + cellW/2, ty * cellH + cellH/2);
+        }
       }
     }
     else if (se.type === 'sense') {
-      // Highlight the found direction
       if (se.value > 0 && se.value <= 4) {
         const tx = antX + DIR_DX[se.value];
         const ty = antY + DIR_DY[se.value];
-        const color = se.target === 'FOOD' ? '#38d870' : se.target === 'NEST' ? '#3cd8a8' : '#58a8ff';
-        ctx.fillStyle = color;
-        ctx.globalAlpha = 0.3;
-        ctx.fillRect(tx * cellW + 1, ty * cellH + 1, cellW - 2, cellH - 2);
-        ctx.globalAlpha = 1;
-        ctx.strokeStyle = color;
-        ctx.lineWidth = 2;
-        ctx.strokeRect(tx * cellW + 2, ty * cellH + 2, cellW - 4, cellH - 4);
-        const icon = se.target === 'FOOD' ? '\u2666' : se.target === 'NEST' ? '\u2302' : '?';
-        ctx.fillStyle = color;
-        ctx.fillText(icon, tx * cellW + cellW/2, ty * cellH + cellH/2);
+        if (tx >= 0 && tx < gridSize && ty >= 0 && ty < gridSize) {
+          const color = se.target === 'FOOD' ? '#38d870' : se.target === 'NEST' ? '#3cd8a8' : '#58a8ff';
+          ctx.fillStyle = color;
+          ctx.globalAlpha = 0.3;
+          ctx.fillRect(tx * cellW + 1, ty * cellH + 1, cellW - 2, cellH - 2);
+          ctx.globalAlpha = 1;
+          ctx.strokeStyle = color;
+          ctx.lineWidth = 2;
+          ctx.strokeRect(tx * cellW + 2, ty * cellH + 2, cellW - 4, cellH - 4);
+          const icon = se.target === 'FOOD' ? '\u2666' : se.target === 'NEST' ? '\u2302' : '?';
+          ctx.fillStyle = color;
+          ctx.font = `bold ${cellW * 0.35}px JetBrains Mono, monospace`;
+          ctx.fillText(icon, tx * cellW + cellW/2, ty * cellH + cellH/2);
+        }
       }
     }
     else if (se.type === 'probe') {
@@ -1058,22 +1081,18 @@ function drawGrid(idx) {
       if (dir > 0 && dir <= 4) {
         const tx = antX + DIR_DX[dir];
         const ty = antY + DIR_DY[dir];
-        if (tx >= 0 && tx < GRID && ty >= 0 && ty < GRID) {
+        if (tx >= 0 && tx < gridSize && ty >= 0 && ty < gridSize) {
           const isWall = se.value === 1;
           ctx.strokeStyle = isWall ? '#e84c4c' : '#38d870';
           ctx.lineWidth = 2;
           ctx.strokeRect(tx * cellW + 2, ty * cellH + 2, cellW - 4, cellH - 4);
           ctx.fillStyle = isWall ? '#e84c4c' : '#38d870';
+          ctx.font = `bold ${cellW * 0.35}px JetBrains Mono, monospace`;
           ctx.fillText(isWall ? '\u2588' : '\u2713', tx * cellW + cellW/2, ty * cellH + cellH/2);
         }
       }
     }
-    else if (se.type === 'carrying') {
-      // Show carrying status on the ant cell
-      ctx.fillStyle = se.value ? '#38d870' : '#338f70';
-      ctx.font = `${cellW * 0.3}px JetBrains Mono, monospace`;
-      ctx.fillText(se.value ? 'carrying' : 'empty', antX * cellW + cellW/2, antY * cellH + cellH - 4);
-    }
+    // carrying is handled by ant color below, not a separate overlay
   }
 
   // ── Ant ──
@@ -1082,20 +1101,33 @@ function drawGrid(idx) {
     const cx = ax * cellW + cellW / 2, cy = ay * cellH + cellH / 2;
     const sz = cellW * 0.35;
 
+    // Determine if ant is carrying food
+    const isCarrying = step.ant.carrying || false;
+
     ctx.save();
     ctx.translate(cx, cy);
     ctx.rotate(dir * Math.PI / 2);
 
-    ctx.shadowColor = COLORS.ant;
+    ctx.shadowColor = isCarrying ? '#38d870' : COLORS.ant;
     ctx.shadowBlur = 12;
 
-    ctx.fillStyle = COLORS.ant;
+    // Ant body
+    ctx.fillStyle = isCarrying ? '#38d870' : COLORS.ant;
     ctx.beginPath();
     ctx.moveTo(0, -sz);
     ctx.lineTo(-sz * 0.7, sz * 0.6);
     ctx.lineTo(sz * 0.7, sz * 0.6);
     ctx.closePath();
     ctx.fill();
+
+    // Food dot when carrying
+    if (isCarrying) {
+      ctx.shadowBlur = 0;
+      ctx.fillStyle = '#50ffc8';
+      ctx.beginPath();
+      ctx.arc(0, sz * 0.05, sz * 0.25, 0, Math.PI * 2);
+      ctx.fill();
+    }
 
     ctx.shadowBlur = 0;
     ctx.restore();
