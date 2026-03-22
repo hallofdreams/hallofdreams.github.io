@@ -4744,13 +4744,17 @@ document.addEventListener('DOMContentLoaded', () => {
           { op: 'SNIFF', returnValue: 200 }, { op: 'SNIFF', returnValue: 100 },
           { op: 'SNIFF', returnValue: 50 }, { op: 'SNIFF', returnValue: 150 },
           { op: 'PROBE', returnValue: 0 },
-        ]},
+        ], grid: {
+          blue: [{x:2,y:1,i:50},{x:3,y:2,i:100},{x:2,y:3,i:200},{x:1,y:2,i:150}],
+        }},
         { name: 'all explored equally', initRegs: {}, envResponses: [
           { op: 'RANDOM', returnValue: 2 },
           { op: 'SNIFF', returnValue: 100 }, { op: 'SNIFF', returnValue: 100 },
           { op: 'SNIFF', returnValue: 100 }, { op: 'SNIFF', returnValue: 100 },
           { op: 'PROBE', returnValue: 0 },
-        ]},
+        ], grid: {
+          blue: [{x:2,y:1,i:100},{x:3,y:2,i:100},{x:2,y:3,i:100},{x:1,y:2,i:100}],
+        }},
         { name: 'best dir walled', initRegs: {}, envResponses: [
           { op: 'RANDOM', returnValue: 0 },
           { op: 'SNIFF', returnValue: 200 }, { op: 'SNIFF', returnValue: 50 },
@@ -4758,6 +4762,9 @@ document.addEventListener('DOMContentLoaded', () => {
           { op: 'PROBE', returnValue: 1 },
           { op: 'SMELL', returnValue: 2 },
           { op: 'PROBE', returnValue: 0 },
+        ], grid: {
+          blue: [{x:2,y:1,i:50},{x:3,y:2,i:200},{x:2,y:3,i:100},{x:1,y:2,i:150}],
+          walls: [{x:2,y:1}],
         ]},
       ],
     },
