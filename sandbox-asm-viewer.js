@@ -325,7 +325,21 @@ function executeSection(program, sectionConfig) {
       }
 
       // Actions — end the tick
-      case 'MOVE':
+      case 'MOVE': {
+        // Update dx/dy based on direction
+        const moveDir = resolveValue(inst.args[0], state);
+        const dxReg = program.aliases['dx'];
+        const dyReg = program.aliases['dy'];
+        if (dxReg !== undefined && dyReg !== undefined) {
+          if (moveDir === 1) state.regs[dyReg]--;       // N
+          else if (moveDir === 2) state.regs[dxReg]++;   // E
+          else if (moveDir === 3) state.regs[dyReg]++;   // S
+          else if (moveDir === 4) state.regs[dxReg]--;   // W
+        }
+        senseEffect = { type: 'move', dir: moveDir };
+        state.tickEnded = true;
+        break;
+      }
       case 'PICKUP':
       case 'DROP':
         state.tickEnded = true;
@@ -963,36 +977,33 @@ function drawGrid(idx) {
     }
   }
 
+  // Snap canvas and CSS size to exact grid multiple for crisp lines
+  const cssBase = 192;
+  const cellPx = Math.floor(cssBase / gridSize);
+  const displaySize = cellPx * gridSize;
+  canvas.width = displaySize;
+  canvas.height = displaySize;
+  canvas.style.width = displaySize + 'px';
+  canvas.style.height = displaySize + 'px';
+  cellW = cellPx;
+  cellH = cellPx;
+
   // Clear
   ctx.fillStyle = COLORS.bg;
-  ctx.fillRect(0, 0, w, h);
-
-  // Resize canvas to exact multiple of grid size for crisp lines
-  const cellSize = Math.floor(w / gridSize);
-  const canvasSize = cellSize * gridSize;
-  if (canvas.width !== canvasSize || canvas.height !== canvasSize) {
-    canvas.width = canvasSize;
-    canvas.height = canvasSize;
-  }
-  const cw = canvas.width, ch = canvas.height;
-  cellW = cellSize;
-  cellH = cellSize;
-
-  // Re-clear at corrected size
-  ctx.fillStyle = COLORS.bg;
-  ctx.fillRect(0, 0, cw, ch);
+  ctx.fillRect(0, 0, displaySize, displaySize);
 
   // Grid lines
   ctx.strokeStyle = COLORS.grid;
   ctx.lineWidth = 1;
   for (let i = 0; i <= gridSize; i++) {
+    const pos = i * cellPx + 0.5;
     ctx.beginPath();
-    ctx.moveTo(i * cellSize + 0.5, 0);
-    ctx.lineTo(i * cellSize + 0.5, ch);
+    ctx.moveTo(pos, 0);
+    ctx.lineTo(pos, displaySize);
     ctx.stroke();
     ctx.beginPath();
-    ctx.moveTo(0, i * cellSize + 0.5);
-    ctx.lineTo(cw, i * cellSize + 0.5);
+    ctx.moveTo(0, pos);
+    ctx.lineTo(displaySize, pos);
     ctx.stroke();
   }
 
@@ -1156,6 +1167,15 @@ function drawGrid(idx) {
           ctx.font = `bold ${cellW * 0.35}px JetBrains Mono, monospace`;
           ctx.fillText(isWall ? '\u2588' : '\u2713', tx * cellW + cellW/2, ty * cellH + cellH/2);
         }
+      }
+    }
+    else if (se.type === 'move') {
+      // Show trail from previous position
+      const prevX = antX - (DIR_DX[se.dir] || 0);
+      const prevY = antY - (DIR_DY[se.dir] || 0);
+      if (prevX >= 0 && prevX < gridSize && prevY >= 0 && prevY < gridSize) {
+        ctx.fillStyle = 'rgba(60, 216, 168, 0.15)';
+        ctx.fillRect(prevX * cellW + 1, prevY * cellH + 1, cellW - 2, cellH - 2);
       }
     }
     else if (se.type === 'mark') {

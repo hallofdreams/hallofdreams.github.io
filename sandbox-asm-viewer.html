@@ -3141,7 +3141,7 @@ tm_s:
 
 <div class="blog-content">
 
-<h3 id="dead-ants">Dead-ants</h3>
+<h3 id="anticlimax">Anticlimax</h3>
 
 <p>Alright, fine, we're not totally done. You don't have to have read the preceding section in full to understand this, though some ideas will make more sense if you have. You can always go click on the relevant bits if you need to.</p>
 
@@ -3426,6 +3426,13 @@ document.addEventListener('DOMContentLoaded', () => {
           yellow: [{x:3,y:2,i:60},{x:2,y:2,i:100},{x:1,y:2,i:140}],
           walls: [{x:4,y:0}],
         }},
+        { name: 'junction', initRegs: { fdir: 2, steps: 5, r7: 100 }, envResponses: [
+          { op: 'SNIFF', returnValue: 0 }, { op: 'SNIFF', returnValue: 0 },
+          { op: 'SNIFF', returnValue: 40 },
+        ], grid: {
+          yellow: [{x:2,y:2,i:100},{x:1,y:2,i:140},{x:2,y:3,i:40}],
+          walls: [{x:4,y:0}],
+        }},
         { name: 'give up', initRegs: { fdir: 2, steps: 5, r7: 100 }, envResponses: [
           { op: 'SNIFF', returnValue: 0 }, { op: 'SNIFF', returnValue: 0 },
           { op: 'SNIFF', returnValue: 0 }, { op: 'SNIFF', returnValue: 0 },
@@ -3444,6 +3451,13 @@ document.addEventListener('DOMContentLoaded', () => {
           yellow: [{x:2,y:3,i:60},{x:2,y:2,i:100},{x:2,y:1,i:140}],
           walls: [{x:0,y:4}],
         }},
+        { name: 'junction', initRegs: { fdir: 3, steps: 5, r7: 100 }, envResponses: [
+          { op: 'SNIFF', returnValue: 0 }, { op: 'SNIFF', returnValue: 0 },
+          { op: 'SNIFF', returnValue: 40 },
+        ], grid: {
+          yellow: [{x:2,y:2,i:100},{x:2,y:1,i:140},{x:3,y:2,i:40}],
+          walls: [{x:0,y:4}],
+        }},
         { name: 'give up', initRegs: { fdir: 3, steps: 5, r7: 100 }, envResponses: [
           { op: 'SNIFF', returnValue: 0 }, { op: 'SNIFF', returnValue: 0 },
           { op: 'SNIFF', returnValue: 0 }, { op: 'SNIFF', returnValue: 0 },
@@ -3460,6 +3474,13 @@ document.addEventListener('DOMContentLoaded', () => {
           { op: 'SNIFF', returnValue: 60 }, { op: 'PROBE', returnValue: 0 },
         ], grid: {
           yellow: [{x:1,y:2,i:60},{x:2,y:2,i:100},{x:3,y:2,i:140}],
+          walls: [{x:0,y:4}],
+        }},
+        { name: 'junction', initRegs: { fdir: 4, steps: 5, r7: 100 }, envResponses: [
+          { op: 'SNIFF', returnValue: 0 }, { op: 'SNIFF', returnValue: 0 },
+          { op: 'SNIFF', returnValue: 40 },
+        ], grid: {
+          yellow: [{x:2,y:2,i:100},{x:3,y:2,i:140},{x:2,y:1,i:40}],
           walls: [{x:0,y:4}],
         }},
         { name: 'give up', initRegs: { fdir: 4, steps: 5, r7: 100 }, envResponses: [
@@ -3627,6 +3648,10 @@ document.addEventListener('DOMContentLoaded', () => {
           food: [{x:2,y:4}],
           nest: {x:0,y:0},
         }},
+        { name: 'unpack north+8', initRegs: { r6: 136 }, envResponses: [], grid: {
+          food: [{x:2,y:0}],
+          nest: {x:2,y:4},
+        }},
       ],
     },
     // 13: Grab Food
@@ -3641,6 +3666,13 @@ document.addEventListener('DOMContentLoaded', () => {
           { op: 'PROBE', returnValue: 0 },
         ], grid: {
           food: [{x:2,y:1}],
+        }},
+        { name: 'food blocked, rotate', initRegs: { dx: 0, dy: 0 }, envResponses: [
+          { op: 'PROBE', returnValue: 1 },
+          { op: 'PROBE', returnValue: 0 },
+        ], grid: {
+          food: [{x:3,y:1}],
+          walls: [{x:3,y:2}],
         }},
       ],
     },
@@ -3738,25 +3770,25 @@ document.addEventListener('DOMContentLoaded', () => {
     // 18: Displacement Homing (Priority 5)
     { lineStart: 700, lineEnd: 724,
       scenarios: [
-        { name: 'open path home', carrying: true, initRegs: { dx: 0, dy: 0 }, envResponses: [
+        { name: 'open path home', carrying: true, initRegs: { dx: 2, dy: 1 }, envResponses: [
           { op: 'PROBE', returnValue: 0 },
         ], grid: {
-          nest: {x:0,y:4},
+          nest: {x:0,y:1},
           walls: [{x:4,y:0}],
         }},
-        { name: 'major axis blocked, minor open', carrying: true, initRegs: { dx: 0, dy: 0 }, envResponses: [
+        { name: 'major axis blocked, minor open', carrying: true, initRegs: { dx: 2, dy: 1 }, envResponses: [
           { op: 'PROBE', returnValue: 1 },
           { op: 'PROBE', returnValue: 0 },
         ], grid: {
-          nest: {x:0,y:4},
+          nest: {x:0,y:1},
           walls: [{x:1,y:2}],
         }},
-        { name: 'both blocked \u2192 Bug2', carrying: true, initRegs: { dx: 0, dy: 0 }, envResponses: [
+        { name: 'both blocked, Bug2', carrying: true, initRegs: { dx: 2, dy: 1 }, envResponses: [
           { op: 'PROBE', returnValue: 1 },
           { op: 'PROBE', returnValue: 1 },
         ], grid: {
-          nest: {x:0,y:4},
-          walls: [{x:1,y:2},{x:2,y:3}],
+          nest: {x:0,y:1},
+          walls: [{x:1,y:2},{x:2,y:1}],
         }},
       ],
     },
@@ -3828,14 +3860,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // 22: Wall-Follow Exit Check
     { lineStart: 909, lineEnd: 927,
       scenarios: [
-        { name: 'closer to nest \u2192 exit', carrying: true, initRegs: { dx: 0, dy: 0, steps: 8, r6: 2 }, envResponses: [], grid: {
+        { name: 'closer to nest, exit', carrying: true, initRegs: { dx: 3, dy: 2, steps: 10, r6: 2 }, envResponses: [], grid: {
           walls: [{x:3,y:1},{x:3,y:2},{x:3,y:3}],
-          nest: {x:0,y:4},
+          nest: {x:0,y:0},
           green: [{x:2,y:2,i:200}],
         }},
-        { name: 'not closer \u2192 keep going', carrying: true, initRegs: { dx: 0, dy: 0, steps: 8, r6: 2 }, envResponses: [], grid: {
+        { name: 'not closer, keep going', carrying: true, initRegs: { dx: 5, dy: 4, steps: 8, r6: 2 }, envResponses: [], grid: {
           walls: [{x:3,y:1},{x:3,y:2},{x:3,y:3},{x:1,y:1}],
-          nest: {x:0,y:4},
+          nest: {x:0,y:0},
           green: [{x:2,y:2,i:200}],
         }},
       ],
@@ -3963,7 +3995,7 @@ document.addEventListener('DOMContentLoaded', () => {
     <li><a href="#ant-brain">Herding Ants</a></li>
     <li><a href="#viewer">Assembly Viewer</a></li>
     <li class="toc-divider"></li>
-    <li><a href="#dead-ants">Dead-ants</a></li>
+    <li><a href="#anticlimax">Anticlimax</a></li>
     <li><a href="#improving-rtf">Improving RTF</a></li>
     <li><a href="#agentic-coding">Agentic Coding</a></li>
     <li><a href="#conclusion">Conclusion</a></li>
@@ -4053,7 +4085,7 @@ updateToc();
     <li><a href="#ant-brain">Herding Ants</a></li>
     <li><a href="#viewer">Assembly Viewer</a></li>
     <li class="toc-divider"></li>
-    <li><a href="#dead-ants">Dead-ants</a></li>
+    <li><a href="#anticlimax">Anticlimax</a></li>
     <li><a href="#improving-rtf">Improving RTF</a></li>
     <li><a href="#agentic-coding">Agentic Coding</a></li>
     <li><a href="#conclusion">Conclusion</a></li>
