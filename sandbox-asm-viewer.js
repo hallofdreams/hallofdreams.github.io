@@ -1108,11 +1108,11 @@ function drawGrid(idx) {
     ctx.translate(cx, cy);
     ctx.rotate(dir * Math.PI / 2);
 
-    ctx.shadowColor = isCarrying ? '#38d870' : COLORS.ant;
+    ctx.shadowColor = isCarrying ? '#ffaa00' : COLORS.ant;
     ctx.shadowBlur = 12;
 
-    // Ant body
-    ctx.fillStyle = isCarrying ? '#38d870' : COLORS.ant;
+    // Ant body — amber/orange when carrying, normal teal when empty
+    ctx.fillStyle = isCarrying ? '#ffaa00' : COLORS.ant;
     ctx.beginPath();
     ctx.moveTo(0, -sz);
     ctx.lineTo(-sz * 0.7, sz * 0.6);
@@ -1120,12 +1120,17 @@ function drawGrid(idx) {
     ctx.closePath();
     ctx.fill();
 
-    // Food dot when carrying
+    // Food diamond when carrying
     if (isCarrying) {
       ctx.shadowBlur = 0;
-      ctx.fillStyle = '#50ffc8';
+      ctx.fillStyle = '#ffffff';
+      const ds = sz * 0.22;
       ctx.beginPath();
-      ctx.arc(0, sz * 0.05, sz * 0.25, 0, Math.PI * 2);
+      ctx.moveTo(0, -ds);
+      ctx.lineTo(ds, 0);
+      ctx.moveTo(0, ds);
+      ctx.lineTo(-ds, 0);
+      ctx.closePath();
       ctx.fill();
     }
 
