@@ -331,8 +331,13 @@ function executeSection(program, sectionConfig) {
         state.tickEnded = true;
         break;
 
-      // Pheromones & tags — no register effect
-      case 'MARK':
+      // Pheromones — visual effect on ant's cell
+      case 'MARK': {
+        const ch = inst.rawArgs[0] || 'CH_YELLOW';
+        const amount = resolveValue(inst.args[1], state) || 0;
+        senseEffect = { type: 'mark', channel: ch, value: amount };
+        break;
+      }
       case 'TAG':
         break;
     }
@@ -804,10 +809,26 @@ function resetSection(idx) {
   viewerState[idx].step = 0;
   viewerState[idx].allPainted = [];
   stopAnimation(idx);
+
+  // Unlock dimensions so it can reflow for new scenario
+  const detailLeft = document.querySelector(`[data-view-detail="${idx}"] .detail-left`);
+  if (detailLeft) {
+    detailLeft.style.minHeight = '';
+    detailLeft.style.width = '';
+  }
+
   updateHighlights(idx);
   updateRegisters(idx);
   updateStatus(idx);
   updateDesc(idx);
+
+  // After first render, lock both width and height to prevent reflow during stepping
+  if (detailLeft) {
+    requestAnimationFrame(() => {
+      detailLeft.style.width = detailLeft.offsetWidth + 'px';
+      detailLeft.style.minHeight = detailLeft.offsetHeight + 'px';
+    });
+  }
 }
 
 function stopAnimation(idx) {
@@ -924,26 +945,54 @@ function drawGrid(idx) {
   if (!step) return;
 
   const gridSize = getGridSize(idx);
-  const cellW = w / gridSize, cellH = h / gridSize;
+  let cellW = w / gridSize, cellH = h / gridSize;
   const center = Math.floor(gridSize / 2);
 
   const grid = data.grid || null;
   const antX = step.ant ? step.ant.x : center;
   const antY = step.ant ? step.ant.y : center;
 
+  // Collect marks from all steps up to current
+  const accumulatedMarks = [];
+  for (let i = 0; i <= s.step; i++) {
+    const st = data.steps[i];
+    if (st && st.senseEffect && st.senseEffect.type === 'mark') {
+      const markAntX = st.ant ? st.ant.x : center;
+      const markAntY = st.ant ? st.ant.y : center;
+      accumulatedMarks.push({ x: markAntX, y: markAntY, channel: st.senseEffect.channel, value: st.senseEffect.value });
+    }
+  }
+
   // Clear
   ctx.fillStyle = COLORS.bg;
   ctx.fillRect(0, 0, w, h);
+
+  // Resize canvas to exact multiple of grid size for crisp lines
+  const cellSize = Math.floor(w / gridSize);
+  const canvasSize = cellSize * gridSize;
+  if (canvas.width !== canvasSize || canvas.height !== canvasSize) {
+    canvas.width = canvasSize;
+    canvas.height = canvasSize;
+  }
+  const cw = canvas.width, ch = canvas.height;
+  cellW = cellSize;
+  cellH = cellSize;
+
+  // Re-clear at corrected size
+  ctx.fillStyle = COLORS.bg;
+  ctx.fillRect(0, 0, cw, ch);
 
   // Grid lines
   ctx.strokeStyle = COLORS.grid;
   ctx.lineWidth = 1;
   for (let i = 0; i <= gridSize; i++) {
     ctx.beginPath();
-    ctx.moveTo(i * cellW, 0); ctx.lineTo(i * cellW, h);
+    ctx.moveTo(i * cellSize + 0.5, 0);
+    ctx.lineTo(i * cellSize + 0.5, ch);
     ctx.stroke();
     ctx.beginPath();
-    ctx.moveTo(0, i * cellH); ctx.lineTo(w, i * cellH);
+    ctx.moveTo(0, i * cellSize + 0.5);
+    ctx.lineTo(cw, i * cellSize + 0.5);
     ctx.stroke();
   }
 
@@ -1001,22 +1050,24 @@ function drawGrid(idx) {
       }
     }
 
-    // Walls
+    // Walls — solid filled squares
     if (grid.walls) {
       for (const wl of grid.walls) {
         ctx.fillStyle = '#1a2e26';
         ctx.fillRect(wl.x * cellW, wl.y * cellH, cellW, cellH);
-        ctx.strokeStyle = '#243e34';
-        ctx.lineWidth = 1;
-        const hatchSpacing = Math.max(6, cellW * 0.15);
-        for (let d = -cellW; d < cellW * 2; d += hatchSpacing) {
-          ctx.beginPath();
-          ctx.moveTo(wl.x * cellW + d, wl.y * cellH);
-          ctx.lineTo(wl.x * cellW + d + cellH, wl.y * cellH + cellH);
-          ctx.stroke();
-        }
+        ctx.fillStyle = '#243e34';
+        ctx.fillRect(wl.x * cellW + 3, wl.y * cellH + 3, cellW - 6, cellH - 6);
       }
     }
+  }
+
+  // ── Accumulated MARK pheromones ──
+  for (const mk of accumulatedMarks) {
+    // Don't draw on current step if it's the active sense effect (will be drawn with number)
+    if (step.senseEffect && step.senseEffect.type === 'mark' && mk.x === antX && mk.y === antY) continue;
+    const pc = PHEROMONE_COLORS[mk.channel] || PHEROMONE_COLORS.CH_YELLOW;
+    ctx.fillStyle = `rgba(${pc.r},${pc.g},${pc.b},0.55)`;
+    ctx.fillRect(mk.x * cellW + 1, mk.y * cellH + 1, cellW - 2, cellH - 2);
   }
 
   // ── Sense effect overlay ──
@@ -1042,37 +1093,52 @@ function drawGrid(idx) {
       }
     }
     else if (se.type === 'smell') {
-      if (se.value > 0 && se.value <= 4) {
-        const tx = antX + DIR_DX[se.value];
-        const ty = antY + DIR_DY[se.value];
-        if (tx >= 0 && tx < gridSize && ty >= 0 && ty < gridSize) {
-          const pc = PHEROMONE_COLORS[se.channel] || PHEROMONE_COLORS.CH_YELLOW;
+      const pc = PHEROMONE_COLORS[se.channel] || PHEROMONE_COLORS.CH_YELLOW;
+      const dimColor = `rgba(${pc.r},${pc.g},${pc.b},0.15)`;
+      // Show all 4 directions being smelled
+      for (let d = 1; d <= 4; d++) {
+        const tx = antX + DIR_DX[d];
+        const ty = antY + DIR_DY[d];
+        if (tx < 0 || tx >= gridSize || ty < 0 || ty >= gridSize) continue;
+        if (d === se.value) {
+          // Strongest signal here
           ctx.strokeStyle = `rgba(${pc.r},${pc.g},${pc.b},0.8)`;
           ctx.lineWidth = 2;
           ctx.strokeRect(tx * cellW + 2, ty * cellH + 2, cellW - 4, cellH - 4);
           ctx.fillStyle = `rgb(${pc.r},${pc.g},${pc.b})`;
           ctx.font = `bold ${cellW * 0.35}px JetBrains Mono, monospace`;
-          ctx.fillText('\u2191\u2192\u2193\u2190'[se.value - 1] || '?', tx * cellW + cellW/2, ty * cellH + cellH/2);
+          ctx.fillText('\u2191\u2192\u2193\u2190'[se.value - 1], tx * cellW + cellW/2, ty * cellH + cellH/2);
+        } else {
+          // Scanned, not strongest
+          ctx.strokeStyle = dimColor;
+          ctx.lineWidth = 1;
+          ctx.strokeRect(tx * cellW + 3, ty * cellH + 3, cellW - 6, cellH - 6);
         }
       }
     }
     else if (se.type === 'sense') {
-      if (se.value > 0 && se.value <= 4) {
-        const tx = antX + DIR_DX[se.value];
-        const ty = antY + DIR_DY[se.value];
-        if (tx >= 0 && tx < gridSize && ty >= 0 && ty < gridSize) {
-          const color = se.target === 'FOOD' ? '#38d870' : se.target === 'NEST' ? '#3cd8a8' : '#58a8ff';
+      const color = se.target === 'FOOD' ? '#38d870' : se.target === 'NEST' ? '#3cd8a8' : '#58a8ff';
+      // Show all 4 adjacent cells being scanned
+      for (let d = 1; d <= 4; d++) {
+        const tx = antX + DIR_DX[d];
+        const ty = antY + DIR_DY[d];
+        if (tx < 0 || tx >= gridSize || ty < 0 || ty >= gridSize) continue;
+        if (d === se.value) {
+          // Found here — bright filled cell
           ctx.fillStyle = color;
-          ctx.globalAlpha = 0.3;
+          ctx.globalAlpha = 0.4;
           ctx.fillRect(tx * cellW + 1, ty * cellH + 1, cellW - 2, cellH - 2);
           ctx.globalAlpha = 1;
-          ctx.strokeStyle = color;
-          ctx.lineWidth = 2;
-          ctx.strokeRect(tx * cellW + 2, ty * cellH + 2, cellW - 4, cellH - 4);
-          const icon = se.target === 'FOOD' ? '\u2666' : se.target === 'NEST' ? '\u2302' : '?';
+          const icon = se.target === 'FOOD' ? '\u2666' : se.target === 'NEST' ? '\u2302' : '!';
           ctx.fillStyle = color;
-          ctx.font = `bold ${cellW * 0.35}px JetBrains Mono, monospace`;
+          ctx.font = `bold ${cellW * 0.4}px JetBrains Mono, monospace`;
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
           ctx.fillText(icon, tx * cellW + cellW/2, ty * cellH + cellH/2);
+        } else {
+          // Scanned, nothing — dim filled cell
+          ctx.fillStyle = 'rgba(60,216,168,0.06)';
+          ctx.fillRect(tx * cellW + 1, ty * cellH + 1, cellW - 2, cellH - 2);
         }
       }
     }
@@ -1091,6 +1157,19 @@ function drawGrid(idx) {
           ctx.fillText(isWall ? '\u2588' : '\u2713', tx * cellW + cellW/2, ty * cellH + cellH/2);
         }
       }
+    }
+    else if (se.type === 'mark') {
+      const pc = PHEROMONE_COLORS[se.channel] || PHEROMONE_COLORS.CH_YELLOW;
+      ctx.fillStyle = `rgba(${pc.r},${pc.g},${pc.b},0.55)`;
+      ctx.fillRect(antX * cellW + 1, antY * cellH + 1, cellW - 2, cellH - 2);
+      ctx.strokeStyle = `rgba(${pc.r},${pc.g},${pc.b},0.8)`;
+      ctx.lineWidth = 2;
+      ctx.strokeRect(antX * cellW + 2, antY * cellH + 2, cellW - 4, cellH - 4);
+      ctx.fillStyle = `rgb(${pc.r},${pc.g},${pc.b})`;
+      ctx.font = `bold ${cellW * 0.3}px JetBrains Mono, monospace`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(String(se.value), antX * cellW + cellW/2, antY * cellH + cellH * 0.3);
     }
     // carrying is handled by ant color below, not a separate overlay
   }

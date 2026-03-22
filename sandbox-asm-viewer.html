@@ -4620,24 +4620,39 @@ document.addEventListener('DOMContentLoaded', () => {
     {
       lineStart: 27, lineEnd: 43,
       scenarios: [
-        { name: 'returning to food', initRegs: { fdir: -2, steps: 0 }, envResponses: [] },
+        { name: 'returning to food', initRegs: { fdir: -2, steps: 0 }, envResponses: [], grid: {
+          food: [{x:2,y:0}],
+          yellow: [{x:2,y:1,i:140},{x:2,y:3,i:200}],
+          walls: [{x:4,y:4}],
+        }},
         { name: 'on yellow trail', initRegs: { fdir: 1, r6: 0 }, envResponses: [
           { op: 'SNIFF', returnValue: 0 },
           { op: 'SNIFF', returnValue: 180 },
-        ]},
+        ], grid: {
+          yellow: [{x:2,y:1,i:180},{x:2,y:2,i:200},{x:2,y:3,i:220}],
+          walls: [{x:0,y:0}],
+        }},
         { name: 'near yellow', initRegs: { fdir: 1, r6: 0 }, envResponses: [
           { op: 'SNIFF', returnValue: 0 },
           { op: 'SNIFF', returnValue: 0 },
           { op: 'SMELL', returnValue: 2 },
-        ]},
+        ], grid: {
+          yellow: [{x:3,y:2,i:160},{x:4,y:2,i:120}],
+          walls: [{x:0,y:0}],
+        }},
         { name: 'yellow cooldown', initRegs: { r6: -3 }, envResponses: [
           { op: 'SNIFF', returnValue: 0 },
-        ]},
+        ], grid: {
+          yellow: [{x:1,y:2,i:100}],
+          walls: [{x:4,y:0}],
+        }},
         { name: 'nothing nearby', initRegs: { r6: 0, ret: 1 }, envResponses: [
           { op: 'SNIFF', returnValue: 0 },
           { op: 'SNIFF', returnValue: 0 },
           { op: 'SMELL', returnValue: 0 },
-        ]},
+        ], grid: {
+          walls: [{x:0,y:0},{x:4,y:3}],
+        }},
       ],
     },
     // 3-6: Yellow Following (N/E/S/W)
@@ -4726,14 +4741,21 @@ document.addEventListener('DOMContentLoaded', () => {
         { name: 'yellow found', initRegs: {}, envResponses: [
           { op: 'SMELL', returnValue: 2 }, { op: 'SNIFF', returnValue: 150 },
           { op: 'PROBE', returnValue: 0 },
-        ]},
+        ], grid: {
+          yellow: [{x:3,y:2,i:150},{x:4,y:2,i:120}],
+        }},
         { name: 'yellow but walled', initRegs: {}, envResponses: [
           { op: 'SMELL', returnValue: 2 }, { op: 'SNIFF', returnValue: 150 },
           { op: 'PROBE', returnValue: 1 },
-        ]},
+        ], grid: {
+          yellow: [{x:3,y:2,i:150},{x:4,y:2,i:120}],
+          walls: [{x:3,y:2}],
+        }},
         { name: 'no yellow', initRegs: {}, envResponses: [
           { op: 'SMELL', returnValue: 0 }, { op: 'SNIFF', returnValue: 0 },
-        ]},
+        ], grid: {
+          walls: [{x:0,y:0},{x:4,y:4}],
+        }},
       ],
     },
     // 8: Frontier Levy (Blue Gradient)
@@ -4765,7 +4787,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ], grid: {
           blue: [{x:2,y:1,i:50},{x:3,y:2,i:200},{x:2,y:3,i:100},{x:1,y:2,i:150}],
           walls: [{x:2,y:1}],
-        ]},
+        }},
       ],
     },
     // 9: Levy Flight Length
@@ -4773,22 +4795,32 @@ document.addEventListener('DOMContentLoaded', () => {
       scenarios: [
         { name: 'dense terrain (short)', initRegs: { r6: 3, fdir: 1 }, envResponses: [
           { op: 'RANDOM', returnValue: 2 },
-        ]},
+        ], grid: {
+          walls: [{x:1,y:1},{x:3,y:1},{x:1,y:3},{x:3,y:3},{x:0,y:0}],
+        }},
         { name: 'normal (long roll)', initRegs: { r6: 0, fdir: 2 }, envResponses: [
           { op: 'SNIFF', returnValue: 50 },
           { op: 'RANDOM', returnValue: 60 },
           { op: 'RANDOM', returnValue: 20 },
-        ]},
+        ], grid: {
+          blue: [{x:2,y:2,i:50}],
+          walls: [{x:0,y:0}],
+        }},
         { name: 'normal (extra-long roll)', initRegs: { r6: 0, fdir: 3 }, envResponses: [
           { op: 'SNIFF', returnValue: 50 },
           { op: 'RANDOM', returnValue: 90 },
           { op: 'RANDOM', returnValue: 50 },
-        ]},
+        ], grid: {
+          blue: [{x:2,y:2,i:50}],
+          walls: [{x:4,y:4}],
+        }},
         { name: 'crowded escape', initRegs: { r6: 0, fdir: 1 }, envResponses: [
           { op: 'SNIFF', returnValue: 220 },
           { op: 'RANDOM', returnValue: 60 },
           { op: 'RANDOM', returnValue: 15 },
-        ]},
+        ], grid: {
+          blue: [{x:2,y:2,i:220},{x:1,y:2,i:180},{x:3,y:2,i:200},{x:2,y:1,i:190},{x:2,y:3,i:170}],
+        }},
       ],
     },
     // 10: Movement Kernel
@@ -4851,33 +4883,56 @@ document.addEventListener('DOMContentLoaded', () => {
     // 12: Return Leg 2
     { lineStart: 630, lineEnd: 636,
       scenarios: [
-        { name: 'unpack east+12', initRegs: { r6: 268 }, envResponses: [] },
-        { name: 'unpack south+5', initRegs: { r6: 389 }, envResponses: [] },
+        { name: 'unpack east+12', initRegs: { r6: 268 }, envResponses: [], grid: {
+          food: [{x:4,y:2}],
+          nest: {x:0,y:4},
+        }},
+        { name: 'unpack south+5', initRegs: { r6: 389 }, envResponses: [], grid: {
+          food: [{x:2,y:4}],
+          nest: {x:0,y:0},
+        }},
       ],
     },
     // 13: Grab Food
     { lineStart: 638, lineEnd: 650,
       scenarios: [
-        { name: 'food to east', initRegs: { dx: 5, dy: -3 }, envResponses: [
+        { name: 'food to east', initRegs: { dx: 0, dy: 0 }, envResponses: [
           { op: 'PROBE', returnValue: 0 },
-        ]},
-        { name: 'food to north', initRegs: { dx: -2, dy: 8 }, envResponses: [
+        ], grid: {
+          food: [{x:3,y:2}],
+        }},
+        { name: 'food to north', initRegs: { dx: 0, dy: 0 }, envResponses: [
           { op: 'PROBE', returnValue: 0 },
-        ]},
+        ], grid: {
+          food: [{x:2,y:1}],
+        }},
       ],
     },
     // 14: Go Home (Bug2 Check)
     { lineStart: 652, lineEnd: 653,
       scenarios: [
-        { name: 'mid wall-follow', initRegs: { r6: 3 }, envResponses: [] },
-        { name: 'not wall-following', initRegs: { r6: 0 }, envResponses: [] },
+        { name: 'mid wall-follow', carrying: true, initRegs: { r6: 3 }, envResponses: [], grid: {
+          walls: [{x:3,y:2},{x:3,y:1},{x:3,y:3}],
+          nest: {x:0,y:4},
+        }},
+        { name: 'not wall-following', carrying: true, initRegs: { r6: 0 }, envResponses: [], grid: {
+          nest: {x:0,y:4},
+          yellow: [{x:2,y:3,i:180}],
+        }},
       ],
     },
     // 15: Go Home (Nest Check)
     { lineStart: 655, lineEnd: 657,
       scenarios: [
-        { name: 'at nest', initRegs: {}, envResponses: [{ op: 'SENSE', returnValue: 3 }] },
-        { name: 'not at nest', initRegs: {}, envResponses: [{ op: 'SENSE', returnValue: 0 }] },
+        { name: 'at nest', carrying: true, initRegs: {}, envResponses: [{ op: 'SENSE', returnValue: 3 }], grid: {
+          nest: {x:2,y:3},
+          yellow: [{x:2,y:1,i:200},{x:2,y:2,i:230}],
+        }},
+        { name: 'not at nest', carrying: true, initRegs: {}, envResponses: [{ op: 'SENSE', returnValue: 0 }], grid: {
+          nest: {x:2,y:4},
+          yellow: [{x:2,y:3,i:180}],
+          walls: [{x:3,y:1}],
+        }},
       ],
     },
     // 16: Yellow Highway (Priority 2)
@@ -4900,7 +4955,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }},
         { name: 'no yellow', carrying: true, initRegs: { dx: 0, dy: 0 }, envResponses: [
           { op: 'SMELL', returnValue: 0 },
-        ], grid: {}},
+        ], grid: {
+          walls: [{x:0,y:0},{x:4,y:4}],
+          nest: {x:0,y:4},
+        }},
         { name: 'yellow but walled', carrying: true, initRegs: { dx: 0, dy: 0 }, envResponses: [
           { op: 'SMELL', returnValue: 1 },
           { op: 'SNIFF', returnValue: 100 },
@@ -4914,135 +4972,229 @@ document.addEventListener('DOMContentLoaded', () => {
     // 17: Green+Yellow Shortcut (Priority 3)
     { lineStart: 673, lineEnd: 698,
       scenarios: [
-        { name: 'green+yellow overlap', initRegs: { steps: 0, dx: 10, dy: 5 }, envResponses: [
+        { name: 'green+yellow overlap', carrying: true, initRegs: { steps: 0, dx: 0, dy: 0 }, envResponses: [
           { op: 'SNIFF', returnValue: 200 },
           { op: 'SNIFF', returnValue: 180 },
           { op: 'PROBE', returnValue: 0 },
-        ]},
-        { name: 'no green here', initRegs: { steps: 0, dx: 8, dy: 3 }, envResponses: [
+        ], grid: {
+          green: [{x:2,y:2,i:200}],
+          yellow: [{x:2,y:2,i:180},{x:2,y:3,i:160},{x:1,y:2,i:140}],
+          walls: [{x:3,y:1},{x:3,y:2}],
+          nest: {x:0,y:4},
+        }},
+        { name: 'no green here', carrying: true, initRegs: { steps: 0, dx: 0, dy: 0 }, envResponses: [
           { op: 'SNIFF', returnValue: 0 },
-        ]},
-        { name: 'cut blocked by wall', initRegs: { steps: 3, dx: 6, dy: 4 }, envResponses: [
+        ], grid: {
+          yellow: [{x:2,y:2,i:180},{x:2,y:3,i:160}],
+          walls: [{x:4,y:0}],
+          nest: {x:0,y:4},
+        }},
+        { name: 'cut blocked by wall', carrying: true, initRegs: { steps: 3, dx: 0, dy: 0 }, envResponses: [
           { op: 'PROBE', returnValue: 1 },
-        ]},
+        ], grid: {
+          green: [{x:2,y:2,i:200}],
+          yellow: [{x:2,y:2,i:180}],
+          walls: [{x:1,y:2},{x:1,y:3}],
+          nest: {x:0,y:4},
+        }},
       ],
     },
     // 18: Displacement Homing (Priority 5)
     { lineStart: 700, lineEnd: 724,
       scenarios: [
-        { name: 'open path home', initRegs: { dx: 10, dy: -5 }, envResponses: [
+        { name: 'open path home', carrying: true, initRegs: { dx: 0, dy: 0 }, envResponses: [
           { op: 'PROBE', returnValue: 0 },
-        ]},
-        { name: 'major axis blocked, minor open', initRegs: { dx: 10, dy: -5 }, envResponses: [
+        ], grid: {
+          nest: {x:0,y:4},
+          walls: [{x:4,y:0}],
+        }},
+        { name: 'major axis blocked, minor open', carrying: true, initRegs: { dx: 0, dy: 0 }, envResponses: [
           { op: 'PROBE', returnValue: 1 },
           { op: 'PROBE', returnValue: 0 },
-        ]},
-        { name: 'both blocked \u2192 Bug2', initRegs: { dx: 10, dy: -5 }, envResponses: [
+        ], grid: {
+          nest: {x:0,y:4},
+          walls: [{x:1,y:2}],
+        }},
+        { name: 'both blocked \u2192 Bug2', carrying: true, initRegs: { dx: 0, dy: 0 }, envResponses: [
           { op: 'PROBE', returnValue: 1 },
           { op: 'PROBE', returnValue: 1 },
-        ]},
+        ], grid: {
+          nest: {x:0,y:4},
+          walls: [{x:1,y:2},{x:2,y:3}],
+        }},
       ],
     },
     // 19: Yellow-Guided Bug2 (Priority 6)
     { lineStart: 726, lineEnd: 803,
       scenarios: [
-        { name: 'yellow guides left', initRegs: { dx: 10, dy: 0, ret: 4 }, envResponses: [
+        { name: 'yellow guides left', carrying: true, initRegs: { dx: 0, dy: 0, ret: 4 }, envResponses: [
           { op: 'SMELL', returnValue: 1 },
           { op: 'PROBE', returnValue: 0 },
-        ]},
-        { name: 'no yellow, old Bug2', initRegs: { dx: 5, dy: 5, ret: 2 }, envResponses: [
+        ], grid: {
+          yellow: [{x:2,y:1,i:140},{x:1,y:1,i:120}],
+          walls: [{x:1,y:2},{x:1,y:3}],
+          nest: {x:0,y:4},
+        }},
+        { name: 'no yellow, old Bug2', carrying: true, initRegs: { dx: 0, dy: 0, ret: 2 }, envResponses: [
           { op: 'SMELL', returnValue: 0 },
-        ]},
+        ], grid: {
+          walls: [{x:3,y:2},{x:3,y:1},{x:3,y:3}],
+          nest: {x:0,y:4},
+        }},
       ],
     },
     // 20: Start Wall-Follow (Bug2 Entry)
     { lineStart: 805, lineEnd: 831,
       scenarios: [
-        { name: 'even ant (left-hand)', initRegs: { r7: 2, dx: 8, dy: -3 }, envResponses: [
+        { name: 'even ant (left-hand)', carrying: true, initRegs: { r7: 2, dx: 0, dy: 0 }, envResponses: [
           { op: 'ID', returnValue: 42 },
-        ]},
-        { name: 'odd ant (right-hand)', initRegs: { r7: 2, dx: 8, dy: -3 }, envResponses: [
+        ], grid: {
+          walls: [{x:3,y:2},{x:3,y:1},{x:3,y:3}],
+          nest: {x:0,y:4},
+        }},
+        { name: 'odd ant (right-hand)', carrying: true, initRegs: { r7: 2, dx: 0, dy: 0 }, envResponses: [
           { op: 'ID', returnValue: 43 },
-        ]},
+        ], grid: {
+          walls: [{x:3,y:2},{x:3,y:1},{x:3,y:3}],
+          nest: {x:0,y:4},
+        }},
       ],
     },
     // 21: Homing Wall-Follow Step
     { lineStart: 833, lineEnd: 907,
       scenarios: [
-        { name: 'at nest!', initRegs: { r6: 2, dx: 0, dy: 0 }, envResponses: [
+        { name: 'at nest!', carrying: true, initRegs: { r6: 2, dx: 0, dy: 0 }, envResponses: [
           { op: 'SENSE', returnValue: 3 },
-        ]},
-        { name: 'right-hand trace', initRegs: { r6: 2, ret: 0, dx: 5, dy: -3 }, envResponses: [
+        ], grid: {
+          nest: {x:2,y:3},
+          walls: [{x:3,y:1},{x:3,y:2}],
+          yellow: [{x:2,y:2,i:220}],
+        }},
+        { name: 'right-hand trace', carrying: true, initRegs: { r6: 2, ret: 0, dx: 0, dy: 0 }, envResponses: [
           { op: 'SENSE', returnValue: 0 },
           { op: 'ID', returnValue: 43 },
           { op: 'PROBE', returnValue: 1 }, { op: 'PROBE', returnValue: 0 },
-        ]},
-        { name: 'forced left (ret=-2)', initRegs: { r6: 2, ret: -2, dx: 5, dy: -3 }, envResponses: [
+        ], grid: {
+          walls: [{x:3,y:2},{x:3,y:1},{x:3,y:3}],
+          nest: {x:0,y:4},
+          green: [{x:2,y:2,i:200}],
+        }},
+        { name: 'forced left (ret=-2)', carrying: true, initRegs: { r6: 2, ret: -2, dx: 0, dy: 0 }, envResponses: [
           { op: 'SENSE', returnValue: 0 },
           { op: 'PROBE', returnValue: 0 },
-        ]},
+        ], grid: {
+          walls: [{x:3,y:2},{x:3,y:1}],
+          yellow: [{x:1,y:2,i:160}],
+          nest: {x:0,y:4},
+        }},
       ],
     },
     // 22: Wall-Follow Exit Check
     { lineStart: 909, lineEnd: 927,
       scenarios: [
-        { name: 'closer to nest \u2192 exit', initRegs: { dx: 3, dy: 2, steps: 8, r6: 2 }, envResponses: [] },
-        { name: 'not closer \u2192 keep going', initRegs: { dx: 6, dy: 4, steps: 8, r6: 2 }, envResponses: [] },
+        { name: 'closer to nest \u2192 exit', carrying: true, initRegs: { dx: 0, dy: 0, steps: 8, r6: 2 }, envResponses: [], grid: {
+          walls: [{x:3,y:1},{x:3,y:2},{x:3,y:3}],
+          nest: {x:0,y:4},
+          green: [{x:2,y:2,i:200}],
+        }},
+        { name: 'not closer \u2192 keep going', carrying: true, initRegs: { dx: 0, dy: 0, steps: 8, r6: 2 }, envResponses: [], grid: {
+          walls: [{x:3,y:1},{x:3,y:2},{x:3,y:3},{x:1,y:1}],
+          nest: {x:0,y:4},
+          green: [{x:2,y:2,i:200}],
+        }},
       ],
     },
     // 23: Home Go (Movement)
     { lineStart: 929, lineEnd: 948,
       scenarios: [
-        { name: 'early homing (r6<0)', initRegs: { r6: -8, dx: 5, dy: -3, r0: 1 }, envResponses: [] },
-        { name: 'normal homing', initRegs: { r6: 0, dx: 5, dy: -3, r0: 4 }, envResponses: [] },
+        { name: 'early homing (r6<0)', carrying: true, initRegs: { r6: -8, dx: 0, dy: 0, r0: 1 }, envResponses: [], grid: {
+          yellow: [{x:2,y:3,i:200}],
+          nest: {x:2,y:4},
+        }},
+        { name: 'normal homing', carrying: true, initRegs: { r6: 0, dx: 0, dy: 0, r0: 4 }, envResponses: [], grid: {
+          yellow: [{x:1,y:2,i:180},{x:2,y:3,i:200}],
+          nest: {x:0,y:4},
+        }},
       ],
     },
     // 24: Deliver Food
     { lineStart: 950, lineEnd: 952,
       scenarios: [
-        { name: 'at nest with food', initRegs: { dx: 0, dy: 0 }, envResponses: [
+        { name: 'at nest with food', carrying: true, initRegs: { dx: 0, dy: 0 }, envResponses: [
           { op: 'PROBE', returnValue: 0 },
-        ]},
+        ], grid: {
+          nest: {x:2,y:2},
+          yellow: [{x:2,y:1,i:220},{x:2,y:3,i:200}],
+        }},
       ],
     },
     // 25: Unpack Food Coordinates
     { lineStart: 954, lineEnd: 973,
       scenarios: [
-        { name: 'food at (5,-3)', initRegs: { fdir: (5+128)*256+(-3+128) }, envResponses: [] },
-        { name: 'food at (-10,7)', initRegs: { fdir: (-10+128)*256+(7+128) }, envResponses: [] },
+        { name: 'food at (5,-3)', initRegs: { fdir: (5+128)*256+(-3+128) }, envResponses: [], grid: {
+          food: [{x:4,y:0}],
+          nest: {x:2,y:2},
+          yellow: [{x:3,y:1,i:180}],
+        }},
+        { name: 'food at (-10,7)', initRegs: { fdir: (-10+128)*256+(7+128) }, envResponses: [], grid: {
+          food: [{x:0,y:4}],
+          nest: {x:2,y:2},
+          yellow: [{x:1,y:3,i:180}],
+        }},
       ],
     },
     // 26: Return-to-Food Branch Tree
     { lineStart: 975, lineEnd: 1030,
       scenarios: [
-        { name: 'x dominant', initRegs: { r7: 8, r0: 3, fdir: 3 }, envResponses: [] },
-        { name: 'y dominant', initRegs: { r7: 2, r0: 9, fdir: -5 }, envResponses: [] },
-        { name: 'x only (dy=0)', initRegs: { r7: 6, r0: 0, fdir: 0 }, envResponses: [] },
+        { name: 'x dominant', initRegs: { r7: 8, r0: 3, fdir: 3 }, envResponses: [], grid: {
+          food: [{x:4,y:1}],
+          nest: {x:2,y:2},
+        }},
+        { name: 'y dominant', initRegs: { r7: 2, r0: 9, fdir: -5 }, envResponses: [], grid: {
+          food: [{x:1,y:4}],
+          nest: {x:2,y:2},
+        }},
+        { name: 'x only (dy=0)', initRegs: { r7: 6, r0: 0, fdir: 0 }, envResponses: [], grid: {
+          food: [{x:4,y:2}],
+          nest: {x:2,y:2},
+        }},
       ],
     },
     // 27: Home Direction (Helper)
     { lineStart: 1032, lineEnd: 1065,
       scenarios: [
-        { name: 'further east', initRegs: { dx: 10, dy: -3 }, envResponses: [] },
-        { name: 'further south', initRegs: { dx: 2, dy: 8 }, envResponses: [] },
-        { name: 'at nest', initRegs: { dx: 0, dy: 0 }, envResponses: [] },
+        { name: 'further east', carrying: true, initRegs: { dx: 0, dy: 0 }, envResponses: [], grid: {
+          nest: {x:0,y:3},
+        }},
+        { name: 'further south', carrying: true, initRegs: { dx: 0, dy: 0 }, envResponses: [], grid: {
+          nest: {x:1,y:4},
+        }},
+        { name: 'at nest', carrying: true, initRegs: { dx: 0, dy: 0 }, envResponses: [], grid: {
+          nest: {x:2,y:2},
+        }},
       ],
     },
     // 28: Try Move (Helper)
     { lineStart: 1067, lineEnd: 1112,
       scenarios: [
-        { name: 'open ahead', initRegs: { r0: 1, dx: 3, dy: -5 }, envResponses: [
+        { name: 'open ahead', initRegs: { r0: 1, dx: 0, dy: 0 }, envResponses: [
           { op: 'PROBE', returnValue: 0 },
-        ]},
-        { name: 'wall, rotate CW', initRegs: { r0: 1, dx: 3, dy: -5 }, envResponses: [
+        ], grid: {
+          walls: [{x:0,y:0},{x:4,y:4}],
+        }},
+        { name: 'wall, rotate CW', initRegs: { r0: 1, dx: 0, dy: 0 }, envResponses: [
           { op: 'PROBE', returnValue: 1 },
           { op: 'PROBE', returnValue: 0 },
-        ]},
-        { name: 'two walls, try CCW', initRegs: { r0: 1, dx: 3, dy: -5 }, envResponses: [
+        ], grid: {
+          walls: [{x:2,y:1}],
+        }},
+        { name: 'two walls, try CCW', initRegs: { r0: 1, dx: 0, dy: 0 }, envResponses: [
           { op: 'PROBE', returnValue: 1 },
           { op: 'PROBE', returnValue: 1 },
           { op: 'PROBE', returnValue: 0 },
-        ]},
+        ], grid: {
+          walls: [{x:2,y:1},{x:3,y:2}],
+        }},
       ],
     },
   ];
