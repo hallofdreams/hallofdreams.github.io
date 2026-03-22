@@ -4600,19 +4600,19 @@ document.addEventListener('DOMContentLoaded', () => {
           { op: 'CARRYING', returnValue: 0 },
           { op: 'SENSE', returnValue: 0 },
         ], grid: {
-          blue: [{x:2,y:3,i:100},{x:1,y:2,i:80},{x:3,y:2,i:60}],
+          walls: [{x:0,y:0},{x:1,y:0}],
         }},
         { name: 'wall following', initRegs: { steps: -4, fdir: 2 }, envResponses: [
           { op: 'CARRYING', returnValue: 0 },
           { op: 'SENSE', returnValue: 0 },
         ], grid: {
-          walls: [{x:2,y:1},{x:3,y:1},{x:4,y:1}],
+          walls: [{x:2,y:1},{x:3,y:1},{x:4,y:1},{x:0,y:3},{x:0,y:4}],
         }},
         { name: 'decision point', initRegs: { steps: 0 }, envResponses: [
           { op: 'CARRYING', returnValue: 0 },
           { op: 'SENSE', returnValue: 0 },
         ], grid: {
-          blue: [{x:1,y:2,i:120},{x:3,y:2,i:40},{x:2,y:1,i:80},{x:2,y:3,i:90}],
+          walls: [{x:4,y:0},{x:4,y:1},{x:0,y:4}],
         }},
       ],
     },
