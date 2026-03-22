@@ -550,9 +550,11 @@ const COLORS = {
 let program = null;
 let sectionData = {};
 let viewerState = {};
+let allSections = [];
 
 function initViewer(sourceText, sections) {
   program = parse(sourceText);
+  allSections = sections;
 
   // Resolve forward label references in instructions
   for (const inst of program.instructions) {
@@ -568,12 +570,10 @@ function initViewer(sourceText, sections) {
     sec.id = i;
     renderSection(sec);
 
-    // Lazily compute steps
-    sectionData[i] = null; // will be computed on demand
-    viewerState[i] = { step: 0, playing: false, timer: null, allPainted: [] };
+    sectionData[i] = null;
+    viewerState[i] = { step: 0, playing: false, timer: null, allPainted: [], activeScenario: 0 };
   });
 
-  // Bind event listeners
   bindEvents(sections);
 }
 
@@ -598,59 +598,94 @@ function renderSection(sec) {
   }
   codeLinesEl.innerHTML = html;
 
-  // Generate register boxes in detail view
+  // Generate register boxes
   const regvizEl = document.querySelector(`[data-regviz="${sec.id}"]`);
   if (regvizEl) {
     let regHtml = '';
-    // Show aliased registers first, then any remaining
     const shown = new Set();
     for (const [name, idx] of Object.entries(program.aliases)) {
       regHtml += `<div class="reg-box" data-reg="${name}"><span class="reg-name">${name}</span> <span class="reg-value" data-rv>0</span></div>`;
       shown.add(idx);
     }
-    // Add r0 if not aliased (commonly used as implicit dest)
     if (!shown.has(0)) {
       regHtml += `<div class="reg-box" data-reg="r0"><span class="reg-name">r0</span> <span class="reg-value" data-rv>0</span></div>`;
     }
     regvizEl.innerHTML = regHtml;
   }
+
+  // Generate scenario selector buttons
+  const scenarios = sec.scenarios || [];
+  if (scenarios.length > 0) {
+    const barEl = document.querySelector(`[data-scenario-bar="${sec.id}"]`);
+    if (barEl) {
+      let barHtml = '';
+      scenarios.forEach((sc, si) => {
+        const activeClass = si === 0 ? ' active' : '';
+        barHtml += `<button class="scenario-btn${activeClass}" data-section-id="${sec.id}" data-scenario-idx="${si}">${escapeHtml(sc.name)}</button>`;
+      });
+      barEl.innerHTML = barHtml;
+    }
+  }
 }
 
-function computeSteps(sectionIdx, sections) {
-  if (sectionData[sectionIdx]) return sectionData[sectionIdx];
+function computeSteps(sectionIdx, scenarioIdx) {
+  const sec = allSections[sectionIdx];
+  const scenarios = sec.scenarios || [];
+  const scenario = scenarios[scenarioIdx || 0];
 
-  const sec = sections[sectionIdx];
-  const steps = executeSection(program, sec);
-  sectionData[sectionIdx] = { steps };
+  // Build a config for the interpreter from the scenario
+  const config = {
+    lineStart: sec.lineStart,
+    lineEnd: sec.lineEnd,
+    id: sec.id,
+    initRegs: scenario ? scenario.initRegs : (sec.initRegs || {}),
+    envResponses: scenario ? scenario.envResponses : (sec.envResponses || []),
+    descOverrides: scenario ? scenario.descOverrides : (sec.descOverrides || {}),
+    maxSteps: sec.maxSteps,
+  };
+
+  const steps = executeSection(program, config);
+  sectionData[sectionIdx] = { steps, scenarioIdx: scenarioIdx || 0 };
   return sectionData[sectionIdx];
 }
 
+function switchScenario(sectionIdx, scenarioIdx) {
+  viewerState[sectionIdx].activeScenario = scenarioIdx;
+
+  // Update button states
+  const buttons = document.querySelectorAll(`[data-section-id="${sectionIdx}"].scenario-btn`);
+  buttons.forEach(btn => {
+    btn.classList.toggle('active', parseInt(btn.dataset.scenarioIdx, 10) === scenarioIdx);
+  });
+
+  // Recompute and reset
+  computeSteps(sectionIdx, scenarioIdx);
+  resetSection(sectionIdx);
+  drawGrid(sectionIdx);
+}
+
 function bindEvents(sections) {
-  const sectionEls = document.querySelectorAll('.asm-section');
-  const panelEls = document.querySelectorAll('.explanation-panel');
+  // Click section headers to toggle open/close
+  document.querySelectorAll('.section-header').forEach(header => {
+    header.addEventListener('click', () => {
+      const idx = parseInt(header.dataset.toggleSection, 10);
+      const sectionEl = document.querySelector(`[data-section="${idx}"]`);
+      const isOpen = sectionEl.classList.contains('open');
 
-  // Click section to open/close
-  sectionEls.forEach(el => {
-    el.addEventListener('click', () => {
-      const idx = parseInt(el.dataset.section, 10);
-      const panel = document.querySelector(`[data-panel="${idx}"]`);
-      const isOpen = panel.classList.contains('open');
-
-      panelEls.forEach(p => p.classList.remove('open'));
-      sectionEls.forEach(s => s.classList.remove('active'));
+      // Close all sections
+      document.querySelectorAll('.asm-section').forEach(s => s.classList.remove('open'));
       document.querySelectorAll('.view-overview').forEach(v => v.classList.remove('hidden'));
       document.querySelectorAll('.view-detail').forEach(v => v.classList.remove('active'));
       clearAllLineHighlights();
       stopAllAnimations();
 
       if (!isOpen) {
-        panel.classList.add('open');
-        el.classList.add('active');
+        sectionEl.classList.add('open');
       }
     });
   });
 
-  // Toggle overview ↔ detail
+  // Toggle overview <-> detail
   document.querySelectorAll('.mode-toggle').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -667,12 +702,22 @@ function bindEvents(sections) {
       } else {
         overview.classList.add('hidden');
         detail.classList.add('active');
-        // Compute steps on demand
-        computeSteps(idx, sections);
+        const scenarioIdx = viewerState[idx].activeScenario || 0;
+        computeSteps(idx, scenarioIdx);
         resetSection(idx);
         drawGrid(idx);
       }
     });
+  });
+
+  // Scenario selector buttons (delegated)
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('.scenario-btn');
+    if (!btn) return;
+    e.stopPropagation();
+    const sectionIdx = parseInt(btn.dataset.sectionId, 10);
+    const scenarioIdx = parseInt(btn.dataset.scenarioIdx, 10);
+    switchScenario(sectionIdx, scenarioIdx);
   });
 
   // Grid controls
@@ -738,7 +783,20 @@ function updateHighlights(idx) {
   if (step && step.highlightLines) {
     for (const lineId of step.highlightLines) {
       const el = document.querySelector(`[data-line="${lineId}"]`);
-      if (el) el.classList.add('active-line');
+      if (el) {
+        el.classList.add('active-line');
+        // Auto-scroll the code pane to keep active line visible
+        const codeLines = el.closest('.code-lines');
+        if (codeLines) {
+          const elTop = el.offsetTop - codeLines.offsetTop;
+          const elBottom = elTop + el.offsetHeight;
+          const viewTop = codeLines.scrollTop;
+          const viewBottom = viewTop + codeLines.clientHeight;
+          if (elTop < viewTop || elBottom > viewBottom) {
+            codeLines.scrollTop = elTop - codeLines.clientHeight / 3;
+          }
+        }
+      }
     }
   }
 }

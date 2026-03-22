@@ -79,7 +79,7 @@ h1 {
   text-transform: uppercase;
 }
 
-/* === Assembly Block === */
+/* === Assembly Block Container === */
 .asm-block {
   border: 1px solid var(--border);
   border-radius: 2px;
@@ -92,14 +92,27 @@ h1 {
     inset 0 0 60px rgba(0, 0, 0, 0.5);
 }
 
-/* === Clickable code section === */
+/* === Section: collapsible unit === */
 .asm-section {
+  border-bottom: 1px solid var(--border);
+}
+
+.asm-section:last-child {
+  border-bottom: none;
+}
+
+/* === Section header: always visible, clickable === */
+.section-header {
   cursor: pointer;
+  padding: 0.6rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
   transition: background 0.15s;
   position: relative;
 }
 
-.asm-section::before {
+.section-header::before {
   content: '';
   position: absolute;
   left: 0; top: 0; bottom: 0;
@@ -108,22 +121,66 @@ h1 {
   transition: background 0.2s;
 }
 
-.asm-section:hover { background: var(--surface-hover); }
-.asm-section:hover::before { background: var(--accent-dim); }
-.asm-section.active { background: var(--surface); }
-.asm-section.active::before {
+.section-header:hover {
+  background: var(--surface-hover);
+}
+
+.section-header:hover::before {
+  background: var(--accent-dim);
+}
+
+.asm-section.open .section-header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.asm-section.open .section-header::before {
   background: var(--accent);
   box-shadow: 0 0 8px var(--accent-glow-strong);
 }
 
-/* === Code lines === */
+.section-arrow {
+  color: var(--accent-dim);
+  font-size: 0.6rem;
+  transition: transform 0.25s;
+  flex-shrink: 0;
+}
+
+.asm-section.open .section-arrow {
+  transform: rotate(90deg);
+  color: var(--accent);
+}
+
+.section-title {
+  color: var(--accent);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* === Section body: collapsed by default === */
+.section-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease;
+}
+
+.asm-section.open .section-body {
+  max-height: 50000px;
+}
+
+/* === Code lines: capped height with scroll === */
 .code-lines {
   padding: 0.5rem 1rem;
   font-size: 0.85rem;
   white-space: pre;
   line-height: 1.8;
   overflow-x: auto;
+  overflow-y: auto;
+  max-height: 24em;
   counter-reset: line-num;
+  border-bottom: 1px solid var(--border);
 }
 
 .code-line {
@@ -157,52 +214,13 @@ h1 {
   border-left-color: var(--accent);
 }
 
-/* === Explanation panel === */
-.explanation-panel {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.4s ease;
-  background: var(--panel-bg);
-  border-top: 1px solid transparent;
-  border-bottom: 1px solid transparent;
-}
-
-.explanation-panel.open {
-  max-height: 1200px;
-  border-top-color: var(--border-bright);
-  border-bottom-color: var(--border-bright);
-}
-
-.explanation-inner {
-  padding: 0;
-  opacity: 0;
-  transition: opacity 0.25s ease 0.1s, padding 0.35s ease;
-}
-
-.explanation-panel.open .explanation-inner {
+/* === Section explanation === */
+.section-explanation {
   padding: 1rem 1.25rem;
-  opacity: 1;
+  background: var(--panel-bg);
 }
 
 /* === Overview view === */
-.view-overview h3 {
-  color: var(--accent);
-  font-size: 0.8rem;
-  font-weight: 600;
-  margin-bottom: 0.6rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.view-overview h3::before {
-  content: '>';
-  color: var(--accent);
-  text-shadow: 0 0 6px var(--accent-glow-strong);
-}
-
 .overview-text {
   color: var(--text-bright);
   font-size: 0.8rem;
@@ -347,6 +365,40 @@ canvas.grid-canvas {
   background: var(--accent-glow);
 }
 
+/* === Scenario selector === */
+.scenario-bar {
+  display: flex;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.75rem;
+}
+
+.scenario-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  padding: 0.25rem 0.6rem;
+  border-radius: 2px;
+  cursor: pointer;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.03em;
+  transition: all 0.15s;
+}
+
+.scenario-btn:hover {
+  border-color: var(--accent-dim);
+  color: var(--accent);
+  background: var(--accent-glow);
+}
+
+.scenario-btn.active {
+  border-color: var(--accent-dim);
+  color: var(--accent);
+  background: var(--accent-glow);
+  box-shadow: 0 0 6px rgba(60, 216, 168, 0.08);
+}
+
 /* === Toggle button === */
 .mode-toggle {
   display: inline-flex;
@@ -397,5 +449,6 @@ canvas.grid-canvas {
   .detail-right { align-items: flex-start; }
   .grid-container { width: 156px; height: 156px; }
   canvas.grid-canvas { width: 156px; height: 156px; }
-  .code-lines { font-size: 0.7rem; padding-left: 1rem !important; }
+  .code-lines { font-size: 0.7rem; padding-left: 1rem !important; max-height: 18em; }
+  .section-title { font-size: 0.65rem; }
 }
