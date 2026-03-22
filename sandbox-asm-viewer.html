@@ -3914,7 +3914,55 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 
+<button class="toc-mobile-toggle" id="toc-mobile-toggle" aria-label="Table of contents">&#9776;</button>
+<div class="toc-mobile-panel" id="toc-mobile-panel">
+  <div class="toc-mobile-header">
+    <span>contents</span>
+    <button class="toc-mobile-close" id="toc-mobile-close">&times;</button>
+  </div>
+  <ul class="toc-mobile-list">
+    <li><a href="#open">Open</a></li>
+    <li><a href="#gates">Gates</a></li>
+    <li><a href="#dense">Dense</a></li>
+    <li><a href="#nightmare">Nightmare</a></li>
+    <li class="toc-divider"></li>
+    <li><a href="#ant-brain">The ant-brain</a></li>
+    <li class="toc-divider"></li>
+    <li><a href="#dead-ants">Dead-ants</a></li>
+    <li><a href="#improving-rtf">Improving RTF</a></li>
+    <li><a href="#agentic-coding">Agentic Coding</a></li>
+    <li><a href="#conclusion">Conclusion</a></li>
+  </ul>
+</div>
+
 <script>
+// Mobile TOC toggle
+const tocToggle = document.getElementById('toc-mobile-toggle');
+const tocPanel = document.getElementById('toc-mobile-panel');
+const tocClose = document.getElementById('toc-mobile-close');
+if (tocToggle && tocPanel) {
+  tocToggle.addEventListener('click', () => {
+    tocPanel.style.display = 'block';
+    requestAnimationFrame(() => tocPanel.classList.add('open'));
+  });
+  tocClose.addEventListener('click', () => {
+    tocPanel.classList.remove('open');
+    setTimeout(() => { tocPanel.style.display = 'none'; }, 250);
+  });
+  tocPanel.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      tocPanel.classList.remove('open');
+      setTimeout(() => { tocPanel.style.display = 'none'; }, 250);
+    });
+  });
+  document.addEventListener('click', (e) => {
+    if (tocPanel.classList.contains('open') && !tocPanel.contains(e.target) && e.target !== tocToggle) {
+      tocPanel.classList.remove('open');
+      setTimeout(() => { tocPanel.style.display = 'none'; }, 250);
+    }
+  });
+}
+
 // Scroll spy for TOC
 const tocLinks = document.querySelectorAll('.toc-list a');
 const tocIds = Array.from(tocLinks).map(a => a.getAttribute('href').slice(1));
