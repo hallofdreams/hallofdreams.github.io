@@ -448,6 +448,52 @@ canvas.grid-canvas {
 .str { color: var(--accent); }
 .dir { color: var(--cyan); }
 
+/* === Blog content === */
+.blog-content {
+  color: var(--text-bright);
+  font-size: 0.85rem;
+  line-height: 1.8;
+  font-weight: 300;
+  margin-bottom: 2rem;
+}
+
+.blog-content h2, .blog-content h3 {
+  color: var(--accent);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+.blog-content h2 { font-size: 1rem; }
+.blog-content h3 { font-size: 0.9rem; }
+
+.blog-content p, .blog-content li {
+  margin-bottom: 0.75rem;
+}
+
+.blog-content a {
+  color: var(--cyan);
+  text-decoration: none;
+}
+
+.blog-content a:hover {
+  text-decoration: underline;
+}
+
+.blog-content strong {
+  color: var(--text-bright);
+  font-weight: 600;
+}
+
+.blog-content code {
+  color: var(--accent);
+  background: rgba(60, 216, 168, 0.08);
+  padding: 0.1rem 0.35rem;
+  border-radius: 2px;
+  font-size: 0.8rem;
+}
+
 /* === Responsive === */
 @media (max-width: 700px) {
   body { padding: 1rem; }
