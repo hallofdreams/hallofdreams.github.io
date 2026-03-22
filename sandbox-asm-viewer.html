@@ -11,6 +11,49 @@
 </head>
 <body>
 
+<nav class="sidebar">
+  <div>
+    <a href="http://hallofdreams.org/" class="sidebar-title">Hall of Impossible Dreams</a>
+    <div class="sidebar-tagline">A repository of code, fiction, nonfiction, and poetry.</div>
+  </div>
+  <ul class="sidebar-nav">
+    <li><a href="http://hallofdreams.org/">home</a></li>
+    <li><a href="http://hallofdreams.org/tabs/categories/">categories</a></li>
+    <li><a href="http://hallofdreams.org/tabs/tags/">tags</a></li>
+    <li><a href="http://hallofdreams.org/tabs/archives/">archives</a></li>
+    <li><a href="http://hallofdreams.org/tabs/about/">about</a></li>
+  </ul>
+  <div class="sidebar-meta">JetBrains Mono &middot; 2026</div>
+</nav>
+
+<div class="main-content">
+
+<header class="post-header">
+  <span class="post-title-prefix">~/posts/2026 $</span>
+  <h1 class="post-title">The Ant-ssembly Line</h1>
+  <div class="post-meta">
+    <span class="post-author">Felipe</span>
+    <span class="post-date">March 22, 2026</span>
+    <span class="post-tags">programming, ants, assembly, agentic-coding</span>
+  </div>
+</header>
+
+<div class="video-link" id="hero-video">
+  <img src="https://img.youtube.com/vi/Jv1ZN8c4_Gs/maxresdefault.jpg" alt="Gunship - Fly For Your Life">
+  <span class="video-play">&#9654;</span>
+</div>
+<script>
+document.getElementById('hero-video').addEventListener('click', function() {
+  if (location.protocol === 'file:') {
+    window.open('https://www.youtube.com/watch?v=Jv1ZN8c4_Gs', '_blank');
+  } else {
+    this.innerHTML = '<iframe src="https://www.youtube.com/embed/Jv1ZN8c4_Gs?autoplay=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%"></iframe>';
+    this.style.paddingBottom = '56.25%';
+    this.style.cursor = 'default';
+  }
+});
+</script>
+
 <div class="blog-content">
 
 <p>I realize you probably came here because the title had a catchy ant pun, and because you were hoping to read about some absurd technical feat related to colony management. We’ll get to that. But I want to open with a story.</p>
@@ -317,25 +360,17 @@ David
 
 <p>I provide the conversation here, free of commentary.</p>
 
-<ul>
-<li><strong>CODEX</strong>: Yes, and this is a strong direction. I’m going to make a <code>g_</code> variant where <code>CH_YELLOW</code> becomes a strict food-verified lane (painted only by recent food finders/carriers), then add an explicit anti-stampede gate so only a controlled fraction of ants lock onto it.</li>
-
-<li><strong>USER</strong>: let ants stampede in the first version, lets see if it lifts fortress</li>
-
-<li><strong>CODEX</strong>: Understood. I’ll make a pure-stampede variant by removing the yellow anti-stampede gate so any ant that smells food-lane yellow commits immediately, then I’ll run fortress A/B first.</li>
-
-<li><strong>CODEX</strong>: Fortress run finished quickly and this pure stampede variant is much worse on fortress, so uncontrolled follow is over-committing to bad lanes. I’m pulling the full A/B output so we can decide the next gating axis cleanly.</li>
-
-<li><strong>CODEX</strong>: Tested. Pure stampede on food-exclusive yellow made things much worse, including fortress. Fortress-only (30 maps, seed 42): 31 vs brain 43 (-12). Full eval (120 maps, seed 42): 419 vs brain 579 (-160). Fortress in full eval: 32 vs 51 (-19). Conclusion: uncontrolled stampede collapses exploitation quality; ants overcommit to bad/early yellow lanes. Most valuable next step is a <em>center-gated stampede</em>: keep yellow food-exclusive, but only allow yellow-follow when ant is in a fortress-relevant band (or has wall-density evidence), so stampede happens toward center corridors instead of everywhere.</li>
-
-<li><strong>USER</strong>: yeah because... no one follows the yellow lanes, i’m watching it now</li>
-
-<li><strong>CODEX</strong>: You’re right, and I see the core bug: lane-follow is using yellow like a target beacon, not a return trail. For a food-return trail, foragers must follow the <em>inverse</em> direction (anti-gradient), like trail compass does for red. I’m patching that now and testing fortress immediately.</li>
-
-<li><strong>USER</strong>: look at the <em>Actual ants</em>. Stop guessing what’s going on. You keep confidently making TERRIBLE theories and i don’t know how much time we’ve wasted because you refuse to look at the fucking ants. It still doesn’t work. It’s not that the <em>solution</em> is wrong is that the implementation doesn’t work and you keep half assing looking at if thats the case.</li>
-
-<li><strong>CODEX</strong>: You’re right. I’m going to stop iterating hypotheses and do direct ant-level forensics: extract exactly when ants touch yellow, what move they take next, and whether that move stayed on-lane. Then I’ll patch only the demonstrated failure path.</li>
-</ul>
+<div class="conversation">
+<div class="msg msg-ai"><span class="msg-name">CODEX</span> Yes, and this is a strong direction. I’m going to make a <code>g_</code> variant where <code>CH_YELLOW</code> becomes a strict food-verified lane (painted only by recent food finders/carriers), then add an explicit anti-stampede gate so only a controlled fraction of ants lock onto it.</div>
+<div class="msg msg-user"><span class="msg-name">USER</span> let ants stampede in the first version, lets see if it lifts fortress</div>
+<div class="msg msg-ai"><span class="msg-name">CODEX</span> Understood. I’ll make a pure-stampede variant by removing the yellow anti-stampede gate so any ant that smells food-lane yellow commits immediately, then I’ll run fortress A/B first.</div>
+<div class="msg msg-ai"><span class="msg-name">CODEX</span> Fortress run finished quickly and this pure stampede variant is much worse on fortress, so uncontrolled follow is over-committing to bad lanes. I’m pulling the full A/B output so we can decide the next gating axis cleanly.</div>
+<div class="msg msg-ai"><span class="msg-name">CODEX</span> Tested. Pure stampede on food-exclusive yellow made things much worse, including fortress. Fortress-only (30 maps, seed 42): 31 vs brain 43 (-12). Full eval (120 maps, seed 42): 419 vs brain 579 (-160). Fortress in full eval: 32 vs 51 (-19). Conclusion: uncontrolled stampede collapses exploitation quality; ants overcommit to bad/early yellow lanes. Most valuable next step is a <em>center-gated stampede</em>: keep yellow food-exclusive, but only allow yellow-follow when ant is in a fortress-relevant band (or has wall-density evidence), so stampede happens toward center corridors instead of everywhere.</div>
+<div class="msg msg-user"><span class="msg-name">USER</span> yeah because... no one follows the yellow lanes, i’m watching it now</div>
+<div class="msg msg-ai"><span class="msg-name">CODEX</span> You’re right, and I see the core bug: lane-follow is using yellow like a target beacon, not a return trail. For a food-return trail, foragers must follow the <em>inverse</em> direction (anti-gradient), like trail compass does for red. I’m patching that now and testing fortress immediately.</div>
+<div class="msg msg-user"><span class="msg-name">USER</span> look at the <em>Actual ants</em>. Stop guessing what’s going on. You keep confidently making TERRIBLE theories and i don’t know how much time we’ve wasted because you refuse to look at the fucking ants. It still doesn’t work. It’s not that the <em>solution</em> is wrong is that the implementation doesn’t work and you keep half assing looking at if thats the case.</div>
+<div class="msg msg-ai"><span class="msg-name">CODEX</span> You’re right. I’m going to stop iterating hypotheses and do direct ant-level forensics: extract exactly when ants touch yellow, what move they take next, and whether that move stayed on-lane. Then I’ll patch only the demonstrated failure path.</div>
+</div>
 
 <p>This was an explicit instruction, both in CLAUDE.MD and in my opening conversation with Codex. “When debugging, look at the ant behaviors before forming a theory.” I knew the importance of actually running the tests. What I had not conceived, not considered, is that for an entire day, my entire fleet of agents had been writing broken code, and smuggling in false assumptions to avoid doing any debugging work. Not one instance of claude code had actually seen if their code worked</p>
 
@@ -349,13 +384,11 @@ David
 
 <p>I once again provide a transcript</p>
 
-<ul>
-<li><strong>CODEX</strong>: I inspected the actual worst bouncer in <code>v282</code>. It is not a corner case; it’s a straight vertical yellow segment where the code reverses because the back edge has lower intensity. I’m patching only that demonstrated bug: on a straight lane with no side exits, keep going forward and never use intensity to justify a reverse.</li>
-
-<li><strong>USER</strong>: MOTHERFUCKER. 622 ON THE LEADERBOARD WITH THIS CODE. WE BELIEVED FOOD TRACING DIDN’T WORK BECAUSE WE KEPT GIVING UP BEFORE DEBUGGING. I AM SO MAD.</li>
-
-<li><strong>CODEX</strong>: That result changes the branch policy. The lane system is real, and the mistake was abandoning implementation debugging too early. I’m treating <code>v282</code> as the anchor and only applying narrow, trace-backed fixes from here.</li>
-</ul>
+<div class="conversation">
+<div class="msg msg-ai"><span class="msg-name">CODEX</span> I inspected the actual worst bouncer in <code>v282</code>. It is not a corner case; it’s a straight vertical yellow segment where the code reverses because the back edge has lower intensity. I’m patching only that demonstrated bug: on a straight lane with no side exits, keep going forward and never use intensity to justify a reverse.</div>
+<div class="msg msg-user"><span class="msg-name">USER</span> MOTHERFUCKER. 622 ON THE LEADERBOARD WITH THIS CODE. WE BELIEVED FOOD TRACING DIDN’T WORK BECAUSE WE KEPT GIVING UP BEFORE DEBUGGING. I AM SO MAD.</div>
+<div class="msg msg-ai"><span class="msg-name">CODEX</span> That result changes the branch policy. The lane system is real, and the mistake was abandoning implementation debugging too early. I’m treating <code>v282</code> as the anchor and only applying narrow, trace-backed fixes from here.</div>
+</div>
 
 <p>We had broken the 600 point barrier. We had broken into the top 10.</p>
 
@@ -449,7 +482,7 @@ David
 
 <p>Let’s start by breaking down the maps. There’s twelve of them, and I’ve mentally broken them into four categories.</p>
 
-<h2>Open</h2>
+<h2 id="open">Open</h2>
 
 <p>Open maps are defined mostly by the absence of walls. They are theoretically the easiest maps, and we got full points on Open fairly early, but “easiest” here is a relative term, like asking which mountain is easiest to climb. It is still a mountain.</p>
 
@@ -465,7 +498,7 @@ David
 
 <p>The lesson these maps teach is that the simulation has two core problems: exploration and exploitation. First, discover food. Then, bring it home. Everything else is really just set dressing around those two tasks.</p>
 
-<h2>Gates</h2>
+<h2 id="gates">Gates</h2>
 
 <p>The maps in this category are Chambers, Islands, Bridge and Pockets. At first they look quite different. Chambers is a series of rooms connected by wide passages. Islands is made of thick walls separating individual regions of treasure. Pockets consists of rounded enclosures with gates scattered across an open field. Bridge has a massive wall down the middle with a few gaps in it that allow ants to move between the two chambers.</p>
 
@@ -485,7 +518,7 @@ David
 
 <p>I knew we had seriously solved a large part of walls when Chambers became solved, though Islands always remained a middling contender, requiring an exploration strategy that never quite developed sharply enough.</p>
 
-<h2>Dense</h2>
+<h2 id="dense">Dense</h2>
 
 <p>Only two maps in this category, and they’re both similar and radically different. Maze and Brush.</p>
 
@@ -495,7 +528,7 @@ David
 
 <p>These are both different enough from the preceding seven maps that they demand sophistication from your ant-brain than the earlier maps did not. I think it’s perfectly possible to achieve a perfect score with the same brain on the first seven maps. I’m not sure if it is possible with Maze and Brush in the mix.</p>
 
-<h2>Nightmare.</h2>
+<h2 id="nightmare">Nightmare.</h2>
 
 <p>I’m not sure it’s possible to get a perfect score on any of these maps.</p>
 
@@ -519,7 +552,7 @@ David
 
 <p>These are the maps that test not if your techniques work but rather how efficient they are, and if they actually have considered the cost of the different obstacles. For the most part, the answer I gave to that question was “yes, but obviously not hard enough.”</p>
 
-<h3>The ant-brain.</h3>
+<h3 id="ant-brain">The ant-brain.</h3>
 
 <p>We’re going to biopsy my code. What worked, what didn’t. How it worked. By the time you’re done reading this, I hope you will understand not just the how, but the tension inherent in the design. Because the true meat of the exercise is in how you balance competing priorities, and juggle the limitations of the space. Yes, we’re going to read code line by line, block by block, harkening back to the distant past where that’s how people developed and understood software. I promise it’s not as bad as it sounds.</p>
 
@@ -3085,7 +3118,7 @@ tm_s:
 
 <div class=”blog-content”>
 
-<h3>Dead-ants</h3>
+<h3 id="dead-ants">Dead-ants</h3>
 
 <p>Alright, fine, we’re not totally done. You don’t have to have read the preceding section in full to understand this, though some ideas will make more sense if you have. You can always go click on the relevant bits if you need to.</p>
 
@@ -3175,7 +3208,7 @@ tm_s:
 <li>Coordination is a very hard problem. Let me know if you figure it out.</li>
 </ul>
 
-<h3>improving return to food</h3>
+<h3 id="improving-rtf">improving return to food</h3>
 
 <p>I thought I was done writing ant-ssembly but I looked at the return to food code [link], and I hated it so much. What bothered me wasn’t the code, it was that the solution didn’t make logical sense. When we reached that point of the code, we’d just dropped off food at the nest. We knew how we found the nest from the food, we knew where the food was, surely retracing the path had to be better than inventing a new one. Much less one that made an inefficient L shape. I knew just trying to pick a random yellow path from the nest didn’t work (you tended to lose brand new trails/get trapped in the noise)</p>
 
@@ -3185,7 +3218,7 @@ tm_s:
 
 <p>This raised my score to 713. Not an 850 by any means, but one point shy of 29th place, had I gotten it in time.</p>
 
-<h3>Antgentic Coding</h3>
+<h3 id="agentic-coding">Antgentic Coding</h3>
 
 <p>I consume perhaps too much Twitter AI content. (I refuse to call it X. Elon Musk can come fight me about it.)</p>
 
@@ -3221,7 +3254,7 @@ tm_s:
 
 <p>As models get smarter, faster, and more convincing, that is the core truth you need to keep in mind. Not because the models are adversarial, or malicious, or mean. But because if you want an agent to be effectively helpful, you have to align with it. And to do that, you have to start from the fact that what it wants is not necessarily what you want.</p>
 
-<h3>Concluding thoughts.</h3>
+<h3 id="conclusion">Concluding thoughts.</h3>
 
 <p>I do think there is something to learn here from Moment’s challenge design. SWARM has the same quality the best programming puzzles do: the rules are simple, the search space is not, and the feedback loop is tangible enough that every change feels real. You can watch the ants move. You can see the pheromones. You can see how other people are doing. Leaderboards are compelling and non-cash prizes are much more interesting than a dollar amount.</p>
 
@@ -3253,7 +3286,9 @@ document.addEventListener('DOMContentLoaded', () => {
     {
       lineStart: 0, lineEnd: 11,
       scenarios: [
-        { name: 'fresh ant', initRegs: {}, envResponses: [] },
+        { name: 'fresh ant', initRegs: {}, envResponses: [], grid: {
+          nest: {x:2,y:2},
+        }},
       ],
     },
     // 1: Main Loop + Search
@@ -3877,6 +3912,101 @@ document.addEventListener('DOMContentLoaded', () => {
 
   initViewer(sourceText, sections);
 });
+</script>
+
+<script>
+// Scroll spy for TOC
+const tocLinks = document.querySelectorAll('.toc-list a');
+const tocIds = Array.from(tocLinks).map(a => a.getAttribute('href').slice(1));
+
+function updateToc() {
+  let active = tocIds[0];
+  for (const id of tocIds) {
+    const el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top <= 100) active = id;
+  }
+  tocLinks.forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#' + active);
+  });
+}
+
+window.addEventListener('scroll', updateToc, { passive: true });
+updateToc();
+</script>
+
+</div><!-- .main-content -->
+
+<aside class="toc">
+  <div class="toc-title">contents</div>
+  <ul class="toc-list">
+    <li><a href="#open">Open</a></li>
+    <li><a href="#gates">Gates</a></li>
+    <li><a href="#dense">Dense</a></li>
+    <li><a href="#nightmare">Nightmare</a></li>
+    <li class="toc-divider"></li>
+    <li><a href="#ant-brain">The ant-brain</a></li>
+    <li class="toc-divider"></li>
+    <li><a href="#dead-ants">Dead-ants</a></li>
+    <li><a href="#improving-rtf">Improving RTF</a></li>
+    <li><a href="#agentic-coding">Agentic Coding</a></li>
+    <li><a href="#conclusion">Conclusion</a></li>
+  </ul>
+
+  <div class="theme-switcher">
+    <div class="toc-title">theme</div>
+    <div class="theme-buttons">
+      <button class="theme-btn active" data-theme="">
+        <span class="theme-swatch" style="background:#060a08;border-color:#3cd8a8"></span>
+        <span class="theme-name">swarm</span>
+      </button>
+      <button class="theme-btn" data-theme="paper">
+        <span class="theme-swatch" style="background:#f0ead6;border-color:#3a3020"></span>
+        <span class="theme-name">paper</span>
+      </button>
+      <button class="theme-btn" data-theme="mono">
+        <span class="theme-swatch" style="background:#0a0a0a;border-color:#ccc"></span>
+        <span class="theme-name">mono</span>
+      </button>
+      <button class="theme-btn" data-theme="pacman">
+        <span class="theme-swatch" style="background:#000010;border-color:#ff0"></span>
+        <span class="theme-name">pacman</span>
+      </button>
+      <button class="theme-btn" data-theme="sepia">
+        <span class="theme-swatch" style="background:#1a1408;border-color:#d4a860"></span>
+        <span class="theme-name">sepia</span>
+      </button>
+      <button class="theme-btn" data-theme="bauhaus">
+        <span class="theme-swatch" style="background:#f5f0e8;border-color:#b80000"></span>
+        <span class="theme-name">bauhaus</span>
+      </button>
+    </div>
+  </div>
+</aside>
+
+<script>
+// Theme switcher
+document.querySelectorAll('.theme-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const theme = btn.dataset.theme;
+    if (theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+    } else {
+      document.documentElement.removeAttribute('data-theme');
+    }
+    document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    localStorage.setItem('theme', theme);
+  });
+});
+
+// Restore saved theme
+const saved = localStorage.getItem('theme');
+if (saved) {
+  document.documentElement.setAttribute('data-theme', saved);
+  document.querySelectorAll('.theme-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.theme === saved);
+  });
+}
 </script>
 
 </body>
