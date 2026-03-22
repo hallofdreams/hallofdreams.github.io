@@ -4646,15 +4646,24 @@ document.addEventListener('DOMContentLoaded', () => {
         { name: 'yellow ahead', initRegs: { fdir: 1, steps: 5, r7: 100 }, envResponses: [
           { op: 'SNIFF', returnValue: 80 }, { op: 'SNIFF', returnValue: 80 },
           { op: 'SNIFF', returnValue: 60 }, { op: 'PROBE', returnValue: 0 },
-        ]},
+        ], grid: {
+          yellow: [{x:2,y:1,i:60},{x:2,y:2,i:100},{x:2,y:3,i:140}],
+          walls: [{x:0,y:0},{x:4,y:4}],
+        }},
         { name: 'junction (yellow ended)', initRegs: { fdir: 1, steps: 5, r7: 100 }, envResponses: [
           { op: 'SNIFF', returnValue: 0 }, { op: 'SNIFF', returnValue: 0 },
           { op: 'SNIFF', returnValue: 40 },
-        ]},
+        ], grid: {
+          yellow: [{x:2,y:2,i:100},{x:2,y:3,i:140},{x:3,y:2,i:40}],
+          walls: [{x:0,y:0}],
+        }},
         { name: 'give up (no yellow)', initRegs: { fdir: 1, steps: 5, r7: 100 }, envResponses: [
           { op: 'SNIFF', returnValue: 0 }, { op: 'SNIFF', returnValue: 0 },
           { op: 'SNIFF', returnValue: 0 }, { op: 'SNIFF', returnValue: 0 },
-        ]},
+        ], grid: {
+          yellow: [{x:2,y:3,i:80}],
+          walls: [{x:0,y:1},{x:4,y:3}],
+        }},
       ],
     },
     { lineStart: 129, lineEnd: 211,
@@ -4662,11 +4671,17 @@ document.addEventListener('DOMContentLoaded', () => {
         { name: 'yellow ahead', initRegs: { fdir: 2, steps: 5, r7: 100 }, envResponses: [
           { op: 'SNIFF', returnValue: 80 }, { op: 'SNIFF', returnValue: 80 },
           { op: 'SNIFF', returnValue: 60 }, { op: 'PROBE', returnValue: 0 },
-        ]},
+        ], grid: {
+          yellow: [{x:3,y:2,i:60},{x:2,y:2,i:100},{x:1,y:2,i:140}],
+          walls: [{x:4,y:0}],
+        }},
         { name: 'give up', initRegs: { fdir: 2, steps: 5, r7: 100 }, envResponses: [
           { op: 'SNIFF', returnValue: 0 }, { op: 'SNIFF', returnValue: 0 },
           { op: 'SNIFF', returnValue: 0 }, { op: 'SNIFF', returnValue: 0 },
-        ]},
+        ], grid: {
+          yellow: [{x:1,y:2,i:80}],
+          walls: [{x:0,y:0},{x:4,y:4}],
+        }},
       ],
     },
     { lineStart: 213, lineEnd: 295,
@@ -4674,11 +4689,17 @@ document.addEventListener('DOMContentLoaded', () => {
         { name: 'yellow ahead', initRegs: { fdir: 3, steps: 5, r7: 100 }, envResponses: [
           { op: 'SNIFF', returnValue: 80 }, { op: 'SNIFF', returnValue: 80 },
           { op: 'SNIFF', returnValue: 60 }, { op: 'PROBE', returnValue: 0 },
-        ]},
+        ], grid: {
+          yellow: [{x:2,y:3,i:60},{x:2,y:2,i:100},{x:2,y:1,i:140}],
+          walls: [{x:0,y:4}],
+        }},
         { name: 'give up', initRegs: { fdir: 3, steps: 5, r7: 100 }, envResponses: [
           { op: 'SNIFF', returnValue: 0 }, { op: 'SNIFF', returnValue: 0 },
           { op: 'SNIFF', returnValue: 0 }, { op: 'SNIFF', returnValue: 0 },
-        ]},
+        ], grid: {
+          yellow: [{x:2,y:1,i:80}],
+          walls: [{x:4,y:0},{x:0,y:4}],
+        }},
       ],
     },
     { lineStart: 297, lineEnd: 379,
@@ -4686,11 +4707,17 @@ document.addEventListener('DOMContentLoaded', () => {
         { name: 'yellow ahead', initRegs: { fdir: 4, steps: 5, r7: 100 }, envResponses: [
           { op: 'SNIFF', returnValue: 80 }, { op: 'SNIFF', returnValue: 80 },
           { op: 'SNIFF', returnValue: 60 }, { op: 'PROBE', returnValue: 0 },
-        ]},
+        ], grid: {
+          yellow: [{x:1,y:2,i:60},{x:2,y:2,i:100},{x:3,y:2,i:140}],
+          walls: [{x:0,y:4}],
+        }},
         { name: 'give up', initRegs: { fdir: 4, steps: 5, r7: 100 }, envResponses: [
           { op: 'SNIFF', returnValue: 0 }, { op: 'SNIFF', returnValue: 0 },
           { op: 'SNIFF', returnValue: 0 }, { op: 'SNIFF', returnValue: 0 },
-        ]},
+        ], grid: {
+          yellow: [{x:3,y:2,i:80}],
+          walls: [{x:0,y:0},{x:4,y:4}],
+        }},
       ],
     },
     // 7: Follow Food Lane
