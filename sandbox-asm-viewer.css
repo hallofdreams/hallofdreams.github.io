@@ -268,7 +268,7 @@ h1 {
   color: var(--text);
   line-height: 1.7;
   font-weight: 300;
-  min-height: 1.4em;
+  min-height: 2.6em;
 }
 
 .detail-desc code {
@@ -371,6 +371,7 @@ canvas.grid-canvas {
   gap: 0.35rem;
   flex-wrap: wrap;
   margin-bottom: 0.75rem;
+  min-height: 1.8em;
 }
 
 .scenario-btn {
