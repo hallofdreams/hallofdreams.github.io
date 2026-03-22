@@ -210,6 +210,7 @@ function executeSection(program, sectionConfig) {
     const prevRegs = new Int32Array(state.regs);
     let jumped = false;
     let desc = null;
+    let senseEffect = null;
 
     // Check for description override
     if (descOverrides && descOverrides[inst.sourceLine] !== undefined) {
@@ -315,10 +316,11 @@ function executeSection(program, sectionConfig) {
         const resp = envResponses && envResponses[envIdx];
         envIdx++;
         const val = resp ? resp.returnValue : 0;
-        // Determine destination register
         const destReg = getSensingDest(inst);
         state.regs[destReg] = val;
         if (resp && resp.desc) desc = resp.desc;
+        // Record sense effect for grid visualization
+        senseEffect = buildSenseEffect(inst, val);
         break;
       }
 
@@ -340,9 +342,8 @@ function executeSection(program, sectionConfig) {
 
     // Capture step after execution
     const step = captureStep(program, state, sectionConfig, regNames, inst, desc);
-
-    // Mark which registers changed
     step._prevRegs = prevRegs;
+    if (senseEffect) step.senseEffect = senseEffect;
 
     steps.push(step);
 
@@ -375,6 +376,39 @@ function getSensingDest(inst) {
       return inst.args.length > 1 && inst.args[1].type === 'reg' ? inst.args[1].index : 0;
     default:
       return 0;
+  }
+}
+
+function buildSenseEffect(inst, val) {
+  const op = inst.op;
+  switch (op) {
+    case 'SNIFF': {
+      // SNIFF <ch> <dir> [reg] — intensity at a specific direction
+      const ch = inst.rawArgs[0] || '';
+      const dirArg = inst.rawArgs[1] || 'HERE';
+      return { type: 'sniff', channel: ch, dir: dirArg, value: val };
+    }
+    case 'SMELL': {
+      // SMELL <ch> [reg] — strongest direction
+      const ch = inst.rawArgs[0] || '';
+      return { type: 'smell', channel: ch, value: val };
+    }
+    case 'SENSE': {
+      // SENSE <target> [reg] — scan 4 adjacent, returns direction
+      const target = inst.rawArgs[0] || '';
+      return { type: 'sense', target: target, value: val };
+    }
+    case 'PROBE': {
+      // PROBE <dir> [reg] — cell type at direction
+      const dirArg = inst.rawArgs[0] || '0';
+      return { type: 'probe', dir: dirArg, value: val };
+    }
+    case 'CARRYING':
+      return { type: 'carrying', value: val };
+    case 'ID':
+      return { type: 'id', value: val };
+    default:
+      return null;
   }
 }
 
@@ -645,7 +679,8 @@ function computeSteps(sectionIdx, scenarioIdx) {
   };
 
   const steps = executeSection(program, config);
-  sectionData[sectionIdx] = { steps, scenarioIdx: scenarioIdx || 0 };
+  const grid = scenario ? scenario.grid : (sec.grid || null);
+  sectionData[sectionIdx] = { steps, scenarioIdx: scenarioIdx || 0, grid };
   return sectionData[sectionIdx];
 }
 
@@ -838,6 +873,25 @@ function updateStatus(idx) {
   el.textContent = `step ${s.step} / ${data.steps.length - 1}` + (step && step.label ? ` \u2014 ${step.label}` : '');
 }
 
+// Direction constants for grid offset: N=1 E=2 S=3 W=4
+const DIR_DX = { 0:0, 1:0, 2:1, 3:0, 4:-1 };
+const DIR_DY = { 0:0, 1:-1, 2:0, 3:1, 4:0 };
+const DIR_NAMES = { 'N':1,'E':2,'S':3,'W':4,'HERE':0,'1':1,'2':2,'3':3,'4':4,'0':0 };
+
+function resolveSenseDir(dirStr, state) {
+  if (DIR_NAMES[dirStr] !== undefined) return DIR_NAMES[dirStr];
+  // Could be a register name — try to resolve
+  const num = parseInt(dirStr, 10);
+  return isNaN(num) ? 0 : num;
+}
+
+const PHEROMONE_COLORS = {
+  CH_YELLOW: { r:220, g:200, b:50 },
+  CH_BLUE:   { r:88, g:168, b:255 },
+  CH_GREEN:  { r:56, g:216, b:112 },
+  CH_RED:    { r:232, g:76, b:76 },
+};
+
 function drawGrid(idx) {
   const canvas = document.querySelector(`[data-grid="${idx}"]`);
   if (!canvas) return;
@@ -850,9 +904,15 @@ function drawGrid(idx) {
   const step = data.steps[s.step];
   if (!step) return;
 
+  const grid = data.grid || null;
+  const antX = step.ant ? step.ant.x : 4;
+  const antY = step.ant ? step.ant.y : 4;
+
+  // Clear
   ctx.fillStyle = COLORS.bg;
   ctx.fillRect(0, 0, w, h);
 
+  // Grid lines
   ctx.strokeStyle = COLORS.grid;
   ctx.lineWidth = 1;
   for (let i = 0; i <= GRID; i++) {
@@ -864,25 +924,144 @@ function drawGrid(idx) {
     ctx.stroke();
   }
 
-  // Trail
-  for (const p of s.allPainted) {
-    ctx.fillStyle = COLORS[p.c] || COLORS.trail;
-    ctx.globalAlpha = 0.3;
-    ctx.fillRect(p.x * cellW + 1, p.y * cellH + 1, cellW - 2, cellH - 2);
-    ctx.globalAlpha = 1;
-  }
+  // ── Draw scenario environment ──
+  if (grid) {
+    // Pheromones (draw first, underneath everything)
+    const pheroKeys = ['yellow','blue','green','red'];
+    const pheroChannels = { yellow: PHEROMONE_COLORS.CH_YELLOW, blue: PHEROMONE_COLORS.CH_BLUE,
+                           green: PHEROMONE_COLORS.CH_GREEN, red: PHEROMONE_COLORS.CH_RED };
+    for (const key of pheroKeys) {
+      if (!grid[key]) continue;
+      const pc = pheroChannels[key];
+      for (const p of grid[key]) {
+        const intensity = (p.intensity || p.i || 100) / 255;
+        ctx.fillStyle = `rgba(${pc.r},${pc.g},${pc.b},${intensity * 0.4})`;
+        ctx.fillRect(p.x * cellW + 1, p.y * cellH + 1, cellW - 2, cellH - 2);
+      }
+    }
 
-  // Current step cells
-  if (step.painted) {
-    for (const p of step.painted) {
-      ctx.fillStyle = COLORS[p.c] || COLORS.cell;
-      ctx.globalAlpha = 0.7;
-      ctx.fillRect(p.x * cellW + 1, p.y * cellH + 1, cellW - 2, cellH - 2);
-      ctx.globalAlpha = 1;
+    // Nest
+    if (grid.nest) {
+      const nx = grid.nest.x, ny = grid.nest.y;
+      ctx.fillStyle = 'rgba(60, 216, 168, 0.25)';
+      ctx.fillRect(nx * cellW + 1, ny * cellH + 1, cellW - 2, cellH - 2);
+      ctx.fillStyle = '#3cd8a8';
+      ctx.font = `${cellW * 0.45}px JetBrains Mono, monospace`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('\u2302', nx * cellW + cellW/2, ny * cellH + cellH/2);
+    }
+
+    // Food
+    if (grid.food) {
+      for (const f of grid.food) {
+        ctx.fillStyle = 'rgba(56, 216, 112, 0.35)';
+        ctx.fillRect(f.x * cellW + 2, f.y * cellH + 2, cellW - 4, cellH - 4);
+        ctx.fillStyle = '#38d870';
+        ctx.font = `bold ${cellW * 0.4}px JetBrains Mono, monospace`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('\u2666', f.x * cellW + cellW/2, f.y * cellH + cellH/2);
+      }
+    }
+
+    // Walls
+    if (grid.walls) {
+      for (const wl of grid.walls) {
+        ctx.fillStyle = '#1a2e26';
+        ctx.fillRect(wl.x * cellW, wl.y * cellH, cellW, cellH);
+        // Cross-hatch pattern
+        ctx.strokeStyle = '#243e34';
+        ctx.lineWidth = 1;
+        for (let d = -cellW; d < cellW * 2; d += 6) {
+          ctx.beginPath();
+          ctx.moveTo(wl.x * cellW + d, wl.y * cellH);
+          ctx.lineTo(wl.x * cellW + d + cellH, wl.y * cellH + cellH);
+          ctx.stroke();
+        }
+      }
     }
   }
 
-  // Ant
+  // ── Sense effect overlay ──
+  if (step.senseEffect) {
+    const se = step.senseEffect;
+    ctx.font = `bold ${cellW * 0.35}px JetBrains Mono, monospace`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+
+    if (se.type === 'sniff') {
+      const dir = resolveSenseDir(se.dir);
+      const tx = antX + (DIR_DX[dir] || 0);
+      const ty = antY + (DIR_DY[dir] || 0);
+      if (tx >= 0 && tx < GRID && ty >= 0 && ty < GRID) {
+        const pc = PHEROMONE_COLORS[se.channel] || PHEROMONE_COLORS.CH_YELLOW;
+        const alpha = se.value > 0 ? 0.4 : 0.15;
+        ctx.fillStyle = `rgba(${pc.r},${pc.g},${pc.b},${alpha})`;
+        ctx.fillRect(tx * cellW + 1, ty * cellH + 1, cellW - 2, cellH - 2);
+        ctx.strokeStyle = `rgba(${pc.r},${pc.g},${pc.b},0.8)`;
+        ctx.lineWidth = 2;
+        ctx.strokeRect(tx * cellW + 2, ty * cellH + 2, cellW - 4, cellH - 4);
+        // Draw the number
+        ctx.fillStyle = se.value > 0 ? `rgb(${pc.r},${pc.g},${pc.b})` : '#338f70';
+        ctx.fillText(String(se.value), tx * cellW + cellW/2, ty * cellH + cellH/2);
+      }
+    }
+    else if (se.type === 'smell') {
+      // Highlight the returned direction
+      if (se.value > 0 && se.value <= 4) {
+        const tx = antX + DIR_DX[se.value];
+        const ty = antY + DIR_DY[se.value];
+        const pc = PHEROMONE_COLORS[se.channel] || PHEROMONE_COLORS.CH_YELLOW;
+        ctx.strokeStyle = `rgba(${pc.r},${pc.g},${pc.b},0.8)`;
+        ctx.lineWidth = 2;
+        ctx.strokeRect(tx * cellW + 2, ty * cellH + 2, cellW - 4, cellH - 4);
+        ctx.fillStyle = `rgb(${pc.r},${pc.g},${pc.b})`;
+        ctx.fillText('\u2190\u2191\u2192\u2193'[se.value - 1] || '?', tx * cellW + cellW/2, ty * cellH + cellH/2);
+      }
+    }
+    else if (se.type === 'sense') {
+      // Highlight the found direction
+      if (se.value > 0 && se.value <= 4) {
+        const tx = antX + DIR_DX[se.value];
+        const ty = antY + DIR_DY[se.value];
+        const color = se.target === 'FOOD' ? '#38d870' : se.target === 'NEST' ? '#3cd8a8' : '#58a8ff';
+        ctx.fillStyle = color;
+        ctx.globalAlpha = 0.3;
+        ctx.fillRect(tx * cellW + 1, ty * cellH + 1, cellW - 2, cellH - 2);
+        ctx.globalAlpha = 1;
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 2;
+        ctx.strokeRect(tx * cellW + 2, ty * cellH + 2, cellW - 4, cellH - 4);
+        const icon = se.target === 'FOOD' ? '\u2666' : se.target === 'NEST' ? '\u2302' : '?';
+        ctx.fillStyle = color;
+        ctx.fillText(icon, tx * cellW + cellW/2, ty * cellH + cellH/2);
+      }
+    }
+    else if (se.type === 'probe') {
+      const dir = resolveSenseDir(se.dir);
+      if (dir > 0 && dir <= 4) {
+        const tx = antX + DIR_DX[dir];
+        const ty = antY + DIR_DY[dir];
+        if (tx >= 0 && tx < GRID && ty >= 0 && ty < GRID) {
+          const isWall = se.value === 1;
+          ctx.strokeStyle = isWall ? '#e84c4c' : '#38d870';
+          ctx.lineWidth = 2;
+          ctx.strokeRect(tx * cellW + 2, ty * cellH + 2, cellW - 4, cellH - 4);
+          ctx.fillStyle = isWall ? '#e84c4c' : '#38d870';
+          ctx.fillText(isWall ? '\u2588' : '\u2713', tx * cellW + cellW/2, ty * cellH + cellH/2);
+        }
+      }
+    }
+    else if (se.type === 'carrying') {
+      // Show carrying status on the ant cell
+      ctx.fillStyle = se.value ? '#38d870' : '#338f70';
+      ctx.font = `${cellW * 0.3}px JetBrains Mono, monospace`;
+      ctx.fillText(se.value ? 'carrying' : 'empty', antX * cellW + cellW/2, antY * cellH + cellH - 4);
+    }
+  }
+
+  // ── Ant ──
   if (step.ant) {
     const ax = step.ant.x, ay = step.ant.y, dir = step.ant.dir;
     const cx = ax * cellW + cellW / 2, cy = ay * cellH + cellH / 2;
