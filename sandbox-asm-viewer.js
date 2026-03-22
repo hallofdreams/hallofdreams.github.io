@@ -924,9 +924,19 @@ function drawGrid(idx) {
     ctx.stroke();
   }
 
+  // Build set of cells currently being sniffed (so we draw numbers instead of solid fill)
+  const sniffedCells = new Set();
+  if (step.senseEffect && step.senseEffect.type === 'sniff') {
+    const se = step.senseEffect;
+    const dir = resolveSenseDir(se.dir);
+    const tx = antX + (DIR_DX[dir] || 0);
+    const ty = antY + (DIR_DY[dir] || 0);
+    sniffedCells.add(`${tx},${ty}`);
+  }
+
   // ── Draw scenario environment ──
   if (grid) {
-    // Pheromones (draw first, underneath everything)
+    // Pheromones — solid colored cells, unless being sniffed
     const pheroKeys = ['yellow','blue','green','red'];
     const pheroChannels = { yellow: PHEROMONE_COLORS.CH_YELLOW, blue: PHEROMONE_COLORS.CH_BLUE,
                            green: PHEROMONE_COLORS.CH_GREEN, red: PHEROMONE_COLORS.CH_RED };
@@ -934,8 +944,9 @@ function drawGrid(idx) {
       if (!grid[key]) continue;
       const pc = pheroChannels[key];
       for (const p of grid[key]) {
-        const intensity = (p.intensity || p.i || 100) / 255;
-        ctx.fillStyle = `rgba(${pc.r},${pc.g},${pc.b},${intensity * 0.4})`;
+        const cellKey = `${p.x},${p.y}`;
+        if (sniffedCells.has(cellKey)) continue; // will draw number instead
+        ctx.fillStyle = `rgba(${pc.r},${pc.g},${pc.b},0.55)`;
         ctx.fillRect(p.x * cellW + 1, p.y * cellH + 1, cellW - 2, cellH - 2);
       }
     }
@@ -996,14 +1007,18 @@ function drawGrid(idx) {
       const ty = antY + (DIR_DY[dir] || 0);
       if (tx >= 0 && tx < GRID && ty >= 0 && ty < GRID) {
         const pc = PHEROMONE_COLORS[se.channel] || PHEROMONE_COLORS.CH_YELLOW;
-        const alpha = se.value > 0 ? 0.4 : 0.15;
-        ctx.fillStyle = `rgba(${pc.r},${pc.g},${pc.b},${alpha})`;
+        // Light background tint
+        ctx.fillStyle = `rgba(${pc.r},${pc.g},${pc.b},${se.value > 0 ? 0.2 : 0.08})`;
         ctx.fillRect(tx * cellW + 1, ty * cellH + 1, cellW - 2, cellH - 2);
+        // Border
         ctx.strokeStyle = `rgba(${pc.r},${pc.g},${pc.b},0.8)`;
         ctx.lineWidth = 2;
         ctx.strokeRect(tx * cellW + 2, ty * cellH + 2, cellW - 4, cellH - 4);
-        // Draw the number
+        // The intensity number replaces the solid fill
         ctx.fillStyle = se.value > 0 ? `rgb(${pc.r},${pc.g},${pc.b})` : '#338f70';
+        ctx.font = `bold ${cellW * 0.38}px JetBrains Mono, monospace`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
         ctx.fillText(String(se.value), tx * cellW + cellW/2, ty * cellH + cellH/2);
       }
     }
