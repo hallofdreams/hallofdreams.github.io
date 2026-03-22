@@ -182,12 +182,14 @@ body {
 /* === Table of contents (right side) === */
 .toc {
   position: sticky;
-  top: 2rem;
+  top: 0;
   width: 200px;
   flex-shrink: 0;
   font-size: 0.8rem;
   align-self: flex-start;
-  padding: 0 1.5rem;
+  padding: 2rem 1.5rem;
+  max-height: 100vh;
+  overflow-y: auto;
 }
 
 .toc-title {
@@ -218,6 +220,26 @@ body {
 }
 
 .toc-list a.active {
+  color: var(--accent);
+}
+
+.toc-sublist {
+  list-style: none;
+  padding-left: 1em;
+  margin-top: 0.3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.toc-sublist a {
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.toc-sublist a:hover {
   color: var(--accent);
 }
 
@@ -473,6 +495,26 @@ h1 {
   margin-bottom: 1rem;
   line-height: 1.7;
   font-weight: 300;
+}
+
+.overview-list {
+  list-style: disc;
+  padding-left: 1.5em;
+  margin-bottom: 1rem;
+  color: var(--text-bright);
+  font-size: 0.8rem;
+  line-height: 1.7;
+  font-weight: 300;
+}
+
+.overview-list li {
+  margin-bottom: 0.5rem;
+}
+
+.overview-text strong,
+.overview-list strong {
+  color: var(--text-bright);
+  font-weight: 600;
 }
 
 .overview-text code {
@@ -774,22 +816,25 @@ canvas.grid-canvas {
 /* === Blog content === */
 .blog-content {
   color: var(--text-bright);
-  font-size: 1rem;
+  font-size: 0.9rem;
   line-height: 1.85;
   font-weight: 300;
   margin-bottom: 2rem;
 }
 
-.blog-content h2, .blog-content h3 {
-  color: var(--accent);
+div.blog-content h2,
+div.blog-content h3 {
+  color: var(--cyan);
   font-weight: 600;
   letter-spacing: 0.04em;
   margin-top: 2.5rem;
   margin-bottom: 1rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--border);
 }
 
-.blog-content h2 { font-size: 1.15rem; }
-.blog-content h3 { font-size: 1rem; }
+div.blog-content h2 { font-size: 1.3rem; }
+div.blog-content h3 { font-size: 1.15rem; }
 
 .blog-content p {
   margin-bottom: 1.2rem;
@@ -851,6 +896,120 @@ canvas.grid-canvas {
 
 .msg-user .msg-name {
   color: var(--cyan);
+}
+
+/* === Images and videos === */
+.blog-content img {
+  max-width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  display: block;
+}
+
+.blog-content video {
+  max-width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  display: block;
+}
+
+.blog-content figure {
+  margin: 1.5rem 0;
+  text-align: center;
+}
+
+.blog-content figure img,
+.blog-content figure video {
+  margin: 0 auto;
+  max-width: 90%;
+}
+
+.blog-content figcaption {
+  color: var(--text-dim);
+  font-size: 0.7rem;
+  letter-spacing: 0.03em;
+  margin-top: 0.4rem;
+}
+
+/* Map image grid — thumbnails in a row, click to expand */
+.map-grid {
+  display: flex;
+  gap: 0.5rem;
+  margin: 1.2rem 0;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.map-item {
+  flex: 1;
+  min-width: 120px;
+  max-width: calc(33% - 0.5rem);
+  text-align: center;
+}
+
+.map-item img {
+  width: 100%;
+  margin: 0;
+  cursor: pointer;
+  opacity: 0.85;
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.map-item img:hover {
+  opacity: 1;
+  transform: scale(1.02);
+}
+
+.map-item .map-label {
+  color: var(--text-dim);
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
+  margin-top: 0.3rem;
+}
+
+/* Single map — centered with label */
+.map-single {
+  text-align: center;
+  margin: 1.2rem 0;
+}
+
+.map-single img {
+  max-width: 80%;
+  margin: 0 auto;
+}
+
+.map-single .map-label {
+  color: var(--text-dim);
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
+  margin-top: 0.3rem;
+}
+
+/* Expanded map overlay */
+.map-expanded {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.map-expanded img {
+  max-width: 90vw;
+  max-height: 90vh;
+  border: 1px solid var(--border-bright);
+  margin: 0;
+}
+
+.blog-content video {
+  max-width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  margin: 1.2rem 0;
+  display: block;
 }
 
 /* === Transcript block (fallback until screenshot replaces it) === */
