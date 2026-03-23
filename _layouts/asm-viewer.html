@@ -1921,7 +1921,10 @@ tm_s:
       <div class="section-explanation">
         <div class="view-overview" data-view-overview="3">
           <p class="overview-text">
-            The ant is standing on yellow. Before dispatching to the direction-specific yellow following code, we check for basin detection: did this ant recently take two or more steps toward the nest? If so, set a flag so the yellow follower knows to try spreading out. Then sniff the current cell's yellow intensity and dispatch based on which direction the ant is heading.
+            First, check r7 (which carried over from the movement kernel's basin detector). If r7 >= 2, the ant was recently walking toward the nest, thus it's probably near a busy food area. Set ret=1 to enable crowding avoidance in the direction-specific code below. If r7 &lt; 2, set ret=0, crowding avoidance off.
+          </p>
+          <p class="overview-text">
+            Second, SNIFF the yellow intensity on the current cell (reference point for "lower intensity = toward food" comparisons), then dispatch to the right direction handler based on which way the ant was heading when it arrived here.
           </p>
           <button class="mode-toggle" data-toggle="3">
             <span class="arrow">&#9654;</span> Register details
@@ -2154,7 +2157,13 @@ tm_s:
       <div class="section-explanation">
         <div class="view-overview" data-view-overview="4">
           <p class="overview-text">
-            Shared exit points for all four yellow following directions. If the ant gives up on yellow, set r6 to -20 (yellow cooldown, so it doesn't immediately re-enter the trail it just abandoned) and go explore. If the ant found a direction to move, set fdir and steps to 1 and enter the movement kernel for a single step.
+            Two instructions. The on-lane walker couldn't find a valid yellow step, either the trail dead-ended or every direction was walled. Set r6 to -20 (yellow cooldown) so the ant won't try to follow yellow again for 20 ticks. Jump to frontier levy and explore.
+          </p>
+          <p class="overview-text">
+            The cooldown prevents the loop where an ant at a dead-end yellow cell would: follow yellow -> dead end -> abort -> decision point -> see yellow HERE -> follow yellow -> same dead end -> abort. Without the cooldown, that's an infinite loop. With it, the ant ignores yellow for 20 ticks and goes exploring instead.
+          </p>
+          <p class="overview-text">
+            The four fflh_go_* labels are where the direction blocks jump when they find a valid step. Set direction, set steps=1 (one step, re-evaluate next tick), jump to the movement kernel.
           </p>
           <button class="mode-toggle" data-toggle="4">
             <span class="arrow">&#9654;</span> Register details
