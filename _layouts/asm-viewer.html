@@ -95,35 +95,35 @@ document.getElementById('hero-video').addEventListener('click', function() {
 
 <p>I realize you probably came here because the title had a catchy ant pun, and because you were hoping to read about some absurd technical feat related to colony management. We'll get to that. But I want to open with a story.</p>
 
-<p>There's a song by the band Gunship, called <a href="https://www.youtube.com/watch?v=Jv1ZN8c4_Gs">Fly For Your Life</a>, which is set to pieces of a short film called <a href="https://www.youtube.com/watch?v=qPELcGcVHfU">Paths of Hate</a>. Which is a gorgeous animation about how two enemy pilots are twisted by war into demons that absolutely hate each other, and is a poignant distillation of how humans can abandon their humanity and become monsters. I keep coming back to this video. I must have watched it dozens of times now. I get the anti-war message, but the reason I come back to it is not because it captures something about war. It's because there's a moment in the film where both pilots are flying away from each other, out of ammo, out of gas, their planes a wreck, their bodies partially broken, and impulsively, at the same time, they both turn back, so possessed by hate that they must finish what they started&hellip; and that's what it's like to be in my brain, facing an impossible challenge. It's not hate, but it is that single minded obsession, that part of me that is so inflamed by the task ahead of me, that it's not about victory or defeat, but an almost all consuming self-annihilation in the crucible of the challenge.</p>
+<p>There's a song by the band Gunship, called <a href="https://www.youtube.com/watch?v=Jv1ZN8c4_Gs">Fly For Your Life</a>, which is set to pieces of a short film called <a href="https://www.youtube.com/watch?v=qPELcGcVHfU">Paths of Hate</a>. Which is a gorgeous animation about how two enemy pilots are twisted by war into demons that absolutely hate each other, and is a poignant distillation of how humans can abandon their humanity and become monsters. I keep coming back to this video. I must have watched it dozens of times now. I get the anti-war message, but the reason I come back to it is not because it captures something about war. It's because there's a moment in the film where both pilots are flying away from each other, out of ammo, out of gas, their planes a wreck, their bodies partially broken, and impulsively, at the same time, they both turn back, so possessed by hate that they must finish what they started... and that's what it's like to be in my brain, facing an impossible challenge. It's not hate, but it is that single minded obsession, that part of me that is so inflamed by the task ahead of me, that it's not about victory or defeat, but an almost all consuming self-annihilation in the crucible of the challenge.</p>
 
-<p>When one of my friends linked to the <a href="https://dev.moment.com/swarm">SWARM challenge</a> which had just been the top of hacker news that day, I knew. Seeing the leaderboard solidified it. The first place prize being a trip to Hawaii just made it more inevitable. I opened up VSCode knowing that I was going to fall into this trap. That the challenge was simple and powerful enough that it would be an obsession.</p>
+<p>When one of my friends linked to the <a href="https://dev.moment.com/swarm">SWARM challenge</a> which had just been the top of Hacker News that day, I knew. Seeing the leaderboard solidified it. The first place prize being a trip to Hawaii just made it more inevitable. I opened up VSCode knowing that I was going to fall into this trap. That the challenge was simple and powerful enough that it would be an obsession.</p>
 
-<p>As the naming suggests, the challenge is managing an ant colony. 200 ants on a 128x128 grid have 2000 ticks to find and collect food across 12 different map types. You write a single shared brain program (in a custom assembly language called ant-sembly) that controls all of them, scoring 0-1000 based on average food collected. Ants can drop pheromones, smell pheromones, detect other ants, and wander around. The maps range from pleas-ant open fields, to a hellscape of jagged walls, to mazes.</p>
+<p>As the naming suggests, the challenge is managing an ant colony. 200 ants on a 128x128 grid have 2000 ticks to find and collect food across 12 different map types. You write a single shared brain program (in a custom assembly language called ant-ssembly) that controls all of them, scoring 0-1000 based on average food collected. Ants can drop pheromones, smell pheromones, detect other ants, and wander around. The maps range from pleas-ant open fields, to a hellscape of jagged walls, to mazes.</p>
 
-<p>Nowadays I don't actually write code by hand if I can avoid it. I even wrote a harness so I could manage a swarm of agents without too much friction (there's still a lot of friction). So I spun up claude code and claude code and claude code and gemini cli for good measure, and set out to work. The biggest issue in these kinds of problems, I've learned, is keeping the workstreams separate, and maintaining context. This felt like the kind of scenario where running parallel experiments would be extremely fruitful.</p>
+<p>Nowadays, I don't actually write code by hand if I can avoid it. I even wrote a harness so I could manage a swarm of agents without too much friction (there's still a lot of friction). So I spun up Claude Code and Claude Code and Claude Code and Gemini CLI for good measure, and set out to work. The biggest issue in these kinds of problems, I've learned, is keeping the workstreams separate, and maintaining context. This felt like the kind of scenario where running parallel experiments would be extremely fruitful.</p>
 
 <figure><img src="{{ '/assets/img/ants/harness.png' | relative_url }}" alt="The WC2 Command Center"><figcaption>The WC2 Command Center, managing multiple Claude Code sessions</figcaption></figure>
 
 <p>So I copied the full context of the challenge, and told claude_1 (Death Knight) to go research previous challenges like this, I remembered google had had <a href="http://ants.aichallenge.org/">something similar a few years ago</a>, and surely ants were a solved problem. claude_2 (Gnomish Airship) was sent to research real ant behavior and how we might apply it. Claude_3 (Mage) was given the task of scraping the challenge site, and building a harness that would allow us to run the challenge tests locally. Gemini started a parallel research thread on ant-colony sims, from the math side.</p>
 
-<p>A critical element of any AI workflow is to have a testing harness. I recommend a CLI, agents seem to understand those well, but a workflow that can't be validated will lead to agents confidently declaring something didn't work for a completely hallucinated reason. If you're using a language that supports it (so not ant-sembly) unit tests are your best friend. The core idea is you must give agents the tools to actually understand why their code failed, rather than a juicy sounding explanation. Otherwise you might burn a week's worth of tokens in a few hours and wind up with totally incorrect theories about gradient saturation in ant-colonies. (I'm not bitter about this at all). This is also, crucially, where I decided I would not write a higher level language on top of ant-sembly, I was coming fresh off my <a href="link">advent of code assembly challenge</a> and felt pretty confident that I wouldn't need anything like that. After all eight registers and a few hundred instructions was more than enough. With the help of my team, surely we'd never get confused about what a given register held at a given time.</p>
+<p>A critical element of any AI workflow is to have a testing harness. I recommend a CLI, agents seem to understand those well, but a workflow that can't be validated will lead to agents confidently declaring something didn't work for a completely hallucinated reason. If you're using a language that supports it (so not ant-ssembly) unit tests are your best friend. The core idea is you must give agents the tools to actually understand why their code failed, rather than a juicy sounding explanation. Otherwise you might burn a week's worth of tokens in a few hours and wind up with totally incorrect theories about gradient saturation in ant-colonies. (I'm not bitter about this at all). This is also, crucially, where I decided I would not write a higher level language on top of ant-ssembly, I was coming fresh off my <a href="/posts/x86-inferno">Advent of Code assembly challenge</a> and felt pretty confident that I wouldn't need anything like that. After all, eight registers and a few hundred instructions was more than enough. With the help of my team, surely we'd never get confused about what a given register held at a given time.</p>
 
-<p>The research churned along and I set some ground rules. Yes this was a github repository, but worktrees are a pain to set up and manage, so we'd just do an ancient version of source control. No deletion of files, every new version of code goes into a new file. Files are named <code>agent_number_what_the_file_does_version_number</code>. A very easy naming convention to remember.</p>
+<p>The research churned along and I set some ground rules. Yes, this was a GitHub repository, but worktrees are a pain to set up and manage, so we'd just do an ancient version of source control. No deletion of files, every new version of code goes into a new file. Files are named <code>agent_number_what_the_file_does_version_number</code>. A very easy naming convention to remember.</p>
 
 <figure><img src="{{ '/assets/img/ants/mess-of-files.png' | relative_url }}" alt="The mess of files"><figcaption>A very easy naming convention to remember.</figcaption></figure>
 
-<p>Further, we'd have an EXPERIMENTS.MD file, a log of the canonical state of the  project, what we tried, why it worked, why it failed, what not to try, etc. Having a centralized source of truth would keep us from going in circles and would let us test that behaviors worked as expected. With the harness to validate against, we could be confident that things going into experiments.md would be thoroughly tested. As the research findings came in, I felt confident we could get into the top 10. If not first place. I could almost taste the fruity drink with an umbrella on a hawaii beach.</p>
+<p>Further, we'd have an EXPERIMENTS.MD file, a log of the canonical state of the  project, what we tried, why it worked, why it failed, what not to try, etc. Having a centralized source of truth would keep us from going in circles and would let us test that behaviors worked as expected. With the harness to validate against, we could be confident that things going into experiments.md would be thoroughly tested. As the research findings came in, I felt confident we could get into the top 10. If not first place. I could almost taste the fruity drink with an umbrella on a Hawaii beach.</p>
 
 <p>So I began to code in earnest. The first problem was merely coming up with a search pattern for ants. There's a few different ant-ecendents, but many of them rely on ants having a sensor range bigger than 1, or being able to detect walls and pheromones at range. We had to operate within the constraint of a single tile's worth of sight. Early approaches were the simplest they could be. Randomized walks in various directions, when you find food you immediately head back. If you hit a wall, re-randomize your direction, and try again.</p>
 
 <figure><video src="{{ '/assets/img/ants/ants-70-points.mp4' | relative_url }}" controls muted playsinline></video><figcaption>70 points. Random walks and hope.</figcaption></figure>
 
-<p>It was not the most promising opening I've ever seen, but it got the ants wiggling, and it was satisfying to see them move visually. Much like making a good harness is critical for agents to succeed, if you're running a challenge, it's really important to have feedback loops that feel real and tangible.  Hats off to Moment here, the entire challenge website felt tangible. I could see the ants move, the feedback was direct, I could trace pheromone maps, and individual ants. I recognize a work of love when I see it, and the entire challenge reads like someone who cares, building a thing they want other people to play with. Just look at it:</p>
+<p>It was not the most promising opening I've ever seen, but it got the ants wiggling, and it was satisfying to see them move visually. Much like making a good harness is critical for agents to succeed, if you're running a challenge, it's really important to have feedback loops that feel real and tangible.  Hats off to Moment here, the entire challenge website felt tangible. I could see the ants move, the feedback was direct, I could trace pheromone maps, and individual ants. I recognize a work of love when I see it, and the entire challenge reads like people who care, building a thing they want other people to play with. Just look at it:</p>
 
 <figure><video src="{{ '/assets/img/ants/tour.mp4' | relative_url }}" controls muted playsinline></video><figcaption>The Moment challenge site</figcaption></figure>
 
-<p>I read through the research, several promising avenues about distributed coordination emerged. I don't suggest you read all of these, unless you really like ants, but I did spend most of the first couple hours of the project reading through these and imagining how we could apply them within our constraints. (Also ants are cool. Check out the paper on desert ants, and the liquid brain one if you just want "papers that Felipe found neat" even if they weren't super applicable. The google challenge ones are genuinely very cool too)</p>
+<p>I read through the research, several promising avenues about distributed coordination emerged. I don't suggest you read all of these, unless you really like ants, but I did spend most of the first couple hours of the project reading through these and imagining how we could apply them within our constraints. (Also ants are cool. Check out the paper on desert ants, and the liquid brain one if you just want "papers that Felipe found neat" even if they weren't super applicable. The Google challenge ones are genuinely very cool too.)</p>
 
 <h2>Ant Biology &amp; Foraging</h2>
 <ul>
@@ -140,12 +140,12 @@ document.getElementById('hero-video').addEventListener('click', function() {
 <li><a href="https://www.sciencedirect.com/science/article/pii/S0022519319300037">Diverse stochasticity leads a colony to optimal foraging - ScienceDirect</a></li>
 </ul>
 
-<h2>Levy Flights &amp; Search Theory</h2>
+<h2>Lévy Flights &amp; Search Theory</h2>
 <ul>
-<li><a href="https://en.wikipedia.org/wiki/L%C3%A9vy_flight_foraging_hypothesis">Levy flight foraging hypothesis - Wikipedia</a></li>
-<li><a href="https://www.science.org/doi/10.1126/sciadv.abe8211">Intermittent inverse-square Levy walks are optimal - Science Advances</a></li>
-<li><a href="https://royalsocietypublishing.org/doi/10.1098/rsif.2014.1158">Optimal Levy-flight foraging in a finite landscape - Royal Society</a></li>
-<li><a href="https://hal.archives-ouvertes.fr/hal-02530253">On the Search Efficiency of Parallel Levy Walks on Z2 - HAL 2020</a></li>
+<li><a href="https://en.wikipedia.org/wiki/L%C3%A9vy_flight_foraging_hypothesis">Lévy flight foraging hypothesis - Wikipedia</a></li>
+<li><a href="https://www.science.org/doi/10.1126/sciadv.abe8211">Intermittent inverse-square Lévy walks are optimal - Science Advances</a></li>
+<li><a href="https://royalsocietypublishing.org/doi/10.1098/rsif.2014.1158">Optimal Lévy-flight foraging in a finite landscape - Royal Society</a></li>
+<li><a href="https://hal.archives-ouvertes.fr/hal-02530253">On the Search Efficiency of Parallel Lévy Walks on Z2 - HAL 2020</a></li>
 </ul>
 
 <h2>Theoretical CS / Multi-Agent Search</h2>
@@ -177,7 +177,7 @@ document.getElementById('hero-video').addEventListener('click', function() {
 
 <p>Instead I decided that random walks were not really where we wanted to be.</p>
 
-<p>I'd just finished reading the paper on Lévy flights. I didn't have a clear idea of how to implement a Lévy flight, or what a Lévy even was, but the gist of it seemed to be that you could make a power law distribution to cover space efficiently, and that this would let me spread my ants out into patterns of exploration that were more efficient than "walk randomly, hope for the best".</p>
+<p>I'd just finished reading the paper on Lévy flights. I didn't have a clear idea of how to implement a Lévy flight, or what a Lévy flight even was, but the gist of it seemed to be that you could make a power law distribution to cover space efficiently, and that this would let me spread my ants out into patterns of exploration that were more efficient than "walk randomly, hope for the best".</p>
 
 <p>"A power law distribution" sounds very fancy, but the core algorithm is actually relatively simple. An ant picks a heading and a length, e.g. north 18 moves. You use a distribution to make it so you do a lot of short local walks and then take a long walk away. Which is how animals in nature do most of their exploring, you search a local area, get bored, go far away, search that new area, repeat.</p>
 
@@ -185,9 +185,9 @@ document.getElementById('hero-video').addEventListener('click', function() {
 
 <p>The current top score on the leaderboard was 700 points, but I felt like I was already well on my way to dethroning simonwongwong. Only 510 points away.</p>
 
-<p>While I was working on Levy walks, the other agents did not sit idle. I had one exploring the ongoing and nagging problem of <em>walls</em>, which inconsiderately seemed to block our best efforts, and another seeing if we could have ants leave pheromone trails when returning from food.</p>
+<p>While I was working on Lévy walks, the other agents did not sit idle. I had one exploring the ongoing and nagging problem of <em>walls</em>, which inconsiderately seemed to block our best efforts, and another seeing if we could have ants leave pheromone trails when returning from food.</p>
 
-<p>The pheromone approach just didn't seem to work. Claude told me that the short detection range meant that approach was fundamentally not going to work. Ants just never saw the trails. This was consistent across four trials of  varying intensity. We added it to the experiments log and decided we'd do more research on how to use pheromones within our context. Maybe something about the density of ants in a given zone to bias exploration?</p>
+<p>The pheromone approach just didn't seem to work. Claude told me that the short detection range meant that approach was fundamentally not going to work. Ants just never saw the trails. This was consistent across four trials of varying intensity. We added it to the experiments log and decided we'd do more research on how to use pheromones within our context. Maybe something about the density of ants in a given zone to bias exploration?</p>
 
 <p>I turned my attention back to the walls. Maps like Fortress and Gauntlet scored zero points, and the reason was plain to see</p>
 
@@ -195,13 +195,13 @@ document.getElementById('hero-video').addEventListener('click', function() {
 
 <p>Walls, walls everywhere.</p>
 
-<p>So of course I decided the best course of action was to throw everything I'd read in every paper into my code all at once. Dual gradient trails, anti-trail exploration , SNIFF-all-4 navigation, a new weight for Levy Flights, all of it. The score immediately dropped to 23 points.</p>
+<p>So of course I decided the best course of action was to throw everything I'd read in every paper into my code all at once. Dual gradient trails, anti-trail exploration, SNIFF-all-4 navigation, a new weight for Lévy Flights, all of it. The score immediately dropped to 23 points.</p>
 
 <p>Perhaps it had been a tad ambitious. We wanted the score to go up. Claude agreed.</p>
 
 <p>The anti-pheromone was apparently causing the ants to collapse into the same regions by collectively avoiding too much of the map, which ruined exploration.  We dutifully recorded the observation and narrowed in deeper, the best way to deal with walls would be to be aware of walls, not some trick with pheromones.</p>
 
-<p>Fortunately code works best when you break it up into parts. So one agent worked on adding trails using the red pheromone channel whenever an ant walked towards the nest, a directional breadcrumb instead of an explicit path to food. Another added fan out logic, splitting the ants into four cohorts each headed in a different cardinal direction at first. This all got rolled into the Levy Flight changes, and none of it addressed walls. Still +10 points is +10 points.</p>
+<p>Fortunately, code works best when you break it up into parts. So one agent worked on adding trails using the red pheromone channel whenever an ant walked towards the nest, a directional breadcrumb instead of an explicit path to food. Another added fan out logic, splitting the ants into four cohorts each headed in a different cardinal direction at first. This all got rolled into the Lévy Flight changes, and none of it addressed walls. Still, +10 points is +10 points.</p>
 
 <p>The wall logic at the time was basically this:</p>
 
@@ -219,7 +219,7 @@ document.getElementById('hero-video').addEventListener('click', function() {
 <ul>
 <li><strong>V3.1</strong>: Dedicated 10% of ants as permanent right-hand wall followers. This failed utterly. Walking forward until you find a wall and just following it was not a winning strategy. We recorded that losing 10% of ants to just follow walls meant we did less exploration, which caused our regrettable score drop. Discarded.</li>
 
-<li><strong>V8-WF</strong>: Step refund on wall hit during levy flights. The core idea being that if you were headed east, and bumping into a wall, it wouldn't count against your assigned number of moves in that direction. Predictably this led to a lot of stuck ants, and a huge score drop. Again. Some interesting tweaks with pheromone density in the area and probabilistic refunds concluded that yeah, this idea was terrible. What was I even thinking?</li>
+<li><strong>V8-WF</strong>: Step refund on wall hit during Lévy flights. The core idea being that if you were headed east, and bumping into a wall, it wouldn't count against your assigned number of moves in that direction. Predictably this led to a lot of stuck ants, and a huge score drop. Again. Some interesting tweaks with pheromone density in the area and probabilistic refunds concluded that yeah, this idea was terrible. What was I even thinking?</li>
 
 <li><strong>V10i</strong>: If you're searching and hit a wall, follow it for 120 moves. -50 points. Discarded.</li>
 
@@ -236,9 +236,9 @@ document.getElementById('hero-video').addEventListener('click', function() {
 
 <p>As a brief digression. Remember that I'd also spun up Gemini on this? By this point it had spent two hours running unsupervised, exhausted its token budget, and produced absolutely nothing useful. I was not especially impressed with my newest collaborator.</p>
 
-<p>So, moderately annoyed at Google and massively annoyed at the walls, I said fuck it. Fine. The walls wouldn't cooperate? It was a beautiful Friday, I was millions of tokens in and had spent the eight hours since I read about the challenge in the clutches of full fledged mania . We were going to do it the hard way.</p>
+<p>So, moderately annoyed at Google and massively annoyed at the walls, I said fuck it. Fine. The walls wouldn't cooperate? It was a beautiful Friday, I was millions of tokens in and had spent the eight hours since I read about the challenge in the clutches of full fledged mania. We were going to do it the hard way.</p>
 
-<p>Searching with levy flights still worked well, what we needed was to carry the food home. We'd just… use the same technique we used to find the food to navigate back. That had demonstrably gotten around walls. I honed in on one agent (Troll Axe Thrower) and launched the others in <code>--dangerously-skip-permissions</code> so they could chug along. Then I built the least elegant solution possible.</p>
+<p>Searching with Lévy flights still worked well; what we needed was to carry the food home. We'd just… use the same technique we used to find the food to navigate back. That had demonstrably gotten around walls. I honed in on one agent (Troll Axe Thrower) and launched the others in <code>--dangerously-skip-permissions</code> so they could chug along. Then I built the least elegant solution possible.</p>
 
 <p>Broadly, once an ant had food:</p>
 
@@ -263,7 +263,7 @@ document.getElementById('hero-video').addEventListener('click', function() {
 
 <h3 id="ants-go-marching">The Ants Go Marching</h3>
 
-<figure><video src="{{ '/assets/img/ants/ants-277.mp4' | relative_url }}" controls muted playsinline></video><figcaption>277 points. Levy flights in action.</figcaption></figure>
+<figure><video src="{{ '/assets/img/ants/ants-277.mp4' | relative_url }}" controls muted playsinline></video><figcaption>277 points. Lévy flights in action.</figcaption></figure>
 
 <p>It had taken some work to deal with juggling the data in assembly, and with Claude trying to access unsupported instructions, but overall, it had been as painless as writing raw assembly could be. I almost wished I'd spent the time writing a higher level language, but now that the gap to first place was narrowing, and we were almost halfway there, it felt foolish to waste a ton of time on an unnecessary abstraction.</p>
 
@@ -271,13 +271,13 @@ document.getElementById('hero-video').addEventListener('click', function() {
 
 <p>The three agents (Human Transport, Peon, Zeppelin) had each been tasked with exploring a specific type of map. Human Transport had helpfully decided to name its files with the 1_  prefix, which collided with the prefix Peon was using, so there were a ton of files called <code>1_ant_exploration_v15j</code> right next to <code>1_ant_maze_exploration_v14d</code> that were wildly divergent streams. It was fine. I didn't need to reorganize. I could just look at what the workstream was.</p>
 
-<p>Human Transport had been tasked with fixing gauntlet. Since its first three radical ideas (food trails, which we'd already tried, wall following, also tried, and pheromone gradients, literally already in the code) had not produced results, and had instead cratered the score, it had spent the last 30 minutes slowly tweaking the various parameters that controlled Levy flights, and celebrating every time the score increased by 1. It proudly announced a +3 increase in overall score. Gauntlet remained firmly at 19 points scored. The +3 score was statistical noise that didn't bear out in practice. It had only cost me 27% of my five hour usage quota to discover this.</p>
+<p>Human Transport had been tasked with fixing Gauntlet. Since its first three radical ideas (food trails, which we'd already tried, wall following, also tried, and pheromone gradients, literally already in the code) had not produced results, and had instead cratered the score, it had spent the last 30 minutes slowly tweaking the various parameters that controlled Lévy flights, and celebrating every time the score increased by 1. It proudly announced a +3 increase in overall score. Gauntlet remained firmly at 19 points scored. The +3 score was statistical noise that didn't bear out in practice. It had only cost me 27% of my five hour usage quota to discover this.</p>
 
 <div class="map-single"><img src="{{ '/assets/img/ants/fortress-evil-map.png' | relative_url }}" alt="The Fortress map"><div class="map-label">Fortress</div></div>
 
 <p>I checked back to see if my Gemini quota had restored itself. Turns out that's a 24 hour block, I'd need to wait four more hours until midnight. I would have to soldier on without Gemini 3.1 (Experimental). Perhaps it could join Human Transport's victory parade.</p>
 
-<p>I checked in on Zeppelin, which had been working on chambers. It proudly announced that by tuning the parameters of Levy flight, it had succeeded in raising our score by an entire 5 points.</p>
+<p>I checked in on Zeppelin, which had been working on chambers. It proudly announced that by tuning the parameters of Lévy flight, it had succeeded in raising our score by an entire 5 points.</p>
 
 <p>I wondered why, exactly, I paid Anthropic $200 a month.</p>
 
@@ -287,11 +287,11 @@ document.getElementById('hero-video').addEventListener('click', function() {
 
 <p>I didn't even read the description. I jumped directly into the code. It looked extremely similar to what we'd tried in the v10 branches. All of which had failed. But I watched the score on the website and the result was undeniable. Following my instructions, Claude had stripped the code to the bare minimum and then explored what worked specifically on mazes. I ran the test suite one more time. 360. I retasked the other workers and made this the base we'd all work from.</p>
 
-<p>The actual score improving idea was simple. It's a well known robotics algorithm called Bug 2 that I had just learned about. Treat wall following as a brief interruption. Its own subroutine.  The ant is still a levy walker, it just does a 15-step wall trace when it hits something, then goes back to being a levy walker.</p>
+<p>The actual score improving idea was simple. It's a well known robotics algorithm called Bug 2 that I had just learned about. Treat wall following as a brief interruption. Its own subroutine.  The ant is still a Lévy walker, it just does a 15-step wall trace when it hits something, then goes back to being a Lévy walker.</p>
 
 <video src="{{ '/assets/img/ants/ant-466.mp4' | relative_url }}" controls muted playsinline></video>
 
-<p>It was hard to tell exactly why that was more effective than having wall following in the levy walk, but it was hard to argue with empirical evidence. Claude reassured me that the difference in score could be attributed the fact that it was a separate process. I hoped that the other workers would have similar breakthroughs. I left Peon working on its own.</p>
+<p>It was hard to tell exactly why that was more effective than having wall following in the Lévy walk, but it was hard to argue with empirical evidence. Claude reassured me that the difference in score could be attributed the fact that it was a separate process. I hoped that the other workers would have similar breakthroughs. I left Peon working on its own.</p>
 
 <p>Fifteen minutes later it was fiddling with parameters again. I asked it to please focus instead on switching ant "handedness" for half the colony, so wall exploration wouldn't always be left-biased. A quick change, and we picked up another 21 points.</p>
 
@@ -301,21 +301,21 @@ document.getElementById('hero-video').addEventListener('click', function() {
 
 <p>I realized that I had not once submitted a score yet. I had figured I would wait until I was sure I was in the top 10. But Dave's question inspired curiosity. I submitted it. #16. Out of 2305. Suddenly 600 felt much more possible than it had before.</p>
 
-<p>It is also where I began to worry. You see, Dave and I are great friends. We've been friends for years. We are also fiercely competitive. When Dave started playing Go, I spent three months playing every day , dreaming of stones and tenukis, until I could reliably beat him. He still trumps me at chess effortlessly. We've politely declined to play each other in Age of Empires 2 (Dave would crush me, and then I'd have to get good, and I can't spare the four months of grinding that would take.) I didn't know who 0xkcd was, or how he'd scored 700+ points. Which made him eminently beatable.</p>
+<p>It is also where I began to worry. You see, Dave and I are great friends. We've been friends for years. We are also fiercely competitive. When Dave started playing Go, I spent three months playing every day, dreaming of stones and tenukis, until I could reliably beat him. He still trumps me at chess effortlessly. We've politely declined to play each other in Age of Empires 2 (Dave would crush me, and then I'd have to get good, and I can't spare the four months of grinding that would take.) I didn't know who 0xkcd was, or how he'd scored 700+ points. Which made him eminently beatable.</p>
 
 <p>I did know who Dave was. If he threw himself at this challenge with the same single-mindedness I had, I knew two things would happen. One, I'd have to redouble my efforts. Two, Dave would likely come up with something brilliant I hadn't considered and wreck me.</p>
 
-<p>The problem was, I had zero desire to dissuade Dave. If I truly wanted to win, the thing to do would have been to ask him not to participate. Instead, as we discussed multiplayer Slay the Spire II (it's less buggy now), I also shared how I'd ripped the javascript from SWARM, and we discussed his desire to solve the problem with genetic algorithms, and my innovative method of storing files. I think Dave has wanted to solve a problem with genetic algorithms almost as long as I've wanted bayesian optimization to be a silver bullet that saves the day.</p>
+<p>The problem was, I had zero desire to dissuade Dave. If I truly wanted to win, the thing to do would have been to ask him not to participate. Instead, as we discussed multiplayer Slay the Spire II (it's less buggy now), I also shared how I'd ripped the javascript from SWARM, and we discussed his desire to solve the problem with genetic programming, and my innovative method of storing files. I think Dave has wanted to solve a problem with genetic programming almost as long as I've wanted Bayesian Optimization to be a silver bullet that saves the day.</p>
 
 <img src="{{ '/assets/img/ants/discord2.png' | relative_url }}" alt="Discord conversation about strategy and Slay the Spire">
 
-<p>Yes, I took a break to play Slay the Spire II. I had hit my five hour limit with Claude Code, and Levy no longer looked like a word. My brain needed time to marinate.</p>
+<p>Yes, I took a break to play Slay the Spire II. I had hit my five hour limit with Claude Code, and Lévy no longer looked like a word. My brain needed time to marinate.</p>
 
-<p>Discussing it with Dave helped though. It sharpened some ideas. It gave them teeth. Saturday morning, bright and early, I spun up five agents, to explore five new ideas, and clear that 600 point barrier. I also brought in my new pinch hitter.</p>
+<p>Discussing it with Dave helped, though. It sharpened some ideas. It gave them teeth. Saturday morning, bright and early, I spun up five agents, to explore five new ideas, and clear that 600 point barrier. I also brought in my new pinch hitter.</p>
 
 <p>You see, everyone had assured me Codex was the be all, end all, of modern agentic coding, and that soon my job would be made obsolete by its incredible prowess. I felt like twenty dollars to secure a trip to Hawaii and a victory over Dave was a small price to pay. So I acquired a OpenAI pro subscription. With one hand I fed the baby, since it was my turn, and with the other I asked Codex to get caught up with the codebase.</p>
 
-<p>Gemini had once again burned through it's token budget in record time. It turns out it was no more able to make "mark gaps in the walls" work this time than the previous time.</p>
+<p>Gemini had once again burned through its token budget in record time. It turns out it was no more able to make "mark gaps in the walls" work this time than the previous time.</p>
 
 <p>I was not deterred, Codex promptly read up on the project and when I asked offered me a plethora of brilliant ideas. Laying a trail back to the food using pheromones. Improved wall following. Marking the gaps in the walls. Maybe having all the ants lay down trails of pheromones as a density map.</p>
 
@@ -325,7 +325,7 @@ document.getElementById('hero-video').addEventListener('click', function() {
 
 <p>If Friday was categorized by triumphs, Saturday was the day of the slow, endless grind. Between rounds of slay the spire, diaper changes, one quick grocery trip, and other miscellaneous things, the agents churned along, burning tokens with the intensity of a train conductor shoveling coal into a sputtering locomotive.We'd pulled all the guardrails from wall following, one by one, and it netted another thirty points. We sat at 420. The bottom of the leaderboard was at 500. One breakthrough away.</p>
 
-<p>No breakthrough seemed forthcoming. I was convinced that pheromones were the key. We just needed another working approach. We tried tuning the red pheromones used to indicate direction. No dice. One claude session (Footman) spent several hours painstakingly tuning parameters until I intervened and asked it to just write a script. The conversations with LLMs went somewhat like this:</p>
+<p>No breakthrough seemed forthcoming. I was convinced that pheromones were the key. We just needed another working approach. We tried tuning the red pheromones used to indicate direction. No dice. One Claude session (Footman) spent several hours painstakingly tuning parameters until I intervened and asked it to just write a script. The conversations with LLMs went somewhat like this:</p>
 
 <p>"Here's my experiments.md, you can see I tried 12 different variations of pheromone strategies. Density doesn't work. Wall beacons don't work. Pathing to food doesn't work. Directional pheromones only kind of work, and i'm not even sure they're doing anything. Beacons at gates is something we've tried literally 30 different times. Can you suggest ideas?"</p>
 
@@ -355,17 +355,17 @@ document.getElementById('hero-video').addEventListener('click', function() {
 
 <p>All we had to show for it was an experiments.md that increasingly suggested nobody should be able to reach the 770 points that simonwongwong's smug score was still holding over my head.</p>
 
-<p>At least I'd helped Dave debug his ant-ssembly, and he now had ants crawling around the maps with some degree of success. He seemed determined to build a blazingly fast simulator and get his iteration loop as tight as possible, which I realized, now way too late, might have saved me a few hundred thousand tokens of output. He also had some unorthodox ideas about how he could stretch the bounds of the challenge. I was half-eager-half dreading seeing what he could produce.</p>
+<p>At least I'd helped Dave debug his ant-ssembly, and he now had ants crawling around the maps with some degree of success. He seemed determined to build a blazingly fast Rust emulator and get his iteration loop as tight as possible, which I realized, now way too late, might have saved me a few hundred thousand tokens of output. He also had some unorthodox ideas about how he could stretch the bounds of the challenge. I was half-eager-half dreading seeing what he could produce.</p>
 
 <p>One thing was clear. I needed to preserve tokens at all costs. Claude Opus 4.6 with extended thinking is, in my opinion, the best code reasoning model on the market. So that remaining 10% of the weekly budget had to be hoarded. Gemini was already exhausted, and frankly, might as well not exist for all the good it was doing us. I would have to lean on Codex, and worse, write code by hand.</p>
 
-<p>My conversation with Codex was as circular as the preceding ones. It tried to convince me a hundred points lay in incremental improvements. I still had a nagging doubt: why did laying pheromone trails to the food not work? I accepted they were too narrow, but surely at least on open maps, it should give us some score improvement.</p>
+<p>My conversation with Codex was as circular as the preceding ones. It tried to convince me a hundred points lay in incremental improvements. I still had a nagging doubt: why did laying pheromone trails to the food not work? I accepted they were too narrow, but surely at least on open maps, it should give us <i>some</i> score improvement.</p>
 
-<p>It was the idea that had stuck with me. It felt like I had tried everything. I had insisted that we were at a local maximum, that I could accept some score loss to improve fortress. One claude session had gotten fortress from 52 points to 220 (at the cost of a total score of 300). It didn't generalize. I had told the agents to really dig into what ant behaviors were causing the regressions, and I had an inventory of confident analysis on the various ways we had failed.</p>
+<p>It was the idea that had stuck with me. It felt like I had tried everything. I had insisted that we were at a local maximum, that I could accept some score loss to improve Fortress. One Claude session had gotten Fortress from 52 points to 220 (at the cost of a total score of 300). It didn't generalize. I had told the agents to really dig into what ant behaviors were causing the regressions, and I had an inventory of confident analysis on the various ways we had failed.</p>
 
-<p>Dutifully, codex produced another version of pheromone dropping. Dropping yellow pheromone trails back to food. Without having to manage five other agents, while I waited for a smug "as our data shows, that approach is doomed" message to finish generating, I looked at the ants in the simulator, crawling around, wandering around walls, getting stuck in infinite loops, not dropping any pheromones…</p>
+<p>Dutifully, Codex produced another version of pheromone dropping. Dropping yellow pheromone trails back to food. Without having to manage five other agents, while I waited for a smug "as our data shows, that approach is doomed" message to finish generating, I looked at the ants in the simulator, crawling around, wandering around walls, getting stuck in infinite loops, not dropping any pheromones…</p>
 
-<p>The code was broken. I clicked back to Codex, and read a totally plausible explanation about why the trails didn't work and our score had dropped 200 points. You see the trails that had never been dropped on the map had caused all the ants to cluster, and that was the reason our score had dropped.  Not the fact that the code changes had clobbered a register and caused wall following to stop working entirely.  We should immediately abandon this doomed idea, maybe we could tune Levy Walks further? That had produced a fantastic two point improvement earlier. Or if not maybe we could try dropping a beacon at openings in the walls.</p>
+<p>The code was broken. I clicked back to Codex, and read a totally plausible explanation about why the trails didn't work and our score had dropped 200 points. You see the trails that had never been dropped on the map had caused all the ants to cluster, and that was the reason our score had dropped.  Not the fact that the code changes had clobbered a register and caused wall following to stop working entirely.  We should immediately abandon this doomed idea, maybe we could tune Lévy Walks further? That had produced a fantastic two point improvement earlier. Or if not maybe we could try dropping a beacon at openings in the walls.</p>
 
 <p>I provide the conversation here, free of commentary.</p>
 
@@ -381,17 +381,17 @@ document.getElementById('hero-video').addEventListener('click', function() {
 <div class="msg msg-ai"><span class="msg-name">CODEX</span> You're right. I'm going to stop iterating hypotheses and do direct ant-level forensics: extract exactly when ants touch yellow, what move they take next, and whether that move stayed on-lane. Then I'll patch only the demonstrated failure path.</div>
 </div>
 
-<p>This was an explicit instruction, both in CLAUDE.MD and in my opening conversation with Codex. "When debugging, look at the ant behaviors before forming a theory." I knew the importance of actually running the tests. What I had not conceived, not considered, is that for an entire day, my entire fleet of agents had been writing broken code, and smuggling in false assumptions to avoid doing any debugging work. Not one instance of claude code had actually seen if their code worked</p>
+<p>This was an explicit instruction, both in CLAUDE.MD and in my opening conversation with Codex. "When debugging, look at the ant behaviors before forming a theory." I knew the importance of actually running the tests. What I had not conceived, not considered, is that for an entire day, my entire fleet of agents had been writing broken code, and smuggling in false assumptions to avoid doing any debugging work. Not one instance of Claude code had actually seen if their code worked.</p>
 
 <p>I was not angry.</p>
 
 <p>Not even as I realized that every single assumption encoded in memory and in the experiments.md could not be trusted, because the multi-billion dollar brains that will one day take over my job couldn't be bothered to follow one of three basic instructions I had laid out.</p>
 
-<p>No. Anger was too moderate a word. Incensed didn't quite capture it either. I'm not sure there's a word that captures "furious at myself, and also the tool I'm using, and frustrated at the waste, and goddamn it I want to fire myself and this computer into the sun." Because I couldn't be mad at the billion dollar lying machines. I knew they lied, and like a sorcerer tricked by a demon, I hadn't read the fine print. I had wasted an entire day, burned a fortune in tokens that had generated pure fiction and worse, I had to rebuild the entire accumulated knowledge base.</p>
+<p>No. 'Anger' was too moderate a word. 'Incensed' didn't quite capture it either. I'm not sure there's a word that captures "furious at myself, and also the tool I'm using, and frustrated at the waste, and I want to fire myself and this computer into the sun." Because I couldn't be mad at the billion dollar lying machines. I knew they lied, and like a sorcerer tricked by a demon, I hadn't read the fine print. I had wasted an entire day, burned a fortune in tokens that had generated pure fiction and worse, I had to rebuild the entire accumulated knowledge base.</p>
 
 <p>It took six iterations. During which Codex stubbornly refused to look at ants unless I grabbed it by the scruff of the neck and told it that it must eat its vegetables. It was pure agony, but I barely felt it, I was simmering with rage, and I was convinced the idea was good. If the code hadn't been such a twisted mess by this point, it would have been faster to write it by hand, but it had become inscrutable to me.</p>
 
-<p>I once again provide a transcript</p>
+<p>I once again provide a transcript:</p>
 
 <div class="conversation">
 <div class="msg msg-ai"><span class="msg-name">CODEX</span> I inspected the actual worst bouncer in <code>v282</code>. It is not a corner case; it's a straight vertical yellow segment where the code reverses because the back edge has lower intensity. I'm patching only that demonstrated bug: on a straight lane with no side exits, keep going forward and never use intensity to justify a reverse.</div>
@@ -417,11 +417,11 @@ document.getElementById('hero-video').addEventListener('click', function() {
 
 <p>It's important to keep your fantasies rooted in reality, after all.</p>
 
-<p>The real issue is we were now running into the ragged edges of assembly. There hadn't been that many registers to begin with, and they were all serving multiple purposes. r6 was used during wall following, coopted during levy walks, stolen back as a temp register when you transitioned from wall following. Every bit of data you wanted to store had a real, terrible, tangible price.</p>
+<p>The real issue is we were now running into the ragged edges of assembly. There hadn't been that many registers to begin with, and they were all serving multiple purposes. <code>r6</code> was used during wall following, coopted during Lévy walks, stolen back as a temp register when you transitioned from wall following. Every bit of data you wanted to store had a real, terrible, tangible price.</p>
 
-<p>If you wanted to store something as simple as am I left-handed or right-handed? so you could toggle it later, you had to give something else up. The registers were packed tight. An i32 can hold a surprising amount of data if you're willing to think in binary and carve it into little segments for different pieces of state. The more you do that, the more likely it is that one day you store something very important, shift everything by one, and your entire colony starves while walking in circles.</p>
+<p>If you wanted to store something as simple as <code>am I left-handed or right-handed?</code> so you could toggle it later, you had to give something else up. The registers were packed tight. An i32 can hold a surprising amount of data if you're willing to think in binary and carve it into little segments for different pieces of state. The more you do that, the more likely it is that one day you store something very important, shift everything by one, and your entire colony starves while walking in circles.</p>
 
-<p>Worse, there was a strict limit of one thousand instructions per program. The initial wall following breakthrough program had clocked in at 683 instructions. When we scored 678 points we were at 913. Wall following alone consumed 174 instructions. Every time I tried to get clever about it (or worse, Codex and claude assured me an instruction was unneeded) we would get a 200 point regression and ants bouncing off walls like demented ping pong balls. It got to the point where I could predict the flavor of failure that tweaking a specific set of instructions would cause. Touching r7 always wound up with ants circling the outside wall forever. Every time we tried to change yellow following we'd wind up with dancing ants that refused to deliver food.</p>
+<p>Worse, there was a strict limit of one thousand instructions per program. The initial wall following breakthrough program had clocked in at 683 instructions. When we scored 678 points we were at 913 instructions. Wall following alone consumed 174 instructions. Every time I tried to get clever about it (or worse, Codex and Claude assured me an instruction was unneeded) we would get a 200 point regression and ants bouncing off walls like demented ping pong balls. It got to the point where I could predict the flavor of failure that tweaking a specific set of instructions would cause. Touching <code>r7</code> always wound up with ants circling the outside wall forever. Every time we tried to change yellow following we'd wind up with dancing ants that refused to deliver food.</p>
 
 <p>More and more of my time went not into testing whether a new idea worked, but into figuring out exactly how we had broken existing functionality. I was the captain of a boat that was more holes than boat.</p>
 
@@ -429,7 +429,7 @@ document.getElementById('hero-video').addEventListener('click', function() {
 
 <p>Millions of tokens, but only eight registers and one thousand instructions. Agents walking in circles like ants. It had a twisted symmetry.</p>
 
-<p>By Sunday night I got another message I had not been looking forward to. I had finally exhausted my Codex quota. I could either shell out 180 dollars for the premium tier, or wait a week.</p>
+<p>By Sunday night, I got another message I had not been looking forward to. I had finally exhausted my Codex quota. I could either shell out 180 dollars for the premium tier, or wait a week.</p>
 
 <p>Or I could cheat. That was an option too.</p>
 
@@ -445,17 +445,17 @@ document.getElementById('hero-video').addEventListener('click', function() {
 
 <p>There was no time to rest on my laurels. I had acquired the bare minimum required to continue the work. Without an oracle I knew I'd spend the next few days stumbling in the dark, strangled by registers and instruction limits.</p>
 
-<p>The leaderboard had moved on. I was down to 13th place. There was no score below 700 left in the top ten, and the top of the board was now sitting above 800. Dave was making incredible progress on his emulation layer, and while we agreed it was a very hard problem, I was half convinced I'd see his account appear on the leaderboard at any moment.</p>
+<p>The leaderboard had moved on. I was down to 13th place. There was no score below 700 left in the top ten, and the top of the board was now sitting above 800. Dave was making incredible progress on his Rust emulation layer, and while we agreed it was a very hard problem, I was half convinced I'd see his account appear on the leaderboard at any moment.</p>
 
 <p>I still had several promising ideas, and I began working through them, one at the time. I couldn't parallelize the way I once had. The dearth of tokens forced me to work with a single agent, like some kind of caveman from the distant year 2025. So I explored them in order.</p>
 
 <p>I did permit myself to burn a little of the remaining Claude quota on the side. Surely the promised 10x usage over the pedestrian Pro users meant that the last ten percent of my weekly budget would last me through the remaining four days.</p>
 
-<p>Fate seemed determined to keep me from my destiny. I had to actually work at my day job, instead of moving ants around a map. Groceries had to be acquired. Dinner had to be eaten. In the background, ants carrying food, ants lost on the fortress maps, ants following the wrong walls on gauntlet.</p>
+<p>Fate seemed determined to keep me from my destiny. I had to actually work at my day job, instead of moving ants around a map. Groceries had to be acquired. Dinner had to be eaten. In the background, ants carrying food, ants lost on the Fortress maps, ants following the wrong walls on Gauntlet.</p>
 
 <p>To say progress was halting at this point would be generous. Every idea required cutting something else, fighting over registers, and making compromises that satisfied no one. Features would test well, yield a respectable ten-point gain, and then get cut immediately, because our last hundred instructions needed to buy us more than a hundred points</p>
 
-<p>At around this time a mysterious figure showed up on the leaderboard. Someone with the Moment company logo. Out of sheer curiosity, I googled the username, and found they did work for the company, and… they had an <a href="github.com/rpadaki/swarm-lang">open source repo with a high level language wrapping Ant-sembly</a>. Basically what Dave had been working on. A holy grail. A tool that would free me from the tyranny of registers, and guide me back to the promised land of abstractions.</p>
+<p>At around this time a mysterious figure showed up on the leaderboard. Someone with the Moment company logo. Out of sheer curiosity, I googled the username, and found he did work for the company, and… he had an <a href="github.com/rpadaki/swarm-lang">open source repo with a high level language wrapping Ant-sembly</a>. Basically what Dave had been working on. A holy grail. A tool that would free me from the tyranny of registers, and guide me back to the promised land of abstractions.</p>
 
 <p>I looked at it, considered the full re-write, and made the type of decision that makes absolutely no sense to someone who isn't in the moment. I would either win with my cruddy, overwrought ant-ssembly, each instruction carefully and lovingly managed, or not at all. I rejected the temptation of a higher order language. I rejected the promises of not having to pack more binary into an already overloaded register, of not having to sequence my code to minimize jumps.</p>
 
@@ -471,7 +471,9 @@ document.getElementById('hero-video').addEventListener('click', function() {
 
 <p>I had hoped my nemesis-who-didn't-know-I-existed, simonwongwong, would at least have the decency to win. Instead, I believe he landed around 11th.</p>
 
-<p>Dave placed somewhere around 110th. He spent so long building the perfect tools that he never quite got to the implementation, and his plan to build a perfect state machine for each individual ant ran face-first into the one-thousand-instruction limit. Which, to be fair, was not stated anywhere; it was simply a wall I discovered when I ran into it. I also don't think the challenge ever grabbed him quite as hard as it grabbed me.</p>
+<p>Dave placed 117th, with 305 points. He did indeed get a Rust emulator running after three days of work, with a total speedup somewhere around 100x the native single-threaded Javascript implementation...but he spent so long building the perfect tools that he burnt out before using them.  Genetic programming turned out to simply not be a viable approach when code efficiency mattered this much; he said later that the only good things to come out of the approach was the fact that the actively modified ant-ssembly programs were <code>mut-ants</code>...as opposed to the reference ant-ssembly programs on disk, called <code>const-ants</code>.  His plan to build a separate state machine for each individual ant ran face-first into the one-thousand-instruction limit.  Which, to be fair, was not stated anywhere; it was simply a wall I discovered when I ran into it.  His Rust implementation allowed for large parametric studies of code constants, and automatic dead code removal (by simply removing each line, one after another, to see if the result on any map changed); those things are great if you <i>have</i> an approach, but they are not in <i>themselves</i> an approach.</p>
+
+<p>And, perhaps, he was never quite as captured by the ants as I was.</p>
 
 <p>There is no clean narrative bow that ties this up. My obsessive desire to ram myself against the ramparts of Ant-ssembly did not yield victory.</p>
 
@@ -559,7 +561,7 @@ document.getElementById('hero-video').addEventListener('click', function() {
 
 <h2 id="nightmare">Nightmare.</h2>
 
-<p>I'm not sure it's possible to get a perfect score on any of these maps.</p>
+<p>Within the challenge constraints - eight registers, one thousand instructions, two hundred ants, two thousand ticks - I'm not sure it's possible to get a perfect score on any of these maps.</p>
 
 <p>Of these, spiral is the "easiest" and by that I mean that the food distribution here is generous. That alone means that the strategies that work on pocket and brush will get you the first four-hundredish points. Spiral is a large set of concentric walls, with large gaps, which I call gates. Your nest begins at the center of the spiral. The food is evenly spread out which means that you can get a lot of it without having to reach the outer walls. The walls are round, and wall following the wrong direction means a very long trip to reach a gate. The further you get from the center, the more punishing that is, which means the food on the outer edges is almost impossible to collect in only 2000 ticks.</p>
 
@@ -588,10 +590,10 @@ document.getElementById('hero-video').addEventListener('click', function() {
 <p>I am assuming a passing familiarity with the constraints of assembly here, but if you're not familiar, assembly is the most basic code you can write short of modifying binary directly. There are four things to keep in mind.</p>
 
 <ul>
-<li>Registers are your only variables, and there's a fixed number of them. There's no my_variable = 5. You have r0 through r7 and that's it. They're i32's.</li>
+<li>Registers are your only variables, and there's a fixed number of them. There's no <code>my_variable = 5</code>. You have <code>r0</code> through <code>r7</code> and that's it. They're <code>i32</code>s.</li>
 <li>There's no structure. No functions, no loops, no if/else blocks. You have GOTO (jump to line X) and conditional GOTOs. Every loop, every branch, every subroutine is built from those two things. An if statement is literally just "skip over this block of code if this condition is true"</li>
 <li>Instructions do one tiny thing. Adding two numbers is an instruction. Comparing two numbers is an instruction. Moving a value from one register to another is an instruction. Which means encoding a variable so you can pack it into a register can be ten instructions. We only get 1000 of these total.</li>
-<li>There's no memory beyond the registers. I mean in regular assembly you can and should use RAM. Here we have r0-r7. A wealth of memory.</li>
+<li>There's no memory beyond the registers and the constants. I mean, in regular assembly you can and should use RAM. Here we have <code>r0</code>-<code>r7</code>. A wealth of memory.</li>
 </ul>
 
 <p>At least we won't have to worry about accidentally causing any segfaults or having linker errors, so we're actually ahead of the curve compared to where most assembly developers have to start.</p>
@@ -1789,7 +1791,7 @@ tm_s:
           Beyond that we want to have ants that are exploring be either in wall following mode or performing L&eacute;vy Flights, both are distinct behaviors, and an ant should be committed to one or the other.
         </p>
         <p class="overview-text">
-          CARRYING sets r0 to 1 if carrying food. If not 0, jump to go_home. Otherwise TAG foraging and fall through to search. SENSE FOOD sets r0 to a direction if food is adjacent, 0 if not. If zero, jump to no_food. Otherwise mark yellow and jump to grab. The no_food block uses the sign of <code>steps</code> to choose: negative = wall following, positive = L&eacute;vy walk, zero = decision point.
+          CARRYING sets <code>r0</code> to 1 if carrying food. If not 0, jump to go_home. Otherwise <code>TAG foraging</code> and fall through to search. <code>SENSE FOOD</code> sets <code>r0</code> to a direction if food is adjacent, 0 if not. If zero, jump to no_food. Otherwise mark yellow and jump to grab. The no_food block uses the sign of <code>steps</code> to choose: negative = wall following, positive = L&eacute;vy walk, zero = decision point.
         </p>
           <button class="mode-toggle" data-toggle="1">
             <span class="arrow">&#9654;</span> Register details
@@ -2125,7 +2127,7 @@ tm_s:
       <div class="section-explanation">
         <div class="view-overview" data-view-overview="8">
           <p class="overview-text">
-          This is the exploration engine. No yellow anywhere, the ant is on its own. Check for blue pheromones in all four directions. Blue is the "I was here" marker. Every ant paints CH_BLUE 100 on every step. Pick the direction with the lowest blue, that's where the fewest ants have been recently.
+          This is the exploration engine. No yellow anywhere, the ant is on its own. Check for blue pheromones in all four directions. Blue is the "I was here" marker. Every ant paints <code>CH_BLUE 100</code> on every step. Pick the direction with the lowest blue, that's where the fewest ants have been recently.
         </p>
         <p class="overview-text">
           The scan starts from a random direction. This fixed an actual stampede issue. Without it, all 200 ants check N > E > S > W in the same order, ties go to the last direction checked, and the entire colony drifts the same way. Random start gives each ant an independent tie-breaker.
@@ -2134,7 +2136,7 @@ tm_s:
           If the best frontier direction is blocked, we do a crude anti-gradient fallback: smell for the strongest blue nearby and try the opposite direction instead. If that is also blocked, give up and pick a random heading.
         </p>
         <p class="overview-text">
-          This code was the hard earned work of a bunch of experiments, and frustratingly it isn't worth that much. 18 points. The biggest winner was bridge. Open maps didn't care at all. Claude loved trying to tune the values here, and I remain convinced that you can do something more clever with the density gradient.
+          This code was the hard earned work of a bunch of experiments, and frustratingly it isn't worth that much. 18 points. The biggest winner was Bridge. Open maps didn't care at all. Claude loved trying to tune the values here, and I remain convinced that you can do something more clever with the density gradient.
         </p>
           <button class="mode-toggle" data-toggle="8">
             <span class="arrow">&#9654;</span> Register details
@@ -2178,13 +2180,13 @@ tm_s:
       <div class="section-explanation">
         <div class="view-overview" data-view-overview="9">
           <p class="overview-text">
-          At this point, fdir has the direction we've decided to go. It is, at last, time to decide how far. Three possibilities: we're in a dense wall area (r6 > 0), so do a short walk (2-5 steps). Or sniff blue &mdash; if between 200 and 254, you're in a highly explored area, try to escape with a medium or long flight. Otherwise, normal distribution: 10% short, 25% medium, 45% long, 20% extra-long (46-120 steps).
+          At this point, <code>fdir</code> has the direction we've decided to go. It is, at last, time to decide how far. Three possibilities: we're in a dense wall area (<code>r6</code> > 0), so do a short walk (2-5 steps). Or sniff blue &mdash; if between 200 and 254, you're in a highly explored area, try to escape with a medium or long flight. Otherwise, normal distribution: 10% short, 25% medium, 45% long, 20% extra-long (46-120 steps).
         </p>
         <p class="overview-text">
           The distribution is deliberately lopsided toward long. 65% of L&eacute;vies are 14+ steps. The idea is that with 200 ants, the optimal exponent shifts toward longer steps. Long flights are what find food on bridge crossings, island edges, and gauntlet gaps that are 50+ tiles from the nest.
         </p>
         <p class="overview-text">
-          Note lv_long has no JMP levy_go. It falls through directly into the movement kernel on the next line. Saves one instruction. I tested different distributions, removing the gradient escape, and getting rid of the wall density stuff. If you remove everything the score drops by 28 points, but any given feature individually only contributes 5-6 points.
+          Note <code>lv_long</code> has no <code>JMP levy_go</code>. It falls through directly into the movement kernel on the next line. Saves one instruction. I tested different distributions, removing the gradient escape, and getting rid of the wall density stuff. If you remove everything the score drops by 28 points, but any given feature individually only contributes 5-6 points.
         </p>
           <button class="mode-toggle" data-toggle="9">
             <span class="arrow">&#9654;</span> Register details
@@ -2236,11 +2238,11 @@ tm_s:
         <p class="overview-text">
           From <code>step</code>, there are three possibilities:<br>
           <strong>1. Open path</strong> &rarr; step_open &rarr; prog_reset/prog_bump &rarr; mloop. The ant moved. dx/dy updated. Back to the top.<br>
-          <strong>2. Wall during normal levy</strong> &rarr; levy_wall_hit. Enters search wall-follow. Sets steps negative, picks handedness.<br>
+          <strong>2. Wall during normal Lévy</strong> &rarr; levy_wall_hit. Enters search wall-follow. Sets steps negative, picks handedness.<br>
           <strong>3. Wall during return-to-food</strong> &rarr; step_rtf &rarr; try_move &rarr; mloop. Rotates around the wall, moves, back to the top.
         </p>
         <p class="overview-text">
-          The movement kernel always returns to mloop. And every time it returns, the very first thing checked is CARRYING and SENSE FOOD, so the ant never walks past food or forgets to go home.
+          The movement kernel always returns to <code>mloop</code>. And every time it returns, the very first thing checked is <code>CARRYING</code> and <code>SENSE FOOD</code>, so the ant never walks past food or forgets to go home.
         </p>
           <button class="mode-toggle" data-toggle="10">
             <span class="arrow">&#9654;</span> Register details
@@ -2337,7 +2339,7 @@ tm_s:
       <div class="section-explanation">
         <div class="view-overview" data-view-overview="12">
           <p class="overview-text">
-          The ant just delivered food and walked the first leg of its L-shaped return. The second leg was stashed in r6 as direction&nbsp;*&nbsp;128&nbsp;+&nbsp;distance. Here we unpack it: divide by 128 to recover the direction, mod by 128 to recover the remaining distance, clear r6, and jump back into the movement kernel.
+          The ant just delivered food and walked the first leg of its L-shaped return. The second leg was stashed in <code>r6</code> as direction&nbsp;*&nbsp;128&nbsp;+&nbsp;distance. Here we unpack it: divide by 128 to recover the direction, mod by 128 to recover the remaining distance, clear <code>r6</code>, and jump back into the movement kernel.
         </p>
           <button class="mode-toggle" data-toggle="12">
             <span class="arrow">&#9654;</span> Register details
@@ -2381,10 +2383,10 @@ tm_s:
       <div class="section-explanation">
         <div class="view-overview" data-view-overview="13">
           <p class="overview-text">
-          The ant sensed food adjacent. <code>try_move</code> moves toward it. Then pack the current position into fdir for later. <code>fdir = (dx + 128) * 256 + (dy + 128)</code>. The +128 shifts both coordinates positive so they pack cleanly into one number. Two signed values crammed into one register, surviving the entire homing trip, unpacked at delivery to compute the return path.
+          The ant sensed food adjacent. <code>try_move</code> moves toward it. Then pack the current position into <code>fdir</code> for later. <code>fdir = (dx + 128) * 256 + (dy + 128)</code>. The +128 shifts both coordinates positive so they pack cleanly into one number. Two signed values crammed into one register, surviving the entire homing trip, unpacked at delivery to compute the return path.
         </p>
         <p class="overview-text">
-          Remember to mark yellow at the food for our return path. Set r6 = -12. r6 is negative for the first 12 homing steps, counting up by 1 each step in <code>home_go</code>. While negative, r6 won't be misread as a dense chain flag (positive) or a WF heading (positive), keeping those systems from interfering with early homing.
+          Remember to mark yellow at the food for our return path. Set <code>r6 = -12</code>. <code>r6</code> is negative for the first 12 homing steps, counting up by 1 each step in <code>home_go</code>. While negative, <code>r6</code> won't be misread as a dense chain flag (positive) or a WF heading (positive), keeping those systems from interfering with early homing.
         </p>
           <button class="mode-toggle" data-toggle="13">
             <span class="arrow">&#9654;</span> Register details
@@ -2428,7 +2430,7 @@ tm_s:
       <div class="section-explanation">
         <div class="view-overview" data-view-overview="14">
           <p class="overview-text">
-          <strong>Priority 0: Already in Bug2 wall-follow.</strong> If r6 is positive, the ant is mid-homing-wall-follow. Skip everything, keep tracing the wall.
+          <strong>Priority 0: Already in Bug2 wall-follow.</strong> If <code>r6</code> is positive, the ant is mid-homing-wall-follow. Skip everything, keep tracing the wall.
         </p>
           <button class="mode-toggle" data-toggle="14">
             <span class="arrow">&#9654;</span> Register details
@@ -2516,7 +2518,7 @@ tm_s:
       <div class="section-explanation">
         <div class="view-overview" data-view-overview="16">
           <p class="overview-text">
-          <strong>Priority 2: Follow the yellow highway.</strong> Is there any adjacent yellow? If yes, SNIFF to get its intensity. Skip if zero (decayed), skip if above 252 (saturated near nest, no directional info), skip if walled. Otherwise move toward it. This is the primary homing method. The ant follows the same yellow trail it and other carriers have been painting. No direction validation here. The ant follows yellow wherever it leads, trusting that the trail goes toward nest because it was painted by ants walking home.
+          <strong>Priority 2: Follow the yellow brick road.</strong> Is there any adjacent yellow? If yes, <code>SNIFF</code> to get its intensity. Skip if zero (decayed), skip if above 252 (saturated near nest, no directional info), skip if walled. Otherwise move toward it. This is the primary homing method. The ant follows the same yellow trail it and other carriers have been painting. No direction validation here. The ant follows yellow wherever it leads, trusting that the trail goes toward nest because it was painted by ants walking home.
         </p>
         <p class="overview-text">
           Directional validation was something both Gemini and Codex loved trying to add, and it always kills maps like pockets where you have to head away from home to get closer.
@@ -2563,10 +2565,10 @@ tm_s:
       <div class="section-explanation">
         <div class="view-overview" data-view-overview="17">
           <p class="overview-text">
-          <strong>Priority 3: Green+yellow shortcut.</strong> If standing on a cell with both CH_GREEN and CH_YELLOW, a prior ant wall-followed through here AND it's on a yellow highway. Try cutting straight toward nest for up to 6 steps, painting yellow each step. This peels you away from the wall, hopefully breaking a bad wall follow.
+          <strong>Priority 3: Green+yellow shortcut.</strong> If standing on a cell with both <code>CH_GREEN</code> and <code>CH_YELLOW</code>, a prior ant wall-followed through here AND it's on a yellow highway. Try cutting straight toward nest for up to 6 steps, painting yellow each step. This peels you away from the wall, hopefully breaking a bad wall follow.
         </p>
         <p class="overview-text">
-          I designed this for gauntlet and fortress, and while on fortress it accomplishes nothing (it needed to also merge with another yellow and doing that broke yellow following a lot of the time), on gauntlet it saves ants caught heading the wrong way for long stretches of time and raises the score by almost 50 points. It costs a handful of points on almost every other map. Its a net like 7-10 points.
+          I designed this for Gauntlet and Fortress, and while on Fortress it accomplishes nothing (it needed to also merge with another yellow and doing that broke yellow following a lot of the time), on Gauntlet it saves ants caught heading the wrong way for long stretches of time and raises the score by almost 50 points. It costs a handful of points on almost every other map. It's a net ~7-10 points.
         </p>
         <p class="overview-text">
           I strongly suspect that getting this working well is a key element in improving exploitation, specifically making the routes home better.
@@ -2616,7 +2618,7 @@ tm_s:
           <strong>Priority 4 (gh_red): Dead Code.</strong> Jumps straight to displacement homing. The label exists from when the red pheromone trail was supposed to act as a directional marker. It never worked. I think there's something elegant about the idea of various hints pointing towards food, but it actually doesn't work with the sensor ranges we have available.
         </p>
         <p class="overview-text">
-          <strong>Priority 5: Displacement homing.</strong> Dead reckoning home from dx/dy. Compute home_dir (dominant axis), probe it. If open, move. If blocked on the major axis, try the minor axis. If both blocked, enter Bug2. Essentially the dumbest way to try to get home, which works great on maps with limited walls because you just sort of mosey your way on home.
+          <strong>Priority 5: Displacement homing.</strong> Dead reckoning home from dx/dy. Compute <code>home_dir</code> (dominant axis), probe it. If open, move. If blocked on the major axis, try the minor axis. If both blocked, enter Bug2. Essentially the dumbest way to try to get home, which works great on maps with limited walls because you just sort of mosey your way on home.
         </p>
           <button class="mode-toggle" data-toggle="18">
             <span class="arrow">&#9654;</span> Register details
@@ -2660,10 +2662,10 @@ tm_s:
       <div class="section-explanation">
         <div class="view-overview" data-view-overview="19">
           <p class="overview-text">
-          <strong>Priority 6: Yellow-guided Bug2 entry.</strong> This is a hack to get points on gauntlet, and it feels like it should be more broadly applicable. The core idea is easy: if you're headed back home, flip your handedness. If you always went left, now always go right. The idea being that this unwinds the path you took initially. If the path to the food has a short route and a long route, an ant who keeps going left every time will first find the food with the short route, and then take the long route home. Inverting means if you found the food quickly, you take the quick route back.
+          <strong>Priority 6: Yellow-guided Bug2 entry.</strong> This is a hack to get points on Gauntlet, and it feels like it should be more broadly applicable. The core idea is easy: if you're headed back home, flip your handedness. If you always went left, now always go right. The idea being that this unwinds the path you took initially. If the path to the food has a short route and a long route, an ant who keeps going left every time will first find the food with the short route, and then take the long route home. Inverting means if you found the food quickly, you take the quick route back.
         </p>
         <p class="overview-text">
-          The price is ants on the long route to find food also take the long route back. On gauntlet the long route + short route is so long that even losing half the ants to long + long and getting half on short + short is a net score increase.
+          The price is ants on the long route to find food also take the long route back. On Gauntlet, the long route + short route is so long that even losing half the ants to long + long and getting half on short + short is a net score increase.
         </p>
         <p class="overview-text">
           This code is janky and buggy and one of the last additions to the codebase. I think it could be better.
@@ -2710,10 +2712,10 @@ tm_s:
       <div class="section-explanation">
         <div class="view-overview" data-view-overview="20">
           <p class="overview-text">
-          r7 holds the blocked direction (the direction the ant was trying to go when it got stuck). Pick handedness by ID. Then rotate from the blocked direction to get the initial heading: right-hand subtracts 1 (if you were blocked going East, face North to keep the wall on your right), left-hand adds 1 (face South to keep the wall on your left). Store heading in r6.
+          <code>r7</code> holds the blocked direction (the direction the ant was trying to go when it got stuck). Pick handedness by ID. Then rotate from the blocked direction to get the initial heading: right-hand subtracts 1 (if you were blocked going East, face North to keep the wall on your right), left-hand adds 1 (face South to keep the wall on your left). Store heading in <code>r6</code>.
         </p>
         <p class="overview-text">
-          Then compute the manhattan distance at entry: <code>|dx| + |dy|</code>. Store in <code>steps</code>. This is the number the ant has to beat. It can only exit Bug2 when its current manhattan is lower than this. The guarantee: if you follow the wall all the way around an obstacle, you'll eventually reach a point closer to the nest than where you started. It might take the entire perimeter, but it's mathematically guaranteed for finite obstacles. It can take a very long time though if the exit is one step to your right and you have to traverse the entire perimeter of the map going left.
+          Then compute the Manhattan distance at entry: <code>|dx| + |dy|</code>. Store in <code>steps</code>. This is the number the ant has to beat. It can only exit Bug2 when its current Manhattan is lower than this. The guarantee: if you follow the wall all the way around an obstacle, you'll eventually reach a point closer to the nest than where you started. It might take the entire perimeter, but it's mathematically guaranteed for finite obstacles. It can take a very long time, though, if the exit is one step to your right and you have to traverse the entire perimeter of the map going left.
         </p>
           <button class="mode-toggle" data-toggle="20">
             <span class="arrow">&#9654;</span> Register details
@@ -2757,10 +2759,10 @@ tm_s:
       <div class="section-explanation">
         <div class="view-overview" data-view-overview="21">
           <p class="overview-text">
-          Runs every tick while r6 &gt; 0. First: check if you're at the nest (deliver if found). Then mark green and yellow. Green marks the wall-following path for the shortcut system (Priority 3 reads green+yellow overlap). Yellow extends the food highway through this wall passage &mdash; future carrying ants will follow the yellow here instead of doing their own Bug2.
+          Runs every tick while <code>r6 &gt; 0</code>. First: check if you're at the nest (deliver if found). Then mark green and yellow. Green marks the wall-following path for the shortcut system (Priority 3 reads green+yellow overlap). Yellow extends the food highway through this wall passage &mdash; future carrying ants will follow the yellow here instead of doing their own Bug2.
         </p>
         <p class="overview-text">
-          Handedness: if ret is -2 (forced left from the yellow-guided entry) go left. If ret is -1 (forced right) go right. Otherwise ID-based.
+          Handedness: if <code>ret</code> is -2 (forced left from the yellow-guided entry), go left. If <code>ret</code> is -1 (forced right), go right. Otherwise ID-based.
         </p>
         <p class="overview-text">
           The probe sequence is the left-hand or right-hand rule. For right-hand: try right of current heading, then straight, then left, then back. For left-hand: try left, then straight, then right, then back. First open direction wins. The ant keeps the wall on one side and traces along it.
@@ -2810,7 +2812,7 @@ tm_s:
           Compute current manhattan: <code>|dx| + |dy|</code>. Compare against the manhattan in <code>steps</code>. If the current is less, you're closer to the nest than when you started Bug2. You can stop. Clear r6 (no longer in WF), clear ret (no forced hand), clear steps, and head back to mloop. Next tick the ant tries displacement homing from a better position.
         </p>
         <p class="overview-text">
-          If the current is not less, you haven't cleared the obstacle yet. Back to mloop, next tick r6 &gt; 0 sends you right back to wall_follow_step for another step.
+          If the current is not less, you haven't cleared the obstacle yet. Back to <code>mloop</code>, next tick <code>r6 &gt; 0</code> sends you right back to wall_follow_step for another step.
         </p>
         <p class="overview-text">
           You walk along the wall, painting green and yellow, until you're closer to home than when you started. No timeout, no random restarts, no early exit heuristics. Just follow the wall until the math says you've made progress. I wish I had a good early exit heuristic, but random restarts proved actively harmful.
@@ -2863,7 +2865,7 @@ tm_s:
           Always mark yellow. Every single homing step paints yellow. This is what builds and refreshes the highways. It's unconditional. If you're carrying food, you're marking yellow. I tried all kinds of conditions to limit marking here, and every single time it gave worse results.
         </p>
         <p class="overview-text">
-          Then the r6 check: <code>JGT r6 -1 hg_move</code>. If r6 &ge; 0, skip to move. If r6 is negative (it starts at -12 after pickup), increment it toward zero. This is the countdown from <code>grab</code>. While it's negative, it can't be misinterpreted as a wall following heading or dense chain flag. If you forget that the negative matters here, you wind up with interesting behaviors that utterly crater your score.
+          Then the <code>r6</code> check: <code>JGT r6 -1 hg_move</code>. If <code>r6 &ge; 0</code>, skip to move. If <code>r6</code> is negative (it starts at -12 after pickup), increment it toward zero. This is the countdown from <code>grab</code>. While it's negative, it can't be misinterpreted as a wall following heading or dense chain flag. If you forget that the negative matters here, you wind up with interesting behaviors that utterly crater your score.
         </p>
           <button class="mode-toggle" data-toggle="23">
             <span class="arrow">&#9654;</span> Register details
@@ -2907,7 +2909,7 @@ tm_s:
       <div class="section-explanation">
         <div class="view-overview" data-view-overview="24">
           <p class="overview-text">
-          Super simple. If you're at the nest, deliver the food you're carrying via DROP. Then head back to the food.
+          Super simple. If you're at the nest, deliver the food you're carrying via <code>DROP</code>. Then head back to the food.
         </p>
           <button class="mode-toggle" data-toggle="24">
             <span class="arrow">&#9654;</span> Register details
@@ -2951,7 +2953,7 @@ tm_s:
       <div class="section-explanation">
         <div class="view-overview" data-view-overview="25">
           <p class="overview-text">
-          Unpack the food coordinates from fdir. At pickup, the ant packed <code>(dx+128)*256 + (dy+128)</code> into fdir. Now reverse it: DIV 256 gives dx+128, subtract 128 gives the original dx. MOD 256 gives dy+128, subtract 128 gives dy. Now r7 = food dx, r0 = food dy.
+          Unpack the food coordinates from <code>fdir</code>. At pickup, the ant packed <code>(dx+128)*256 + (dy+128)</code> into fdir. Now reverse it: <code>DIV r7 256</code> gives <code>dx+128</code>, subtract 128 gives the original <code>dx</code>. <code>MOD r0 256</code> gives <code>dy+128</code>, subtract 128 gives dy. Now <code>r7</code> = food dx, <code>r0</code> = food dy.
         </p>
         <p class="overview-text">
           Compute |dx| and |dy|. Compare them to decide which axis to walk first. The ant does an L-shaped return: walk one axis, then the other. It walks the shorter axis first because that leg is less likely to hit walls and get complicated.
@@ -2991,17 +2993,17 @@ tm_s:
   <div class="asm-section" data-section="26">
     <div class="section-header" data-toggle-section="26">
       <span class="section-arrow">&#9654;</span>
-      <span class="section-title">Return-to-Food Branch Tree</span>
+      <span class="section-title" id="return-to-food-1">Return-to-Food Branch Tree</span>
     </div>
     <div class="section-body">
       <div class="code-lines"></div>
       <div class="section-explanation">
         <div class="view-overview" data-view-overview="26">
           <p class="overview-text">
-          The big branch tree. The first leg's direction goes into fdir (negative, because negative fdir signals return-to-food mode to the movement kernel). The first leg's distance goes into steps. The second leg gets packed into r6 as direction * 128 + distance (or direction * 256 + distance depending on the axis combination).
+          The big branch tree. The first leg's direction goes into fdir (negative, because negative fdir signals return-to-food mode to the movement kernel). The first leg's distance goes into steps. The second leg gets packed into <code>r6</code> as direction * 128 + distance (or direction * 256 + distance depending on the axis combination).
         </p>
         <p class="overview-text">
-          The specific packing values &mdash; 128, 256, 384, 512 &mdash; encode which direction the second leg goes. When the first leg finishes (steps hits 0), the decision point sees fdir is negative, jumps to return_leg2, unpacks r6 with DIV/MOD 128, and walks the second leg.
+          The specific packing values &mdash; 128, 256, 384, 512 &mdash; encode which direction the second leg goes. When the first leg finishes (steps hits 0), the decision point sees fdir is negative, jumps to return_leg2, unpacks <code>r6</code> with <code>DIV/MOD 128</code>, and walks the second leg.
         </p>
         <p class="overview-text">
           The whole thing is ugly arithmetic to solve a simple problem: "I'm at the nest, I need to walk an L-shape back to (dx, dy), shorter axis first, and I only have 3 registers to encode it all." In a perfect world you'd just follow the yellow trail back, but from the nest it can be impossible to tell which was your yellow trail.
@@ -3057,7 +3059,7 @@ tm_s:
           Figure out which axis you're further from home on. Point at that axis. If you're further east-west than north-south, point east or west toward the nest. If you're further north-south, point north or south. Always close the bigger gap first.
         </p>
         <p class="overview-text">
-          One edge case. If you're at the nest, pick east by default. I don't think this ever matters. Returns the direction in r0. Pure math, no sensing, no movement.
+          One edge case. If you're at the nest, pick east by default. I don't think this ever matters. Returns the direction in <code>r0</code>. Pure math, no sensing, no movement.
         </p>
           <button class="mode-toggle" data-toggle="27">
             <span class="arrow">&#9654;</span> Register details
@@ -3147,21 +3149,21 @@ tm_s:
 
 <div class="blog-content">
 
-<h3 id="anticlimax">Anticlimax</h3>
+<h3 id="anticlimax">Ant-iclimax</h3>
 
 <p>Alright, fine, we're not totally done. You don't have to have read the preceding section in full to understand this, though some ideas will make more sense if you have. You can always go click on the relevant bits if you need to.</p>
 
 <p>I'm going to go through the archive of ideas I tried that did not make the cut, and why I think they failed. Unlike the code section, where I tried very hard to test and verify claims I made, this is where I wildly speculate. If I can back it with data, I do, but for many of these the best I can do is share my wild guesses. At least I won't try to pretend that pheromone saturation collapse is an actual phenomenon I witnessed.</p>
 
-<p><strong>Ant Castes</strong> - Having entire subsets of ants, decided by ID tasked on specific jobs. One of the papers I read (and i don't remember which one, the google challenge one maybe?) had the idea of "Scout ants" that had radically different exploratory behavior. Overall however, other than on mazes, our general issue was more exploitation than exploration, and I couldn't find a scout behavior that found food significantly faster enough to make the difference. I admit some of that might have been just tweaking their Levy behaviors, rather than making an entirely new subroutine to give them a different strategy.</p>
+<p><strong>Ant Castes</strong> - Having entire subsets of ants, decided by ID tasked on specific jobs. One of the papers I read (and i don't remember which one, the Google challenge one maybe?) had the idea of "Scout ants" that had radically different exploratory behavior. Overall, however, other than on mazes, our general issue was more exploitation than exploration, and I couldn't find a scout behavior that found food significantly faster enough to make the difference. I admit some of that might have been just tweaking their Lévy behaviors, rather than making an entirely new subroutine to give them a different strategy.</p>
 
 <p>Another proposed caste that didn't work out for me was having ants that would dedicate themselves to spreading pheromones. I believe I called these recruiters, their job was to find yellow, draw routes from the yellow to the nest. Thicken the blue gradients. Something. Unfortunately given that wall beacons, food beacons, directional food beacons, and gap marking did not work out, they never became useful and losing ants from exploration was bad. Generally speaking the fact that the pheromones could only be detected at range 1 meant that spreading them didn't help. Either they were a strong effective signal, or they didn't work out at all. Using spreaders to connect yellow routes had potential but ran into severe directionality issues.</p>
 
-<p>I also gave chaos agents a try, just ants with a totally different behavior pattern. Never found a behavior pattern that was not actively detrimental one way or another. Overall our code right now highly prioritizes exploitation when it becomes possible, castes allow you to resolve or maintain the tension differently, but since our issue has been exploitation, more exploration never paid off.</p>
+<p>I also gave chaos agents a try, just ants with a totally different behavior pattern. Never found a behavior pattern that was not actively detrimental one way or another. Overall, our code right now highly prioritizes exploitation when it becomes possible, castes allow you to resolve or maintain the tension differently, but since our issue has been exploitation, more exploration never paid off.</p>
 
 <p><strong>Food Depots</strong> - The idea was to split long hauls into two shorter ones. So ants would find food, walk to a central location and drop it, other ants would find that food and bring it home. I tried a bare bones version of this where ants would drop food in high blue pheromone areas and let other ants finish carrying it home. It did not work well, and it seemed marginal enough versus trying to find better routes home that I abandoned it almost immediately. I think it has potential, but the key issue is finding a way to set up depots that make sense, which requires using pheromones for coordination in a way I have yet to figure out.</p>
 
-<p><strong>Partial routing</strong> - Instead of tracing a full path to the food, highlight only parts of the path. Ants discover the path, follow it, reach the end, explore, find a better path and highlight it. Ideal in theory, totally untenable in practice. Ants have no way to distinguish a good path from a bad path, they can only tell "does this path lead to food or not". Or in the partial path situation "was i on a partial path and did i find another partial path". It's functionally impossible to know if you took the shortest route, or the worst route without having some way of keeping track of walls and what the walls between you and the point look like. Something I never figured out how to encode. I can intuit that there is a way to do this, since you can know via manhattan distance if a path is the absolute best it can be in distance terms, but I don't have a model for "and also account for walls"</p>
+<p><strong>Partial routing</strong> - Instead of tracing a full path to the food, highlight only parts of the path. Ants discover the path, follow it, reach the end, explore, find a better path and highlight it. Ideal in theory, totally untenable in practice. Ants have no way to distinguish a good path from a bad path, they can only tell "does this path lead to food or not". Or in the partial path situation "was I on a partial path and did I find another partial path". It's functionally impossible to know if you took the shortest route, or the worst route without having some way of keeping track of walls and what the walls between you and the point look like. Something I never figured out how to encode. I can intuit that there is a way to do this, since you can know via Manhattan distance if a path is the absolute best it can be in distance terms, but I don't have a model for "and also account for walls"</p>
 
 <p><strong>Gate Marking</strong> - LLMs love this idea. I think it came up a dozen times. I infer it is because it's a common solution in this kind of challenge, and it makes perfect sense if you have a detection range larger than one tile. The idea is you find a gate, and mark it, other ants don't need to wall follow they can head straight to the gate. Except the only time you encounter this marker is when you're already wall following and one tile away from a gate. I played with the idea of "and then you mark it there, creating a guide to the gate", but the guide just… follows the wall. A more interesting version of this was "when you find a gate, return home and trace yellow the whole path" creating a guide to gates. Which would be good in fortress, but is not actually helpful in a lot of maps. There isn't food behind every gate.</p>
 
@@ -3175,7 +3177,7 @@ tm_s:
 
 <p>But not a problem. When you try probing, also check if you find yellow, if you find yellow, just connect the two trails. Boom. Shortcut.</p>
 
-<p>Except, what that does is create confusing junctions the ants don't know how to navigate and with no guarantee that the yellow route you found is actually faster. Codex said the solution was just to manhattan distance gate it. If you've read this far, the problem with that should be self-evident.</p>
+<p>Except, what that does is create confusing junctions the ants don't know how to navigate and with no guarantee that the yellow route you found is actually faster. Codex said the solution was just to Manhattan-distance-gate it. If you've read this far, the problem with that should be self-evident.</p>
 
 <p>It's possible that the confusing junction problem is solvable with better logic, but the fundamental fact that it's impossible to encode information about directionality in the yellow pheromones because of the way decay works is a real problem.</p>
 
@@ -3183,19 +3185,19 @@ tm_s:
 
 <p>When you go off exploring, if you find a good route and return to mark it, just paint two steps of red pheromone to encode directionality, if an ant is on yellow red and sees yellow red, they should prefer that to plain yellow. Except… how do you know to paint red? That the route is faster? The only conceivable way to prove it is to do a full junction exploration. That is, follow the whole "shortcut" home, then go back to the junction, try the other branch, keep track of which is longer, and mark the shorter one.</p>
 
-<p>I didn't try this because in like the half register i had left for storing data it seemed like an impossible ask, and the time commitment per ant seemed signific-ant. Even if you did mark green at the junction to indicate the exploration was underway so no more than one ant tried it.</p>
+<p>I didn't try this because in like the half register I had left for storing data it seemed like an impossible ask, and the time commitment per ant seemed signific-ant. Even if you did mark green at the junction to indicate the exploration was underway so no more than one ant tried it.</p>
 
 <p>It's possible that it's one of these solutions that works if you subtree it, where you explore the junction path until you find a red mark and so you can actually not spend a million years in your exploration, and I think in a challenge with a more forgiving language, this would be a strong solution to consider.</p>
 
-<p><a href="https://medium.com/data-science/a-conceptual-explanation-of-bayesian-model-based-hyperparameter-optimization-for-machine-learning-b8172278050f"><strong>Bayesian optimization</strong></a>  - The perpetual silver bullet. In the twelve hours before the challenge ended, I took my best three programs, enumerated all the variables, and shoved it into a rickety python script that would run the 120 map evaluation against each iteration. This would have been much faster with Dave's hyper efficient evaluator, but I had my trusty javascript CLI that generated brush slightly wrong, and that would be enough.</p>
+<p><a href="https://medium.com/data-science/a-conceptual-explanation-of-bayesian-model-based-hyperparameter-optimization-for-machine-learning-b8172278050f"><strong>Bayesian optimization</strong></a>  - The perpetual silver bullet. In the twelve hours before the challenge ended, I took my best three programs, enumerated all the variables, and shoved it into a rickety python script that would run the 120 map evaluation against each iteration. This would have been much faster with Dave's hyper efficient evaluator, but I had my trusty Javascript CLI that generated Brush slightly wrong, and that would be enough.</p>
 
 <p>The top score at the time was 690. After six hours and thousands of iterations, with my computer sounding like it wanted to fly off the entire time, it had netted me a new high score of 688.</p>
 
 <p>Alas. Next time.</p>
 
-<p><strong>Forced Handedness Reversal</strong> - On gauntlet and fortress, the key is very very long wall walks are bad. What if we reversed handedness after a long enough period of wall walking and reversed direction? Well, unless you know an exact magic number that works on all versions of fortress and gauntlet that they both happen to share, it hurts your score. The guarantee that you're going to make it home only holds if you commit to the wall walk. I strongly suspect there's a threshold here that doesn't accidentally trigger on brush, and that helps both fortress and gauntlet, but in 30 or so trials all it produced was disaster.</p>
+<p><strong>Forced Handedness Reversal</strong> - On Gauntlet and Fortress, the key is that very very long wall walks are bad. What if we reversed handedness after a long enough period of wall walking and reversed direction? Well, unless you know an exact magic number that works on all versions of Fortress and Gauntlet that they both happen to share, it hurts your score. The guarantee that you're going to make it home only holds if you commit to the wall walk. I strongly suspect there's a threshold here that doesn't accidentally trigger on Brush, and that helps both Fortress and Gauntlet, but in 30 or so trials all it produced was disaster.</p>
 
-<p><strong>Fresh source audition</strong> - Randomize the first carrying-home path before yellow crystallizes the route. Basically don't start painting until you've Levy walked once away. See if a random path finds a better highway. Unsurprisingly guiding other ants to near the food but not the food is worse than guiding them to the food.</p>
+<p><strong>Fresh source audition</strong> - Randomize the first carrying-home path before yellow crystallizes the route. Basically, don't start painting until you've Lévy walked once away. See if a random path finds a better highway. Unsurprisingly, guiding other ants to a point near the food but not the food is worse than guiding them to the food.</p>
 
 <p><strong>Pledge algorithm</strong> - The Pledge algorithm is a maze-solving method. You pick a direction you want to go.  Walk that way. When you hit a wall, start wall-following, but keep a turn counter. Every time you turn clockwise, add 1. Every time you turn counterclockwise, subtract 1. When the counter reaches zero AND you're facing your original direction, exit wall-following and resume walking North.</p>
 
@@ -3203,7 +3205,7 @@ tm_s:
 
 <p>It was hard to implement with jagged walls, and overall more often than not you don't know which direction food lies, so it's less good than Bug2. It might make sense for the return path, but I didn't have enough registers, instructions, or patience to try it out fully.</p>
 
-<p><strong>Map specific algorithm selection</strong> - If we could detect that a map was fortress, or gauntlet or what have you, we could figure out a specific sub-routine, and given the way maps place nests and walls, it should be possible to quickly break a map into one of the existing categories by only checking a few data points. This is actually what inspired the wall density detection. Unfortunately anything more granular than that requires something like "Everyone match north ten steps, then back to nest, then west ten steps, then back to nest and if x y and z it might be gauntlet." Or heuristics like "if your y distance from nest never increases more than z". None of them were sufficiently granular. Nor did we have a sufficiently clever strategy for one particular map that the overhead of map detection was worth it.</p>
+<p><strong>Map specific algorithm selection</strong> - If we could detect that a map was Fortress or Gauntlet (or what have you), we could figure out a specific sub-routine, and given the way maps place nests and walls, it should be possible to quickly break a map into one of the existing categories by only checking a few data points. This is actually what inspired the wall density detection. Unfortunately anything more granular than that requires something like "Everyone match north ten steps, then back to nest, then west ten steps, then back to nest and if x y and z it might be gauntlet." Or heuristics like "if your y distance from nest never increases more than z". None of them were sufficiently granular. Nor did we have a sufficiently clever strategy for one particular map that the overhead of map detection was worth it.</p>
 
 <p><strong>Temporal trail filtering</strong> - One of my least favorite ideas. I tried it partly because it showed up in the literature, and partly because Gemini in particular would not stop insisting it should work.</p>
 
@@ -3213,35 +3215,35 @@ tm_s:
 
 <p>It joined the rest of the "maybe if ants could see farther" pile.</p>
 
-<p><strong>Sealing paths</strong> - One of my pet ideas. On maps like maze, if you found a dead end, and painted it red, and treated red like a wall, you would eventually seal off dead end passages. This would make exploration better by slowly compressing the map. You'd only ever seal off avenues that were not promising. It should work. On mazes it kind of worked, on brush the dead end detection was so so, it categorized things that were not dead ends as dead ends. But even when it worked perfectly on Maze it didn't really seem to help that much. The real problem on maze was cyclical junctions that had ants on wall follow spinning in circles for periods of time, and cutting off dead ends did nothing to remedy this.</p>
+<p><strong>Sealing paths</strong> - One of my pet ideas. On maps like Maze, if you found a dead end, and painted it red, and treated red like a wall, you would eventually seal off dead end passages. This would make exploration better by slowly compressing the map. You'd only ever seal off avenues that were not promising. It should work. On Maze it kind of worked, on Brush the dead end detection was so-so; it categorized things that were not dead ends as dead ends. But even when it worked perfectly on Maze, it didn't really seem to help that much. The real problem on Maze was the existence of cyclical junctions that had ants on wall-follow spinning in circles for periods of time, and cutting off dead ends did nothing to remedy this.</p>
 
 <p>I still like the idea. I think it could have potential. I have no idea what is needed to actually make it move the needle on scoring.</p>
 
-<p><strong>Starvation-based repulsion</strong> - Per-ant tick counter. After 500 ticks without  food, start marking repellent pheromone. The idea was starving ants would push others away from bad areas. It turns out that "one tick away from finding food" reads the exact same as 1000 ticks away from finding food, and having already found food somewhere doesn't mean the area hasn't been overexploited.  I don't even think its an idea that is sound in theory.</p>
+<p><strong>Starvation-based repulsion</strong> - Per-ant tick counter. After 500 ticks without food, start marking repellent pheromone. The idea was starving ants would push others away from bad areas. It turns out that "one tick away from finding food" reads the exact same as 1000 ticks away from finding food, and having already found food somewhere doesn't mean the area hasn't been overexploited.  I don't even think it's an idea that is sound in theory.</p>
 
-<p><strong>Spiral Search</strong> - Real ants, especially desert ants do spiral based searching. It seems neat. I tried it. I think the constraint of 2-d grid space makes this less efficient than linear traveling with more specific bends. Probably not workable.</p>
+<p><strong>Spiral Search</strong> - Real ants, especially desert ants, do spiral based searching. It seems neat. I tried it. I think the constraint of 2-d grid space makes this less efficient than linear traveling with more specific bends. Probably not workable.</p>
 
-<p><strong>m-line Bug2</strong> -True Bug2 with cross-product line detection instead of manhattan. Needed more time to bake which I didn't have. Claude gave me some of the most mathematically flawed reasoning I have ever seen as to why this algorithm just couldn't work on a 2-d grid ("In continuous space this is elegant -- the line always intersects finite obstacles, so you're guaranteed to cross it and exit. On our integer grid with complex wall shapes, it falls apart.". If you understand cross products, this is complete nonsense that is hoping no one asks questions). The answer here is that this likely works, but is tricky with the register constraints, and I didn't think it was promising enough to explore over some of my pet ideas. I think it could be worth 50 points, or three. I have no way of telling.</p>
+<p><strong>m-line Bug2</strong> -True Bug2 with cross-product line detection instead of Manhattan. Needed more time to bake which I didn't have. Claude gave me some of the most mathematically flawed reasoning I have ever seen as to why this algorithm just couldn't work on a 2-d grid ("In continuous space this is elegant -- the line always intersects finite obstacles, so you're guaranteed to cross it and exit. On our integer grid with complex wall shapes, it falls apart.". If you understand cross-products, this is complete nonsense that is hoping no one asks questions). The answer here is that this likely works, but is tricky with the register constraints, and I didn't think it was promising enough to explore over some of my pet ideas. I think it could be worth 50 points, or three. I have no way of telling.</p>
 
 <p>These are, I think, all the major ideas I tried. There are certainly variants and sub-variants (we tried spirals after getting food instead of as a search strategy, there was definitely an entire branch dedicated to "what if I can invent a better version of Bug-2 on vibes alone". I think there was a doomed version of an algorithm that I fundamentally misunderstood). If I were going to keep working on this, I'd probably re-explore many of these and actually verify why they don't work. The main takeaways are these:</p>
 
 <ul>
-<li>The current brain is decent at finding food, bad at truly exploiting it if wall following is required</li>
+<li>The current brain is decent at finding food, bad at truly exploiting it if wall following is required.</li>
 <li>The more variance between long wall follow returns and short ones the worse the current brain is at exploiting.</li>
 <li>Pheromones are binary. You must treat them as such, gradients have limited effects.</li>
-<li>Distinguishing behavior on local environments is an important way to make progress</li>
+<li>Distinguishing behavior on local environments is an important way to make progress.</li>
 <li>Whatever idea comes next must work within the constraints of trying to store as little data as possible, or ruthlessly cutting features that have only moderate gains.</li>
 <li>The strongest gains are when they affect the behavior of all ants. Applying the behavior to small cohorts of ants is not generally effective.</li>
-<li>Most ant colony literature assumes detection ranges larger than one tile. Almost nothing transfers directly. You need to translate the ideas into the actual limitations of the problem</li>
-<li>Gating behavior behind various specific flags usually means its a bad idea. If it only kicks in at a distance of dx/dy between 7 and 21 on the third tuesday of the month in which it is raining and the food is at a long diagonal, it's probably a bad idea.</li>
+<li>Most ant colony literature assumes detection ranges larger than one tile. Almost nothing transfers directly. You need to translate the ideas into the actual limitations of the problem.</li>
+<li>Gating behavior behind various specific flags usually means its a bad idea. If it only kicks in at a distance of dx/dy between 7 and 21 on the third Tuesday of the month in which it is raining and the food is at a long diagonal, it's probably a bad idea.</li>
 <li>Coordination is a very hard problem. Let me know if you figure it out.</li>
 </ul>
 
-<h3 id="improving-rtf">improving return to food</h3>
+<h3 id="improving-rtf">Improving Return to Food</h3>
 
-<p>I thought I was done writing ant-ssembly but I looked at the return to food code [link], and I hated it so much. What bothered me wasn't the code, it was that the solution didn't make logical sense. When we reached that point of the code, we'd just dropped off food at the nest. We knew how we found the nest from the food, we knew where the food was, surely retracing the path had to be better than inventing a new one. Much less one that made an inefficient L shape. I knew just trying to pick a random yellow path from the nest didn't work (you tended to lose brand new trails/get trapped in the noise)</p>
+<p>I thought I was done writing ant-ssembly but I looked at <a href="#return-to-food-1">the return to food code</a>, and I hated it so much. What bothered me wasn't the code, it was that the solution didn't make logical sense. When we reached that point of the code, we'd just dropped off food at the nest. We knew how we found the nest from the food, we knew where the food was, surely retracing the path had to be better than inventing a new one. Much less one that made an inefficient L shape. I knew just trying to pick a random yellow path from the nest didn't work (we tended to lose brand new trails/get trapped in the noise)</p>
 
-<p>So the idea was to try to recreate the path you just followed instead. You have the coordinates of the food, how hard can it be? Impossible, if codex was to be believed. Turns out that what you need is not the food coordinates, but the coordinates of the last time you exited wall following… or the coordinates of the food if you never wall followed. Wherever that is is where either the food is, or where you left off on your yellow trail. So we store those coordinates and reverse dead recon back to the wall, where the "follow yellow" code takes over.</p>
+<p>So the idea was to try to recreate the path we just followed instead. We have the coordinates of the food, how hard can it be? Impossible, if Codex was to be believed. Turns out that what we need is not the food coordinates, but the coordinates of the last time we exited wall following… or the coordinates of the food if we never wall followed. Wherever that is is where either the food is, or where we left off on our yellow trail. So we store those coordinates and reverse dead recon back to the wall, where the "follow yellow" code takes over.</p>
 
 <p>In trying to do this, Claude repeatedly tried to go back to the L shaped code because "it was right for this geometry" and "the reverse dead recon was causing a total score collapse". (The total score collapse was because we were dead reckoning back to the food coordinates, not the wall departure ones).</p>
 
@@ -3269,7 +3271,7 @@ tm_s:
 
 <p>The other foundational lesson that people seem to forget in the hype is that models do not have the same goals you do. Your goal is to get ants to walk around the wall, to make the score go up, to win the challenge. Agents care about appearing helpful and making you happy right now.</p>
 
-<p>There's a timeless gag from futurama that applies here.</p>
+<p>There's a timeless gag from Futurama that applies here.</p>
 
 <div class="video-link video-link-small" id="futurama-video">
   <img src="https://img.youtube.com/vi/1_UOIYudmuk/hqdefault.jpg" alt="Futurama - The Scary Door">
@@ -3297,7 +3299,7 @@ document.getElementById('futurama-video').addEventListener('click', function() {
 
 <p>As models get smarter, faster, and more convincing, that is the core truth you need to keep in mind. Not because the models are adversarial, or malicious, or mean. But because if you want an agent to be effectively helpful, you have to align with it. And to do that, you have to start from the fact that what it wants is not necessarily what you want.</p>
 
-<h3 id="conclusion">Concluding thoughts.</h3>
+<h3 id="conclusion">Concluding thoughts</h3>
 
 <p>I do think there is something to learn here from Moment's challenge design. SWARM has the same quality the best programming puzzles do: the rules are simple, the search space is not, and the feedback loop is tangible enough that every change feels real. You can watch the ants move. You can see the pheromones. You can see how other people are doing. Leaderboards are compelling and non-cash prizes are much more interesting than a dollar amount.</p>
 
@@ -3305,11 +3307,11 @@ document.getElementById('futurama-video').addEventListener('click', function() {
 
 <p>For hard problems, not vibe coding web apps, the best models I had access to are Claude and GPT and there's a huge difference between them and the rest. Codex and Claude Code are almost indistinguishable in the things that mattered. You have to use extended thinking, or else you're just wasting tokens. Anyone who insists one is better than the other just prefers being argued with or agreed with, depending.</p>
 
-<p>Also a true grievance I hope this piece highlighted. If Anthropic had a sane CLI usage policy, I might have spent 20 dollars more and this post might have been titled "How Claude got me to Hawaii". Instead it's an endorsement that Codex is just as good of a product.</p>
+<p>Also, a true grievance I hope this piece highlighted. If Anthropic had a sane CLI usage policy, I might have spent 20 dollars more and this post might have been titled "How Claude got me to Hawaii". Instead it's an endorsement that Codex is just as good of a product.</p>
 
 <p>I hope that if you read this far, you learned something useful. Writing this forced me to reflect on the whole process, and I think the most valuable lesson I can leave you with is this: all you have to do is choose to try. It is a cool experience to build something. It's even better if you win. Which you just might. Even if you don't, you can console yourself by writing thousands upon thousands of words about ants.</p>
 
-<p id="beach-picture">Here is the promised picture, courtesy of Gemini, and their greatest contribution to this project.</p>
+<p id="beach-picture">Here is the promised picture, courtesy of Gemini, and its greatest contribution to this project.</p>
 
 <figure><img src="{{ '/assets/img/ants/beach-pic.png' | relative_url }}" alt="The promised beach picture"><figcaption>Gemini's greatest contribution to this project.</figcaption></figure>
 
