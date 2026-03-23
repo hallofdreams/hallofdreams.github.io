@@ -722,6 +722,9 @@ canvas.grid-canvas {
   background: var(--accent-glow);
   border-color: var(--accent-dim);
   color: var(--accent);
+  order: -1;
+  margin-top: 0;
+  margin-bottom: 0.75rem;
 }
 
 .mode-toggle .arrow { transition: transform 0.2s; font-size: 0.6rem; }
@@ -754,7 +757,7 @@ canvas.grid-canvas {
 
 .post-title {
   color: var(--accent);
-  font-size: 2.8rem;
+  font-size: 2.0rem;
   font-weight: 700;
   letter-spacing: -0.01em;
   margin-bottom: 1rem;
@@ -870,11 +873,13 @@ div.blog-content h3 { font-size: 1.15rem; }
 
 .blog-content a {
   color: var(--cyan);
-  text-decoration: none;
+  text-decoration: underline;
+  text-decoration-color: var(--border-bright);
+  text-underline-offset: 2px;
 }
 
 .blog-content a:hover {
-  text-decoration: underline;
+  text-decoration-color: var(--cyan);
 }
 
 .blog-content strong {

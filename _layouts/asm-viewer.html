@@ -60,7 +60,7 @@
 
 <header class="post-header">
   <span class="post-title-prefix">~/posts/2026 $</span>
-  <h1 class="post-title">The Ant-ssembly Line</h1>
+  <h1 class="post-title">Agents and Ants<br>Antagonists in Assembly</h1>
   <div class="post-meta">
     <span class="post-author">Felipe</span>
     <span class="post-date">March 22, 2026</span>
@@ -171,13 +171,13 @@ document.getElementById('hero-video').addEventListener('click', function() {
 <li>An actual clear indicator of where it was applicable.</li>
 </ol>
 
-<p>A folder with timestamped files, and an INDEX.MD with the metadata would have been a much stronger approach. Having an agent to maintain the INDEX.MD is probably the way to go.I learned that having a standing instruction like "when you're done researching, read INDEX.MD and update it", you'll find you often have to manually remind the agent of this because they'll "do it later" and when you remind them they'll promise to "be more on top of it". A hook of some kind works better.  Either an "on session end" hook or a cron job, depending on the length of your project.</p>
+<p>A folder with timestamped files, and an INDEX.MD with the metadata would have been a much stronger approach. Having an agent to maintain the INDEX.MD is probably the way to go. I learned that having a standing instruction like "when you're done researching, read INDEX.MD and update it" is pointless. You'll find you often have to manually remind the agent of this because they'll "do it later" and when you remind them they'll promise to "be more on top of it". A hook of some kind works better.  Either an "on session end" hook or a cron job, depending on the length of your project.</p>
 
 <p>Regardless, I was now armed with the knowledge of an amateur but highly specialized entomologist. I'd gotten to do the most enjoyable part of the project, which is doing the reading and writing the basic working code that lets you know that yes, you are some kind of programming god. Which is a great time to wrap up a project. Before the regret of your bad decisions can begin to catch up with you.</p>
 
 <p>Instead I decided that random walks were not really where we wanted to be.</p>
 
-<p>I'd just finished reading the paper on Lévy flights. I didn't have a clear idea of how to implement a Lévy flight, or what a Lévy flight even was, but the gist of it seemed to be that you could make a power law distribution to cover space efficiently, and that this would let me spread my ants out into patterns of exploration that were more efficient than "walk randomly, hope for the best".</p>
+<p>I'd just finished reading the paper on Lévy flights. I didn't have a clear idea of how to implement a Lévy flight, or what a Lévy even was, but the gist of it seemed to be that you could make a power law distribution to cover space efficiently, and that this would let me spread my ants out into patterns of exploration that were more efficient than "walk randomly, hope for the best".</p>
 
 <p>"A power law distribution" sounds very fancy, but the core algorithm is actually relatively simple. An ant picks a heading and a length, e.g. north 18 moves. You use a distribution to make it so you do a lot of short local walks and then take a long walk away. Which is how animals in nature do most of their exploring, you search a local area, get bored, go far away, search that new area, repeat.</p>
 
@@ -323,7 +323,7 @@ document.getElementById('hero-video').addEventListener('click', function() {
 
 <h3 id="ant-to-water">You can take an ant to water, but you can't make it think</h3>
 
-<p>If Friday was categorized by triumphs, Saturday was the day of the slow, endless grind. Between rounds of slay the spire, diaper changes, one quick grocery trip, and other miscellaneous things, the agents churned along, burning tokens with the intensity of a train conductor shoveling coal into a sputtering locomotive.We'd pulled all the guardrails from wall following, one by one, and it netted another thirty points. We sat at 420. The bottom of the leaderboard was at 500. One breakthrough away.</p>
+<p>If Friday was categorized by triumphs, Saturday was the day of the slow, endless grind. Between rounds of slay the spire, diaper changes, one quick grocery trip, and other miscellaneous things, the agents churned along, burning tokens with the intensity of a train conductor shoveling coal into a sputtering locomotive.  We'd pulled all the guardrails from wall following, one by one, and it netted another thirty points. We sat at 420. The bottom of the leaderboard was at 500. One breakthrough away.</p>
 
 <p>No breakthrough seemed forthcoming. I was convinced that pheromones were the key. We just needed another working approach. We tried tuning the red pheromones used to indicate direction. No dice. One Claude session (Footman) spent several hours painstakingly tuning parameters until I intervened and asked it to just write a script. The conversations with LLMs went somewhat like this:</p>
 
@@ -3329,13 +3329,15 @@ tm_s:
 
 <p><strong>Fresh source audition</strong> - Randomize the first carrying-home path before yellow crystallizes the route. Basically, don't start painting until you've Lévy walked once away. See if a random path finds a better highway. Unsurprisingly, guiding other ants to a point near the food but not the food is worse than guiding them to the food.</p>
 
-<p><strong>Pledge algorithm</strong> - The Pledge algorithm is a maze-solving method. You pick a direction you want to go.  Walk that way. When you hit a wall, start wall-following, but keep a turn counter. Every time you turn clockwise, add 1. Every time you turn counterclockwise, subtract 1. When the counter reaches zero AND you're facing your original direction, exit wall-following and resume walking North.</p>
+<p><strong>Pledge algorithm</strong> - The Pledge algorithm is a maze-solving method. You pick a direction you want to go.  Walk that way. When you hit a wall, start wall-following, but keep a turn counter. Every time you turn clockwise, add 1. Every time you turn counterclockwise, subtract 1. When the counter reaches zero AND you're facing your original direction, exit wall-following and resume walking the direction you were going.</p>
 
 <p>The idea is that the turn counter tracks whether you've gone all the way around an obstacle. If you turn left into a dead end and then right to come back out, the counter balances back to zero you've cleared the obstacle.Regular Bug2 exits when manhattan improves. Pledge exits when turns balance out.</p>
 
 <p>It was hard to implement with jagged walls, and overall more often than not you don't know which direction food lies, so it's less good than Bug2. It might make sense for the return path, but I didn't have enough registers, instructions, or patience to try it out fully.</p>
 
-<p><strong>Map specific algorithm selection</strong> - If we could detect that a map was Fortress or Gauntlet (or what have you), we could figure out a specific sub-routine, and given the way maps place nests and walls, it should be possible to quickly break a map into one of the existing categories by only checking a few data points. This is actually what inspired the wall density detection. Unfortunately anything more granular than that requires something like "Everyone match north ten steps, then back to nest, then west ten steps, then back to nest and if x y and z it might be gauntlet." Or heuristics like "if your y distance from nest never increases more than z". None of them were sufficiently granular. Nor did we have a sufficiently clever strategy for one particular map that the overhead of map detection was worth it.</p>
+<p><strong>Map specific algorithm selection</strong> - If we could detect that a map was Fortress or Gauntlet (or what have you), we could figure out a specific sub-routine, and given the way maps place nests and walls, it should be possible to quickly break a map into one of the existing categories by only checking a few data points. This is actually what inspired the wall density detection.</p>
+
+<p>Unfortunately anything more granular than that requires something like "Everyone match north ten steps, then back to nest, then west ten steps, then back to nest and if x y and z it might be gauntlet." Or heuristics like "if your y distance from nest never increases more than z". None of them were sufficiently granular. Nor did we have a sufficiently clever strategy for one particular map that the overhead of map detection was worth it.</p>
 
 <p><strong>Temporal trail filtering</strong> - One of my least favorite ideas. I tried it partly because it showed up in the literature, and partly because Gemini in particular would not stop insisting it should work.</p>
 
@@ -3393,7 +3395,7 @@ tm_s:
 
 <p>I knew models could fail me like this, because I had already spent three weeks on my Farmtorio project swearing I would rather do the work by hand than trust Sonnet 3.5 again, after replacing yet another swath of unit tests it had helpfully rewritten to assert true == true. It was easier to spot than "not looking at the ants," but it was the same behavior.</p>
 
-<p>At one point, I asked ChatGPT 4.2 (reasoning medium, because I had not realized Codex had defaulted back to it when I restarted the session) to implement early exit from wall following under certain conditions. The code did not work. I could plainly see the ants refusing to leave the wall.</p>
+<p>At one point, I asked ChatGPT (reasoning medium, because I had not realized Codex had defaulted back to it when I restarted the session) to implement early exit from wall following under certain conditions. The code did not work. I could plainly see the ants refusing to leave the wall.</p>
 
 <p>ChatGPT spent several loops arguing with me that it had technically implemented what I had asked, that the observed behavior was therefore correct, and that I should ignore the intent of the request because the literal implementation had been satisfied.</p>
 
