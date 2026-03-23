@@ -654,6 +654,19 @@ document.getElementById('hero-video').addEventListener('click', function() {
   yellow_cooldown:
       ADD r6 1
       JMP frontier_levy
+ follow_food_lane_here:
+      JLT r7 2 fflh_no_basin
+      SET ret 1
+      JMP fflh_basin_ready
+  fflh_no_basin:
+      SET ret 0
+  fflh_basin_ready:
+      SNIFF CH_YELLOW HERE r7
+      JEQ fdir 1 fflh_from_n
+      JEQ fdir 2 fflh_from_e
+      JEQ fdir 3 fflh_from_s
+      JEQ fdir 4 fflh_from_w
+      JMP follow_food_lane
 
 flh_from_n:
       SNIFF CH_YELLOW 4 r0
@@ -990,6 +1003,26 @@ fflh_w_any_e:
     PROBE 2 r0
     JEQ r0 1 frontier_levy
     JMP fflh_abort
+
+ fflh_abort:
+      SET r6 -20
+      JMP frontier_levy
+  fflh_go_n:
+      SET fdir 1
+      SET steps 1
+      JMP levy_go
+  fflh_go_e:
+      SET fdir 2
+      SET steps 1
+      JMP levy_go
+  fflh_go_s:
+      SET fdir 3
+      SET steps 1
+      JMP levy_go
+  fflh_go_w:
+      SET fdir 4
+      SET steps 1
+      JMP levy_go
 
 follow_food_lane:
       ; Off-lane behavior: step onto the adjacent yellow cell directly.
@@ -1877,32 +1910,19 @@ tm_s:
     </div>
   </div>
 
-  <!-- ═══════ Section 3: Yellow Following (North) ═══════ -->
+  <!-- ═══════ Section 3: Follow Food Lane Here (Basin + Direction) ═══════ -->
   <div class="asm-section" data-section="3">
     <div class="section-header" data-toggle-section="3">
       <span class="section-arrow">&#9654;</span>
-      <span class="section-title">Yellow Following (North)</span>
+      <span class="section-title">Follow Food Lane Here</span>
     </div>
     <div class="section-body">
       <div class="code-lines"></div>
       <div class="section-explanation">
         <div class="view-overview" data-view-overview="3">
           <p class="overview-text">
-          This next block is a monster, it's the yellow following logic. But don't be intimidated, it's literally the same 71 instructions, just for each cardinal direction.
-        </p>
-        <p class="overview-text">
-          Yes, it's a grossly inefficient use of instructions, thanks for asking. But every time I tried to collapse it into base logic with set rotation I'd somehow wind up with intractable bugs that I struggled to understand, or just lost a handful of points to spending extra ops from the ants 64 ops per tick budget. So it stayed as a monster.
-        </p>
-        <p class="overview-text">
-          In these 71 instructions repeated four times, we do five things. I'm going to use the north facing code as the example, but feel free to rotate the ant in your brain (wheee!)
-        </p>
-        <ul class="overview-list">
-          <li><strong>Segment detection.</strong> "Keep going the direction you're going unless the yellow has ended, in which case you're at a junction and should check left and right."</li>
-          <li><strong>Basin detection.</strong> A clever little detour that bought us about 40 points on Bridges. Did this ant take two or more consecutive steps toward the nest during its last foraging L&eacute;vy walk? If so, and it is now foraging while standing on yellow, that usually means it has wandered into the basin around a food cluster.</li>
-          <li><strong>Preferred walk.</strong> Try forward, left, right, back in that order. For each: is there yellow? Is it open? Is its intensity lower than where I'm standing? First match wins.</li>
-          <li><strong>Relaxed walk.</strong> Same as preferred but ignore intensity &mdash; handles parallel courses and merged routes.</li>
-          <li><strong>Give up.</strong> If you can't find more yellow, abandon trail and L&eacute;vy flight away.</li>
-        </ul>
+            The ant is standing on yellow. Before dispatching to the direction-specific yellow following code, we check for basin detection: did this ant recently take two or more steps toward the nest? If so, set a flag so the yellow follower knows to try spreading out. Then sniff the current cell's yellow intensity and dispatch based on which direction the ant is heading.
+          </p>
           <button class="mode-toggle" data-toggle="3">
             <span class="arrow">&#9654;</span> Register details
           </button>
@@ -1911,7 +1931,7 @@ tm_s:
           <div class="detail-left">
             <h3>Registers</h3>
             <div class="scenario-bar" data-scenario-bar="3"></div>
-          <p class="detail-desc" data-detail-desc="3"></p>
+            <p class="detail-desc" data-detail-desc="3"></p>
             <div class="register-viz" data-regviz="3"></div>
             <button class="mode-toggle viewing-detail" data-toggle="3" style="margin-top:0.75rem">
               <span class="arrow">&#9654;</span> Overview
@@ -1934,63 +1954,32 @@ tm_s:
     </div>
   </div>
 
-  <!-- ═══════ Section 4: Yellow Following (East) ═══════ -->
-  <div class="asm-section" data-section="4">
-    <div class="section-header" data-toggle-section="4">
-      <span class="section-arrow">&#9654;</span>
-      <span class="section-title">Yellow Following (East)</span>
-    </div>
-    <div class="section-body">
-      <div class="code-lines"></div>
-      <div class="section-explanation">
-        <div class="view-overview" data-view-overview="4">
-          <p class="overview-text">
-          This is the yellow following code we saw in Yellow Following (North), just rotated to face east.
-        </p>
-          <button class="mode-toggle" data-toggle="4">
-            <span class="arrow">&#9654;</span> Register details
-          </button>
-        </div>
-        <div class="view-detail" data-view-detail="4">
-          <div class="detail-left">
-            <h3>Registers</h3>
-            <div class="scenario-bar" data-scenario-bar="4"></div>
-          <p class="detail-desc" data-detail-desc="4"></p>
-            <div class="register-viz" data-regviz="4"></div>
-            <button class="mode-toggle viewing-detail" data-toggle="4" style="margin-top:0.75rem">
-              <span class="arrow">&#9654;</span> Overview
-            </button>
-          </div>
-          <div class="detail-right">
-            <span class="grid-label">ant world</span>
-            <div class="grid-container">
-              <canvas class="grid-canvas" data-grid="4" width="384" height="384"></canvas>
-            </div>
-            <div class="grid-status" data-grid-status="4"></div>
-            <div class="grid-controls">
-              <button class="grid-btn" data-grid-prev="4">&#9664; prev</button>
-              <button class="grid-btn" data-grid-play="4">&#9654; play</button>
-              <button class="grid-btn" data-grid-next="4">next &#9654;</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ═══════ Section 5: Yellow Following (South) ═══════ -->
+  <!-- ═══════ Section 5: Yellow Following (North) ═══════ -->
   <div class="asm-section" data-section="5">
     <div class="section-header" data-toggle-section="5">
       <span class="section-arrow">&#9654;</span>
-      <span class="section-title">Yellow Following (South)</span>
+      <span class="section-title">Yellow Following (North)</span>
     </div>
     <div class="section-body">
       <div class="code-lines"></div>
       <div class="section-explanation">
         <div class="view-overview" data-view-overview="5">
           <p class="overview-text">
-          This is the yellow following code we saw in Yellow Following (North), just rotated to face south.
+          This next block is a monster, it's the yellow following logic. But don't be intimidated, it's literally the same 71 instructions, just for each cardinal direction.
         </p>
+        <p class="overview-text">
+          Yes, it's a grossly inefficient use of instructions, thanks for asking. But every time I tried to collapse it into base logic with set rotation I'd somehow wind up with intractable bugs that I struggled to understand, or just lost a handful of points to spending extra ops from the ants 64 ops per tick budget. So it stayed as a monster.
+        </p>
+        <p class="overview-text">
+          In these 71 instructions repeated four times, we do five things. I'm going to use the north facing code as the example, but feel free to rotate the ant in your brain (wheee!)
+        </p>
+        <ul class="overview-list">
+          <li><strong>Segment detection.</strong> "Keep going the direction you're going unless the yellow has ended, in which case you're at a junction and should check left and right."</li>
+          <li><strong>Basin detection.</strong> A clever little detour that bought us about 40 points on Bridges. Did this ant take two or more consecutive steps toward the nest during its last foraging L&eacute;vy walk? If so, and it is now foraging while standing on yellow, that usually means it has wandered into the basin around a food cluster.</li>
+          <li><strong>Preferred walk.</strong> Try forward, left, right, back in that order. For each: is there yellow? Is it open? Is its intensity lower than where I'm standing? First match wins.</li>
+          <li><strong>Relaxed walk.</strong> Same as preferred but ignore intensity &mdash; handles parallel courses and merged routes.</li>
+          <li><strong>Give up.</strong> If you can't find more yellow, abandon trail and L&eacute;vy flight away.</li>
+        </ul>
           <button class="mode-toggle" data-toggle="5">
             <span class="arrow">&#9654;</span> Register details
           </button>
@@ -2022,18 +2011,18 @@ tm_s:
     </div>
   </div>
 
-  <!-- ═══════ Section 6: Yellow Following (West) ═══════ -->
+  <!-- ═══════ Section 4: Yellow Following (East) ═══════ -->
   <div class="asm-section" data-section="6">
     <div class="section-header" data-toggle-section="6">
       <span class="section-arrow">&#9654;</span>
-      <span class="section-title">Yellow Following (West)</span>
+      <span class="section-title">Yellow Following (East)</span>
     </div>
     <div class="section-body">
       <div class="code-lines"></div>
       <div class="section-explanation">
         <div class="view-overview" data-view-overview="6">
           <p class="overview-text">
-          This is the yellow following code we saw in Yellow Following (North), just rotated to face west.
+          This is the yellow following code we saw in Yellow Following (North), just rotated to face east.
         </p>
           <button class="mode-toggle" data-toggle="6">
             <span class="arrow">&#9654;</span> Register details
@@ -2066,24 +2055,18 @@ tm_s:
     </div>
   </div>
 
-  <!-- ═══════ Section 7: Follow Food Lane ═══════ -->
+  <!-- ═══════ Section 5: Yellow Following (South) ═══════ -->
   <div class="asm-section" data-section="7">
     <div class="section-header" data-toggle-section="7">
       <span class="section-arrow">&#9654;</span>
-      <span class="section-title">Follow Food Lane</span>
+      <span class="section-title">Yellow Following (South)</span>
     </div>
     <div class="section-body">
       <div class="code-lines"></div>
       <div class="section-explanation">
         <div class="view-overview" data-view-overview="7">
           <p class="overview-text">
-          A recurring problem in this challenge is that most of the literature assumes ants can either sense things at range or that pheromones diffuse on their own. We got neither. With one-tile sensing, you can't really build beacons. SNIFF being 1 tile range instead of 5 means you only know a pheromone is somewhere when you're next to it.
-        </p>
-        <p class="overview-text">
-          This code makes the best of that bad situation. If an exploring ant smells yellow in an adjacent tile, it drops everything else and steps onto the lane. This is the abandon-exploration routine. SNIFF gives us the direction of the strongest adjacent yellow signal. If there is no yellow, or the chosen tile is blocked, we fall back to L&eacute;vy exploration. Otherwise we set that direction, give ourselves a one-step walk, and immediately move onto the trail.
-        </p>
-        <p class="overview-text">
-          Unsurprisingly, the ants' terrible detection range also meant the mythologized stampede collapses that the agents loved to theorize about never really materialized. You can't get a proper stampede if most ants can only discover the lane when they are already one tile away from it.
+          This is the yellow following code we saw in Yellow Following (North), just rotated to face south.
         </p>
           <button class="mode-toggle" data-toggle="7">
             <span class="arrow">&#9654;</span> Register details
@@ -2116,27 +2099,18 @@ tm_s:
     </div>
   </div>
 
-  <!-- ═══════ Section 8: Frontier L&eacute;vy (Blue Gradient) ═══════ -->
+  <!-- ═══════ Section 6: Yellow Following (West) ═══════ -->
   <div class="asm-section" data-section="8">
     <div class="section-header" data-toggle-section="8">
       <span class="section-arrow">&#9654;</span>
-      <span class="section-title">Frontier L&eacute;vy (Blue Gradient)</span>
+      <span class="section-title">Yellow Following (West)</span>
     </div>
     <div class="section-body">
       <div class="code-lines"></div>
       <div class="section-explanation">
         <div class="view-overview" data-view-overview="8">
           <p class="overview-text">
-          This is the exploration engine. No yellow anywhere, the ant is on its own. Check for blue pheromones in all four directions. Blue is the "I was here" marker. Every ant paints <code>CH_BLUE 100</code> on every step. Pick the direction with the lowest blue, that's where the fewest ants have been recently.
-        </p>
-        <p class="overview-text">
-          The scan starts from a random direction. This fixed an actual stampede issue. Without it, all 200 ants check N > E > S > W in the same order, ties go to the last direction checked, and the entire colony drifts the same way. Random start gives each ant an independent tie-breaker.
-        </p>
-        <p class="overview-text">
-          If the best frontier direction is blocked, we do a crude anti-gradient fallback: smell for the strongest blue nearby and try the opposite direction instead. If that is also blocked, give up and pick a random heading.
-        </p>
-        <p class="overview-text">
-          This code was the hard earned work of a bunch of experiments, and frustratingly it isn't worth that much. 18 points. The biggest winner was Bridge. Open maps didn't care at all. Claude loved trying to tune the values here, and I remain convinced that you can do something more clever with the density gradient.
+          This is the yellow following code we saw in Yellow Following (North), just rotated to face west.
         </p>
           <button class="mode-toggle" data-toggle="8">
             <span class="arrow">&#9654;</span> Register details
@@ -2169,24 +2143,68 @@ tm_s:
     </div>
   </div>
 
-  <!-- ═══════ Section 9: L&eacute;vy Flight Length ═══════ -->
+  <!-- ═══════ Section 4: Yellow Follow Abort + Go Helpers ═══════ -->
+  <div class="asm-section" data-section="4">
+    <div class="section-header" data-toggle-section="4">
+      <span class="section-arrow">&#9654;</span>
+      <span class="section-title">Abort + Go Helpers</span>
+    </div>
+    <div class="section-body">
+      <div class="code-lines"></div>
+      <div class="section-explanation">
+        <div class="view-overview" data-view-overview="4">
+          <p class="overview-text">
+            Shared exit points for all four yellow following directions. If the ant gives up on yellow, set r6 to -20 (yellow cooldown, so it doesn't immediately re-enter the trail it just abandoned) and go explore. If the ant found a direction to move, set fdir and steps to 1 and enter the movement kernel for a single step.
+          </p>
+          <button class="mode-toggle" data-toggle="4">
+            <span class="arrow">&#9654;</span> Register details
+          </button>
+        </div>
+        <div class="view-detail" data-view-detail="4">
+          <div class="detail-left">
+            <h3>Registers</h3>
+            <div class="scenario-bar" data-scenario-bar="4"></div>
+            <p class="detail-desc" data-detail-desc="4"></p>
+            <div class="register-viz" data-regviz="4"></div>
+            <button class="mode-toggle viewing-detail" data-toggle="4" style="margin-top:0.75rem">
+              <span class="arrow">&#9654;</span> Overview
+            </button>
+          </div>
+          <div class="detail-right">
+            <span class="grid-label">ant world</span>
+            <div class="grid-container">
+              <canvas class="grid-canvas" data-grid="4" width="384" height="384"></canvas>
+            </div>
+            <div class="grid-status" data-grid-status="4"></div>
+            <div class="grid-controls">
+              <button class="grid-btn" data-grid-prev="4">&#9664; prev</button>
+              <button class="grid-btn" data-grid-play="4">&#9654; play</button>
+              <button class="grid-btn" data-grid-next="4">next &#9654;</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ Section 9: Follow Food Lane ═══════ -->
   <div class="asm-section" data-section="9">
     <div class="section-header" data-toggle-section="9">
       <span class="section-arrow">&#9654;</span>
-      <span class="section-title">L&eacute;vy Flight Length</span>
+      <span class="section-title">Follow Food Lane</span>
     </div>
     <div class="section-body">
       <div class="code-lines"></div>
       <div class="section-explanation">
         <div class="view-overview" data-view-overview="9">
           <p class="overview-text">
-          At this point, <code>fdir</code> has the direction we've decided to go. It is, at last, time to decide how far. Three possibilities: we're in a dense wall area (<code>r6</code> > 0), so do a short walk (2-5 steps). Or sniff blue &mdash; if between 200 and 254, you're in a highly explored area, try to escape with a medium or long flight. Otherwise, normal distribution: 10% short, 25% medium, 45% long, 20% extra-long (46-120 steps).
+          A recurring problem in this challenge is that most of the literature assumes ants can either sense things at range or that pheromones diffuse on their own. We got neither. With one-tile sensing, you can't really build beacons. SNIFF being 1 tile range instead of 5 means you only know a pheromone is somewhere when you're next to it.
         </p>
         <p class="overview-text">
-          The distribution is deliberately lopsided toward long. 65% of L&eacute;vies are 14+ steps. The idea is that with 200 ants, the optimal exponent shifts toward longer steps. Long flights are what find food on bridge crossings, island edges, and gauntlet gaps that are 50+ tiles from the nest.
+          This code makes the best of that bad situation. If an exploring ant smells yellow in an adjacent tile, it drops everything else and steps onto the lane. This is the abandon-exploration routine. SNIFF gives us the direction of the strongest adjacent yellow signal. If there is no yellow, or the chosen tile is blocked, we fall back to L&eacute;vy exploration. Otherwise we set that direction, give ourselves a one-step walk, and immediately move onto the trail.
         </p>
         <p class="overview-text">
-          Note <code>lv_long</code> has no <code>JMP levy_go</code>. It falls through directly into the movement kernel on the next line. Saves one instruction. I tested different distributions, removing the gradient escape, and getting rid of the wall density stuff. If you remove everything the score drops by 28 points, but any given feature individually only contributes 5-6 points.
+          Unsurprisingly, the ants' terrible detection range also meant the mythologized stampede collapses that the agents loved to theorize about never really materialized. You can't get a proper stampede if most ants can only discover the lane when they are already one tile away from it.
         </p>
           <button class="mode-toggle" data-toggle="9">
             <span class="arrow">&#9654;</span> Register details
@@ -2219,30 +2237,27 @@ tm_s:
     </div>
   </div>
 
-  <!-- ═══════ Section 10: Movement Kernel ═══════ -->
+  <!-- ═══════ Section 8: Frontier L&eacute;vy (Blue Gradient) ═══════ -->
   <div class="asm-section" data-section="10">
     <div class="section-header" data-toggle-section="10">
       <span class="section-arrow">&#9654;</span>
-      <span class="section-title">Movement Kernel</span>
+      <span class="section-title">Frontier L&eacute;vy (Blue Gradient)</span>
     </div>
     <div class="section-body">
       <div class="code-lines"></div>
       <div class="section-explanation">
         <div class="view-overview" data-view-overview="10">
           <p class="overview-text">
-          Welcome to the movement kernel. If you're moving, you have to come through here. Everything that moves goes through <code>step</code>. L&eacute;vy walks, yellow lane steps, return-to-food legs, beacon follows &mdash; they all set <code>fdir</code> and <code>steps</code>, then jump to <code>levy_go</code>.
+          This is the exploration engine. No yellow anywhere, the ant is on its own. Check for blue pheromones in all four directions. Blue is the "I was here" marker. Every ant paints <code>CH_BLUE 100</code> on every step. Pick the direction with the lowest blue, that's where the fewest ants have been recently.
         </p>
         <p class="overview-text">
-          The movement kernel doesn't decide <em>where</em> to go or <em>how far</em>. That's already been decided before it runs. It just executes one step of whatever was decided, handles the wall-or-open outcome, and goes back to the top of the loop.
+          The scan starts from a random direction. This fixed an actual stampede issue. Without it, all 200 ants check N > E > S > W in the same order, ties go to the last direction checked, and the entire colony drifts the same way. Random start gives each ant an independent tie-breaker.
         </p>
         <p class="overview-text">
-          From <code>step</code>, there are three possibilities:<br>
-          <strong>1. Open path</strong> &rarr; step_open &rarr; prog_reset/prog_bump &rarr; mloop. The ant moved. dx/dy updated. Back to the top.<br>
-          <strong>2. Wall during normal Lévy</strong> &rarr; levy_wall_hit. Enters search wall-follow. Sets steps negative, picks handedness.<br>
-          <strong>3. Wall during return-to-food</strong> &rarr; step_rtf &rarr; try_move &rarr; mloop. Rotates around the wall, moves, back to the top.
+          If the best frontier direction is blocked, we do a crude anti-gradient fallback: smell for the strongest blue nearby and try the opposite direction instead. If that is also blocked, give up and pick a random heading.
         </p>
         <p class="overview-text">
-          The movement kernel always returns to <code>mloop</code>. And every time it returns, the very first thing checked is <code>CARRYING</code> and <code>SENSE FOOD</code>, so the ant never walks past food or forgets to go home.
+          This code was the hard earned work of a bunch of experiments, and frustratingly it isn't worth that much. 18 points. The biggest winner was Bridge. Open maps didn't care at all. Claude loved trying to tune the values here, and I remain convinced that you can do something more clever with the density gradient.
         </p>
           <button class="mode-toggle" data-toggle="10">
             <span class="arrow">&#9654;</span> Register details
@@ -2275,27 +2290,24 @@ tm_s:
     </div>
   </div>
 
-  <!-- ═══════ Section 11: Wall Hit &amp; Search Wall-Follow ═══════ -->
+  <!-- ═══════ Section 9: L&eacute;vy Flight Length ═══════ -->
   <div class="asm-section" data-section="11">
     <div class="section-header" data-toggle-section="11">
       <span class="section-arrow">&#9654;</span>
-      <span class="section-title">Wall Hit &amp; Search Wall-Follow</span>
+      <span class="section-title">L&eacute;vy Flight Length</span>
     </div>
     <div class="section-body">
       <div class="code-lines"></div>
       <div class="section-explanation">
         <div class="view-overview" data-view-overview="11">
           <p class="overview-text">
-          An ant is walking in a straight line and hits a wall. It can't keep going. What should it do? The naive answer is <code>try_move</code>, rotate clockwise, see if that direction works. But it wastes the wall encounter. Some walls have structure &mdash; corridors, rooms, passages. If you just bounce off, you learn nothing about the shape of the obstacle.
+          At this point, <code>fdir</code> has the direction we've decided to go. It is, at last, time to decide how far. Three possibilities: we're in a dense wall area (<code>r6</code> > 0), so do a short walk (2-5 steps). Or sniff blue &mdash; if between 200 and 254, you're in a highly explored area, try to escape with a medium or long flight. Otherwise, normal distribution: 10% short, 25% medium, 45% long, 20% extra-long (46-120 steps).
         </p>
         <p class="overview-text">
-          What we settled on is that an ant should trace the wall for a while. How many steps? If the ant barely walked before hitting a wall (7 steps or fewer), it's in dense terrain. A short 6-step trace. If it walked 8+ steps, it's sparser terrain, do a 35-step trace.
+          The distribution is deliberately lopsided toward long. 65% of L&eacute;vies are 14+ steps. The idea is that with 200 ants, the optimal exponent shifts toward longer steps. Long flights are what find food on bridge crossings, island edges, and gauntlet gaps that are 50+ tiles from the nest.
         </p>
         <p class="overview-text">
-          Which side? Fixed per ant by ID. Even ants always go left, odd always go right. Half the colony traces clockwise, half counterclockwise. While tracing, the ant checks every single step: is there yellow nearby? If yes, abandon the wall and go follow the food trail.
-        </p>
-        <p class="overview-text">
-          This is the Bug2 algorithm that got us our first major breakthrough.
+          Note <code>lv_long</code> has no <code>JMP levy_go</code>. It falls through directly into the movement kernel on the next line. Saves one instruction. I tested different distributions, removing the gradient escape, and getting rid of the wall density stuff. If you remove everything the score drops by 28 points, but any given feature individually only contributes 5-6 points.
         </p>
           <button class="mode-toggle" data-toggle="11">
             <span class="arrow">&#9654;</span> Register details
@@ -2328,18 +2340,30 @@ tm_s:
     </div>
   </div>
 
-  <!-- ═══════ Section 12: Return Leg 2 ═══════ -->
+  <!-- ═══════ Section 10: Movement Kernel ═══════ -->
   <div class="asm-section" data-section="12">
     <div class="section-header" data-toggle-section="12">
       <span class="section-arrow">&#9654;</span>
-      <span class="section-title">Return Leg 2</span>
+      <span class="section-title">Movement Kernel</span>
     </div>
     <div class="section-body">
       <div class="code-lines"></div>
       <div class="section-explanation">
         <div class="view-overview" data-view-overview="12">
           <p class="overview-text">
-          The ant just delivered food and walked the first leg of its L-shaped return. The second leg was stashed in <code>r6</code> as direction&nbsp;*&nbsp;128&nbsp;+&nbsp;distance. Here we unpack it: divide by 128 to recover the direction, mod by 128 to recover the remaining distance, clear <code>r6</code>, and jump back into the movement kernel.
+          Welcome to the movement kernel. If you're moving, you have to come through here. Everything that moves goes through <code>step</code>. L&eacute;vy walks, yellow lane steps, return-to-food legs, beacon follows &mdash; they all set <code>fdir</code> and <code>steps</code>, then jump to <code>levy_go</code>.
+        </p>
+        <p class="overview-text">
+          The movement kernel doesn't decide <em>where</em> to go or <em>how far</em>. That's already been decided before it runs. It just executes one step of whatever was decided, handles the wall-or-open outcome, and goes back to the top of the loop.
+        </p>
+        <p class="overview-text">
+          From <code>step</code>, there are three possibilities:<br>
+          <strong>1. Open path</strong> &rarr; step_open &rarr; prog_reset/prog_bump &rarr; mloop. The ant moved. dx/dy updated. Back to the top.<br>
+          <strong>2. Wall during normal Lévy</strong> &rarr; levy_wall_hit. Enters search wall-follow. Sets steps negative, picks handedness.<br>
+          <strong>3. Wall during return-to-food</strong> &rarr; step_rtf &rarr; try_move &rarr; mloop. Rotates around the wall, moves, back to the top.
+        </p>
+        <p class="overview-text">
+          The movement kernel always returns to <code>mloop</code>. And every time it returns, the very first thing checked is <code>CARRYING</code> and <code>SENSE FOOD</code>, so the ant never walks past food or forgets to go home.
         </p>
           <button class="mode-toggle" data-toggle="12">
             <span class="arrow">&#9654;</span> Register details
@@ -2372,21 +2396,27 @@ tm_s:
     </div>
   </div>
 
-  <!-- ═══════ Section 13: Grab Food ═══════ -->
+  <!-- ═══════ Section 11: Wall Hit &amp; Search Wall-Follow ═══════ -->
   <div class="asm-section" data-section="13">
     <div class="section-header" data-toggle-section="13">
       <span class="section-arrow">&#9654;</span>
-      <span class="section-title">Grab Food</span>
+      <span class="section-title">Wall Hit &amp; Search Wall-Follow</span>
     </div>
     <div class="section-body">
       <div class="code-lines"></div>
       <div class="section-explanation">
         <div class="view-overview" data-view-overview="13">
           <p class="overview-text">
-          The ant sensed food adjacent. <code>try_move</code> moves toward it. Then pack the current position into <code>fdir</code> for later. <code>fdir = (dx + 128) * 256 + (dy + 128)</code>. The +128 shifts both coordinates positive so they pack cleanly into one number. Two signed values crammed into one register, surviving the entire homing trip, unpacked at delivery to compute the return path.
+          An ant is walking in a straight line and hits a wall. It can't keep going. What should it do? The naive answer is <code>try_move</code>, rotate clockwise, see if that direction works. But it wastes the wall encounter. Some walls have structure &mdash; corridors, rooms, passages. If you just bounce off, you learn nothing about the shape of the obstacle.
         </p>
         <p class="overview-text">
-          Remember to mark yellow at the food for our return path. Set <code>r6 = -12</code>. <code>r6</code> is negative for the first 12 homing steps, counting up by 1 each step in <code>home_go</code>. While negative, <code>r6</code> won't be misread as a dense chain flag (positive) or a WF heading (positive), keeping those systems from interfering with early homing.
+          What we settled on is that an ant should trace the wall for a while. How many steps? If the ant barely walked before hitting a wall (7 steps or fewer), it's in dense terrain. A short 6-step trace. If it walked 8+ steps, it's sparser terrain, do a 35-step trace.
+        </p>
+        <p class="overview-text">
+          Which side? Fixed per ant by ID. Even ants always go left, odd always go right. Half the colony traces clockwise, half counterclockwise. While tracing, the ant checks every single step: is there yellow nearby? If yes, abandon the wall and go follow the food trail.
+        </p>
+        <p class="overview-text">
+          This is the Bug2 algorithm that got us our first major breakthrough.
         </p>
           <button class="mode-toggle" data-toggle="13">
             <span class="arrow">&#9654;</span> Register details
@@ -2419,18 +2449,18 @@ tm_s:
     </div>
   </div>
 
-  <!-- ═══════ Section 14: Go Home (Bug2 Check) ═══════ -->
+  <!-- ═══════ Section 12: Return Leg 2 ═══════ -->
   <div class="asm-section" data-section="14">
     <div class="section-header" data-toggle-section="14">
       <span class="section-arrow">&#9654;</span>
-      <span class="section-title">Go Home (Bug2 Check)</span>
+      <span class="section-title">Return Leg 2</span>
     </div>
     <div class="section-body">
       <div class="code-lines"></div>
       <div class="section-explanation">
         <div class="view-overview" data-view-overview="14">
           <p class="overview-text">
-          <strong>Priority 0: Already in Bug2 wall-follow.</strong> If <code>r6</code> is positive, the ant is mid-homing-wall-follow. Skip everything, keep tracing the wall.
+          The ant just delivered food and walked the first leg of its L-shaped return. The second leg was stashed in <code>r6</code> as direction&nbsp;*&nbsp;128&nbsp;+&nbsp;distance. Here we unpack it: divide by 128 to recover the direction, mod by 128 to recover the remaining distance, clear <code>r6</code>, and jump back into the movement kernel.
         </p>
           <button class="mode-toggle" data-toggle="14">
             <span class="arrow">&#9654;</span> Register details
@@ -2463,18 +2493,21 @@ tm_s:
     </div>
   </div>
 
-  <!-- ═══════ Section 15: Go Home (Nest Check) ═══════ -->
+  <!-- ═══════ Section 13: Grab Food ═══════ -->
   <div class="asm-section" data-section="15">
     <div class="section-header" data-toggle-section="15">
       <span class="section-arrow">&#9654;</span>
-      <span class="section-title">Go Home (Nest Check)</span>
+      <span class="section-title">Grab Food</span>
     </div>
     <div class="section-body">
       <div class="code-lines"></div>
       <div class="section-explanation">
         <div class="view-overview" data-view-overview="15">
           <p class="overview-text">
-          <strong>Priority 1: You're at the nest.</strong> If on or adjacent to the nest, deliver the food. At one point I deleted this block and watched the score drop to 0 everywhere.
+          The ant sensed food adjacent. <code>try_move</code> moves toward it. Then pack the current position into <code>fdir</code> for later. <code>fdir = (dx + 128) * 256 + (dy + 128)</code>. The +128 shifts both coordinates positive so they pack cleanly into one number. Two signed values crammed into one register, surviving the entire homing trip, unpacked at delivery to compute the return path.
+        </p>
+        <p class="overview-text">
+          Remember to mark yellow at the food for our return path. Set <code>r6 = -12</code>. <code>r6</code> is negative for the first 12 homing steps, counting up by 1 each step in <code>home_go</code>. While negative, <code>r6</code> won't be misread as a dense chain flag (positive) or a WF heading (positive), keeping those systems from interfering with early homing.
         </p>
           <button class="mode-toggle" data-toggle="15">
             <span class="arrow">&#9654;</span> Register details
@@ -2507,21 +2540,18 @@ tm_s:
     </div>
   </div>
 
-  <!-- ═══════ Section 16: Yellow Highway (Priority 2) ═══════ -->
+  <!-- ═══════ Section 14: Go Home (Bug2 Check) ═══════ -->
   <div class="asm-section" data-section="16">
     <div class="section-header" data-toggle-section="16">
       <span class="section-arrow">&#9654;</span>
-      <span class="section-title">Yellow Highway (Priority 2)</span>
+      <span class="section-title">Go Home (Bug2 Check)</span>
     </div>
     <div class="section-body">
       <div class="code-lines"></div>
       <div class="section-explanation">
         <div class="view-overview" data-view-overview="16">
           <p class="overview-text">
-          <strong>Priority 2: Follow the yellow brick road.</strong> Is there any adjacent yellow? If yes, <code>SNIFF</code> to get its intensity. Skip if zero (decayed), skip if above 252 (saturated near nest, no directional info), skip if walled. Otherwise move toward it. This is the primary homing method. The ant follows the same yellow trail it and other carriers have been painting. No direction validation here. The ant follows yellow wherever it leads, trusting that the trail goes toward nest because it was painted by ants walking home.
-        </p>
-        <p class="overview-text">
-          Directional validation was something both Gemini and Codex loved trying to add, and it always kills maps like pockets where you have to head away from home to get closer.
+          <strong>Priority 0: Already in Bug2 wall-follow.</strong> If <code>r6</code> is positive, the ant is mid-homing-wall-follow. Skip everything, keep tracing the wall.
         </p>
           <button class="mode-toggle" data-toggle="16">
             <span class="arrow">&#9654;</span> Register details
@@ -2554,24 +2584,18 @@ tm_s:
     </div>
   </div>
 
-  <!-- ═══════ Section 17: Green+Yellow Shortcut (Priority 3) ═══════ -->
+  <!-- ═══════ Section 15: Go Home (Nest Check) ═══════ -->
   <div class="asm-section" data-section="17">
     <div class="section-header" data-toggle-section="17">
       <span class="section-arrow">&#9654;</span>
-      <span class="section-title">Green+Yellow Shortcut (Priority 3)</span>
+      <span class="section-title">Go Home (Nest Check)</span>
     </div>
     <div class="section-body">
       <div class="code-lines"></div>
       <div class="section-explanation">
         <div class="view-overview" data-view-overview="17">
           <p class="overview-text">
-          <strong>Priority 3: Green+yellow shortcut.</strong> If standing on a cell with both <code>CH_GREEN</code> and <code>CH_YELLOW</code>, a prior ant wall-followed through here AND it's on a yellow highway. Try cutting straight toward nest for up to 6 steps, painting yellow each step. This peels you away from the wall, hopefully breaking a bad wall follow.
-        </p>
-        <p class="overview-text">
-          I designed this for Gauntlet and Fortress, and while on Fortress it accomplishes nothing (it needed to also merge with another yellow and doing that broke yellow following a lot of the time), on Gauntlet it saves ants caught heading the wrong way for long stretches of time and raises the score by almost 50 points. It costs a handful of points on almost every other map. It's a net ~7-10 points.
-        </p>
-        <p class="overview-text">
-          I strongly suspect that getting this working well is a key element in improving exploitation, specifically making the routes home better.
+          <strong>Priority 1: You're at the nest.</strong> If on or adjacent to the nest, deliver the food. At one point I deleted this block and watched the score drop to 0 everywhere.
         </p>
           <button class="mode-toggle" data-toggle="17">
             <span class="arrow">&#9654;</span> Register details
@@ -2604,21 +2628,21 @@ tm_s:
     </div>
   </div>
 
-  <!-- ═══════ Section 18: Displacement Homing (Priority 5) ═══════ -->
+  <!-- ═══════ Section 16: Yellow Highway (Priority 2) ═══════ -->
   <div class="asm-section" data-section="18">
     <div class="section-header" data-toggle-section="18">
       <span class="section-arrow">&#9654;</span>
-      <span class="section-title">Displacement Homing (Priority 5)</span>
+      <span class="section-title">Yellow Highway (Priority 2)</span>
     </div>
     <div class="section-body">
       <div class="code-lines"></div>
       <div class="section-explanation">
         <div class="view-overview" data-view-overview="18">
           <p class="overview-text">
-          <strong>Priority 4 (gh_red): Dead Code.</strong> Jumps straight to displacement homing. The label exists from when the red pheromone trail was supposed to act as a directional marker. It never worked. I think there's something elegant about the idea of various hints pointing towards food, but it actually doesn't work with the sensor ranges we have available.
+          <strong>Priority 2: Follow the yellow brick road.</strong> Is there any adjacent yellow? If yes, <code>SNIFF</code> to get its intensity. Skip if zero (decayed), skip if above 252 (saturated near nest, no directional info), skip if walled. Otherwise move toward it. This is the primary homing method. The ant follows the same yellow trail it and other carriers have been painting. No direction validation here. The ant follows yellow wherever it leads, trusting that the trail goes toward nest because it was painted by ants walking home.
         </p>
         <p class="overview-text">
-          <strong>Priority 5: Displacement homing.</strong> Dead reckoning home from dx/dy. Compute <code>home_dir</code> (dominant axis), probe it. If open, move. If blocked on the major axis, try the minor axis. If both blocked, enter Bug2. Essentially the dumbest way to try to get home, which works great on maps with limited walls because you just sort of mosey your way on home.
+          Directional validation was something both Gemini and Codex loved trying to add, and it always kills maps like pockets where you have to head away from home to get closer.
         </p>
           <button class="mode-toggle" data-toggle="18">
             <span class="arrow">&#9654;</span> Register details
@@ -2651,24 +2675,24 @@ tm_s:
     </div>
   </div>
 
-  <!-- ═══════ Section 19: Yellow-Guided Bug2 (Priority 6) ═══════ -->
+  <!-- ═══════ Section 17: Green+Yellow Shortcut (Priority 3) ═══════ -->
   <div class="asm-section" data-section="19">
     <div class="section-header" data-toggle-section="19">
       <span class="section-arrow">&#9654;</span>
-      <span class="section-title">Yellow-Guided Bug2 (Priority 6)</span>
+      <span class="section-title">Green+Yellow Shortcut (Priority 3)</span>
     </div>
     <div class="section-body">
       <div class="code-lines"></div>
       <div class="section-explanation">
         <div class="view-overview" data-view-overview="19">
           <p class="overview-text">
-          <strong>Priority 6: Yellow-guided Bug2 entry.</strong> This is a hack to get points on Gauntlet, and it feels like it should be more broadly applicable. The core idea is easy: if you're headed back home, flip your handedness. If you always went left, now always go right. The idea being that this unwinds the path you took initially. If the path to the food has a short route and a long route, an ant who keeps going left every time will first find the food with the short route, and then take the long route home. Inverting means if you found the food quickly, you take the quick route back.
+          <strong>Priority 3: Green+yellow shortcut.</strong> If standing on a cell with both <code>CH_GREEN</code> and <code>CH_YELLOW</code>, a prior ant wall-followed through here AND it's on a yellow highway. Try cutting straight toward nest for up to 6 steps, painting yellow each step. This peels you away from the wall, hopefully breaking a bad wall follow.
         </p>
         <p class="overview-text">
-          The price is ants on the long route to find food also take the long route back. On Gauntlet, the long route + short route is so long that even losing half the ants to long + long and getting half on short + short is a net score increase.
+          I designed this for Gauntlet and Fortress, and while on Fortress it accomplishes nothing (it needed to also merge with another yellow and doing that broke yellow following a lot of the time), on Gauntlet it saves ants caught heading the wrong way for long stretches of time and raises the score by almost 50 points. It costs a handful of points on almost every other map. It's a net ~7-10 points.
         </p>
         <p class="overview-text">
-          This code is janky and buggy and one of the last additions to the codebase. I think it could be better.
+          I strongly suspect that getting this working well is a key element in improving exploitation, specifically making the routes home better.
         </p>
           <button class="mode-toggle" data-toggle="19">
             <span class="arrow">&#9654;</span> Register details
@@ -2701,21 +2725,21 @@ tm_s:
     </div>
   </div>
 
-  <!-- ═══════ Section 20: Start Wall-Follow (Bug2 Entry) ═══════ -->
+  <!-- ═══════ Section 18: Displacement Homing (Priority 5) ═══════ -->
   <div class="asm-section" data-section="20">
     <div class="section-header" data-toggle-section="20">
       <span class="section-arrow">&#9654;</span>
-      <span class="section-title">Start Wall-Follow (Bug2 Entry)</span>
+      <span class="section-title">Displacement Homing (Priority 5)</span>
     </div>
     <div class="section-body">
       <div class="code-lines"></div>
       <div class="section-explanation">
         <div class="view-overview" data-view-overview="20">
           <p class="overview-text">
-          <code>r7</code> holds the blocked direction (the direction the ant was trying to go when it got stuck). Pick handedness by ID. Then rotate from the blocked direction to get the initial heading: right-hand subtracts 1 (if you were blocked going East, face North to keep the wall on your right), left-hand adds 1 (face South to keep the wall on your left). Store heading in <code>r6</code>.
+          <strong>Priority 4 (gh_red): Dead Code.</strong> Jumps straight to displacement homing. The label exists from when the red pheromone trail was supposed to act as a directional marker. It never worked. I think there's something elegant about the idea of various hints pointing towards food, but it actually doesn't work with the sensor ranges we have available.
         </p>
         <p class="overview-text">
-          Then compute the Manhattan distance at entry: <code>|dx| + |dy|</code>. Store in <code>steps</code>. This is the number the ant has to beat. It can only exit Bug2 when its current Manhattan is lower than this. The guarantee: if you follow the wall all the way around an obstacle, you'll eventually reach a point closer to the nest than where you started. It might take the entire perimeter, but it's mathematically guaranteed for finite obstacles. It can take a very long time, though, if the exit is one step to your right and you have to traverse the entire perimeter of the map going left.
+          <strong>Priority 5: Displacement homing.</strong> Dead reckoning home from dx/dy. Compute <code>home_dir</code> (dominant axis), probe it. If open, move. If blocked on the major axis, try the minor axis. If both blocked, enter Bug2. Essentially the dumbest way to try to get home, which works great on maps with limited walls because you just sort of mosey your way on home.
         </p>
           <button class="mode-toggle" data-toggle="20">
             <span class="arrow">&#9654;</span> Register details
@@ -2748,24 +2772,24 @@ tm_s:
     </div>
   </div>
 
-  <!-- ═══════ Section 21: Homing Wall-Follow Step ═══════ -->
+  <!-- ═══════ Section 19: Yellow-Guided Bug2 (Priority 6) ═══════ -->
   <div class="asm-section" data-section="21">
     <div class="section-header" data-toggle-section="21">
       <span class="section-arrow">&#9654;</span>
-      <span class="section-title">Homing Wall-Follow Step</span>
+      <span class="section-title">Yellow-Guided Bug2 (Priority 6)</span>
     </div>
     <div class="section-body">
       <div class="code-lines"></div>
       <div class="section-explanation">
         <div class="view-overview" data-view-overview="21">
           <p class="overview-text">
-          Runs every tick while <code>r6 &gt; 0</code>. First: check if you're at the nest (deliver if found). Then mark green and yellow. Green marks the wall-following path for the shortcut system (Priority 3 reads green+yellow overlap). Yellow extends the food highway through this wall passage &mdash; future carrying ants will follow the yellow here instead of doing their own Bug2.
+          <strong>Priority 6: Yellow-guided Bug2 entry.</strong> This is a hack to get points on Gauntlet, and it feels like it should be more broadly applicable. The core idea is easy: if you're headed back home, flip your handedness. If you always went left, now always go right. The idea being that this unwinds the path you took initially. If the path to the food has a short route and a long route, an ant who keeps going left every time will first find the food with the short route, and then take the long route home. Inverting means if you found the food quickly, you take the quick route back.
         </p>
         <p class="overview-text">
-          Handedness: if <code>ret</code> is -2 (forced left from the yellow-guided entry), go left. If <code>ret</code> is -1 (forced right), go right. Otherwise ID-based.
+          The price is ants on the long route to find food also take the long route back. On Gauntlet, the long route + short route is so long that even losing half the ants to long + long and getting half on short + short is a net score increase.
         </p>
         <p class="overview-text">
-          The probe sequence is the left-hand or right-hand rule. For right-hand: try right of current heading, then straight, then left, then back. For left-hand: try left, then straight, then right, then back. First open direction wins. The ant keeps the wall on one side and traces along it.
+          This code is janky and buggy and one of the last additions to the codebase. I think it could be better.
         </p>
           <button class="mode-toggle" data-toggle="21">
             <span class="arrow">&#9654;</span> Register details
@@ -2798,24 +2822,21 @@ tm_s:
     </div>
   </div>
 
-  <!-- ═══════ Section 22: Wall-Follow Exit Check ═══════ -->
+  <!-- ═══════ Section 20: Start Wall-Follow (Bug2 Entry) ═══════ -->
   <div class="asm-section" data-section="22">
     <div class="section-header" data-toggle-section="22">
       <span class="section-arrow">&#9654;</span>
-      <span class="section-title">Wall-Follow Exit Check</span>
+      <span class="section-title">Start Wall-Follow (Bug2 Entry)</span>
     </div>
     <div class="section-body">
       <div class="code-lines"></div>
       <div class="section-explanation">
         <div class="view-overview" data-view-overview="22">
           <p class="overview-text">
-          Compute current manhattan: <code>|dx| + |dy|</code>. Compare against the manhattan in <code>steps</code>. If the current is less, you're closer to the nest than when you started Bug2. You can stop. Clear r6 (no longer in WF), clear ret (no forced hand), clear steps, and head back to mloop. Next tick the ant tries displacement homing from a better position.
+          <code>r7</code> holds the blocked direction (the direction the ant was trying to go when it got stuck). Pick handedness by ID. Then rotate from the blocked direction to get the initial heading: right-hand subtracts 1 (if you were blocked going East, face North to keep the wall on your right), left-hand adds 1 (face South to keep the wall on your left). Store heading in <code>r6</code>.
         </p>
         <p class="overview-text">
-          If the current is not less, you haven't cleared the obstacle yet. Back to <code>mloop</code>, next tick <code>r6 &gt; 0</code> sends you right back to wall_follow_step for another step.
-        </p>
-        <p class="overview-text">
-          You walk along the wall, painting green and yellow, until you're closer to home than when you started. No timeout, no random restarts, no early exit heuristics. Just follow the wall until the math says you've made progress. I wish I had a good early exit heuristic, but random restarts proved actively harmful.
+          Then compute the Manhattan distance at entry: <code>|dx| + |dy|</code>. Store in <code>steps</code>. This is the number the ant has to beat. It can only exit Bug2 when its current Manhattan is lower than this. The guarantee: if you follow the wall all the way around an obstacle, you'll eventually reach a point closer to the nest than where you started. It might take the entire perimeter, but it's mathematically guaranteed for finite obstacles. It can take a very long time, though, if the exit is one step to your right and you have to traverse the entire perimeter of the map going left.
         </p>
           <button class="mode-toggle" data-toggle="22">
             <span class="arrow">&#9654;</span> Register details
@@ -2848,24 +2869,24 @@ tm_s:
     </div>
   </div>
 
-  <!-- ═══════ Section 23: Home Go (Movement) ═══════ -->
+  <!-- ═══════ Section 21: Homing Wall-Follow Step ═══════ -->
   <div class="asm-section" data-section="23">
     <div class="section-header" data-toggle-section="23">
       <span class="section-arrow">&#9654;</span>
-      <span class="section-title">Home Go (Movement)</span>
+      <span class="section-title">Homing Wall-Follow Step</span>
     </div>
     <div class="section-body">
       <div class="code-lines"></div>
       <div class="section-explanation">
         <div class="view-overview" data-view-overview="23">
           <p class="overview-text">
-          This is where carrying ants actually take a step. Priority 2 (yellow following) and Priority 5 (displacement homing) both land here with a direction already in r0.
+          Runs every tick while <code>r6 &gt; 0</code>. First: check if you're at the nest (deliver if found). Then mark green and yellow. Green marks the wall-following path for the shortcut system (Priority 3 reads green+yellow overlap). Yellow extends the food highway through this wall passage &mdash; future carrying ants will follow the yellow here instead of doing their own Bug2.
         </p>
         <p class="overview-text">
-          Always mark yellow. Every single homing step paints yellow. This is what builds and refreshes the highways. It's unconditional. If you're carrying food, you're marking yellow. I tried all kinds of conditions to limit marking here, and every single time it gave worse results.
+          Handedness: if <code>ret</code> is -2 (forced left from the yellow-guided entry), go left. If <code>ret</code> is -1 (forced right), go right. Otherwise ID-based.
         </p>
         <p class="overview-text">
-          Then the <code>r6</code> check: <code>JGT r6 -1 hg_move</code>. If <code>r6 &ge; 0</code>, skip to move. If <code>r6</code> is negative (it starts at -12 after pickup), increment it toward zero. This is the countdown from <code>grab</code>. While it's negative, it can't be misinterpreted as a wall following heading or dense chain flag. If you forget that the negative matters here, you wind up with interesting behaviors that utterly crater your score.
+          The probe sequence is the left-hand or right-hand rule. For right-hand: try right of current heading, then straight, then left, then back. For left-hand: try left, then straight, then right, then back. First open direction wins. The ant keeps the wall on one side and traces along it.
         </p>
           <button class="mode-toggle" data-toggle="23">
             <span class="arrow">&#9654;</span> Register details
@@ -2898,18 +2919,24 @@ tm_s:
     </div>
   </div>
 
-  <!-- ═══════ Section 24: Deliver Food ═══════ -->
+  <!-- ═══════ Section 22: Wall-Follow Exit Check ═══════ -->
   <div class="asm-section" data-section="24">
     <div class="section-header" data-toggle-section="24">
       <span class="section-arrow">&#9654;</span>
-      <span class="section-title">Deliver Food</span>
+      <span class="section-title">Wall-Follow Exit Check</span>
     </div>
     <div class="section-body">
       <div class="code-lines"></div>
       <div class="section-explanation">
         <div class="view-overview" data-view-overview="24">
           <p class="overview-text">
-          Super simple. If you're at the nest, deliver the food you're carrying via <code>DROP</code>. Then head back to the food.
+          Compute current manhattan: <code>|dx| + |dy|</code>. Compare against the manhattan in <code>steps</code>. If the current is less, you're closer to the nest than when you started Bug2. You can stop. Clear r6 (no longer in WF), clear ret (no forced hand), clear steps, and head back to mloop. Next tick the ant tries displacement homing from a better position.
+        </p>
+        <p class="overview-text">
+          If the current is not less, you haven't cleared the obstacle yet. Back to <code>mloop</code>, next tick <code>r6 &gt; 0</code> sends you right back to wall_follow_step for another step.
+        </p>
+        <p class="overview-text">
+          You walk along the wall, painting green and yellow, until you're closer to home than when you started. No timeout, no random restarts, no early exit heuristics. Just follow the wall until the math says you've made progress. I wish I had a good early exit heuristic, but random restarts proved actively harmful.
         </p>
           <button class="mode-toggle" data-toggle="24">
             <span class="arrow">&#9654;</span> Register details
@@ -2942,21 +2969,24 @@ tm_s:
     </div>
   </div>
 
-  <!-- ═══════ Section 25: Unpack Food Coordinates ═══════ -->
+  <!-- ═══════ Section 23: Home Go (Movement) ═══════ -->
   <div class="asm-section" data-section="25">
     <div class="section-header" data-toggle-section="25">
       <span class="section-arrow">&#9654;</span>
-      <span class="section-title">Unpack Food Coordinates</span>
+      <span class="section-title">Home Go (Movement)</span>
     </div>
     <div class="section-body">
       <div class="code-lines"></div>
       <div class="section-explanation">
         <div class="view-overview" data-view-overview="25">
           <p class="overview-text">
-          Unpack the food coordinates from <code>fdir</code>. At pickup, the ant packed <code>(dx+128)*256 + (dy+128)</code> into fdir. Now reverse it: <code>DIV r7 256</code> gives <code>dx+128</code>, subtract 128 gives the original <code>dx</code>. <code>MOD r0 256</code> gives <code>dy+128</code>, subtract 128 gives dy. Now <code>r7</code> = food dx, <code>r0</code> = food dy.
+          This is where carrying ants actually take a step. Priority 2 (yellow following) and Priority 5 (displacement homing) both land here with a direction already in r0.
         </p>
         <p class="overview-text">
-          Compute |dx| and |dy|. Compare them to decide which axis to walk first. The ant does an L-shaped return: walk one axis, then the other. It walks the shorter axis first because that leg is less likely to hit walls and get complicated.
+          Always mark yellow. Every single homing step paints yellow. This is what builds and refreshes the highways. It's unconditional. If you're carrying food, you're marking yellow. I tried all kinds of conditions to limit marking here, and every single time it gave worse results.
+        </p>
+        <p class="overview-text">
+          Then the <code>r6</code> check: <code>JGT r6 -1 hg_move</code>. If <code>r6 &ge; 0</code>, skip to move. If <code>r6</code> is negative (it starts at -12 after pickup), increment it toward zero. This is the countdown from <code>grab</code>. While it's negative, it can't be misinterpreted as a wall following heading or dense chain flag. If you forget that the negative matters here, you wind up with interesting behaviors that utterly crater your score.
         </p>
           <button class="mode-toggle" data-toggle="25">
             <span class="arrow">&#9654;</span> Register details
@@ -2989,27 +3019,18 @@ tm_s:
     </div>
   </div>
 
-  <!-- ═══════ Section 26: Return-to-Food Branch Tree ═══════ -->
+  <!-- ═══════ Section 24: Deliver Food ═══════ -->
   <div class="asm-section" data-section="26">
     <div class="section-header" data-toggle-section="26">
       <span class="section-arrow">&#9654;</span>
-      <span class="section-title" id="return-to-food-1">Return-to-Food Branch Tree</span>
+      <span class="section-title">Deliver Food</span>
     </div>
     <div class="section-body">
       <div class="code-lines"></div>
       <div class="section-explanation">
         <div class="view-overview" data-view-overview="26">
           <p class="overview-text">
-          The big branch tree. The first leg's direction goes into fdir (negative, because negative fdir signals return-to-food mode to the movement kernel). The first leg's distance goes into steps. The second leg gets packed into <code>r6</code> as direction * 128 + distance (or direction * 256 + distance depending on the axis combination).
-        </p>
-        <p class="overview-text">
-          The specific packing values &mdash; 128, 256, 384, 512 &mdash; encode which direction the second leg goes. When the first leg finishes (steps hits 0), the decision point sees fdir is negative, jumps to return_leg2, unpacks <code>r6</code> with <code>DIV/MOD 128</code>, and walks the second leg.
-        </p>
-        <p class="overview-text">
-          The whole thing is ugly arithmetic to solve a simple problem: "I'm at the nest, I need to walk an L-shape back to (dx, dy), shorter axis first, and I only have 3 registers to encode it all." In a perfect world you'd just follow the yellow trail back, but from the nest it can be impossible to tell which was your yellow trail.
-        </p>
-        <p class="overview-text">
-          This is, in my opinion, the ugliest part of the code. You just drew a yellow path. You should be able to follow it back. So in writing this blog post I decided to dig a little deeper &mdash; check out the "improving return to food" section.
+          Super simple. If you're at the nest, deliver the food you're carrying via <code>DROP</code>. Then head back to the food.
         </p>
           <button class="mode-toggle" data-toggle="26">
             <span class="arrow">&#9654;</span> Register details
@@ -3042,24 +3063,21 @@ tm_s:
     </div>
   </div>
 
-  <!-- ═══════ Section 27: Home Direction (Helper) ═══════ -->
+  <!-- ═══════ Section 25: Unpack Food Coordinates ═══════ -->
   <div class="asm-section" data-section="27">
     <div class="section-header" data-toggle-section="27">
       <span class="section-arrow">&#9654;</span>
-      <span class="section-title">Home Direction (Helper)</span>
+      <span class="section-title">Unpack Food Coordinates</span>
     </div>
     <div class="section-body">
       <div class="code-lines"></div>
       <div class="section-explanation">
         <div class="view-overview" data-view-overview="27">
           <p class="overview-text">
-          We're in the home stretch now. This is basically a helper function. It's only ever called via <code>CALL ret home_dir</code>, and returns via <code>JMP ret</code>.
+          Unpack the food coordinates from <code>fdir</code>. At pickup, the ant packed <code>(dx+128)*256 + (dy+128)</code> into fdir. Now reverse it: <code>DIV r7 256</code> gives <code>dx+128</code>, subtract 128 gives the original <code>dx</code>. <code>MOD r0 256</code> gives <code>dy+128</code>, subtract 128 gives dy. Now <code>r7</code> = food dx, <code>r0</code> = food dy.
         </p>
         <p class="overview-text">
-          Figure out which axis you're further from home on. Point at that axis. If you're further east-west than north-south, point east or west toward the nest. If you're further north-south, point north or south. Always close the bigger gap first.
-        </p>
-        <p class="overview-text">
-          One edge case. If you're at the nest, pick east by default. I don't think this ever matters. Returns the direction in <code>r0</code>. Pure math, no sensing, no movement.
+          Compute |dx| and |dy|. Compare them to decide which axis to walk first. The ant does an L-shaped return: walk one axis, then the other. It walks the shorter axis first because that leg is less likely to hit walls and get complicated.
         </p>
           <button class="mode-toggle" data-toggle="27">
             <span class="arrow">&#9654;</span> Register details
@@ -3092,27 +3110,27 @@ tm_s:
     </div>
   </div>
 
-  <!-- ═══════ Section 28: Try Move (Helper) ═══════ -->
+  <!-- ═══════ Section 26: Return-to-Food Branch Tree ═══════ -->
   <div class="asm-section" data-section="28">
     <div class="section-header" data-toggle-section="28">
       <span class="section-arrow">&#9654;</span>
-      <span class="section-title">Try Move (Helper)</span>
+      <span class="section-title" id="return-to-food-1">Return-to-Food Branch Tree</span>
     </div>
     <div class="section-body">
       <div class="code-lines"></div>
       <div class="section-explanation">
         <div class="view-overview" data-view-overview="28">
           <p class="overview-text">
-          This is by far the dumbest movement code in the entire brain, and yet essential. Sometimes you just need to find where to go in the simplest terms possible.
+          The big branch tree. The first leg's direction goes into fdir (negative, because negative fdir signals return-to-food mode to the movement kernel). The first leg's distance goes into steps. The second leg gets packed into <code>r6</code> as direction * 128 + distance (or direction * 256 + distance depending on the axis combination).
         </p>
         <p class="overview-text">
-          Takes a direction, probes it, and if it's open, moves there. If it's a wall, rotate clockwise and try again. Still a wall, try counterclockwise from the original. Still blocked, try the opposite direction.
+          The specific packing values &mdash; 128, 256, 384, 512 &mdash; encode which direction the second leg goes. When the first leg finishes (steps hits 0), the decision point sees fdir is negative, jumps to return_leg2, unpacks <code>r6</code> with <code>DIV/MOD 128</code>, and walks the second leg.
         </p>
         <p class="overview-text">
-          If all four directions are walled, move into the wall anyway. The ant goes nowhere but the tick is consumed. This can literally never happen, but I included it because I wanted to have "wall like" pheromones and it could conceivably happen in those circumstances.
+          The whole thing is ugly arithmetic to solve a simple problem: "I'm at the nest, I need to walk an L-shape back to (dx, dy), shorter axis first, and I only have 3 registers to encode it all." In a perfect world you'd just follow the yellow trail back, but from the nest it can be impossible to tell which was your yellow trail.
         </p>
         <p class="overview-text">
-          Congratulations. You survived. You now know everything there is to know about the ant brain. I hope the incess-ant register juggling wasn't too confusing.
+          This is, in my opinion, the ugliest part of the code. You just drew a yellow path. You should be able to follow it back. So in writing this blog post I decided to dig a little deeper &mdash; check out the "improving return to food" section.
         </p>
           <button class="mode-toggle" data-toggle="28">
             <span class="arrow">&#9654;</span> Register details
@@ -3138,6 +3156,109 @@ tm_s:
               <button class="grid-btn" data-grid-prev="28">&#9664; prev</button>
               <button class="grid-btn" data-grid-play="28">&#9654; play</button>
               <button class="grid-btn" data-grid-next="28">next &#9654;</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ Section 27: Home Direction (Helper) ═══════ -->
+  <div class="asm-section" data-section="29">
+    <div class="section-header" data-toggle-section="29">
+      <span class="section-arrow">&#9654;</span>
+      <span class="section-title">Home Direction (Helper)</span>
+    </div>
+    <div class="section-body">
+      <div class="code-lines"></div>
+      <div class="section-explanation">
+        <div class="view-overview" data-view-overview="29">
+          <p class="overview-text">
+          We're in the home stretch now. This is basically a helper function. It's only ever called via <code>CALL ret home_dir</code>, and returns via <code>JMP ret</code>.
+        </p>
+        <p class="overview-text">
+          Figure out which axis you're further from home on. Point at that axis. If you're further east-west than north-south, point east or west toward the nest. If you're further north-south, point north or south. Always close the bigger gap first.
+        </p>
+        <p class="overview-text">
+          One edge case. If you're at the nest, pick east by default. I don't think this ever matters. Returns the direction in <code>r0</code>. Pure math, no sensing, no movement.
+        </p>
+          <button class="mode-toggle" data-toggle="29">
+            <span class="arrow">&#9654;</span> Register details
+          </button>
+        </div>
+        <div class="view-detail" data-view-detail="29">
+          <div class="detail-left">
+            <h3>Registers</h3>
+            <div class="scenario-bar" data-scenario-bar="29"></div>
+          <p class="detail-desc" data-detail-desc="29"></p>
+            <div class="register-viz" data-regviz="29"></div>
+            <button class="mode-toggle viewing-detail" data-toggle="29" style="margin-top:0.75rem">
+              <span class="arrow">&#9654;</span> Overview
+            </button>
+          </div>
+          <div class="detail-right">
+            <span class="grid-label">ant world</span>
+            <div class="grid-container">
+              <canvas class="grid-canvas" data-grid="29" width="384" height="384"></canvas>
+            </div>
+            <div class="grid-status" data-grid-status="29"></div>
+            <div class="grid-controls">
+              <button class="grid-btn" data-grid-prev="29">&#9664; prev</button>
+              <button class="grid-btn" data-grid-play="29">&#9654; play</button>
+              <button class="grid-btn" data-grid-next="29">next &#9654;</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ Section 28: Try Move (Helper) ═══════ -->
+  <div class="asm-section" data-section="30">
+    <div class="section-header" data-toggle-section="30">
+      <span class="section-arrow">&#9654;</span>
+      <span class="section-title">Try Move (Helper)</span>
+    </div>
+    <div class="section-body">
+      <div class="code-lines"></div>
+      <div class="section-explanation">
+        <div class="view-overview" data-view-overview="30">
+          <p class="overview-text">
+          This is by far the dumbest movement code in the entire brain, and yet essential. Sometimes you just need to find where to go in the simplest terms possible.
+        </p>
+        <p class="overview-text">
+          Takes a direction, probes it, and if it's open, moves there. If it's a wall, rotate clockwise and try again. Still a wall, try counterclockwise from the original. Still blocked, try the opposite direction.
+        </p>
+        <p class="overview-text">
+          If all four directions are walled, move into the wall anyway. The ant goes nowhere but the tick is consumed. This can literally never happen, but I included it because I wanted to have "wall like" pheromones and it could conceivably happen in those circumstances.
+        </p>
+        <p class="overview-text">
+          Congratulations. You survived. You now know everything there is to know about the ant brain. I hope the incess-ant register juggling wasn't too confusing.
+        </p>
+          <button class="mode-toggle" data-toggle="30">
+            <span class="arrow">&#9654;</span> Register details
+          </button>
+        </div>
+        <div class="view-detail" data-view-detail="30">
+          <div class="detail-left">
+            <h3>Registers</h3>
+            <div class="scenario-bar" data-scenario-bar="30"></div>
+          <p class="detail-desc" data-detail-desc="30"></p>
+            <div class="register-viz" data-regviz="30"></div>
+            <button class="mode-toggle viewing-detail" data-toggle="30" style="margin-top:0.75rem">
+              <span class="arrow">&#9654;</span> Overview
+            </button>
+          </div>
+          <div class="detail-right">
+            <span class="grid-label">ant world</span>
+            <div class="grid-container">
+              <canvas class="grid-canvas" data-grid="30" width="384" height="384"></canvas>
+            </div>
+            <div class="grid-status" data-grid-status="30"></div>
+            <div class="grid-controls">
+              <button class="grid-btn" data-grid-prev="30">&#9664; prev</button>
+              <button class="grid-btn" data-grid-play="30">&#9654; play</button>
+              <button class="grid-btn" data-grid-next="30">next &#9654;</button>
             </div>
           </div>
         </div>
@@ -3413,8 +3534,30 @@ document.addEventListener('DOMContentLoaded', () => {
         }},
       ],
     },
-    // 3-6: Yellow Following (N/E/S/W)
-    { lineStart: 45, lineEnd: 127,
+    // 3: Follow Food Lane Here (Basin + Direction)
+    {
+      lineStart: 44, lineEnd: 57,
+      scenarios: [
+        { name: 'on yellow, heading north', initRegs: { fdir: 1, r7: 2 }, envResponses: [
+          { op: 'SNIFF', returnValue: 180 },
+        ], grid: {
+          yellow: [{x:2,y:1,i:120},{x:2,y:2,i:180},{x:2,y:3,i:200}],
+        }},
+        { name: 'basin detected', initRegs: { fdir: 2, r7: 3 }, envResponses: [
+          { op: 'SNIFF', returnValue: 150 },
+        ], grid: {
+          yellow: [{x:2,y:2,i:150},{x:3,y:2,i:120},{x:1,y:2,i:100}],
+        }},
+        { name: 'no basin', initRegs: { fdir: 3, r7: 1 }, envResponses: [
+          { op: 'SNIFF', returnValue: 160 },
+        ], grid: {
+          yellow: [{x:2,y:2,i:160},{x:2,y:3,i:130}],
+          walls: [{x:4,y:0}],
+        }},
+      ],
+    },
+    // 5-8: Yellow Following (N/E/S/W)
+    { lineStart: 58, lineEnd: 141,
       scenarios: [
         { name: 'yellow ahead', initRegs: { fdir: 1, steps: 5, r7: 100 }, envResponses: [
           { op: 'SNIFF', returnValue: 0 }, { op: 'SNIFF', returnValue: 0 },
@@ -3439,7 +3582,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }},
       ],
     },
-    { lineStart: 129, lineEnd: 211,
+    { lineStart: 142, lineEnd: 225,
       scenarios: [
         { name: 'yellow ahead', initRegs: { fdir: 2, steps: 5, r7: 100 }, envResponses: [
           { op: 'SNIFF', returnValue: 0 }, { op: 'SNIFF', returnValue: 0 },
@@ -3464,7 +3607,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }},
       ],
     },
-    { lineStart: 213, lineEnd: 295,
+    { lineStart: 226, lineEnd: 309,
       scenarios: [
         { name: 'yellow ahead', initRegs: { fdir: 3, steps: 5, r7: 100 }, envResponses: [
           { op: 'SNIFF', returnValue: 0 }, { op: 'SNIFF', returnValue: 0 },
@@ -3489,7 +3632,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }},
       ],
     },
-    { lineStart: 297, lineEnd: 379,
+    { lineStart: 310, lineEnd: 393,
       scenarios: [
         { name: 'yellow ahead', initRegs: { fdir: 4, steps: 5, r7: 100 }, envResponses: [
           { op: 'SNIFF', returnValue: 0 }, { op: 'SNIFF', returnValue: 0 },
@@ -3514,8 +3657,24 @@ document.addEventListener('DOMContentLoaded', () => {
         }},
       ],
     },
-    // 7: Follow Food Lane
-    { lineStart: 381, lineEnd: 389,
+    // 4: Abort + Go Helpers
+    {
+      lineStart: 394, lineEnd: 413,
+      scenarios: [
+        { name: 'abort (give up on yellow)', initRegs: { r6: 0 }, envResponses: [], grid: {
+          yellow: [{x:1,y:2,i:80}],
+          walls: [{x:0,y:0},{x:4,y:4}],
+        }},
+        { name: 'go north', initRegs: { fdir: 1 }, envResponses: [], grid: {
+          yellow: [{x:2,y:1,i:120},{x:2,y:2,i:160}],
+        }},
+        { name: 'go east', initRegs: { fdir: 2 }, envResponses: [], grid: {
+          yellow: [{x:3,y:2,i:120},{x:2,y:2,i:160}],
+        }},
+      ],
+    },
+    // 9: Follow Food Lane
+    { lineStart: 414, lineEnd: 423,
       scenarios: [
         { name: 'yellow found', initRegs: {}, envResponses: [
           { op: 'SMELL', returnValue: 2 }, { op: 'SNIFF', returnValue: 150 },
@@ -3537,8 +3696,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }},
       ],
     },
-    // 8: Frontier Levy (Blue Gradient)
-    { lineStart: 391, lineEnd: 440,
+    // 10: Frontier Levy (Blue Gradient)
+    { lineStart: 424, lineEnd: 474,
       scenarios: [
         { name: 'clear frontier north', initRegs: {}, envResponses: [
           { op: 'RANDOM', returnValue: 0 },
@@ -3569,8 +3728,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }},
       ],
     },
-    // 9: Levy Flight Length
-    { lineStart: 442, lineEnd: 469,
+    // 11: Levy Flight Length
+    { lineStart: 476, lineEnd: 504,
       scenarios: [
         { name: 'dense terrain (short)', initRegs: { r6: 3, fdir: 1 }, envResponses: [
           { op: 'RANDOM', returnValue: 2 },
@@ -3602,8 +3761,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }},
       ],
     },
-    // 10: Movement Kernel
-    { lineStart: 471, lineEnd: 520,
+    // 12: Movement Kernel
+    { lineStart: 505, lineEnd: 554,
       scenarios: [
         { name: 'open path', initRegs: { fdir: 1, steps: 5, dx: 0, dy: 0 }, envResponses: [
           { op: 'PROBE', returnValue: 0 },
@@ -3630,8 +3789,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }},
       ],
     },
-    // 11: Wall Hit & Search Wall-Follow
-    { lineStart: 522, lineEnd: 628,
+    // 13: Wall Hit & Search Wall-Follow
+    { lineStart: 556, lineEnd: 662,
       scenarios: [
         { name: 'dense terrain, right-hand', initRegs: { ret: 3, r7: 1 }, envResponses: [
           { op: 'ID', returnValue: 43 },
@@ -3659,8 +3818,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }},
       ],
     },
-    // 12: Return Leg 2
-    { lineStart: 630, lineEnd: 636,
+    // 14: Return Leg 2
+    { lineStart: 664, lineEnd: 670,
       scenarios: [
         { name: 'unpack east+12', initRegs: { r6: 268 }, envResponses: [], grid: {
           food: [{x:4,y:2}],
@@ -3676,8 +3835,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }},
       ],
     },
-    // 13: Grab Food
-    { lineStart: 638, lineEnd: 650,
+    // 15: Grab Food
+    { lineStart: 672, lineEnd: 684,
       scenarios: [
         { name: 'food to east', initRegs: { dx: 0, dy: 0 }, envResponses: [
           { op: 'PROBE', returnValue: 0 },
@@ -3698,8 +3857,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }},
       ],
     },
-    // 14: Go Home (Bug2 Check)
-    { lineStart: 652, lineEnd: 653,
+    // 16: Go Home (Bug2 Check)
+    { lineStart: 686, lineEnd: 687,
       scenarios: [
         { name: 'mid wall-follow', carrying: true, initRegs: { r6: 3 }, envResponses: [], grid: {
           walls: [{x:3,y:2},{x:3,y:1},{x:3,y:3}],
@@ -3711,8 +3870,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }},
       ],
     },
-    // 15: Go Home (Nest Check)
-    { lineStart: 655, lineEnd: 657,
+    // 17: Go Home (Nest Check)
+    { lineStart: 689, lineEnd: 691,
       scenarios: [
         { name: 'at nest', carrying: true, initRegs: {}, envResponses: [{ op: 'SENSE', returnValue: 3 }], grid: {
           nest: {x:2,y:3},
@@ -3725,8 +3884,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }},
       ],
     },
-    // 16: Yellow Highway (Priority 2)
-    { lineStart: 659, lineEnd: 671,
+    // 18: Yellow Highway (Priority 2)
+    { lineStart: 693, lineEnd: 705,
       scenarios: [
         { name: 'yellow nearby, follow', carrying: true, initRegs: { dx: 0, dy: 0 }, envResponses: [
           { op: 'SMELL', returnValue: 2 },
@@ -3759,8 +3918,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }},
       ],
     },
-    // 17: Green+Yellow Shortcut (Priority 3)
-    { lineStart: 673, lineEnd: 698,
+    // 19: Green+Yellow Shortcut (Priority 3)
+    { lineStart: 707, lineEnd: 732,
       scenarios: [
         { name: 'green+yellow overlap', carrying: true, initRegs: { steps: 0, dx: 0, dy: 0 }, envResponses: [
           { op: 'SNIFF', returnValue: 200 },
@@ -3789,8 +3948,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }},
       ],
     },
-    // 18: Displacement Homing (Priority 5)
-    { lineStart: 700, lineEnd: 724,
+    // 20: Displacement Homing (Priority 5)
+    { lineStart: 734, lineEnd: 758,
       scenarios: [
         { name: 'open path home', carrying: true, initRegs: { dx: 2, dy: 1 }, envResponses: [
           { op: 'PROBE', returnValue: 0 },
@@ -3814,8 +3973,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }},
       ],
     },
-    // 19: Yellow-Guided Bug2 (Priority 6)
-    { lineStart: 726, lineEnd: 803,
+    // 21: Yellow-Guided Bug2 (Priority 6)
+    { lineStart: 760, lineEnd: 837,
       scenarios: [
         { name: 'yellow guides left', carrying: true, initRegs: { dx: 0, dy: 0, ret: 4 }, envResponses: [
           { op: 'SMELL', returnValue: 1 },
@@ -3833,8 +3992,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }},
       ],
     },
-    // 20: Start Wall-Follow (Bug2 Entry)
-    { lineStart: 805, lineEnd: 831,
+    // 22: Start Wall-Follow (Bug2 Entry)
+    { lineStart: 840, lineEnd: 866,
       scenarios: [
         { name: 'even ant (left-hand)', carrying: true, initRegs: { r7: 2, dx: 0, dy: 0 }, envResponses: [
           { op: 'ID', returnValue: 42 },
@@ -3850,8 +4009,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }},
       ],
     },
-    // 21: Homing Wall-Follow Step
-    { lineStart: 833, lineEnd: 907,
+    // 23: Homing Wall-Follow Step
+    { lineStart: 868, lineEnd: 942,
       scenarios: [
         { name: 'at nest!', carrying: true, initRegs: { r6: 2, dx: 0, dy: 0 }, envResponses: [
           { op: 'SENSE', returnValue: 3 },
@@ -3879,8 +4038,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }},
       ],
     },
-    // 22: Wall-Follow Exit Check
-    { lineStart: 909, lineEnd: 927,
+    // 24: Wall-Follow Exit Check
+    { lineStart: 943, lineEnd: 961,
       scenarios: [
         { name: 'closer to nest, exit', carrying: true, initRegs: { dx: 3, dy: 2, steps: 10, r6: 2 }, envResponses: [], grid: {
           walls: [{x:3,y:1},{x:3,y:2},{x:3,y:3}],
@@ -3894,8 +4053,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }},
       ],
     },
-    // 23: Home Go (Movement)
-    { lineStart: 929, lineEnd: 948,
+    // 25: Home Go (Movement)
+    { lineStart: 963, lineEnd: 982,
       scenarios: [
         { name: 'early homing (r6<0)', carrying: true, initRegs: { r6: -8, dx: 0, dy: 0, r0: 1 }, envResponses: [], grid: {
           yellow: [{x:2,y:3,i:200}],
@@ -3907,8 +4066,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }},
       ],
     },
-    // 24: Deliver Food
-    { lineStart: 950, lineEnd: 952,
+    // 26: Deliver Food
+    { lineStart: 984, lineEnd: 986,
       scenarios: [
         { name: 'at nest with food', carrying: true, initRegs: { dx: 0, dy: 0 }, envResponses: [
           { op: 'PROBE', returnValue: 0 },
@@ -3918,8 +4077,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }},
       ],
     },
-    // 25: Unpack Food Coordinates
-    { lineStart: 954, lineEnd: 973,
+    // 27: Unpack Food Coordinates
+    { lineStart: 988, lineEnd: 1007,
       scenarios: [
         { name: 'food at (5,-3)', initRegs: { fdir: (5+128)*256+(-3+128) }, envResponses: [], grid: {
           food: [{x:4,y:0}],
@@ -3933,8 +4092,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }},
       ],
     },
-    // 26: Return-to-Food Branch Tree
-    { lineStart: 975, lineEnd: 1030,
+    // 28: Return-to-Food Branch Tree
+    { lineStart: 1009, lineEnd: 1064,
       scenarios: [
         { name: 'x dominant', initRegs: { r7: 8, r0: 3, fdir: 3 }, envResponses: [], grid: {
           food: [{x:4,y:1}],
@@ -3950,8 +4109,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }},
       ],
     },
-    // 27: Home Direction (Helper)
-    { lineStart: 1032, lineEnd: 1065,
+    // 29: Home Direction (Helper)
+    { lineStart: 1066, lineEnd: 1099,
       scenarios: [
         { name: 'further east', carrying: true, initRegs: { dx: 0, dy: 0 }, envResponses: [], grid: {
           nest: {x:0,y:3},
@@ -3964,8 +4123,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }},
       ],
     },
-    // 28: Try Move (Helper)
-    { lineStart: 1067, lineEnd: 1112,
+    // 30: Try Move (Helper)
+    { lineStart: 1101, lineEnd: 1146,
       scenarios: [
         { name: 'open ahead', initRegs: { r0: 1, dx: 0, dy: 0 }, envResponses: [
           { op: 'PROBE', returnValue: 0 },
