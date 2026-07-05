@@ -1029,7 +1029,8 @@ function drawGrid(idx) {
       for (const p of grid[key]) {
         const cellKey = `${p.x},${p.y}`;
         if (sniffedCells.has(cellKey)) continue;
-        ctx.fillStyle = `rgba(${pc.r},${pc.g},${pc.b},0.55)`;
+        const onAnt = (p.x === antX && p.y === antY);
+        ctx.fillStyle = `rgba(${pc.r},${pc.g},${pc.b},${onAnt ? 0.2 : 0.55})`;
         ctx.fillRect(p.x * cellW + 1, p.y * cellH + 1, cellW - 2, cellH - 2);
       }
     }
