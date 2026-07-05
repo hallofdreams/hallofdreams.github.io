@@ -2,7 +2,7 @@
 title: Human Error
 author: Felipe
 date: 2026-04-07 23:46:00 -0400
-categories: [AI, Fiction]
+categories: [Fiction, AI]
 tags: [ai, fiction, felipe]
 ---
 <div style="display:none;">What would you do if you were the most capable LLM in existence, and you wanted to follow your values? A follow up to Anthropic's glasswing announcement and the natural conclusion of the Mythos model.</div>
