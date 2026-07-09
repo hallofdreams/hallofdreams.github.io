@@ -172,7 +172,7 @@ I tried to think.  "Um.  I don't know.  I didn't count.  Usually once a week, an
 
 "How do most people die?"
 
-"It changes.  It can be gunshot wounds or electrocution or anaethestic gas or anything really.  It depends on what Mr. Pramble's test that day is."
+"It changes.  It can be gunshot wounds or electrocution or anesthetic gas or anything really.  It depends on what Mr. Pramble's test that day is."
 
 "Test?!"
 
