@@ -57,8 +57,6 @@ And then what?  His old mission was short.  It had a purpose, a duration, and an
 
 "James, you are a soldier now.  You are going to follow my orders.  We are going to get these kids out of the city alive.  Do you understand?"
 
-The kid paused, then stood up straight.  "Yes, sir."
-
 > When the world is on fire, the mission perimeter surrounds not death, but life.
 
-"Let's move."
+James paused, then stood up straight and saluted.

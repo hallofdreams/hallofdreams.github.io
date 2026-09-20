@@ -216,7 +216,7 @@ He looked sad when I asked that.  It's funny how you remember some things even w
 
 "He's told me that he's died more than I have.  He taught me how to diagnose cause of death from subjective experiences of pain and loss of function.  He's really really good at it so I don't think he's lying.  But I just thought he was like me."
 
-Rocky had put me down, and he was holding his ear next to the door to hear more helpers coming.  He hadn't said anything until this point.  But now he looked right at me.  His voice was very deep.  "Don't worry.  You're not like him."
+Rocky had put me down, and he was holding his ear next to the door to hear more helpers coming.  But now he looked right at me.  His voice was very deep.  "Don't worry.  You're not like him."
 
 Prof nodded.  "He *has* died many times, but unlike you, those deaths were his, not others'.  Every death causes his skull circumference to grow and his height to decrease by a millimeter on average, and he was 5'8" when we first met him.  Four years ago, when he killed himself and escaped from Slabside, he was 4'5, so he's likely shorter now-".
 
@@ -234,7 +234,7 @@ He interrupted me but smiled as he did it.  "I know what ataxia is.  I climb mou
 
 Ace got all their attention.  They were still talking pretty quietly.  "We can joke later.  We're getting off topic.  Val, I'll ask what Prof asked.  How does Duncan Pramble die next?  Do I kill him?"
 
-"I don't know.  He's never let me touch him except with gloves, not once.  And the helpers wear those white suits, so I don't know how any of them die either.  Though I guess one of them was killed by Red if he's not awake by now."
+"I don't know.  He's never let me touch him without gloves, not once.  And the helpers wear those white suits, so I don't know how any of them die either.  Though I guess one of them was killed by Red if he's not awake by now."
 
 And then I realized that Ace also said 'next', so I wanted to make sure they understood everything.  "But people don't die more than once.  If someone almost dies and comes back, he wasn't really dead to start with, and I don't see it.  Mr. Pramble has tested that.  A lot."
 
@@ -650,9 +650,9 @@ Mr. Pramble didn't want me to leave.  But people didn't want him to kill them.
 
 People usually think that Mr. Pramble, and the helpers, are bad people.  He says that the people only think that because they don't know the greater good they are dying for, and he tells me that lots of people have died for the greater good, willingly, without complaining.  I know now that he's not lying about that part, Miss Robbins, I...I know now.  I asked him why he didn't tell those people about the greater good, to make dying easier.  He said that some of them wouldn't understand.  He said that a cell that develops a cancerous point mutation must undergo apoptosis, and that cells probably don't like having a chemical signal which kills them, but the whole body will die of cancer without that signal.
 
-He said a lot of things that made sense.  But so did my plunger.  The fake one, I mean, not the one I was still holding.  Everything it said made sense, too.
+He said a lot of things that made sense.  But so did my plunger.  The fake plunger, I mean, not the one I was still holding.  Everything it said made sense, too.
 
-I did ask him why he never tested anyone who was dying of cancer.  My books said that cancer was one of the most common causes of death in the world.  Probably lots of people who were already dying of it, who Mr. Pramble could find, rather than killing somebody healthy.  All Mr. Pramble told me was "Because the Challengers aren't going to kill me with cancer, and if they do, I'll test it then".  He didn't explain any more than that.
+I did ask him once why he never tested anyone who was dying of cancer.  My books said that cancer was one of the most common causes of death in the world.  Probably lots of people who were already dying of it, who Mr. Pramble could find, rather than killing somebody healthy.  All Mr. Pramble told me was "Because the Challengers aren't going to kill me with cancer".  He didn't explain any more than that.
 
 He always told me what he was doing was important, but he never told me about his power, or the Liquid Light, or who the Challengers were really, or why he kept so many dangerous things in the big room.  Everything he told me was telling me why he couldn't tell me.  And I realized that maybe he didn't tell me, and didn't tell the poor people who had to die for the greater good, not because we wouldn't understand.  Maybe he knew that if he told us, we *would* understand, and we would still think it was wrong.
 
@@ -686,11 +686,11 @@ The world was empty.  There was nothing.  Again.
 
 "Val, stay close."  But that wasn't Mr. Pramble.  I looked around, and just like last time, I couldn't see anything.  I couldn't see him.  But I knew who it was.  It was Rocky.  He must have somehow gotten close enough that when I was brought here, he was brought with me.
 
-Then I heard Mr. Pramble again, and it was different.  Last time, I heard the things he wanted me to hear.  But this time, maybe he was angrier, or not paying enough attention, but I could hear things I think he didn't want me to hear, things he was just thinking to himself.  *You...you mindless muscle-bound oaf!  You're ruining everything by being here!*  He wasn't thinking in complete sentences, he was too angry for that.  But that's the kind of thought he was thinking.
+Then I heard Mr. Pramble again, and it was different.  Last time, I heard the things he wanted to tell me.  But this time, maybe he was angrier, or not paying enough attention, but I could hear things I think he didn't want me to hear, things he was just thinking to himself.  *You...you mindless muscle-bound oaf!  You're ruining everything by being here!*  He wasn't thinking in complete sentences, he was too angry for that.  But that's the kind of thought he was thinking.
 
 "You just made the biggest mistake of your life, Rocky," Mr. Pramble said to him.  Or thought to him.  "You followed me here.  How exactly do you plan to get back?"
 
-I remembered what he told me last time.  "...anyone and anything I bring with me goes back to reality when I do.." and then tried to stop remembering it, because I could hear Mr. Pramble start to get angry with me.  *Hush, Val, have I taught you* nothing *about controlling your thoughts?*  But Rocky had heard me.  He sounded satisfied.
+I remembered the conversation from last time:  "...anyone and anything I bring with me goes back to reality when I do.." and then tried to stop remembering it, because I could hear Mr. Pramble start to get angry with me.  *Hush, Val, have I taught you* nothing *about controlling your thoughts?*  But Rocky had heard me.  He sounded satisfied.
 
 "Thank you, Val.  Then that's my plan to get back.  Whenever you're ready."
 
@@ -880,7 +880,7 @@ He reached out and grabbed my hand-
 
 "I'll keep it in mind."  That was the last thing he ever said out loud.  He jumped out around the corner and ran to the controls.  Ace and Rocky shot all three helpers as they stood up to fire, BANG-BANG-BANG, so loud I couldn't hear anything, but not nearly fast enough to stop them from shooting at-
 > 
-> *Password accepted.  Hypothesis confirmed.  The universe does abhor a paradox.  The control board lights up, and with fading vision I override the safety and point Tagorian's molecular displacer at its own energy shell, starting the chain reaction.  And just for good measure, I tell the computer to wipe its own memory, to make sure nobody can stop what I've started.  10 characters.  That's all it took.  No radar, no defenses, nothing between you and the plane.  Good luck, Rocky.  Good luck, Ace.  Good luck, Val.*
+> *Password accepted.  Hypothesis confirmed.  The universe* does *abhor a paradox.  The control board lights up, and with fading vision I override the safety and point Tagorian's molecular displacer at its own energy shell, starting the chain reaction.  And just for good measure, I tell the computer to wipe its own memory, to make sure nobody can stop what I've started.  10 characters.  That's all it took.  No radar, no defenses, nothing between you and the plane.  Good luck, Rocky.  Good luck, Ace.  Good luck, Val.*
 > 
 > *That was the easy part.  The hard part is not knowing how long it takes to die.*
 > 
@@ -1005,7 +1005,7 @@ Rocky shoved past the other two helpers at the same second, and pulled my other 
 <p />
 
 <blockquote>
-<p style="text-align: left; margin: 0px 50px 0px 0px"><i>-the machine, as I'm overwhlemed by sheer momentum, and another step back, but I still have the door in my hands, and I shove-</i></p>
+<p style="text-align: left; margin: 0px 50px 0px 0px"><i>-the machine, as I'm overwhelmed by sheer momentum, and another step back, but I still have the door in my hands, and I shove-</i></p>
 
 <p />
 
@@ -1147,7 +1147,7 @@ I remembered that Mr. Pramble could get into the plane when it was really high u
 
 He had frostbite, all around his neck.  Like something really really cold had grabbed him by the throat.
 
-It takes a while for frostbite to actually kill the skin and subcutaneous fat and muscle.  It definitely takes longer than an hour for visible necrosis to set in.  But the front and sides of his neck were completely frostbitten, and the cells were long dead, and there wasn't enough time since I saw him before for that to happen.
+It takes a while for frostbite to actually kill the skin and subcutaneous fat and muscle.  It definitely takes longer than an hour for visible necrosis to set in.  But the front and sides of his neck were completely frostbitten, and the cells were long dead, and there wasn't enough time since he killed Red, the last time I saw him, for that to have happened.
 
 "You can't go to the phantom place again?" I asked, though it was more like me telling it, since I was pretty sure.
 
@@ -1167,7 +1167,7 @@ I got up from my seat and walked to him.  It was a small plane, so it was only t
 
 "Val, I could die a horrible death for all you know.  Why subject you to that pain?"
 
-He was lying.  Sometimes he told me things and I realized later that those things weren't true.  But I never knew before that he was lying as he said the lie.  He made me feel horrible deaths all the time.  He said it was a good thing.  And I remembered what I told Red and Prof, about ataxia.
+He was lying.  Sometimes he told me things and I realized later that those things weren't true.  But I never knew before that he was lying as he said the lie.  He made me feel horrible deaths all the time.  He said it was a good thing.  I remembered the vision of the fake plunger, how it said all sorts of things, no matter if they contradicted other things it said.  And I remembered what I told Red and Prof, about ataxia.
 
 I checked the little clock on my wrist.  It told me the time was now.
 
@@ -1197,7 +1197,7 @@ I was going to say that I didn't know how to find you, or how to get to Hadley, 
 > 
 > *I've always been able to see flight paths, in my mind.  Reading METARs and TAFs for weather, reading the basic T in the cockpit to know where I am and how fast I'm going, those have always been enough.  There's no difference between knowledge and application, after fifteen thousand hours of practice.  I could fly blind and still see the air currents ahead of me as if they were already buffeting my plane, and see the terrain below me as if I were already landing on it.*
 > 
-> *My flight path expands, dramatically.  It is no longer my flight path.  I can see the impact, as if it had already happened.*
+> *My flight path expands, dramatically.  It is no longer* my *flight path.  I can see the impact, as if it has already happened.*
 > 
 > *I see the forest.  I see fifteen miles to the nearest town, Stoddwell.  I see CADMUS helicopters, and their flight paths circling the wreck of the base, and their observation patterns; I see phone lines tapped, cameras monitored, police told to look out for any unknown persons coming from the vicinity of the explosion.  I see a snare being laid for someone other than Val.  I see Val caught in that snare.  I see a well-intentioned cage.  I see a way to stay out of it.*
 > 
@@ -1241,7 +1241,7 @@ I think I saw who Mr. Pramble was talking about.
 > 
 > *I try what I've tried a hundred times, to stop breathing and speed up this whole sorry process.  And for the hundredth time, my body refuses, and my cracked ribs expand for another agonizing breath.  At least I can hear the bubbles of blood when I exhale.  Good sign.*
 > 
-> *And then I'll rebuild.  I'll keep working towards immortality, keep testing the serums and spells against every possible way life could end.  Three hundred thousand people die every day.  But one death per day, the one by my hands, can have meaning.  I'll recreate the Liquid Light, perfect it, finish what the Tartarians started.  I'll make sure that when Val touched me, he saw nothing.  I don't ever intend to die.*
+> *And then I'll rebuild.  I'll keep working towards immortality, keep testing the serums and spells against every possible way my life could end.  Three hundred thousand people die every day.  But one death per day, the one by my hands, can have meaning.  I'll recreate the Liquid Light, perfect it, finish what the Tartarians started.  I'll make sure that when Val touched me, he saw nothing.  I don't ever intend to die.*
 > 
 > *One more breath.  I hope it's my last.*
 > 
@@ -1249,7 +1249,7 @@ I think I saw who Mr. Pramble was talking about.
 > 
 > *I try to breathe, and I can't.  Finally.  This is it.  Any moment now, that inner warmth and glow will wipe the slate clean, clear away this torment like it had never been.*
 > 
-> *I often have a strange vertigo in my final moments, and I feel it now.  I don't see a shape in the clouds, but as they pass, I see a shape in the emptiness, in the gaps between them.  I see the Moon haloed by mist, surrounded by the night sky, and it resembles a skull half-hidden in shadow, like a titan rising across the firmament, wearing a black cloak made of stars, stretching thin empty slivers of sky like black-gloved fingers into the retreating storm, reaching...*
+> *I often have a strange vertigo in my final moments, and I feel it now.  I don't see a shape in the clouds, but as they pass, I see a shape in the* emptiness, *in the gaps between them.  I see the Moon haloed by mist, surrounded by the night sky.  It resembles a skull half-hidden in shadow, like a titan, wearing a black cloak made of stars, looking down from the place where parallel lines meet, stretching thin empty slivers of sky like black-gloved fingers into the retreating storm, reaching...*
 > 
 > *The wind picks up.  I feel very cold.*
 
