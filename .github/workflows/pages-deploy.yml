@@ -56,9 +56,34 @@ jobs:
             echo "SPEC_TEST=_site_no_baseurl" >> $GITHUB_ENV
           fi
 
+      - name: Check layouts exist
+        run: |
+          # Jekyll treats a missing layout as a warning, not an error, and
+          # renders the page as its bare body. That is how the Agents and
+          # Ants post went blank when a merge deleted _layouts/asm-viewer.html.
+          # Fail fast instead.
+          status=0
+          while read -r file layout; do
+            [[ -z $layout || $layout == none ]] && continue
+            if [[ ! -f "_layouts/$layout.html" ]]; then
+              echo "::error file=$file::layout '$layout' is referenced but _layouts/$layout.html does not exist"
+              status=1
+            fi
+          done < <(grep -rHm1 '^layout:' _posts tabs _layouts ./*.md ./*.html 2>/dev/null \
+                   | awk -F'layout:' '{ f=$1; sub(/:$/, "", f); l=$2; gsub(/[ "\047\r]/, "", l); print f, l }')
+          exit $status
+
       - name: Build Site
         run: |
-          JEKYLL_ENV=production bundle exec jekyll b
+          set -o pipefail
+          JEKYLL_ENV=production bundle exec jekyll b 2>&1 | tee build.log
+
+          # Missing layouts/includes and similar problems only surface as
+          # "Build Warning" lines; treat them as failures.
+          if grep -q 'Build Warning' build.log; then
+            echo "::error::Jekyll reported build warnings (see log above); refusing to deploy"
+            exit 1
+          fi
 
           if [[ -n $SPEC_TEST ]]; then
             # Bypass the defects of htmlproofer
