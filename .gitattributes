@@ -1,0 +1,20 @@
+# Normalize line endings: store LF in the repo and check out LF on every
+# platform, so a Windows/WSL checkout no longer shows hundreds of
+# whitespace-only modifications that make merges hard to review.
+* text=auto eol=lf
+
+# Binaries: never touch
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.gif  binary
+*.ico  binary
+*.webp binary
+*.woff binary
+*.woff2 binary
+*.ttf  binary
+*.otf  binary
+*.pdf  binary
+*.zip  binary
+*.mp3  binary
+*.mp4  binary

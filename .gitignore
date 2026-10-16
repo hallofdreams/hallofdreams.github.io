@@ -2,6 +2,7 @@
 .*
 !.github
 !.gitignore
+!.gitattributes
 
 # python compiled files
 *.pyc
