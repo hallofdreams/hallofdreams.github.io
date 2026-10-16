@@ -1,0 +1,83 @@
+Your RubyGems version (3.0.3.1) has a bug that prevents `required_ruby_version` from working for Bundler. Any scripts that use `gem install bundler` will break as soon as Bundler drops support for your Ruby version. Please upgrade RubyGems to avoid future breakage and silence this warning by running `gem update --system 3.2.3`
+Configuration file: /home/runner/work/hallofdreams.github.io/hallofdreams.github.io/_config.yml
+            Source: /home/runner/work/hallofdreams.github.io/hallofdreams.github.io
+       Destination: /home/runner/work/hallofdreams.github.io/hallofdreams.github.io/_site
+ Incremental build: disabled. Enable with --incremental
+      Generating... 
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($tab-cursor-height, 2) or calc($tab-cursor-height / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+    ╷
+167 │       $top: -$offset * $tab-height + $tab-cursor-height / 2;
+    │                                      ^^^^^^^^^^^^^^^^^^^^^^
+    ╵
+    /home/runner/work/hallofdreams.github.io/hallofdreams.github.io/assets/css/archives.scss 167:38  root stylesheet
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($tab-cursor-height, 2) or calc($tab-cursor-height / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+    ╷
+167 │       $top: -$offset * $tab-height + $tab-cursor-height / 2;
+    │                                      ^^^^^^^^^^^^^^^^^^^^^^
+    ╵
+    /home/runner/work/hallofdreams.github.io/hallofdreams.github.io/assets/css/categories.scss 167:38  root stylesheet
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($tab-cursor-height, 2) or calc($tab-cursor-height / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+    ╷
+167 │       $top: -$offset * $tab-height + $tab-cursor-height / 2;
+    │                                      ^^^^^^^^^^^^^^^^^^^^^^
+    ╵
+    /home/runner/work/hallofdreams.github.io/hallofdreams.github.io/assets/css/category-tag.scss 167:38  root stylesheet
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($tab-cursor-height, 2) or calc($tab-cursor-height / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+    ╷
+167 │       $top: -$offset * $tab-height + $tab-cursor-height / 2;
+    │                                      ^^^^^^^^^^^^^^^^^^^^^^
+    ╵
+    /home/runner/work/hallofdreams.github.io/hallofdreams.github.io/assets/css/home.scss 167:38  root stylesheet
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($tab-cursor-height, 2) or calc($tab-cursor-height / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+    ╷
+167 │       $top: -$offset * $tab-height + $tab-cursor-height / 2;
+    │                                      ^^^^^^^^^^^^^^^^^^^^^^
+    ╵
+    /home/runner/work/hallofdreams.github.io/hallofdreams.github.io/assets/css/page.scss 167:38  root stylesheet
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($tab-cursor-height, 2) or calc($tab-cursor-height / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+    ╷
+167 │       $top: -$offset * $tab-height + $tab-cursor-height / 2;
+    │                                      ^^^^^^^^^^^^^^^^^^^^^^
+    ╵
+    /home/runner/work/hallofdreams.github.io/hallofdreams.github.io/assets/css/post.scss 167:38  root stylesheet
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($tab-cursor-height, 2) or calc($tab-cursor-height / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+    ╷
+167 │       $top: -$offset * $tab-height + $tab-cursor-height / 2;
+    │                                      ^^^^^^^^^^^^^^^^^^^^^^
+    ╵
+    /home/runner/work/hallofdreams.github.io/hallofdreams.github.io/assets/css/tags.scss 167:38  root stylesheet
