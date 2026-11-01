@@ -222,6 +222,18 @@ pre {
   }
 }
 
+/* giscus mounts an <iframe> next to its script tag and sizes it via its own
+   stylesheet; mirror that here so the comments never depend on it loading. */
+.giscus,
+.giscus-frame {
+  width: 100%;
+  min-height: 150px;
+}
+.giscus-frame {
+  border: none;
+  color-scheme: light dark;
+}
+
 .post-tail-bottom a {
   color: inherit;
 }
