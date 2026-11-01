@@ -1,0 +1,139 @@
+<!--
+  "Remove all themes": turns off every stylesheet so the page renders as
+  plain, ye-olde HTML. The one exception is the small <style> below, which is
+  enabled only in raw mode and holds the bare minimum needed to stay readable
+  (no bullets on the nav, icon-only widgets hidden, images kept on screen).
+  The choice is remembered in localStorage so it sticks between pages. The
+  toggle button lives in topbar.html; while raw mode is on, a plain notice
+  with a "Restore themes" button is also inserted at the very top of the page.
+-->
+<style id="raw-mode-style">
+  /* Every rule is scoped to html[data-raw], which only exists while raw mode
+     is on, so this sheet is inert in the themed view even if it is enabled. */
+  html[data-raw] body { font-family: Georgia, "Times New Roman", serif; line-height: 1.45; max-width: 60em; margin: 1em auto; padding: 0 1em; }
+  html[data-raw] img, html[data-raw] video { max-width: 100%; height: auto; }
+  html[data-raw] pre { overflow-x: auto; }
+  html[data-raw] table { border-collapse: collapse; }
+  html[data-raw] td, html[data-raw] th { border: 1px solid #999; padding: 0.15em 0.5em; }
+  html[data-raw] .highlight td, html[data-raw] .highlight th { border: 0; }   /* code line-number tables */
+
+  /* Theme-only widgets: icon fonts, search box, panel, spinners, mode toggle */
+  html[data-raw] i.fa, html[data-raw] i.fas, html[data-raw] i.far, html[data-raw] i.fab,
+  html[data-raw] #sidebar-trigger, html[data-raw] #search-trigger, html[data-raw] #search-wrapper, html[data-raw] #topbar-title,
+  html[data-raw] #mode-toggle-wrapper, html[data-raw] .icon-border, html[data-raw] #pv, html[data-raw] #panel-wrapper { display: none; }
+
+  /* Header: site title, tagline, horizontal nav */
+  html[data-raw] .site-title { font-size: 1.6em; font-weight: bold; }
+  html[data-raw] .site-subtitle { font-style: italic; }
+  html[data-raw] ul.nav { list-style: none; margin: 0.6em 0; padding: 0; }
+  html[data-raw] ul.nav li { display: inline; }
+  html[data-raw] ul.nav li + li::before { content: " | "; }
+  html[data-raw] .sidebar-bottom a::after { content: attr(aria-label); }
+  html[data-raw] .sidebar-bottom a + a::before { content: " · "; }
+  html[data-raw] #topbar-wrapper { border-bottom: 1px solid #888; margin: 0.8em 0 1.2em; padding-bottom: 0.5em; }
+  html[data-raw] #breadcrumb span + span::before { content: " › "; }
+
+  /* Posts */
+  html[data-raw] .post-meta { color: #555; font-size: 0.9em; }
+  html[data-raw] .post-preview { margin-bottom: 1.5em; }
+  html[data-raw] .post-tag + .post-tag::before { content: ", "; }
+  html[data-raw] .post-navigation a { margin-right: 1em; }
+  html[data-raw] aside.sidebox { margin-top: 2em; padding-top: 0.5em; border-top: 1px solid #bbb; font-size: 0.9em; color: #444; }
+
+  html[data-raw] footer { border-top: 1px solid #888; margin-top: 2em; padding-top: 0.5em; font-size: 0.85em; color: #555; }
+  html[data-raw] #raw-mode-banner { font-size: 0.85em; color: #555; margin: 0 0 1em; }
+</style>
+<script>
+(function () {
+  var KEY = "hod-raw-mode";
+  var LABEL_OFF = "Remove all themes";
+  var LABEL_ON = "Restore themes";
+  var BANNER_ID = "raw-mode-banner";
+  var rawStyle = document.getElementById("raw-mode-style");
+  /* Elements that only make sense with the theme's CSS: things it normally
+     hides, plus the sidebar avatar, which is a 768px image without styling. */
+  var HIDE_IN_RAW = ["avatar", "search-result-wrapper", "mask", "back-to-top", "search-cancel"];
+  var observer = null;
+  var raw = false;
+
+  function sheets() {
+    return document.querySelectorAll('link[rel~="stylesheet"], style');
+  }
+
+  /* Theme sheets off and the raw sheet on, or the reverse. */
+  function setSheets(off) {
+    var list = sheets();
+    for (var i = 0; i < list.length; i++) {
+      list[i].disabled = (list[i] === rawStyle) ? !off : off;
+    }
+  }
+
+  function setBanner(on) {
+    var banner = document.getElementById(BANNER_ID);
+    if (on && !banner) {
+      banner = document.createElement("p");
+      banner.id = BANNER_ID;
+      banner.appendChild(document.createTextNode("Plain HTML view. "));
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.textContent = LABEL_ON;
+      btn.addEventListener("click", toggle);
+      banner.appendChild(btn);
+      document.body.insertBefore(banner, document.body.firstChild);
+    } else if (!on && banner) {
+      banner.parentNode.removeChild(banner);
+    }
+  }
+
+  function apply(on) {
+    /* The attribute gates every rule in the raw stylesheet above. */
+    if (on) { document.documentElement.setAttribute("data-raw", ""); }
+    else { document.documentElement.removeAttribute("data-raw"); }
+    setSheets(on);
+    HIDE_IN_RAW.forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) { el.hidden = on; }
+    });
+    var btn = document.getElementById("raw-mode-toggle");
+    if (btn) { btn.textContent = on ? LABEL_ON : LABEL_OFF; }
+    setBanner(on);
+
+    /* Stylesheets injected later (e.g. by async scripts) must stay off too. */
+    if (on && !observer && window.MutationObserver) {
+      observer = new MutationObserver(function () { setSheets(true); });
+      observer.observe(document.head, { childList: true });
+      observer.observe(document.body, { childList: true });
+    } else if (!on && observer) {
+      observer.disconnect();
+      observer = null;
+    }
+  }
+
+  function stored() {
+    try { return localStorage.getItem(KEY) === "1"; } catch (e) { return false; }
+  }
+
+  function store(on) {
+    try { on ? localStorage.setItem(KEY, "1") : localStorage.removeItem(KEY); } catch (e) {}
+  }
+
+  function toggle() {
+    raw = !raw;
+    store(raw);
+    apply(raw);
+  }
+
+  raw = stored();
+  if (raw) {
+    apply(true);
+  } else if (rawStyle) {
+    rawStyle.disabled = true;   /* themes on: keep the raw sheet out of the way */
+  }
+
+  var btn = document.getElementById("raw-mode-toggle");
+  if (btn) {
+    btn.textContent = raw ? LABEL_ON : LABEL_OFF;
+    btn.addEventListener("click", toggle);
+  }
+})();
+</script>

@@ -344,6 +344,32 @@ $sidebar-display: "sidebar-display";
   display: none;
 }
 
+#raw-mode-toggle { /* "Remove all themes" button, see _includes/raw-mode.html */
+  flex-shrink: 0;
+  margin-left: 0.75rem;
+  padding: 0.1rem 0.65rem;
+  font-size: 0.72rem;
+  line-height: 1.4;
+  white-space: nowrap;
+  color: var(--text-muted-color);
+  background: var(--search-wrapper-bg);
+  border: 1px solid var(--btn-border-color);
+  border-radius: 1rem;
+  cursor: pointer;
+  &:hover {
+    color: var(--link-color);
+    border-color: var(--link-color);
+  }
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--btn-border-color);
+  }
+}
+
+#search-cancel.loaded ~ #raw-mode-toggle { /* hide while the mobile search bar is open */
+  display: none;
+}
+
 #search-input {
   background: center;
   border: 0;
