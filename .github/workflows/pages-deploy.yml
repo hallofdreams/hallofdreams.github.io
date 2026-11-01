@@ -76,11 +76,14 @@ jobs:
       - name: Build Site
         run: |
           set -o pipefail
-          JEKYLL_ENV=production bundle exec jekyll b 2>&1 | tee build.log
+          JEKYLL_ENV=production bundle exec jekyll b 2>&1 | tee "$RUNNER_TEMP/build.log"
 
+          # The log lives outside the checkout: a build.log in the repo root gets
+          # copied into _site (and so published), and on the next run the untracked
+          # file blocks "git checkout gh-pages" in tools/deploy.sh.
           # Missing layouts/includes and similar problems only surface as
           # "Build Warning" lines; treat them as failures.
-          if grep -q 'Build Warning' build.log; then
+          if grep -q 'Build Warning' "$RUNNER_TEMP/build.log"; then
             echo "::error::Jekyll reported build warnings (see log above); refusing to deploy"
             exit 1
           fi
