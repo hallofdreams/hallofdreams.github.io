@@ -53,6 +53,37 @@ pre {
   }
 }
 
+/*--- Sidebox (see _plugins/sidebox.rb) ---*/
+// An aside to the main text: an afterthought or series note. Visually set
+// apart with a hairline and smaller muted type, but otherwise unadorned.
+
+.sidebox {
+  display: block;
+  margin: 2.5rem 0 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--sidebox-rule-color);
+  font-size: 0.85rem;
+  line-height: 1.7;
+  color: var(--blockquote-text-color);
+
+  > :last-child {
+    margin-bottom: 0;
+  }
+
+  a {
+    color: var(--link-color);
+  }
+
+  .sidebox-title {
+    margin-bottom: 0.4rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-muted-color);
+  }
+}
+
 .post-tail-wrapper {
   margin-top: 6rem;
   border-bottom: 1px double var(--main-border-color);
